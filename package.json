@@ -1,5 +1,5 @@
 {
-  "name": "node-web-starter-ts",
+  "name": "your-companies-web",
   "version": "1.0.0",
   "description": "A starter web application for Node.js with Typescript",
   "main": "dist/server.js",
