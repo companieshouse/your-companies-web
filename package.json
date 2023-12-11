@@ -118,11 +118,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/companieshouse/node-review-web-starter-ts.git"
+    "url": "git+https://github.com/companieshouse/your-companies-web.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/companieshouse/node-review-web-starter-ts/issues"
+    "url": "https://github.com/companieshouse/your-companies-web/issues"
   },
-  "homepage": "https://github.com/companieshouse/node-review-web-starter-ts#readme"
+  "homepage": "https://github.com/companieshouse/your-companies-web#readme"
 }
