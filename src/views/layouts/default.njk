@@ -7,7 +7,6 @@
     {% include "partials/__meta_header.njk" %}
 
     <body class="govuk-template__body" >
-
         <script>
             document.body.className = (
                 (document.body.className)
@@ -30,6 +29,8 @@
             </main>
         </div>
 
+        {% include "partials/customer_insights.njk" %}
+        <div class="blue-footer-border"></div>
         {% include "partials/__footer.njk" %}
 
     </body>
