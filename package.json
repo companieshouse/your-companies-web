@@ -1,7 +1,7 @@
 {
   "name": "your-companies-web",
   "version": "1.0.0",
-  "description": "A starter web application for Node.js with Typescript",
+  "description": "A web application for Your Companies journey",
   "main": "dist/server.js",
   "engines": {
     "node": ">=18.0.0",
@@ -26,7 +26,6 @@
       "pre-commit": "npm run lint && npm test"
     }
   },
-  "author": "Moses Wejuli <mwejuli@companieshouse.gov.uk>",
   "license": "MIT",
   "dependencies": {
     "@companieshouse/api-sdk-node": "^2.0.71",
