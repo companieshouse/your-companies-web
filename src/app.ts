@@ -3,6 +3,7 @@ import nunjucks from "nunjucks";
 import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
+import { enableI18next } from "./middleware/i18next.language";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.enable("trust proxy");
 // parse body into req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+enableI18next(app);
 
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

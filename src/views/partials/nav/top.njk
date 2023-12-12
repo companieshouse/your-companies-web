@@ -1,7 +1,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <div class="js-toggle-nav" id="global-nav">
-            <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
+            <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">{{signInRegister}}</a>
 
             <nav role="navigation" class="content mobile-hidden">
                 <ul id="navigation" class="mobile-hidden">
@@ -9,28 +9,30 @@
                         {# here comes logic providing {{ userEmailAddress }} #}
                     </li>
                     <li class="your-companies">
-                        <a class="govuk-link" id="user-signout" href="">Your companies</a>
+                        <a class="govuk-link" id="user-signout" href="">{{yourCompanies}}</a>
                     </li>
                     <li class="your-filings">
-                        <a class="govuk-link" id="user-signout" href="/your-filings">Your filings</a>
+                        <a class="govuk-link" id="user-signout" href="/your-filings">{{yourFilings}}</a>
                     </li>
                     <li class="companies-you-follow">
-                        <a class="govuk-link" id="user-signout" href="">Companies you follow</a>
+                        <a class="govuk-link" id="user-signout" href="">{{companiesYouFollow}}</a>
                     </li>
                     <li class="basket">
-                        <a class="govuk-link" id="user-signout" href="">Basket</a>
+                        <a class="govuk-link" id="user-signout" href="">{{basket}}</a>
                     </li>
 
                     <!-- Note: GOV.UK One Login uses Security instead of 'Your details' in Webfiling its "Manage account"-->
                     <li class="your-details">
-                        <a class="govuk-link" id="user-signout" href="chs-one-login-settings">Manage account</a>
+                        <a class="govuk-link" id="user-signout" href="chs-one-login-settings">{{manageAccount}}</a>
                     </li>
 
                     <li class="authenticated">
-                        <a class="govuk-link" id="user-signout" href="/signout">Sign out</a>
+                        <a class="govuk-link" id="user-signout" href="/signout">{{signOut}}</a>
                     </li>
                 </ul>
             </nav>
+       <a class="govuk-link" href="?lng=en">English</a>
+       <a class="govuk-link" href="?lng=cy">Cymraeg</a>
         </div>
     </div>
 </div>
