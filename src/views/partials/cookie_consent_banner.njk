@@ -1,16 +1,16 @@
 {% from "govuk/components/cookie-banner/macro.njk"  import govukCookieBanner %}
 
 {% set html %}
-<p>We use some essential cookies to make our services work.</p>
-<p>We'd also like to use analytics cookies so we can understand how you use our services and to make improvements.</p>
+<p>{{weUseEssentialCookies}}</p>
+<p>{{useAnalytics}}</p>
 {% endset %}
 
 {% set acceptHtml %}
-<p>You've accepted analytics cookies. You can <a class="govuk-link" href="{{ chsUrl }}/help/cookies">change your cookie settings</a> at any time.</p>
+<p>{{youAccepted}}<a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{changeYourCookieSettings}}</a>{{atAnyTime}}</p>
 {% endset %}
 
 {% set rejectHtml %}
-<p>You've rejected analytics cookies. You can <a class="govuk-link" href="{{ chsUrl }}/help/cookies">change your cookie settings</a> at any time.</p>
+<p>{{youRejected}}<a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{changeYourCookieSettings}}</a>{{atAnyTime}}</p>
 {% endset %}
 
 {{ govukCookieBanner({
@@ -21,7 +21,7 @@
   hidden: true,
   messages: [
     {
-      headingText: "Cookies on Companies House services",
+      headingText: cookiesOnCompaniesHouseServices,
       attributes: {
       id: "accept-or-reject-message"
     },
@@ -29,7 +29,7 @@
       html: html,
       actions: [
       {
-        text: "Accept analytics cookies",
+        text: acceptAnalytics,
         type: "button",
         name: "cookies",
         value: "accept",
@@ -38,7 +38,7 @@
       }
       },
       {
-        text: "Reject analytics cookies",
+        text: rejectAnalytics,
         type: "button",
         name: "cookies",
         value: "reject",
@@ -47,7 +47,7 @@
       }
       },
       {
-        text: "View cookies",
+        text: viewCookies,
         href: chsUrl + "/help/cookies"
       }
     ]
@@ -61,7 +61,7 @@
       hidden: true,
       actions: [
       {
-        text: "Hide this message",
+        text: hideThisMessage,
         type: "button",
         name: "hide",
         value: "hide",
@@ -80,7 +80,7 @@
       hidden: true,
       actions: [
       {
-        text: "Hide this message",
+        text: hideThisMessage,
         type: "button",
         name: "hide",
         value: "hide",
@@ -98,8 +98,8 @@
     ariaLabel: "Cookies on Companies House services",
     messages: [
       {
-        headingText: "Cookies on Companies House services",
-        text: "We use cookies to make our services work and collect analytics information. To accept or reject analytics cookies, turn on JavaScript in your browser settings and reload this page."
+        headingText: cookiesOnCompaniesHouseServices,
+        text: cookieBannerMessageText
       }
     ]
   }) }}
