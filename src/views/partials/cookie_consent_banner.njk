@@ -6,11 +6,11 @@
 {% endset %}
 
 {% set acceptHtml %}
-<p>{{youAccepted}}<a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{changeYourCookieSettings}}</a>{{atAnyTime}}</p>
+<p>{{youAccepted}} <a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{changeYourCookieSettings}}</a> {{atAnyTime}}</p>
 {% endset %}
 
 {% set rejectHtml %}
-<p>{{youRejected}}<a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{changeYourCookieSettings}}</a>{{atAnyTime}}</p>
+<p>{{youRejected}} <a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{changeYourCookieSettings}}</a> {{atAnyTime}}</p>
 {% endset %}
 
 {{ govukCookieBanner({
