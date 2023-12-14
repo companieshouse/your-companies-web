@@ -1,6 +1,7 @@
 $govuk-global-styles: true;
 
 @import "node_modules/govuk-frontend/govuk/all";
+@import "./govuk-language-select";
 
 * {
   font-family: "GDS Transport", Arial, sans-serif;
