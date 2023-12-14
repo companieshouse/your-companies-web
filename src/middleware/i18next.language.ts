@@ -13,7 +13,12 @@ export const enableI18next = (app: Application): void => {
         resources,
         fallbackLng: "en",
         supportedLngs: ["en", "cy"],
-        detection: { order: ["querystring", "cookie"], caches: ["cookie"] }
+        detection: {
+            order: ["querystring", "cookie"],
+            caches: ["cookie"],
+            lookupSession: "lang",
+            lookupQuerystring: "lang"
+        }
     };
 
     i18next.use(middleware.LanguageDetector).init(options);
