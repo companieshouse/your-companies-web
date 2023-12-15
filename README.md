@@ -1,6 +1,6 @@
 # your-companies-web
 
-This a web frontend for the Your Companies journey. It was created based on [Typescript Web Starter for Companies House](https://github.com/companieshouse/node-review-web-starter-ts).
+This is a web frontend for the Your Companies journey. It was created based on [Typescript Web Starter for Companies House](https://github.com/companieshouse/node-review-web-starter-ts).
 
 The documentation of the project is available on [Confluence](https://companieshouse.atlassian.net/wiki/spaces/IDV/pages/4370104473/Delivery+Documentation+Team+Inugami).
 
