@@ -1,4 +1,3 @@
-
 # your-companies-web
 
 This a web frontend for the Your Companies journey. It was created based on [Typescript Web Starter for Companies House](https://github.com/companieshouse/node-review-web-starter-ts).
