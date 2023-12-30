@@ -41,8 +41,13 @@ app.enable("trust proxy");
 // parse body into req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-enableI18next(app);
 
+// Add i18next middleware
+enableI18next(app);
+app.use((req: Request, res: Response, next: NextFunction) => {
+    njk.addGlobal("lang", req.language);
+    next();
+});
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
