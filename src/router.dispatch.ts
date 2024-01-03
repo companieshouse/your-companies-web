@@ -1,6 +1,6 @@
 // Do Router dispatch here, i.e. map incoming routes to appropriate router
 import { Application, Request, Response } from "express";
-import indexRouter from "./routers/indexRouter";
+import indexRouter from "./routers/yourCompaniesRouter";
 
 const routerDispatch = (app: Application) => {
     app.use("/", indexRouter);
