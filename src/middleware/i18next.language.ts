@@ -23,8 +23,4 @@ export const enableI18next = (app: Application): void => {
 
     i18next.use(middleware.LanguageDetector).init(options);
     app.use(middleware.handle(i18next));
-    app.use((req: Request, res: Response, next: NextFunction) => {
-        Object.assign(res.locals, req.t("common", { returnObjects: true }));
-        next();
-    });
 };

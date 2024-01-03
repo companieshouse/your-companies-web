@@ -1,7 +1,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <div class="js-toggle-nav" id="global-nav">
-            <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">{{signInRegister}}</a>
+            <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">{{t("common.sign_in_register")}}</a>
 
             <nav role="navigation" class="content mobile-hidden">
                 <ul id="navigation" class="mobile-hidden">
@@ -9,25 +9,25 @@
                         {# here comes logic providing {{ userEmailAddress }} #}
                     </li>
                     <li class="your-companies">
-                        <a class="govuk-link" id="user-signout" href="">{{yourCompanies}}</a>
+                        <a class="govuk-link" id="user-signout" href="">{{t("common.your_companies")}}</a>
                     </li>
                     <li class="your-filings">
-                        <a class="govuk-link" id="user-signout" href="/your-filings">{{yourFilings}}</a>
+                        <a class="govuk-link" id="user-signout" href="/your-filings">{{t("common.your_filings")}}</a>
                     </li>
                     <li class="companies-you-follow">
-                        <a class="govuk-link" id="user-signout" href="">{{companiesYouFollow}}</a>
+                        <a class="govuk-link" id="user-signout" href="">{{t("common.companies_you_follow")}}</a>
                     </li>
                     <li class="basket">
-                        <a class="govuk-link" id="user-signout" href="">{{basket}}</a>
+                        <a class="govuk-link" id="user-signout" href="">{{t("common.basket")}}</a>
                     </li>
 
                     <!-- Note: GOV.UK One Login uses Security instead of 'Your details' in Webfiling its "Manage account"-->
                     <li class="your-details">
-                        <a class="govuk-link" id="user-signout" href="chs-one-login-settings">{{manageAccount}}</a>
+                        <a class="govuk-link" id="user-signout" href="chs-one-login-settings">{{t("common.manage_account")}}</a>
                     </li>
 
                     <li class="authenticated">
-                        <a class="govuk-link" id="user-signout" href="/signout">{{signOut}}</a>
+                        <a class="govuk-link" id="user-signout" href="/signout">{{t("common.sign_out")}}</a>
                     </li>
                 </ul>
             </nav>
