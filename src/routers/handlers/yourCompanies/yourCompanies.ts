@@ -6,8 +6,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
     constructor () {
         super();
-        this.viewData.title = "Home handler for index router";
-        this.viewData.sampleKey = "sample value for home page screen";
+        this.viewData = this.getViewData(this.userHasCompanies());
     }
 
     execute (req: Request, response: Response): Promise<Object> {
@@ -16,13 +15,27 @@ export class YourCompaniesHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    // additional support method in handler
-    private supportMethod1 (): boolean {
-        return true;
+    private userHasCompanies (): boolean {
+        // TODO: The logic will be added as part of IDVA6-337
+        return false;
     }
 
-    // additional support method in handler
-    protected supportMethod2 (): boolean {
-        return false;
+    private getViewData (userHasCompanies: boolean): any {
+        if (userHasCompanies) {
+            // TODO: The logic will be added as part of IDVA6-337
+        } else {
+            return {
+                title: "Your companies",
+                header: "Your companies",
+                tileHeader: "You have not added any companies to your account",
+                firstParagraph: "Add a company to your account so that you can:",
+                bulletList: [
+                    "file for the company online",
+                    "digital authorise other people to file online for the company"
+                ],
+                buttonText: "Add a company",
+                buttonHref: "/company-number"
+            };
+        }
     }
 };

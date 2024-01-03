@@ -1,0 +1,15 @@
+<div class="border-box">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-m">{{ tileHeader }}</h1>
+            <p class="govuk-body">{{ firstParagraph }}</p>
+            <ul class="govuk-list govuk-list--bullet">
+                {% for item in bulletList %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            {{ govukButton({text: buttonText, href: buttonHref}) }}
+        </div>
+    </div>
+</div>
