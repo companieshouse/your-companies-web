@@ -1,16 +1,16 @@
 {% from "govuk/components/cookie-banner/macro.njk"  import govukCookieBanner %}
 
 {% set html %}
-<p>{{t("common.we_use_essential_cookies")}}</p>
-<p>{{t("common.use_analytics")}}</p>
+<p>We use some essential cookies to make our services work.</p>
+<p>We'd also like to use analytics cookies so we can understand how you use our services and to make improvements.</p>
 {% endset %}
 
 {% set acceptHtml %}
-<p>{{t("common.you_accepted")}} <a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{t("common.change_your_cookie_settings")}}</a> {{t("common.at_any_time")}}</p>
+<p>You've accepted analytics cookies. You can <a class="govuk-link" href="{{ chsUrl }}/help/cookies">change your cookie settings</a> at any time.</p>
 {% endset %}
 
 {% set rejectHtml %}
-<p>{{t("common.you_rejected")}} <a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{t("common.change_your_cookie_settings")}}</a> {{t("common.at_any_time")}}</p>
+<p>You've rejected analytics cookies. You can <a class="govuk-link" href="{{ chsUrl }}/help/cookies">change your cookie settings</a> at any time.</p>
 {% endset %}
 
 {{ govukCookieBanner({
@@ -21,7 +21,7 @@
   hidden: true,
   messages: [
     {
-      headingText: t("common.cookies_on_companies_house_services"),
+      headingText: "Cookies on Companies House services",
       attributes: {
       id: "accept-or-reject-message"
     },
@@ -29,7 +29,7 @@
       html: html,
       actions: [
       {
-        text: t("common.accept_analytics"),
+        text: "Accept analytics cookies",
         type: "button",
         name: "cookies",
         value: "accept",
@@ -38,7 +38,7 @@
       }
       },
       {
-        text: t("common.reject_analytics"),
+        text: "Reject analytics cookies",
         type: "button",
         name: "cookies",
         value: "reject",
@@ -47,7 +47,7 @@
       }
       },
       {
-        text: t("common.view_cookies"),
+        text: "View cookies",
         href: chsUrl + "/help/cookies"
       }
     ]
@@ -61,7 +61,7 @@
       hidden: true,
       actions: [
       {
-        text: t("common.hide_this_message"),
+        text: "Hide this message",
         type: "button",
         name: "hide",
         value: "hide",
@@ -80,7 +80,7 @@
       hidden: true,
       actions: [
       {
-        text: t("common.hide_this_message"),
+        text: "Hide this message",
         type: "button",
         name: "hide",
         value: "hide",
@@ -98,8 +98,8 @@
     ariaLabel: "Cookies on Companies House services",
     messages: [
       {
-        headingText: t("common.cookies_on_companies_house_services"),
-        text: t("common.cookie_banner_message_text")
+        headingText: "Cookies on Companies House services",
+        text: "We use cookies to make our services work and collect analytics information. To accept or reject analytics cookies, turn on JavaScript in your browser settings and reload this page."
       }
     ]
   }) }}
