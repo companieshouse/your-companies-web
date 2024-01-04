@@ -1,17 +1,10 @@
 {
-    "title": "Your companies",
-    "header": "Your companies",
-    "tileHeader": "You have not added any companies to your account",
-    "firstParagraph": "Add a company to your account so that you can:",
-    "bulletList": {
-        "bullet1": "file for the company online",
-        "bullet2": "digital authorise other people to file online for the company"
-    },
-    "buttonText": "Add a company",
     "add_a_company": "Add a company",
     "add_a_company_to_your_account": "Add a company to your account so that you can:",
-    "digital_authorise_other_people_to_file_online": "digital authorise other people to file online for the company",
-    "file_for_the_company_online": "file for the company online",
+    "bullet_list": [
+        "file for the company online",
+        "digital authorise other people to file online for the company"
+    ],
     "you_have_not_added_any_companies": "You have not added any companies to your account",
     "your_companies": "Your companies"
 }

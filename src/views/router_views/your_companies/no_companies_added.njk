@@ -3,17 +3,15 @@
 <div class="border-box">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-m">{{ tileHeader }}</h1>
-            <p class="govuk-body">{{ firstParagraph }}</p>
+            <h1 class="govuk-heading-m">{{ you_have_not_added_any_companies }}</h1>
+            <p class="govuk-body">{{ add_a_company_to_your_account }}</p>
             <ul class="govuk-list govuk-list--bullet">
-                {# {% for item in bulletList %}
+                {% for item in bullet_list %}
                     <li>{{ item }}</li>
-                {% endfor %} #}
-                <li>{{bulletList.bullet1}}</li>
-                <li>{{bulletList.bullet2}}</li>
+                {% endfor %}
             </ul>
 
-            {{ govukButton({text: buttonText, href: buttonHref}) }}
+            {{ govukButton({text: add_a_company, href: buttonHref}) }}
         </div>
     </div>
 </div>
