@@ -6,8 +6,8 @@ locals {
   container_port            = "3000" # default node port required here until prod docker container is built allowing port change via env var
   docker_repo               = "your-companies-web"
   lb_listener_rule_priority = 20
-  lb_listener_paths         = ["/xbrl_validate", "/xbrl_validate/*"]
-  healthcheck_path          = "/xbrl_validate/healthcheck" #healthcheck path for account-validator-web
+  lb_listener_paths         = [""]
+  healthcheck_path          = "" #healthcheck path for account-validator-web
   healthcheck_matcher       = "200"                        # no explicit healthcheck in this service yet, change this when added!
 
   kms_alias       = "alias/${var.aws_profile}/environment-services-kms"
