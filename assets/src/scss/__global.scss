@@ -19,6 +19,13 @@ $govuk-global-styles: true;
     src: url("../fonts/light-94a07e06a1-v2.woff2") format("woff2");
 }
 
+.border-box {
+    border-style: solid;
+    border-width: thin;
+    border-color: $govuk-border-colour;
+    padding: 2em;
+}
+
 /* styling from https://github.com/companieshouse/find-update-company-info-prototype/blob/main/app/assets/sass/custom.scss */
 
 .grid-row:after, fieldset:after, .form-section:after, .form-group:after, .form-block:after, .notice:after, #content:after, .panel:after, #global-nav .inner:after, .navigation-list:after, .pager ul:after, ol.breadcrumb:after, ul.pager:after, .section-tabs:after {
