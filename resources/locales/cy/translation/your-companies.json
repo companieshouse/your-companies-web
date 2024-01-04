@@ -1,0 +1,17 @@
+{
+    "title": "[CY] Your companies",
+    "header": "[CY] Your companies",
+    "tileHeader": "[CY] You have not added any companies to your account",
+    "firstParagraph": "[CY] Add a company to your account so that you can:",
+    "bulletList": {
+        "bullet1": "[CY] file for the company online",
+        "bullet2": "[CY] digital authorise other people to file online for the company"
+    },
+    "buttonText": "[CY] Add a company",
+    "add_a_company": "[CY] Add a company",
+    "add_a_company_to_your_account": "[CY] Add a company to your account so that you can:",
+    "digital_authorise_other_people_to_file_online": "[CY] digital authorise other people to file online for the company",
+    "file_for_the_company_online": "[CY] file for the company online",
+    "you_have_not_added_any_companies": "[CY] You have not added any companies to your account",
+    "your_companies": "[CY] Your companies"
+}

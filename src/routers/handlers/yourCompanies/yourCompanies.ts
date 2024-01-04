@@ -25,15 +25,15 @@ export class YourCompaniesHandler extends GenericHandler {
             // TODO: The logic will be added as part of IDVA6-337
         } else {
             return {
-                title: "Your companies",
-                header: "Your companies",
-                tileHeader: "You have not added any companies to your account",
-                firstParagraph: "Add a company to your account so that you can:",
-                bulletList: [
-                    "file for the company online",
-                    "digital authorise other people to file online for the company"
-                ],
-                buttonText: "Add a company",
+                // title: "Your companies",
+                // header: "Your companies",
+                // tileHeader: "You have not added any companies to your account",
+                // firstParagraph: "Add a company to your account so that you can:",
+                // bulletList: [
+                //     "file for the company online",
+                //     "digital authorise other people to file online for the company"
+                // ],
+                // buttonText: "Add a company",
                 buttonHref: "/company-number"
             };
         }

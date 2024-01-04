@@ -6,9 +6,11 @@
             <h1 class="govuk-heading-m">{{ tileHeader }}</h1>
             <p class="govuk-body">{{ firstParagraph }}</p>
             <ul class="govuk-list govuk-list--bullet">
-                {% for item in bulletList %}
+                {# {% for item in bulletList %}
                     <li>{{ item }}</li>
-                {% endfor %}
+                {% endfor %} #}
+                <li>{{bulletList.bullet1}}</li>
+                <li>{{bulletList.bullet2}}</li>
             </ul>
 
             {{ govukButton({text: buttonText, href: buttonHref}) }}
