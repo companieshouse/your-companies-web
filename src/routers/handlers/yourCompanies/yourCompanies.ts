@@ -4,14 +4,10 @@ import logger from "../../../lib/Logger";
 
 export class YourCompaniesHandler extends GenericHandler {
 
-    constructor () {
-        super();
-        this.viewData = this.getViewData(this.userHasCompanies());
-    }
-
     execute (req: Request, response: Response): Promise<Object> {
-        logger.info(`GET request for to serve home page`);
+        logger.info(`GET request to serve Your Companies landing page`);
         // ...process request here and return data for the view
+        this.viewData = this.getViewData(this.userHasCompanies());
         return Promise.resolve(this.viewData);
     }
 
