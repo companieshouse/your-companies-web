@@ -3,6 +3,7 @@ import nunjucks from "nunjucks";
 import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
+import { enableI18next } from "./middleware/i18next.language";
 
 const app = express();
 
@@ -41,6 +42,12 @@ app.enable("trust proxy");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Add i18next middleware
+enableI18next(app);
+app.use((req: Request, res: Response, next: NextFunction) => {
+    njk.addGlobal("lang", req.language);
+    next();
+});
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
