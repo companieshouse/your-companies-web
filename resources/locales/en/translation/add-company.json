@@ -4,7 +4,7 @@
     "what_is_the_company_number": "What is the company number?",
     "there_is_no_company_registered": "There is no company registered with this number. Enter a correct company number.",
     "you_must_enter_a_company_number": "You must enter a company number for a company that is active.",
-    "html": "You can find this by searching for the company on the <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">Companies House redister (opens in new tab)</a>.",
+    "you_can_find_this_by_searching": "You can find this by searching for the company on the <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">Companies House redister (opens in new tab)</a>.",
     "help_with_company_number": "Help with company number",
     "continue": "Continue"
 }
