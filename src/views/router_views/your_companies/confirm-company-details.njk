@@ -1,0 +1,75 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% extends
+"layouts/default.njk" %}
+{% block main_content %}
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+            {{ confirm_this_is_the_correct_company }}
+        </h1>
+
+{{ govukSummaryList({
+  rows: [
+    {
+      key: {
+        text: company_name
+      },
+      value: {
+        text: "FLOWERS LIMITED"
+      }
+    },
+    {
+      key: {
+        text: company_number
+      },
+      value: {
+        text: "18882777"
+      }
+    },
+    {
+      key: {
+        text: status
+      },
+      value: {
+        text: "Active"
+      }
+    },
+    {
+      key: {
+        text: incorporation_date 
+      },
+      value: {
+        html: "11 December 2006"
+      }
+    },
+    {
+      key: {
+        text: company_type
+      },
+      value: {
+        text: "Private Limited Company"
+      }
+    },
+    {
+      key: {
+        text: registered_office_address
+      },
+      value: {
+        html: "2nd Floor Red House <br />
+                17 London Road <br />
+                London <br />
+                SA73 8PH"
+      }
+    }
+  ]
+}) }}
+
+{{ govukButton({
+  text: confirm_and_continue
+}) }}
+
+        <p class="govuk-body">
+            <a href="#" class="govuk-link">{{ choose_a_different_company }}</a>.
+        </p>
+    </div>
+{% endblock %}
