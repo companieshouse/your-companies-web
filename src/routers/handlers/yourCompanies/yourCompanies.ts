@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
-import { LANDING_URL } from "../../../constants";
+import { LANDING_URL, YOUR_COMPANIES_ADD_COMPANY_URL } from "../../../constants";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -22,7 +22,7 @@ export class YourCompaniesHandler extends GenericHandler {
             // TODO: The logic will be added as part of IDVA6-337
         } else {
             return {
-                buttonHref: "/company-number",
+                buttonHref: YOUR_COMPANIES_ADD_COMPANY_URL,
                 feedbackSource: LANDING_URL
             };
         }
