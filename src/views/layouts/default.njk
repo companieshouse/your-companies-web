@@ -19,6 +19,9 @@
 
         <div class="govuk-width-container ">
             {% include "partials/nav/top.njk" %}
+
+            {% block beforeMainContent %}{% endblock %}
+
             <main class="govuk-main-wrapper " id="main-content">
                 <div class="govuk-grid-row">
                     {% include "partials/error_summary.njk" %}

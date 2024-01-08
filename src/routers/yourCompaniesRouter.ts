@@ -17,10 +17,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 router.get("/confirm-company-details", async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCorrectCompany();
     const viewData = await handler.execute(req, res);
-    res.render(`${routeViews}/confirm-company-details`, {
-        ...viewData,
-        ...req.t("confirm-company-details", { returnObjects: true })
-    });
+    res.render(`${routeViews}/confirm-company-details`, viewData);
 });
 
 export default router;

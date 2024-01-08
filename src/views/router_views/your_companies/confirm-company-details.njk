@@ -2,7 +2,15 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% extends
 "layouts/default.njk" %}
+
+{% block beforeMainContent %}
+    {% block backLink %}
+    {% include "partials/back_link.njk" %}
+    {% endblock %} 
+{% endblock %}
+
 {% block main_content %}
+
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
             {{ confirm_this_is_the_correct_company }}
@@ -15,7 +23,7 @@
         text: company_name
       },
       value: {
-        text: "FLOWERS LIMITED"
+        text: companyName
       }
     },
     {
@@ -23,7 +31,7 @@
         text: company_number
       },
       value: {
-        text: "18882777"
+        text: companyNumber
       }
     },
     {
@@ -31,7 +39,7 @@
         text: status
       },
       value: {
-        text: "Active"
+        text: companyStatus
       }
     },
     {
@@ -39,7 +47,7 @@
         text: incorporation_date 
       },
       value: {
-        html: "11 December 2006"
+        html: incorporationDate
       }
     },
     {
@@ -47,7 +55,7 @@
         text: company_type
       },
       value: {
-        text: "Private Limited Company"
+        text: companyType
       }
     },
     {
@@ -55,10 +63,7 @@
         text: registered_office_address
       },
       value: {
-        html: "2nd Floor Red House <br />
-                17 London Road <br />
-                London <br />
-                SA73 8PH"
+        html: registeredOfficeAddress
       }
     }
   ]
@@ -69,7 +74,7 @@
 }) }}
 
         <p class="govuk-body">
-            <a href="#" class="govuk-link">{{ choose_a_different_company }}</a>.
+            <a href={{backLinkUrl}} class="govuk-link">{{ choose_a_different_company }}</a>.
         </p>
     </div>
 {% endblock %}
