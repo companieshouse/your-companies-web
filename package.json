@@ -40,6 +40,7 @@
     "i18next-http-middleware": "^3.5.0",
     "ioredis": "4.16.2",
     "js-yaml": "^3.14.0",
+    "lodash": "^4.17.21",
     "nunjucks": "3.2.4",
     "require-directory": "^2.1.1",
     "uuid": "8.0.0",
