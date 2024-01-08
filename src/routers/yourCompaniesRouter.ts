@@ -4,6 +4,9 @@ import {
     ADD_COMPANY_LANG,
     ADD_COMPANY_PAGE_TEMPLATE,
     ADD_COMPANY_URL,
+    GET,
+    POST,
+    YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
     YOUR_COMPANIES_LANG,
     YOUR_COMPANIES_PAGE_TEMPLATE,
     YOUR_COMPANIES_URL
@@ -23,11 +26,17 @@ router.get(YOUR_COMPANIES_URL, async (req: Request, res: Response, next: NextFun
 
 router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new AddCompanyHandler();
-    const viewData = await handler.execute(req, res);
+    const viewData = await handler.execute(req, res, GET);
     res.render(ADD_COMPANY_PAGE_TEMPLATE, {
         ...viewData,
         ...req.t(ADD_COMPANY_LANG, { returnObjects: true })
     });
+});
+
+router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new AddCompanyHandler();
+    const viewData = await handler.execute(req, res, POST);
+    res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
 });
 
 export default router;

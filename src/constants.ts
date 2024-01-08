@@ -18,6 +18,9 @@ export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
 
+// API paths
+export const COMPANY_INFO_API_URL = "/companies";
+
 // Error message keys
 export const YOU_MUST_ENTER_A_COMPANY_NUMBER = "you_must_enter_a_company_number";
 export const THERE_IS_NO_COMPANY_REGISTERED = "there_is_no_company_registered";
