@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "./generic";
 import logger from "../../lib/Logger";
-
-const translationsForView = (req: Request, viewName: string) => ({
-    ...req.t("common", { returnObjects: true }),
-    ...req.t(viewName, { returnObjects: true })
-});
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import { getTranslationsForView } from "../../lib/utils/translations";
+import { createRandomCompanyProfile } from "../../lib/mockData/generateMockCompanyProfile";
 
 export class ConfirmCorrectCompany extends GenericHandler {
 
@@ -16,15 +14,20 @@ export class ConfirmCorrectCompany extends GenericHandler {
     }
 
     private getViewData (req: Request, response: Response): any {
+        // we anticipate the retrieved company details to be stored in the session
+        // const companyDetails: CompanyProfile | undefined = req.session?.getExtraData(COMPANY_DETAILS);
+
+        const companyDetails:Partial<CompanyProfile> = createRandomCompanyProfile();
+        const registeredOfficeAddress = `${companyDetails.registeredOfficeAddress?.addressLineOne}<br>
+                ${companyDetails.registeredOfficeAddress?.addressLineTwo}<br>
+                ${companyDetails.registeredOfficeAddress?.locality}<br>   
+                ${companyDetails.registeredOfficeAddress?.postalCode}`;
+
         return {
-            ...translationsForView(req, "confirm-company-details"),
+            ...getTranslationsForView(req, "confirm-company-details"),
+            ...companyDetails,
             backLinkUrl: "/your-companies/add-a-company",
-            companyName: "FLOWERS 11 LIMITED",
-            companyNumber: "18882777 ",
-            companyStatus: "Active",
-            incorporationDate: "11 December 2006",
-            companyType: "Private Limited Company",
-            registeredOfficeAddress: "2nd Floor Red House <br/>17 London Road <br/> London <br /> SA73 8PH"
+            registeredOfficeAddress
         };
     }
 };
