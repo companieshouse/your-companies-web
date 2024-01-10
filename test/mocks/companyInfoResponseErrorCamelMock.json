@@ -1,0 +1,14 @@
+{
+    "successBody": null,
+    "errorBody": {
+        "errors": [
+            {
+                "error": "",
+                "errorValues": [],
+                "location": "",
+                "locationType": "",
+                "type": ""
+            }
+        ]
+    }
+}
