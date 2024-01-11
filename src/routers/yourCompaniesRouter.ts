@@ -36,7 +36,9 @@ router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFuncti
 router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, POST);
-    res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
+    if (viewData.error == null) {
+        res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
+    }
 });
 
 export default router;
