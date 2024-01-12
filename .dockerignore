@@ -1,0 +1,9 @@
+*
+!src
+!dist
+!views
+!package.json
+!package-lock.json
+!tsconfig.json
+!docker_start.sh
+!routes.yaml
