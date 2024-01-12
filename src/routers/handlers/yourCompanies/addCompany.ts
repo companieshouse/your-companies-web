@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
-import { COMPANY_STATUS_ACTIVE, LANDING_URL, POST, YOU_MUST_ENTER_A_COMPANY_NUMBER } from "../../../constants";
+import { COMPANY_STATUS_ACTIVE, LANDING_URL, POST, THERE_IS_NO_COMPANY_REGISTERED, YOU_MUST_ENTER_A_COMPANY_NUMBER } from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
+import { StatusCodes } from "http-status-codes";
 
 export class AddCompanyHandler extends GenericHandler {
 
@@ -20,6 +21,9 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             }
         } catch (err: any) {
+            if (err.httpStatusCode === StatusCodes.BAD_REQUEST) {
+                this.viewData.error = THERE_IS_NO_COMPANY_REGISTERED;
+            }
             logger.error(`Error adding a company to user account: ${err}`);
             this.viewData.errors = this.processHandlerException(err);
         }
