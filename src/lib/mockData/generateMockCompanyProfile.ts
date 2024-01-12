@@ -29,15 +29,15 @@ export function createRandomCompanyProfile (): Partial<CompanyProfile> {
         }),
         type: companyTypes[Math.floor(Math.random() * companyTypes.length)],
         registeredOfficeAddress: {
-            addressLineOne: fakerEN_GB.location.streetAddress(),
-            addressLineTwo: fakerEN_GB.location.secondaryAddress(),
+            addressLineOne: fakerEN_GB.location.secondaryAddress(),
+            addressLineTwo: fakerEN_GB.location.streetAddress(),
             locality: fakerEN_GB.location.city(),
             postalCode: fakerEN_GB.location.zipCode(),
-            careOf: "ignore",
-            country: "ignore",
-            poBox: "string",
-            premises: "string",
-            region: "string"
+            careOf: "mockCareOf",
+            country: "mockCountry",
+            poBox: "mockPoBox",
+            premises: "mockPremises",
+            region: "mockRegion"
         }
     };
 }
