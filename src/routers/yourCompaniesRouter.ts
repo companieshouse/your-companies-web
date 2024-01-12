@@ -38,6 +38,11 @@ router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunct
     const viewData = await handler.execute(req, res, POST);
     if (viewData.error == null) {
         res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
+    } else {
+        res.render(ADD_COMPANY_PAGE_TEMPLATE, {
+            ...viewData,
+            ...req.t(ADD_COMPANY_LANG, { returnObjects: true })
+        });
     }
 });
 
