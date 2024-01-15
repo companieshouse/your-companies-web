@@ -7,3 +7,5 @@
 !tsconfig.json
 !docker_start.sh
 !routes.yaml
+!resources
+!assets

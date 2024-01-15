@@ -1,0 +1,6 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[njk]": {
+        "editor.defaultFormatter": "douglaszaltron.nunjucks-vscode-extensionpack"
+    }
+}

@@ -1,8 +1,10 @@
-FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-node-runtime-18
-
-WORKDIR /opt
-
-COPY dist resources ./package.json ./package-lock.json docker_start.sh ./
+# FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-node-runtime-18
+ARG IMAGE_VERSION="latest"
+FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-node-runtime-20:${IMAGE_VERSION} 
+WORKDIR /opt/dist
+COPY dist docker_start.sh ./
+COPY ./package.json ./package-lock.json /opt/
+COPY assets/public /opt/assets/public/
 
 CMD ["./docker_start.sh"]
 

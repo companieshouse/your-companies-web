@@ -4,7 +4,7 @@ import * as middleware from "i18next-http-middleware";
 import requireDir from "require-directory";
 
 export const enableI18next = (app: Application): void => {
-    const resources = requireDir(module, "../../resources", {
+    const resources = requireDir(module, "../../src", {
         include: /locales/
     }).locales as Resource;
 

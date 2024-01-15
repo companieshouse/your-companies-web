@@ -1,8 +1,8 @@
 import app from "../../../src/app";
 import supertest from "supertest";
 const router = supertest(app);
-const en = require("../../../resources/locales/en/translation/confirm-company-details.json");
-const cy = require("../../../resources/locales/cy/translation/confirm-company-details.json");
+const en = require("../../../src/locales/en/translation/confirm-company-details.json");
+const cy = require("../../../src/locales/cy/translation/confirm-company-details.json");
 const url = "/your-companies/confirm-company-details";
 
 describe(`GET ${url}`, () => {
