@@ -3,27 +3,27 @@
         <div class="js-toggle-nav" id="global-nav">
             <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
 
-            <nav role="navigation" class="content mobile-hidden">
+            <nav role="navigation" class="content mobile-hidden" aria-label="main nav bar">
                 <ul id="navigation" class="mobile-hidden">
                     <li id="signed-in-user" class="user">
                         {# here comes logic providing {{ userEmailAddress }} #}
                     </li>
                     <li class="your-companies">
-                        <a class="govuk-link" id="user-signout" href="">Your companies</a>
+                        <a class="govuk-link" id="your-companies" href="/your-companies">Your companies</a>
                     </li>
                     <li class="your-filings">
-                        <a class="govuk-link" id="user-signout" href="/your-filings">Your filings</a>
+                        <a class="govuk-link" id="your-filings" href="/your-filings">Your filings</a>
                     </li>
                     <li class="companies-you-follow">
-                        <a class="govuk-link" id="user-signout" href="">Companies you follow</a>
+                        <a class="govuk-link" id="companies-you-follow" href="">Companies you follow</a>
                     </li>
                     <li class="basket">
-                        <a class="govuk-link" id="user-signout" href="">Basket</a>
+                        <a class="govuk-link" id="basket" href="">Basket</a>
                     </li>
 
                     <!-- Note: GOV.UK One Login uses Security instead of 'Your details' in Webfiling its "Manage account"-->
                     <li class="your-details">
-                        <a class="govuk-link" id="user-signout" href="chs-one-login-settings">Manage account</a>
+                        <a class="govuk-link" id="your-details" href="chs-one-login-settings">Manage account</a>
                     </li>
 
                     <li class="authenticated">
