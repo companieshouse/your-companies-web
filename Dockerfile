@@ -4,7 +4,7 @@ FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-node-runtime-20:${IMAGE_VER
 WORKDIR /opt/dist
 COPY dist docker_start.sh ./
 COPY ./package.json ./package-lock.json /opt/
-COPY assets/public /opt/assets/public/
+# COPY assets/public /opt/assets/public/
 
 CMD ["./docker_start.sh"]
 
