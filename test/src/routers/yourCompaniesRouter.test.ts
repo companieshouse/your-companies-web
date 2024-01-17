@@ -1,8 +1,8 @@
 import app from "../../../src/app";
 import supertest from "supertest";
 const router = supertest(app);
-const en = require("../../../resources/locales/en/translation/your-companies.json");
-const cy = require("../../../resources/locales/cy/translation/your-companies.json");
+const en = require("../../../src/locales/en/translation/your-companies.json");
+const cy = require("../../../src/locales/cy/translation/your-companies.json");
 
 describe("GET /your-companies", () => {
     it("should return status 200", async () => {
