@@ -41,7 +41,7 @@ gulp.task("sass", () => {
 // Build and minify all .js files into app.min.js
 gulp.task("js", () => {
     return gulp
-        .src([`${srcDirJs}/*.js`, `${srcDirJs}/lib/*.js`, "./node_modules/govuk-frontend/govuk/*.js"])
+        .src([`${srcDirJs}/*.js`, `${srcDirJs}/lib/*.js`])
         .pipe(concat("app.min.js"))
         .pipe(uglify())
         .pipe(gulp.dest(dstDirJs));
