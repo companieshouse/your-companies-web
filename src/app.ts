@@ -4,6 +4,9 @@ import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import { enableI18next } from "./middleware/i18next.language";
+import cookieParser from "cookie-parser";
+import { sessionMiddleware } from "./middleware/session.middleware";
+import { authenticationMiddleware } from "./middleware/authentication.middleware";
 
 const app = express();
 
@@ -41,6 +44,16 @@ app.enable("trust proxy");
 // parse body into req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(cookieParser());
+app.use(sessionMiddleware);
+
+// we may only need to apply auth to particular routes
+// but for now its applied to *all* routes
+app.use(authenticationMiddleware);
+
+// export const COMPANY_AUTH_PROTECTED_BASE = `/company/:companyNumber/`;
+// app.use(`${constants.LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
 
 // Add i18next middleware
 enableI18next(app);
