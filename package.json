@@ -10,13 +10,13 @@
   "scripts": {
     "prebuild": "rm -rf ./dist",
     "build:assets": "gulp build",
-    "build:server": "tsc && cp -r src/views dist/ && cp -r src/config dist/",
+    "build:server": "tsc && cp -r src/views dist/ && cp -r src/locales dist/",
     "build": "npm run build:assets && npm run build:server",
     "lint": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts'",
     "lint:fix": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts' --fix",
     "test:coverage": "npm run test -- --coverage",
     "test": "jest",
-    "start": "npm run build && source ./dist/config/.env && node dist/server.js",
+    "start": "npm run build && node dist/server.js",
     "start:watch": "nodemon"
   },
   "husky": {

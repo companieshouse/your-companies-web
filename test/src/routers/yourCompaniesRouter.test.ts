@@ -3,8 +3,8 @@ import supertest from "supertest";
 const router = supertest(app);
 
 describe("GET /your-companies", () => {
-    const en = require("../../../resources/locales/en/translation/your-companies.json");
-    const cy = require("../../../resources/locales/cy/translation/your-companies.json");
+    const en = require("../../../src/locales/en/translation/your-companies.json");
+    const cy = require("../../../src/locales/cy/translation/your-companies.json");
 
     it("should return status 200", async () => {
         await router.get("/your-companies").expect(200);
@@ -32,8 +32,8 @@ describe("GET /your-companies", () => {
 });
 
 describe("GET /your-companies/add-company", () => {
-    const en = require("../../../resources/locales/en/translation/add-company.json");
-    const cy = require("../../../resources/locales/cy/translation/add-company.json");
+    const en = require("../../../src/locales/en/translation/add-company.json");
+    const cy = require("../../../src/locales/cy/translation/add-company.json");
 
     it("should return status 200", async () => {
         await router.get("/your-companies/add-company").expect(200);
