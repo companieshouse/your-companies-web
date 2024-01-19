@@ -38,3 +38,6 @@ export const CHS_URL = getEnvironmentValue("CHS_URL");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
+
+// session.extra_data
+export const COMPANY_NUMBER: string = "companyNumber";
