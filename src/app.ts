@@ -7,6 +7,7 @@ import { enableI18next } from "./middleware/i18next.language";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
+import * as constants from "./constants";
 
 const app = express();
 
@@ -46,14 +47,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
-app.use(sessionMiddleware);
 
-// we may only need to apply auth to particular routes
-// but for now its applied to *all* routes
-app.use(authenticationMiddleware);
-
-// export const COMPANY_AUTH_PROTECTED_BASE = `/company/:companyNumber/`;
-// app.use(`${constants.LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
+app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
+app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
 
 // Add i18next middleware
 enableI18next(app);
