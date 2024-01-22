@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import * as constants from "./constants";
+import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
 
 const app = express();
 
@@ -52,12 +53,15 @@ app.use(cookieParser());
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
 
-// Add i18next middleware
+// Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);
 app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("lang", req.language);
+    const userEmailAddress = getLoggedInUserEmail(req.session);
+    njk.addGlobal("userEmailAddress", userEmailAddress);
     next();
 });
+
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
