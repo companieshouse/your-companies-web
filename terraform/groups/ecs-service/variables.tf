@@ -110,5 +110,5 @@ variable "log_level" {
 
 variable "your-companies-web_version" {
   type        = string
-  description = "The version of the accounts-association-api container to run."
+  description = "The version of the your-companies-web container to run."
 }
