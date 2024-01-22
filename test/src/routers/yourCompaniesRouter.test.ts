@@ -1,10 +1,23 @@
+
+// the order of the mock imports matter
+import mocks from "../../mocks/all.middleware.mock";
 import app from "../../../src/app";
 import supertest from "supertest";
 const router = supertest(app);
-const en = require("../../../resources/locales/en/translation/your-companies.json");
-const cy = require("../../../resources/locales/cy/translation/your-companies.json");
+const en = require("../../../src/locales/en/translation/your-companies.json");
+const cy = require("../../../src/locales/cy/translation/your-companies.json");
 
 describe("GET /your-companies", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should check session and auth before returning the your-companies page", async () => {
+        await router.get("/your-companies");
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+    });
+
     it("should return status 200", async () => {
         await router.get("/your-companies").expect(200);
     });
