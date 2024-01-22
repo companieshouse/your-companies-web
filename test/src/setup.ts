@@ -10,3 +10,4 @@ process.env.API_URL = "http://testapi.co";
 process.env.COOKIE_SECRET = "Xy6onkjQWF0TkRn0hfdqUw==";
 process.env.COOKIE_DOMAIN = "cookie domain";
 process.env.CACHE_SERVER = "test";
+process.env.COOKIE_NAME = "cookie_name";
