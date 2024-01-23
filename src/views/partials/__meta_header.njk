@@ -2,7 +2,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta charset="utf-8"/>
     <title>{{ title }}</title>
+    <!--[if !IE 8]><!-->
     <link href="{{ cdnUrlCss }}/app.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{{ cdnHost }}/stylesheets/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.css" rel="stylesheet"/>
+    <!--<![endif]-->
     <link href="{{ cdnHost }}/images/favicon.ico" rel="icon" type="image/x-icon"/>
     {% include "partials/__styles.njk" %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>

@@ -3,9 +3,23 @@
 import mocks from "../../mocks/all.middleware.mock";
 import app from "../../../src/app";
 import supertest from "supertest";
+
 const router = supertest(app);
 
+jest.mock("../../../src/lib/utils/sessionUtils", () => {
+    const originalModule = jest.requireActual("../../../src/lib/utils/sessionUtils");
+
+    return {
+        __esModule: true,
+        ...originalModule,
+        getLoggedInUserEmail: jest.fn(() => "test@test.com")
+    };
+});
+
 describe("GET /your-companies", () => {
+    const en = require("../../../src/locales/en/translation/your-companies.json");
+    const cy = require("../../../src/locales/cy/translation/your-companies.json");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
@@ -15,9 +29,6 @@ describe("GET /your-companies", () => {
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
-
-    const en = require("../../../src/locales/en/translation/your-companies.json");
-    const cy = require("../../../src/locales/cy/translation/your-companies.json");
 
     it("should return status 200", async () => {
         await router.get("/your-companies").expect(200);
