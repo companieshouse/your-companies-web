@@ -1,10 +1,9 @@
 {
-    "back_link": "[CY] Back",
-    "enter_the_details_of_the_company": "[CY] Enter the details of the company you want to add to your account",
     "what_is_the_company_number": "[CY] What is the company number?",
-    "there_is_no_company_registered": "[CY] There is no company registered with this number. Enter a correct company number.",
-    "you_must_enter_a_company_number": "[CY] You must enter a company number for a company that is active.",
-    "you_can_find_this_by_searching": "[CY] You can find this by searching for the company on the <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">Companies House redister (opens in new tab)</a>.",
-    "help_with_company_number": "[CY] Help with company number",
-    "continue": "[CY] Continue"
+    "a_company_number_is_8_characters_long": "[CY] A company number is 8 characters long.",
+    "enter_a_company_number_that_is_8_characters_long": "[CY] Enter a company number that is 8 characters long.",
+    "enter_a_company_number_for_a_company_that_is_active": "[CY] Enter a company number for a company that is active.",
+    "you_can_find_this_by_searching": "[CY] You can find this by searching for the company on the <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">Companies House register (opens in new tab)</a>.",
+    "how_do_i_find_the_company_number": "[CY] How do I find the company number?",
+    "this_company_has_already_been_added_to_your_account": "[CY] This company has already been added to your account"
 }

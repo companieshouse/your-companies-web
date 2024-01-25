@@ -1,10 +1,9 @@
 {
-    "back_link": "Back",
-    "enter_the_details_of_the_company": "Enter the details of the company you want to add to your account",
     "what_is_the_company_number": "What is the company number?",
-    "there_is_no_company_registered": "There is no company registered with this number. Enter a correct company number.",
-    "you_must_enter_a_company_number": "You must enter a company number for a company that is active.",
-    "you_can_find_this_by_searching": "You can find this by searching for the company on the <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">Companies House redister (opens in new tab)</a>.",
-    "help_with_company_number": "Help with company number",
-    "continue": "Continue"
+    "a_company_number_is_8_characters_long": "A company number is 8 characters long.",
+    "enter_a_company_number_that_is_8_characters_long": "Enter a company number that is 8 characters long.",
+    "enter_a_company_number_for_a_company_that_is_active": "Enter a company number for a company that is active.",
+    "you_can_find_this_by_searching": "You can find this by searching for the company on the <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">Companies House register (opens in new tab)</a>.",
+    "how_do_i_find_the_company_number": "How do I find the company number?",
+    "this_company_has_already_been_added_to_your_account": "This company has already been added to your account"
 }

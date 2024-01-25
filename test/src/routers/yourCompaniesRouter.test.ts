@@ -58,6 +58,8 @@ describe("GET /your-companies", () => {
 describe("GET /your-companies/add-company", () => {
     const en = require("../../../src/locales/en/translation/add-company.json");
     const cy = require("../../../src/locales/cy/translation/add-company.json");
+    const enCommon = require("../../../src/locales/en/translation/common.json");
+    const cyCommon = require("../../../src/locales/cy/translation/common.json");
 
     it("should return status 200", async () => {
         await router.get("/your-companies/add-company").expect(200);
@@ -65,21 +67,21 @@ describe("GET /your-companies/add-company", () => {
 
     it("should return expected English content if language version set to English", async () => {
         const response = await router.get("/your-companies/add-company?lang=en");
-        expect(response.text).toContain(en.back_link);
-        expect(response.text).toContain(en.enter_the_details_of_the_company);
+        expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(en.what_is_the_company_number);
+        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
         expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.help_with_company_number);
-        expect(response.text).toContain(en.continue);
+        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enCommon.continue);
     });
 
     it("should return expected Welsh content if language version set to Welsh", async () => {
         const response = await router.get("/your-companies/add-company?lang=cy");
-        expect(response.text).toContain(cy.back_link);
-        expect(response.text).toContain(cy.enter_the_details_of_the_company);
+        expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cy.what_is_the_company_number);
+        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
         expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.help_with_company_number);
-        expect(response.text).toContain(cy.continue);
+        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyCommon.continue);
     });
 });
