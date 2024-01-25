@@ -1,10 +1,21 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
-import { COMPANY_STATUS_ACTIVE, LANDING_URL, POST, THERE_IS_NO_COMPANY_REGISTERED, YOU_MUST_ENTER_A_COMPANY_NUMBER } from "../../../constants";
+import {
+    COMPANY_PROFILE,
+    COMPANY_STATUS_ACTIVE,
+    LANDING_URL, POST,
+    ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG,
+    ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE,
+    THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT,
+    ADD_COMPANY_LANG
+} from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
+import { getLoggedInUserEmail } from "../../../lib/utils/sessionUtils";
+import { isCompanyAssociatedWithUser } from "../../../services/userCompanyAssociationService";
+import { getTranslationsForView } from "../../../lib/utils/translations";
 
 export class AddCompanyHandler extends GenericHandler {
 
@@ -13,19 +24,40 @@ export class AddCompanyHandler extends GenericHandler {
         // ...process request here and return data for the view
         try {
             this.viewData = this.getViewData();
+            this.viewData.lang = getTranslationsForView(req.t, ADD_COMPANY_LANG);
             if (method === POST) {
                 const payload = Object.assign({}, req.body);
                 const companyProfile: CompanyProfile = await getCompanyProfile(payload.companyNumber);
                 if (companyProfile.companyStatus.toLocaleLowerCase() !== COMPANY_STATUS_ACTIVE) {
-                    this.viewData.error = YOU_MUST_ENTER_A_COMPANY_NUMBER;
+                    this.viewData.errors = {
+                        companyNumber: {
+                            text: ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
+                        }
+                    };
+                } else {
+                    req.session!.setExtraData(COMPANY_PROFILE, companyProfile);
+                }
+                const userEmailAddress = getLoggedInUserEmail(req.session);
+                const isAssociated: boolean = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
+                if (isAssociated) {
+                    this.viewData.errors = {
+                        companyNumber: {
+                            text: THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
+                        }
+                    };
                 }
             }
         } catch (err: any) {
-            if (err.httpStatusCode === StatusCodes.BAD_REQUEST) {
-                this.viewData.error = THERE_IS_NO_COMPANY_REGISTERED;
+            if (err.httpStatusCode === StatusCodes.NOT_FOUND) {
+                this.viewData.errors = {
+                    companyNumber: {
+                        text: ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
+                    }
+                };
+            } else {
+                logger.error(`Error adding a company to user account: ${err}`);
+                this.viewData.errors = this.processHandlerException(err);
             }
-            logger.error(`Error adding a company to user account: ${err}`);
-            this.viewData.errors = this.processHandlerException(err);
         }
 
         return Promise.resolve(this.viewData);
