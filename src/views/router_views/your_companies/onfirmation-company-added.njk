@@ -1,0 +1,22 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/default.njk" %}
+
+{% block back_link %}
+
+    {{ govukBackLink({text: lang.back_link, href: backLinkHref}) }}
+
+{% endblock %}
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">Add company success page</h1>
+        </div>
+    </div>
+
+{% endblock %}

@@ -13,14 +13,14 @@
 
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
-            {{ confirm_this_is_the_correct_company }}
+            {{ lang.confirm_this_is_the_correct_company }}
         </h1>
 
 {{ govukSummaryList({
   rows: [
     {
       key: {
-        text: company_name
+        text: lang.company_name
       },
       value: {
         text: companyName
@@ -28,7 +28,7 @@
     },
     {
       key: {
-        text: company_number
+        text: lang.company_number
       },
       value: {
         text: companyNumber
@@ -36,7 +36,7 @@
     },
     {
       key: {
-        text: status
+        text: lang.status
       },
       value: {
         text: companyStatus
@@ -44,7 +44,7 @@
     },
     {
       key: {
-        text: incorporation_date 
+        text: lang.incorporation_date 
       },
       value: {
         html: dateOfCreation
@@ -52,7 +52,7 @@
     },
     {
       key: {
-        text: company_type
+        text: lang.company_type
       },
       value: {
         text: type
@@ -60,7 +60,7 @@
     },
     {
       key: {
-        text: registered_office_address
+        text: lang.registered_office_address
       },
       value: {
         html: registeredOfficeAddress
@@ -69,12 +69,21 @@
   ]
 }) }}
 
-{{ govukButton({
-  text: confirm_and_continue
-}) }}
+    <form method="post">
+        <div class="govuk-button-group">
+
+          {{ govukButton({
+            text: lang.confirm_and_continue,
+            attributes: {
+              "id": "submit"
+            }
+          }) }}
+
+        </div>
+    </form>
 
         <p class="govuk-body">
-            <a href={{backLinkUrl}} class="govuk-link">{{ choose_a_different_company }}</a>.
+            <a href={{backLinkUrl}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>.
         </p>
     </div>
 {% endblock %}

@@ -1,6 +1,7 @@
-import { Request } from "express";
+import { COMMON } from "../../constants";
+import i18next from "i18next";
 
-export const getTranslationsForView = (req: Request, viewName: string) => ({
-    ...req.t("common", { returnObjects: true }),
-    ...req.t(viewName, { returnObjects: true })
+export const getTranslationsForView = (t: typeof i18next.t, viewName: string) => ({
+    ...t(COMMON, { returnObjects: true }),
+    ...t(viewName, { returnObjects: true })
 });
