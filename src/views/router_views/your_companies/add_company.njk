@@ -5,21 +5,19 @@
 
 {% extends "layouts/default.njk" %}
 
-{% if error == "you_must_enter_a_company_number" %}
-    {% set message = {
-        text: you_must_enter_a_company_number
-    } %}
-{% elif error == "there_is_no_company_registered" %}
-    {% set message = {
-        text: there_is_no_company_registered
-    } %}
-{% else %}
-    {% set message = null %}
-{% endif %}
+{% set message = null %}
+
+{% for key, value in errors %}
+    {% if key == "companyNumber" %}
+        {% set message = {
+            text: lang[value.text]
+        } %}
+    {% endif %}
+{% endfor %}
 
 {% block back_link %}
 
-    {{ govukBackLink({text: back_link, href: backLinkHref}) }}
+    {{ govukBackLink({text: lang.back_link, href: backLinkHref}) }}
 
 {% endblock %}
 
@@ -27,12 +25,17 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">{{ enter_the_details_of_the_company }}</h1>
             <form method="post">
                 {{ govukInput({
                         label: {
-                            text: what_is_the_company_number
+                            text: lang.what_is_the_company_number,
+                            classes: "govuk-label--l",
+                            isPageHeading: true
                         },
+                        hint: {
+                            text: lang.a_company_number_is_8_characters_long
+                        },
+                        classes: "govuk-input--width-10",
                         id: "companyNumber",
                         name: "companyNumber",
                         errorMessage: message
@@ -40,12 +43,12 @@
                 }}
 
                 {{ govukDetails({
-                        summaryText: help_with_company_number,
-                        html: you_can_find_this_by_searching
+                        summaryText: lang.how_do_i_find_the_company_number,
+                        html: lang.you_can_find_this_by_searching
                     })
                 }}
 
-                {{ govukButton({text: continue, type: "submit"}) }}
+                {{ govukButton({text: lang.continue, type: "submit"}) }}
             </form>
         </div>
     </div>
