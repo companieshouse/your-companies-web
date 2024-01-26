@@ -32,12 +32,12 @@ router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFuncti
 router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, POST);
-    if (Object.keys(viewData.errors).length === 0) {
-        res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
-    } else {
+    if (viewData.errors && Object.keys(viewData.errors).length > 0) {
         res.render(ADD_COMPANY_PAGE_TEMPLATE, {
             ...viewData
         });
+    } else {
+        res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
     }
 });
 
