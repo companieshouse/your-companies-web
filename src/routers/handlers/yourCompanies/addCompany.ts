@@ -8,12 +8,13 @@ import {
     ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG,
     ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE,
     THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT,
-    ADD_COMPANY_LANG
+    ADD_COMPANY_LANG,
+    COMPNANY_ASSOCIATED_WITH_USER
 } from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
-import { getLoggedInUserEmail } from "../../../lib/utils/sessionUtils";
+import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { isCompanyAssociatedWithUser } from "../../../services/userCompanyAssociationService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 
@@ -35,16 +36,17 @@ export class AddCompanyHandler extends GenericHandler {
                         }
                     };
                 } else {
-                    req.session!.setExtraData(COMPANY_PROFILE, companyProfile);
-                }
-                const userEmailAddress = getLoggedInUserEmail(req.session);
-                const isAssociated: boolean = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
-                if (isAssociated) {
-                    this.viewData.errors = {
-                        companyNumber: {
-                            text: THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
-                        }
-                    };
+                    const userEmailAddress = getLoggedInUserEmail(req.session);
+                    const isAssociated: string = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
+                    if (isAssociated === COMPNANY_ASSOCIATED_WITH_USER) {
+                        this.viewData.errors = {
+                            companyNumber: {
+                                text: THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
+                            }
+                        };
+                    } else {
+                        setExtraData(req.session, COMPANY_PROFILE, companyProfile);
+                    }
                 }
             }
         } catch (err: any) {
