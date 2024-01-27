@@ -36,6 +36,10 @@ export const POST = "POST";
 // Status
 export const COMPANY_STATUS_ACTIVE = "active";
 
+// Associations
+export const COMPNANY_ASSOCIATED_WITH_USER = "company associated with user";
+export const COMPNANY_NOT_ASSOCIATED_WITH_USER = "company not associated with user";
+
 // APP config
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
