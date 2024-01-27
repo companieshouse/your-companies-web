@@ -2,6 +2,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% extends "layouts/default.njk" %}
 
@@ -15,7 +16,21 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-xl">Add company success page</h1>
+
+        {% set html %}
+            <p class="govuk-notification-banner__heading">
+          FLOWERS LIMITED has been added to your account.
+          <a href="company-added" class="govuk-link">View your companies</a>.
+          </p>
+          
+        {% endset %}
+
+        {{ govukNotificationBanner({
+        html: html,
+        type: "success"
+        }) }}
+
+
         </div>
     </div>
 

@@ -6,7 +6,7 @@ export const YOUR_COMPANIES_TEMPLATE_FOLDER = "router_views/your_companies";
 export const YOUR_COMPANIES_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/your_companies`;
 export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_company`;
 export const CONFIRM_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirm_company_details`;
-export const COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/onfirmation_company_added`;
+export const COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirmation_company_added`;
 
 // English and Welsh translation file names
 export const COMMON = "common";

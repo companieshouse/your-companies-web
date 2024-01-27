@@ -35,7 +35,11 @@ export class AddCompanyHandler extends GenericHandler {
                         }
                     };
                 } else {
+                    logger.info(`now adding profile to session`);
+
                     req.session!.setExtraData(COMPANY_PROFILE, companyProfile);
+                    logger.info(`profile has been added to session`);
+
                 }
                 const userEmailAddress = getLoggedInUserEmail(req.session);
                 const isAssociated: boolean = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
