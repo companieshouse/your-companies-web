@@ -7,12 +7,14 @@ export const YOUR_COMPANIES_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/y
 export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_company`;
 export const CONFIRM_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirm_company_details`;
 export const COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirmation_company_added`;
+export const COMPANY_ADDED_LIST_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/company_added`;
 
 // English and Welsh translation file names
 export const COMMON = "common";
 export const YOUR_COMPANIES_LANG = "your-companies";
 export const ADD_COMPANY_LANG = "add-company";
 export const CONFIRM_COMPANY_LANG = "confirm-company-details";
+export const COMPANY_ADD_SUCCESS = "confirmation-company-added";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -21,6 +23,7 @@ export const YOUR_COMPANIES_URL = "/";
 export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`;
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const COMPANY_ADDED_SUCCESS_URL = "/confirmation-company-added";
+export const COMPANY_ADDED_LIST = "/company-added";
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
 export const YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL = `${LANDING_URL}${COMPANY_ADDED_SUCCESS_URL}`;
 

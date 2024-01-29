@@ -1,11 +1,24 @@
 import mocks from "../../mocks/all.middleware.mock";
+import { Session } from "@companieshouse/node-session-handler";
+
+import * as constants from "../../../src/constants";
 import app from "../../../src/app";
 import supertest from "supertest";
+import { NextFunction, Request, Response } from "express";
+
+import { validActiveCompanyProfile } from "../../mocks/companyProfileMock";
 const router = supertest(app);
 const en = require("../../../src/locales/en/translation/confirm-company-details.json");
 const cy = require("../../../src/locales/cy/translation/confirm-company-details.json");
 const url = "/your-companies/confirm-company-details";
 
+const session: Session = new Session();
+
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    req.session.data.extra_data.companyProfile = validActiveCompanyProfile;
+    return next();
+});
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -43,5 +56,25 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.registered_office_address);
         expect(response.text).toContain(cy.confirm_and_continue);
         expect(response.text).toContain(cy.choose_a_different_company);
+    });
+});
+
+describe(`POST ${url}`, () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should check session and auth", async () => {
+        await router.post(url);
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+    });
+
+    it("saves the company number to session and redirects to success page ", async () => {
+        const resp = await router.post(url);
+        expect(resp.status).toEqual(302);
+        expect(resp.header.location).toEqual(constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
+        expect(session.getExtraData("companyNumber")).toEqual("12345678");
     });
 });

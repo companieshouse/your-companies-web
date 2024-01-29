@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "./generic";
-import logger from "../../lib/Logger";
+import { GenericHandler } from "../generic";
+import logger from "../../../lib/Logger";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { getTranslationsForView } from "../../lib/utils/translations";
+import { getTranslationsForView } from "../../../lib/utils/translations";
 // import { createRandomCompanyProfile } from "../../lib/mockData/generateMockCompanyProfile";
-import * as constants from "../../constants";
+import * as constants from "../../../constants";
 
 export class ConfirmCorrectCompany extends GenericHandler {
     execute (req: Request, response: Response): Promise<Object> {
@@ -15,6 +15,15 @@ export class ConfirmCorrectCompany extends GenericHandler {
             constants.CONFIRM_COMPANY_LANG
         );
         return Promise.resolve(this.viewData);
+    }
+
+    post (req: Request, response: Response): Promise<Object> {
+        const companyProfile: CompanyProfile | undefined =
+        req.session?.getExtraData(constants.COMPANY_PROFILE);
+        if (companyProfile !== undefined) {
+            return Promise.resolve(companyProfile.companyNumber);
+        }
+        return Promise.resolve(false);
     }
 
     private getViewData (req: Request, response: Response): any {

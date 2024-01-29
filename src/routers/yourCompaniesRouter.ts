@@ -10,10 +10,11 @@ import {
     YOUR_COMPANIES_URL
 } from "../constants";
 import { AddCompanyHandler } from "./handlers/yourCompanies/addCompany";
-import { ConfirmCorrectCompany } from "./handlers/confirmCorrectCompany";
+import { ConfirmCorrectCompany } from "./handlers/yourCompanies/confirmCorrectCompany";
 import * as constants from "../constants";
 import logger from "../lib/Logger";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import { CompanyAddSuccess } from "./handlers/yourCompanies/companyAddSuccess";
+import { setExtraData } from "../lib/utils/sessionUtils";
 
 const router: Router = Router();
 
@@ -52,29 +53,27 @@ router.get(constants.CONFIRM_COMPANY_DETAILS_URL, async (req: Request, res: Resp
 });
 
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        logger.debugRequest(req, `${req.method} ${req.route.path}`);
-        // save the company number to company number in session
-        const companyDetails: CompanyProfile | undefined =
-        req.session?.getExtraData(constants.COMPANY_PROFILE);
-        let companyNumber;
-        if (companyDetails) {
-            companyNumber = companyDetails.companyNumber;
-        }
+    logger.debugRequest(req, `${req.method} ${req.route.path}`);
+    // get the company number from profile in session
+    const companyNum = await new ConfirmCorrectCompany().post(req, res);
+    // set the company number to company number in session
+    // this number is used by company auth for authenticaion of user + company
+    console.log("THIS IS THE company number ", companyNum);
+    setExtraData(req.session, constants.COMPANY_NUMBER, companyNum);
+    logger.debug("redirect to " + constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
+    return res.redirect(constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
 
-        req.session!.setExtraData(constants.COMPANY_NUMBER, companyNumber);
-        logger.debug("redirect to " + constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
-        return res.redirect(constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
-    } catch (errors) {
-        // todo: add error handler
-        logger.errorRequest(req, errors as string);
-        next(errors);
-    }
 });
 
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, async (req: Request, res: Response, next: NextFunction) => {
     logger.debug("rendering page to " + constants.COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE);
-    res.render(constants.COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE, {});
+    const viewData = await new CompanyAddSuccess().execute(req, res);
+    res.render(constants.COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE, viewData);
+});
+
+router.get(constants.COMPANY_ADDED_LIST, async (req: Request, res: Response, next: NextFunction) => {
+    logger.debug("rendering page to list of companies added");
+    res.render(constants.COMPANY_ADDED_LIST_PAGE_TEMPLATE);
 });
 
 export default router;

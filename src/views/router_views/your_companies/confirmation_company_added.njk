@@ -3,14 +3,9 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% extends "layouts/default.njk" %}
-
-{% block back_link %}
-
-    {{ govukBackLink({text: lang.back_link, href: backLinkHref}) }}
-
-{% endblock %}
 
 {% block main_content %}
 
@@ -19,17 +14,28 @@
 
         {% set html %}
             <p class="govuk-notification-banner__heading">
-          FLOWERS LIMITED has been added to your account.
-          <a href="company-added" class="govuk-link">View your companies</a>.
+          {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}<br>
+          <a href="/your-companies/company-added" class="govuk-link">{{lang.view_your_companies}}</a>.
           </p>
           
         {% endset %}
 
         {{ govukNotificationBanner({
         html: html,
-        type: "success"
+        type: "success",
+        titleText: lang.success
         }) }}
 
+            <p class="govuk-body">{{ lang.you_can_now }}</p>
+            <ul class="govuk-list govuk-list--bullet">
+                 <li>{{ lang.bullet_1 }}</li>
+                 <li>{{ lang.bullet_2 }}</li>
+                 <li>{{ lang.bullet_3 }}</li>
+            </ul>
+
+            {{ govukInsetText({
+            text: lang.last_paragraph
+            }) }}
 
         </div>
     </div>

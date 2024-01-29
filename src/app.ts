@@ -58,7 +58,7 @@ app.use(`${constants.LANDING_URL}${constants.COMPANY_ADDED_SUCCESS_URL}`, compan
 // Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);
 app.use((req: Request, res: Response, next: NextFunction) => {
-    njk.addGlobal("lang", req.language);
+    njk.addGlobal("locale", req.language);
     const userEmailAddress = getLoggedInUserEmail(req.session);
     njk.addGlobal("userEmailAddress", userEmailAddress);
     next();
