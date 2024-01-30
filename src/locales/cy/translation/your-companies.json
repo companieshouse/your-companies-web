@@ -7,5 +7,9 @@
     ],
     "title": "[CY] Your companies",
     "you_have_not_added_any_companies": "[CY] You have not added any companies to your account",
-    "your_companies": "[CY] Your companies"
+    "your_companies": "[CY] Your companies",
+    "company_name": "[CY] Company name",
+    "company_number": "[CY] Company number",
+    "people_digitally_authorised_to_file_online": "[CY] People digitally authorised to file online",
+    "view_and_manage_link": "<a href=\"/manage-authorised-people\">[CY] View and manage</a>"
 }
