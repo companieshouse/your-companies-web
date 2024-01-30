@@ -1,3 +1,4 @@
+import { Association, Associations } from "types/associations";
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../constants";
 
 /**
@@ -9,4 +10,27 @@ import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from
 export const isCompanyAssociatedWithUser = async (companyNumber: string, userEmailAddress: string): Promise<string> => {
     // TODO - replace this hard coded value with the API call once the API is available
     return Promise.resolve(companyNumber === "NI038379" ? COMPNANY_ASSOCIATED_WITH_USER : COMPNANY_NOT_ASSOCIATED_WITH_USER);
+};
+
+export const getUserAssociations = async (userEmailAddress: string): Promise<Associations> => {
+    // TODO - replace this hard coded value with the API call once the API is available
+    const associations: Associations = {
+        items: [
+            {
+                id: "1234567890",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "NI038379",
+                companyName: "ABC Ltd"
+            },
+            {
+                id: "2345678901",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "AB123456",
+                companyName: "XYZ Ltd"
+            }
+        ]
+    } as Associations;
+    return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [] } as Associations);
 };
