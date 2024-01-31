@@ -1,7 +1,7 @@
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../src/services/companyProfileService";
-import { validSDKResource } from "../../mocks/companyProfileMock";
+import { validSDKResource } from "../../mocks/companyProfile.mock";
 import { StatusCodes } from "http-status-codes";
 
 jest.mock("@companieshouse/api-sdk-node");
