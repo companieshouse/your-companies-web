@@ -5,6 +5,7 @@ export const ERROR_400_TEMPLATE = "partials/error_400";
 export const YOUR_COMPANIES_TEMPLATE_FOLDER = "router_views/your_companies";
 export const YOUR_COMPANIES_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/your_companies`;
 export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_company`;
+export const MANAGE_AUTHORISED_PEOPLE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/manage_authorised_people`;
 
 // English and Welsh translation file names
 export const COMMON = "common";

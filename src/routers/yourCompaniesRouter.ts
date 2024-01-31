@@ -4,12 +4,15 @@ import {
     ADD_COMPANY_PAGE_TEMPLATE,
     ADD_COMPANY_URL,
     GET,
+    MANAGE_AUTHORISED_PEOPLE_TEMPLATE,
+    MANAGE_AUTHORISED_PEOPLE_URL,
     POST,
     YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
     YOUR_COMPANIES_PAGE_TEMPLATE,
     YOUR_COMPANIES_URL
 } from "../constants";
 import { AddCompanyHandler } from "./handlers/yourCompanies/addCompany";
+import { ManageAuthorisedPeopleHandler } from "./handlers/yourCompanies/manageAuthorisedPeople";
 
 const router: Router = Router();
 
@@ -17,6 +20,14 @@ router.get(YOUR_COMPANIES_URL, async (req: Request, res: Response, next: NextFun
     const handler = new YourCompaniesHandler();
     const viewData = await handler.execute(req, res);
     res.render(YOUR_COMPANIES_PAGE_TEMPLATE, {
+        ...viewData
+    });
+});
+
+router.get(MANAGE_AUTHORISED_PEOPLE_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new ManageAuthorisedPeopleHandler();
+    const viewData = await handler.execute(req, res);
+    res.render(MANAGE_AUTHORISED_PEOPLE_TEMPLATE, {
         ...viewData
     });
 });
