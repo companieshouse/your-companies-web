@@ -1,4 +1,4 @@
- artifact_name       := your-companies-web
+artifact_name       := your-companies-web
 version             := "unversioned"
 
 .PHONY: all
