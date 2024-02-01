@@ -5,6 +5,8 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { getTranslationsForView } from "../../../lib/utils/translations";
 // import { createRandomCompanyProfile } from "../../lib/mockData/generateMockCompanyProfile";
 import * as constants from "../../../constants";
+import { formatForDisplay, buildAddress } from "../../../services/confirmCompanyService";
+import { Session } from "@companieshouse/node-session-handler";
 
 export class ConfirmCorrectCompany extends GenericHandler {
     execute (req: Request, response: Response): Promise<Object> {
@@ -29,28 +31,17 @@ export class ConfirmCorrectCompany extends GenericHandler {
     private getViewData (req: Request, response: Response): any {
         logger.info(`getting profile from session`);
 
-        let companyDetails: Partial<CompanyProfile> | undefined =
-      req.session?.getExtraData(constants.COMPANY_PROFILE);
-        logger.info(`the company details are ${companyDetails}`);
+        const session: Session = req.session as Session;
+        const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
 
-        let registeredOfficeAddress:string = "";
+        const formattedCompanyProfile = formatForDisplay(companyProfile);
 
-        if (companyDetails) {
-            console.table(companyDetails);
-            registeredOfficeAddress = `${companyDetails?.registeredOfficeAddress?.addressLineOne}<br>
-            ${companyDetails?.registeredOfficeAddress?.addressLineTwo}<br>
-            ${companyDetails?.registeredOfficeAddress?.locality}<br>   
-            ${companyDetails?.registeredOfficeAddress?.postalCode}`;
-        } else {
-            logger.info("no company details object");
-            companyDetails = {};
-        }
         logger.info(`about the return company details for display`);
 
         return {
-            ...companyDetails,
-            backLinkUrl: "/your-companies/add-a-company",
-            registeredOfficeAddress
+            ...formattedCompanyProfile,
+            registeredOfficeAddress: buildAddress(formattedCompanyProfile),
+            backLinkUrl: "/your-companies/add-a-company"
         };
     }
 }
