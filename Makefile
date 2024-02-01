@@ -1,4 +1,4 @@
-artifact_name       := your-companies-web
+ artifact_name       := your-companies-web
 version             := "unversioned"
 
 .PHONY: all
@@ -12,7 +12,8 @@ clean:
 	rm -f ./build.log
 
 .PHONY: build
-build:	npm ci
+ build:
+ 		npm ci
 		npm run build
 
 .PHONY: lint
