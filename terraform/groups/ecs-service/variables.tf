@@ -108,7 +108,7 @@ variable "log_level" {
   description = "The log level for services to use: trace, debug, info or error"
 }
 
-variable "accounts_association_api_version" {
+variable "your_companies_web_version" {
   type        = string
   description = "The version of the accounts-association-api container to run."
 }
