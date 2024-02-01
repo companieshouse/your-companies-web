@@ -13,8 +13,8 @@ clean:
 
 .PHONY: build
 build:
-	npm ci
-	npm run build
+		npm ci
+		npm run build
 
 .PHONY: lint
 lint:
