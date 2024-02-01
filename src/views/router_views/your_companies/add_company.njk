@@ -16,8 +16,11 @@
 {% endfor %}
 
 {% block back_link %}
-
-    {{ govukBackLink({text: lang.back_link, href: backLinkHref}) }}
+    {% set attributes = {
+        role: "navigation",
+        "aria-label": "back link to previous page"
+    } %}
+    {{ govukBackLink({text: lang.back_link, href: backLinkHref, attributes: attributes }) }}
 
 {% endblock %}
 
@@ -48,7 +51,11 @@
                     })
                 }}
 
-                {{ govukButton({text: lang.continue, type: "submit"}) }}
+                {% set button_attributes = {
+                    role: "button",
+                    "aria-label": "continue button to proceed to the next page"
+                } %}
+                {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
             </form>
         </div>
     </div>
