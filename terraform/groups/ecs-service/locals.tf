@@ -59,7 +59,6 @@ locals {
   service_secrets_arn_map = {
     for sec in module.secrets.secrets:
       trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
-
   }
 
   task_secrets = [
