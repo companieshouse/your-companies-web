@@ -16,11 +16,10 @@
 {% endfor %}
 
 {% block back_link %}
-    {% set attributes = {
-        role: "navigation",
-        "aria-label": "back link to previous page"
-    } %}
-    {{ govukBackLink({text: lang.back_link, href: backLinkHref, attributes: attributes }) }}
+
+    <div role="navigation" "aria-label"="back link to previous page">
+        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
+    </div>
 
 {% endblock %}
 
