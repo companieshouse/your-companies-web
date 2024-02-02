@@ -26,7 +26,6 @@ locals {
     "chs_api_key"               = local.service_secrets["chs_api_key"]
     "chs_internal_api_key"      = local.service_secrets["chs_internal_api_key"]
     "internal_api_url"          = local.service_secrets["internal_api_url"]
-
   }
 
   vpc_name                  = local.service_secrets["vpc_name"]
