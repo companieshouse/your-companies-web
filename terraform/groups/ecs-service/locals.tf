@@ -21,7 +21,7 @@ locals {
   parameter_store_secrets    = {
   }
 
-  vpc_name                  = local.service_secrets["vpc_name"]
+  vpc_name                   = data.aws_ssm_parameter.secret[format("/%s/%s", local.name_prefix, "vpc-name")].value
 
   # create a map of secret name => secret arn to pass into ecs service module
   # using the trimprefix function to remove the prefixed path from the secret name
