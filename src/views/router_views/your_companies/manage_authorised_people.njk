@@ -1,0 +1,22 @@
+{% extends "layouts/default.njk" %}
+
+{% block back_link %}
+    {% set attributes = {
+        role: "navigation",
+        "aria-label": "back link to previous page"
+    } %}
+    {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref, attributes: attributes }) }}
+
+{% endblock %}
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">{{}}</span>
+            </h1>
+        </div>
+    </div>
+
+{% endblock %}

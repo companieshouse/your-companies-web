@@ -89,7 +89,7 @@ describe("GET /your-companies", () => {
         // Then
         expect(response.text).toContain(userAssociations.items[0].companyName);
         expect(response.text).toContain(userAssociations.items[0].companyNumber);
-        expect(response.text).toContain(en.view_and_manage_link);
+        expect(response.text).toContain(en.view_and_manage);
         expect(response.text).toContain(en.your_companies);
         expect(response.text).toContain(en.company_name);
         expect(response.text).toContain(en.company_number);
@@ -111,7 +111,7 @@ describe("GET /your-companies", () => {
         // Then
         expect(response.text).toContain(userAssociations.items[0].companyName);
         expect(response.text).toContain(userAssociations.items[0].companyNumber);
-        expect(response.text).toContain(cy.view_and_manage_link);
+        expect(response.text).toContain(cy.view_and_manage);
         expect(response.text).toContain(cy.your_companies);
         expect(response.text).toContain(cy.company_name);
         expect(response.text).toContain(cy.company_number);
