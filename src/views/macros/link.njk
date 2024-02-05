@@ -1,17 +1,15 @@
-{% macro link(text, path, query_params) %}
-    {% if query_params %}
-        {% set query_elements = ["?"] %}
-        {% for key, value in query_params %}
-            {% set query_elements = (query_elements.push(key), query_elements) %}
-            {% set query_elements = (query_elements.push("="), query_elements) %}
-            {% set query_elements = (query_elements.push(value), query_elements) %}
-            {% if not loop.last %}
-                {% set query_elements = (query_elements.push("&"), query_elements) %}
-            {% endif %}
+{# 
+This macro creates a hyperlink
+@param text - (string, required) is the text to enclose in <a></a> tags
+@param href - (string, required) is the URL that the hyperlink points to
+@param params - ({ [key: string]: string }, optional) contains key/value pairs
+                to replace the route parameters in href
+#}
+{% macro link(text, href, params) %}
+    {% if params %}
+        {% for key, value in params %}
+            {% set href = href | replace(":" + key, value) %}
         {% endfor %}
-        {% set query = query_elements | join %}
-        <a href="{{path}}{{query}}">{{text}}</a>
-    {% else %}
-        <a href="{{path}}">{{text}}</a>
     {% endif %}
+    <a href="{{href}}">{{text}}</a>
 {% endmacro %}
