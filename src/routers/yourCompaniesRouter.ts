@@ -1,16 +1,44 @@
 import { Request, Response, Router, NextFunction } from "express";
 import { YourCompaniesHandler } from "./handlers/yourCompanies/yourCompanies";
+import {
+    ADD_COMPANY_PAGE_TEMPLATE,
+    ADD_COMPANY_URL,
+    GET,
+    POST,
+    YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
+    YOUR_COMPANIES_PAGE_TEMPLATE,
+    YOUR_COMPANIES_URL
+} from "../constants";
+import { AddCompanyHandler } from "./handlers/yourCompanies/addCompany";
 
 const router: Router = Router();
-const routeViews: string = "router_views/your_companies";
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get(YOUR_COMPANIES_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new YourCompaniesHandler();
     const viewData = await handler.execute(req, res);
-    res.render(`${routeViews}/your_companies`, {
-        ...viewData,
-        ...req.t("your-companies", { returnObjects: true })
+    res.render(YOUR_COMPANIES_PAGE_TEMPLATE, {
+        ...viewData
     });
+});
+
+router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new AddCompanyHandler();
+    const viewData = await handler.execute(req, res, GET);
+    res.render(ADD_COMPANY_PAGE_TEMPLATE, {
+        ...viewData
+    });
+});
+
+router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new AddCompanyHandler();
+    const viewData = await handler.execute(req, res, POST);
+    if (viewData.errors && Object.keys(viewData.errors).length > 0) {
+        res.render(ADD_COMPANY_PAGE_TEMPLATE, {
+            ...viewData
+        });
+    } else {
+        res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
+    }
 });
 
 export default router;

@@ -11,7 +11,8 @@ export class GenericHandler {
     constructor () {
         this.errorManifest = errorManifest;
         this.viewData = {
-            errors: {}
+            errors: {},
+            lang: {}
         };
     }
 

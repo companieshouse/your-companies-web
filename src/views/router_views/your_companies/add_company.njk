@@ -1,0 +1,62 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/default.njk" %}
+
+{% set message = null %}
+
+{% for key, value in errors %}
+    {% if key == "companyNumber" %}
+        {% set message = {
+            text: lang[value.text]
+        } %}
+    {% endif %}
+{% endfor %}
+
+{% block back_link %}
+
+    <div role="navigation" "aria-label"="back link to previous page">
+        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
+    </div>
+
+{% endblock %}
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form method="post">
+                {{ govukInput({
+                        label: {
+                            text: lang.what_is_the_company_number,
+                            classes: "govuk-label--l",
+                            isPageHeading: true
+                        },
+                        hint: {
+                            text: lang.a_company_number_is_8_characters_long
+                        },
+                        classes: "govuk-input--width-10",
+                        id: "companyNumber",
+                        name: "companyNumber",
+                        errorMessage: message
+                    })
+                }}
+
+                {{ govukDetails({
+                        summaryText: lang.how_do_i_find_the_company_number,
+                        html: lang.you_can_find_this_by_searching
+                    })
+                }}
+
+                {% set button_attributes = {
+                    role: "button",
+                    "aria-label": "continue button to proceed to the next page"
+                } %}
+                {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

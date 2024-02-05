@@ -7,6 +7,7 @@ export const YOUR_COMPANIES_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/y
 export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_company`;
 
 // English and Welsh translation file names
+export const COMMON = "common";
 export const YOUR_COMPANIES_LANG = "your-companies";
 export const ADD_COMPANY_LANG = "add-company";
 
@@ -19,8 +20,9 @@ export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
 
 // Error message keys
-export const YOU_MUST_ENTER_A_COMPANY_NUMBER = "you_must_enter_a_company_number";
-export const THERE_IS_NO_COMPANY_REGISTERED = "there_is_no_company_registered";
+export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
+export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";
+export const THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT = "this_company_has_already_been_added_to_your_account";
 
 // HTTP Methods
 export const GET = "GET";
@@ -28,6 +30,10 @@ export const POST = "POST";
 
 // Status
 export const COMPANY_STATUS_ACTIVE = "active";
+
+// Associations
+export const COMPNANY_ASSOCIATED_WITH_USER = "company associated with user";
+export const COMPNANY_NOT_ASSOCIATED_WITH_USER = "company not associated with user";
 
 // APP config
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
@@ -41,3 +47,4 @@ export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 
 // session.extra_data
 export const COMPANY_NUMBER: string = "companyNumber";
+export const COMPANY_PROFILE = "companyProfile";
