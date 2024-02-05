@@ -1,4 +1,4 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { AddCompanyHandler } from "../handlers/yourCompanies/addCompany";
 import {
     ADD_COMPANY_PAGE_TEMPLATE,

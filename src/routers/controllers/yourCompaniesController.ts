@@ -1,4 +1,4 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { YourCompaniesHandler } from "../handlers/yourCompanies/yourCompanies";
 import { YOUR_COMPANIES_PAGE_TEMPLATE } from "../../constants";
 
