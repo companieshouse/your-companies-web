@@ -1,55 +1,18 @@
-import { Request, Response, Router, NextFunction } from "express";
-import { YourCompaniesHandler } from "./handlers/yourCompanies/yourCompanies";
+import { Router } from "express";
 import {
-    ADD_COMPANY_PAGE_TEMPLATE,
     ADD_COMPANY_URL,
-    GET,
-    MANAGE_AUTHORISED_PEOPLE_TEMPLATE,
     MANAGE_AUTHORISED_PEOPLE_URL,
-    POST,
-    YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
-    YOUR_COMPANIES_PAGE_TEMPLATE,
     YOUR_COMPANIES_URL
 } from "../constants";
-import { AddCompanyHandler } from "./handlers/yourCompanies/addCompany";
-import { ManageAuthorisedPeopleHandler } from "./handlers/yourCompanies/manageAuthorisedPeople";
+import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
+import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
+import { yourCompaniesControllerGet } from "./controllers/yourCompaniesController";
 
 const router: Router = Router();
 
-router.get(YOUR_COMPANIES_URL, async (req: Request, res: Response, next: NextFunction) => {
-    const handler = new YourCompaniesHandler();
-    const viewData = await handler.execute(req, res);
-    res.render(YOUR_COMPANIES_PAGE_TEMPLATE, {
-        ...viewData
-    });
-});
-
-router.get(MANAGE_AUTHORISED_PEOPLE_URL, async (req: Request, res: Response, next: NextFunction) => {
-    const handler = new ManageAuthorisedPeopleHandler();
-    const viewData = await handler.execute(req, res);
-    res.render(MANAGE_AUTHORISED_PEOPLE_TEMPLATE, {
-        ...viewData
-    });
-});
-
-router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
-    const handler = new AddCompanyHandler();
-    const viewData = await handler.execute(req, res, GET);
-    res.render(ADD_COMPANY_PAGE_TEMPLATE, {
-        ...viewData
-    });
-});
-
-router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
-    const handler = new AddCompanyHandler();
-    const viewData = await handler.execute(req, res, POST);
-    if (viewData.errors && Object.keys(viewData.errors).length > 0) {
-        res.render(ADD_COMPANY_PAGE_TEMPLATE, {
-            ...viewData
-        });
-    } else {
-        res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
-    }
-});
+router.get(YOUR_COMPANIES_URL, yourCompaniesControllerGet);
+router.get(MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet);
+router.get(ADD_COMPANY_URL, addCompanyControllerGet);
+router.post(ADD_COMPANY_URL, addCompanyControllerPost);
 
 export default router;
