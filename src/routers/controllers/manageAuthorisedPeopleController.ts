@@ -1,4 +1,4 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { ManageAuthorisedPeopleHandler } from "../handlers/yourCompanies/manageAuthorisedPeople";
 import { MANAGE_AUTHORISED_PEOPLE_TEMPLATE } from "../../constants";
 
