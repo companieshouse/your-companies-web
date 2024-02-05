@@ -6,6 +6,7 @@ interface ApiEnumerationsConstants {
 }
 
 const apiConstantsFile = fs.readFileSync("api-enumerations/constants.yml", "utf8");
+
 const apiConstants: ApiEnumerationsConstants = yaml.load(apiConstantsFile) as ApiEnumerationsConstants;
 
 export const lookupCompanyType = (companyTypeKey: string): string => {

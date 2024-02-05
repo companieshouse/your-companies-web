@@ -9,7 +9,8 @@ import {
     ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE,
     THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT,
     ADD_COMPANY_LANG,
-    COMPNANY_ASSOCIATED_WITH_USER
+    COMPNANY_ASSOCIATED_WITH_USER,
+    COMPANY_NUMBER
 } from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
@@ -46,6 +47,7 @@ export class AddCompanyHandler extends GenericHandler {
                         };
                     } else {
                         setExtraData(req.session, COMPANY_PROFILE, companyProfile);
+                        setExtraData(req.session, COMPANY_NUMBER, companyProfile.companyNumber);
                     }
                 }
             }

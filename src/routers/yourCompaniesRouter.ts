@@ -10,11 +10,10 @@ import {
     YOUR_COMPANIES_URL
 } from "../constants";
 import { AddCompanyHandler } from "./handlers/yourCompanies/addCompany";
-import { ConfirmCorrectCompany } from "./handlers/yourCompanies/confirmCorrectCompany";
+import { createTransaction } from "./controllers/createTransaction";
+import { confirmCompanyGet, confirmCompanyPost } from "./controllers/confirmCompany";
+import { companyAdded } from "./controllers/companyAdded";
 import * as constants from "../constants";
-import logger from "../lib/Logger";
-import { CompanyAddSuccess } from "./handlers/yourCompanies/companyAddSuccess";
-import { setExtraData } from "../lib/utils/sessionUtils";
 
 const router: Router = Router();
 
@@ -46,34 +45,12 @@ router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunct
     }
 });
 
-router.get(constants.CONFIRM_COMPANY_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
-    const handler = new ConfirmCorrectCompany();
-    const viewData = await handler.execute(req, res);
-    res.render(constants.CONFIRM_COMPANY_PAGE_TEMPLATE, viewData);
-});
+router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyGet);
 
-router.post(constants.CONFIRM_COMPANY_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
-    logger.debugRequest(req, `${req.method} ${req.route.path}`);
-    // get the company number from profile in session
-    const companyNum = await new ConfirmCorrectCompany().post(req, res);
-    // set the company number to company number in session
-    // this number is used by company auth for authenticaion of user + company
-    console.log("THIS IS THE company number ", companyNum);
-    setExtraData(req.session, constants.COMPANY_NUMBER, companyNum);
-    logger.debug("redirect to " + constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
-    return res.redirect(constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
+router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyPost);
 
-});
+router.get(constants.CREATE_TRANSACTION_PATH, createTransaction);
 
-router.get(constants.COMPANY_ADDED_SUCCESS_URL, async (req: Request, res: Response, next: NextFunction) => {
-    logger.debug("rendering page to " + constants.COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE);
-    const viewData = await new CompanyAddSuccess().execute(req, res);
-    res.render(constants.COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE, viewData);
-});
-
-router.get(constants.COMPANY_ADDED_LIST, async (req: Request, res: Response, next: NextFunction) => {
-    logger.debug("rendering page to list of companies added");
-    res.render(constants.COMPANY_ADDED_LIST_PAGE_TEMPLATE);
-});
+router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAdded);
 
 export default router;

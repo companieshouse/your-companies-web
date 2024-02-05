@@ -1,7 +1,6 @@
 import mocks from "../../mocks/all.middleware.mock";
 import { Session } from "@companieshouse/node-session-handler";
 
-import * as constants from "../../../src/constants";
 import app from "../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
@@ -47,7 +46,6 @@ describe(`GET ${url}`, () => {
 
     it("should return expected Welsh content when welsh is selected", async () => {
         const response = await router.get(`${url}?lang=cy`);
-        expect(response.text).toContain(cy.confirm_this_is_the_correct_company);
         expect(response.text).toContain(cy.company_name);
         expect(response.text).toContain(cy.company_number);
         expect(response.text).toContain(cy.status);
@@ -56,6 +54,57 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.registered_office_address);
         expect(response.text).toContain(cy.confirm_and_continue);
         expect(response.text).toContain(cy.choose_a_different_company);
+    });
+    it("should return FORMATTEDD TEXT", async () => {
+        const badFormatCompanyProfile = {
+            accounts: {
+                nextAccounts: {
+                    periodEndOn: "2019-10-10",
+                    periodStartOn: "2019-01-01"
+                },
+                nextDue: "2020-05-31",
+                overdue: false
+            },
+            companyName: "TeST CoMpaNy",
+            companyNumber: "12345678",
+            companyStatus: "active",
+            companyStatusDetail: "company status detail",
+            confirmationStatement: {
+                lastMadeUpTo: "2019-04-30",
+                nextDue: "2020-04-30",
+                nextMadeUpTo: "2020-03-15",
+                overdue: false
+            },
+            dateOfCreation: "1972-06-22",
+            hasBeenLiquidated: false,
+            hasCharges: false,
+            hasInsolvencyHistory: false,
+            jurisdiction: "england-wales",
+            links: {},
+            registeredOfficeAddress: {
+                addressLineOne: "Line1",
+                addressLineTwo: "Line2",
+                careOf: "careOf",
+                country: "uk",
+                locality: "locality",
+                poBox: "123",
+                postalCode: "POST CODE",
+                premises: "premises",
+                region: "region"
+            },
+            sicCodes: ["123"],
+            type: "ltd"
+        };
+        session.data.extra_data.companyProfile = badFormatCompanyProfile;
+        const response = await router.get(`${url}`);
+        const expectedCompanyName = "Test Company";
+        const expectedCompanyStatus = "Active";
+        const expectedCompanyType = "Private limited company";
+        const expectedDateOfCreation = "22 June 1972";
+        expect(response.text).toContain(expectedCompanyName);
+        expect(response.text).toContain(expectedCompanyStatus);
+        expect(response.text).toContain(expectedCompanyType);
+        expect(response.text).toContain(expectedDateOfCreation);
     });
 });
 
@@ -71,10 +120,9 @@ describe(`POST ${url}`, () => {
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("saves the company number to session and redirects to success page ", async () => {
+    it("redirects to transaction page with company number param in transaction url", async () => {
         const resp = await router.post(url);
         expect(resp.status).toEqual(302);
-        expect(resp.header.location).toEqual(constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL);
-        expect(session.getExtraData("companyNumber")).toEqual("12345678");
+        expect(resp.header.location).toEqual("/your-companies/company/12345678/transaction");
     });
 });

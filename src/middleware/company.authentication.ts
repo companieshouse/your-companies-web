@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import * as constants from "../constants";
-import { Session } from "@companieshouse/node-session-handler";
 
 // We are checking if the current user is authorised for a company / company number
 // based on the value stored in the session
@@ -9,8 +8,7 @@ import { Session } from "@companieshouse/node-session-handler";
 
 export const companyAuthenticationMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
-    const session: Session = req.session as Session;
-    const companyNumber: string | undefined = session?.getExtraData(constants.COMPANY_NUMBER);
+    const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
 
     const authMiddlewareConfig: AuthOptions = {
         chsWebUrl: constants.CHS_URL,

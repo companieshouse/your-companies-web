@@ -53,7 +53,8 @@ app.use(cookieParser());
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
-app.use(`${constants.LANDING_URL}${constants.COMPANY_ADDED_SUCCESS_URL}`, companyAuthenticationMiddleware);
+
+app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
 
 // Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);

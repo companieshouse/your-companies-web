@@ -1,47 +1,29 @@
-import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
-import logger from "../../../lib/Logger";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-// import { createRandomCompanyProfile } from "../../lib/mockData/generateMockCompanyProfile";
 import * as constants from "../../../constants";
 import { formatForDisplay, buildAddress } from "../../../services/confirmCompanyService";
-import { Session } from "@companieshouse/node-session-handler";
+import * as i18next from "i18next";
 
 export class ConfirmCorrectCompany extends GenericHandler {
-    execute (req: Request, response: Response): Promise<Object> {
-        logger.info(`GET request to serve the confirm correct company page`);
-        this.viewData = this.getViewData(req, response);
+    async execute (translateFn:i18next.TFunction, companyProfile:CompanyProfile): Promise<Object> {
+        this.viewData = this.getViewData(companyProfile);
         this.viewData.lang = getTranslationsForView(
-            req.t,
+            translateFn,
             constants.CONFIRM_COMPANY_LANG
         );
         return Promise.resolve(this.viewData);
     }
 
-    post (req: Request, response: Response): Promise<Object> {
-        const companyProfile: CompanyProfile | undefined =
-        req.session?.getExtraData(constants.COMPANY_PROFILE);
-        if (companyProfile !== undefined) {
-            return Promise.resolve(companyProfile.companyNumber);
-        }
-        return Promise.resolve(false);
-    }
-
-    private getViewData (req: Request, response: Response): any {
-        logger.info(`getting profile from session`);
-
-        const session: Session = req.session as Session;
-        const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
+    private getViewData (companyProfile:CompanyProfile): any {
 
         const formattedCompanyProfile = formatForDisplay(companyProfile);
-
-        logger.info(`about the return company details for display`);
 
         return {
             ...formattedCompanyProfile,
             registeredOfficeAddress: buildAddress(formattedCompanyProfile),
-            backLinkUrl: "/your-companies/add-a-company"
+            backLinkUrl: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
+            feedbackSource: constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL
         };
     }
 }
