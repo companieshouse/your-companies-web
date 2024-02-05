@@ -16,6 +16,7 @@
     "lint:fix": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts' --fix",
     "test:coverage": "npm run test -- --coverage",
     "test": "jest",
+    "sonarqube": "sonar-scanner",
     "start": "npm run build && node dist/server.js",
     "start:watch": "nodemon"
   },
@@ -81,6 +82,7 @@
     "nock": "12.0.3",
     "nodemon": "^3.0.1",
     "sass": "1.32.13",
+    "sonarqube-scanner": "^3.3.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "ts-node": "8.10.1",

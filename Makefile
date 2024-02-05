@@ -12,7 +12,8 @@ clean:
 	rm -f ./build.log
 
 .PHONY: build
-build:	npm ci
+build:
+		npm ci
 		npm run build
 
 .PHONY: lint

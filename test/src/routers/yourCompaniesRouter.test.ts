@@ -197,7 +197,7 @@ describe("POST /your-companies/add-company", () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockRejectedValue({
-            httpStatusCode: StatusCodes.NOT_FOUND
+            httpStatusCode: StatusCodes.BAD_REQUEST
         } as Resource<CompanyProfile>);
         // When
         const response = await router.post("/your-companies/add-company?lang=en");
@@ -213,6 +213,44 @@ describe("POST /your-companies/add-company", () => {
     });
 
     it("should return expected Welsh error message if company number is incorrect and language version set to Welsh", async () => {
+        // Given
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockRejectedValue({
+            httpStatusCode: StatusCodes.BAD_REQUEST
+        } as Resource<CompanyProfile>);
+        // When
+        const response = await router.post("/your-companies/add-company?lang=cy");
+        // Then
+        expect(response.text).toContain(cyCommon.back_link);
+        expect(response.text).toContain(cyCommon.there_is_a_problem);
+        expect(response.text).toContain(cy.what_is_the_company_number);
+        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cy.you_can_find_this_by_searching);
+        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyCommon.continue);
+        expect(response.text).toContain(cy.enter_a_company_number_that_is_8_characters_long);
+    });
+
+    it("should return expected English error message if there is no company with provided number and language version set to English", async () => {
+        // Given
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockRejectedValue({
+            httpStatusCode: StatusCodes.NOT_FOUND
+        } as Resource<CompanyProfile>);
+        // When
+        const response = await router.post("/your-companies/add-company?lang=en");
+        // Then
+        expect(response.text).toContain(enCommon.back_link);
+        expect(response.text).toContain(enCommon.there_is_a_problem);
+        expect(response.text).toContain(en.what_is_the_company_number);
+        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(en.you_can_find_this_by_searching);
+        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enCommon.continue);
+        expect(response.text).toContain(en.enter_a_company_number_that_is_8_characters_long);
+    });
+
+    it("should return expected Welsh error message if there is no company with provided number and language version set to Welsh", async () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockRejectedValue({
@@ -235,7 +273,7 @@ describe("POST /your-companies/add-company", () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockRejectedValue({
-            httpStatusCode: StatusCodes.BAD_REQUEST
+            httpStatusCode: StatusCodes.BAD_GATEWAY
         } as Resource<CompanyProfile>);
         // When
         const response = await router.post("/your-companies/add-company");

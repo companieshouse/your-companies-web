@@ -25,7 +25,6 @@ export class CompanyAddSuccess extends GenericHandler {
 
         return Promise.resolve({
             companyName: company.companyName,
-            backLinkUrl: constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
             feedbackSource: constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL
         });
     }

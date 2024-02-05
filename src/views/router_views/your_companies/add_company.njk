@@ -17,7 +17,9 @@
 
 {% block back_link %}
 
-    {{ govukBackLink({text: lang.back_link, href: backLinkHref}) }}
+    <div role="navigation" "aria-label"="back link to previous page">
+        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
+    </div>
 
 {% endblock %}
 
@@ -48,7 +50,11 @@
                     })
                 }}
 
-                {{ govukButton({text: lang.continue, type: "submit"}) }}
+                {% set button_attributes = {
+                    role: "button",
+                    "aria-label": "continue button to proceed to the next page"
+                } %}
+                {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
             </form>
         </div>
     </div>

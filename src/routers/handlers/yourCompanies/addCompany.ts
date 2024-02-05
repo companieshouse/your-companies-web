@@ -52,7 +52,9 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             }
         } catch (err: any) {
-            if (err.httpStatusCode === StatusCodes.NOT_FOUND) {
+            if (err.httpStatusCode === StatusCodes.NOT_FOUND ||
+                err.httpStatusCode === StatusCodes.BAD_REQUEST ||
+                err.httpStatusCode === StatusCodes.FORBIDDEN) {
                 this.viewData.errors = {
                     companyNumber: {
                         text: ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
@@ -63,7 +65,6 @@ export class AddCompanyHandler extends GenericHandler {
                 this.viewData.errors = this.processHandlerException(err);
             }
         }
-
         return Promise.resolve(this.viewData);
     }
 

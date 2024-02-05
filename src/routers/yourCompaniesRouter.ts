@@ -33,6 +33,14 @@ router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFuncti
     });
 });
 
+router.get(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new AddCompanyHandler();
+    const viewData = await handler.execute(req, res, GET);
+    res.render(ADD_COMPANY_PAGE_TEMPLATE, {
+        ...viewData
+    });
+});
+
 router.post(ADD_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, POST);
