@@ -20,8 +20,9 @@ export const YOUR_COMPANIES_URL = "/";
 export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`;
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
-export const MANAGE_AUTHORISED_PEOPLE_URL = "/manage-authorised-people";
+export const MANAGE_AUTHORISED_PEOPLE_URL = "/manage-authorised-people/:companyNumber";
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
+export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";

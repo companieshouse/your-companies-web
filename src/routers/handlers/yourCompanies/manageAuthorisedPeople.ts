@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
-import { COMPANY_NUMBER, LANDING_URL, MANAGE_AUTHORISED_PEOPLE_LANG } from "../../../constants";
+import {
+    ADD_NEW_AUTHORISED_PERSON_URL,
+    COMPANY_NUMBER, LANDING_URL,
+    MANAGE_AUTHORISED_PEOPLE_LANG
+} from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
 import { getCompanyAssociations } from "../../../services/userCompanyAssociationService";
@@ -21,7 +25,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     private getViewData (): any {
         return {
-            backLinkHref: LANDING_URL
+            backLinkHref: LANDING_URL,
+            buttonHref: ADD_NEW_AUTHORISED_PERSON_URL
         };
     }
 }
