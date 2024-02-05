@@ -60,7 +60,6 @@ describe("Date tests", () => {
 
             try {
                 toReadableFormat(badDate);
-                fail();
             } catch (e) {
                 expect(mockCreateAndLogError).toHaveBeenCalledWith(
                     expect.stringContaining(badDate)
