@@ -1,21 +1,31 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
 {% extends "layouts/default.njk" %}
 
 {% block back_link %}
-    {% set attributes = {
-        role: "navigation",
-        "aria-label": "back link to previous page"
-    } %}
-    {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref, attributes: attributes }) }}
+
+    <div role="navigation" "aria-label"="back link to previous page">
+        {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref }) }}
+    </div>
 
 {% endblock %}
 
 {% block main_content %}
 
+    {% set company_association = companyAssociations.items | first %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">
-                <span class="govuk-caption-l">{{}}</span>
+                <span class="govuk-caption-l">{{company_association.companyName}}</span>
+                {{lang.people_digitally_authorised_to_file_online}}
             </h1>
+            {{ govukInsetText({
+                    text: lang.anyone_with_access_to_the_current_authentication
+                })
+            }}
+            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref}) }}
         </div>
     </div>
 
