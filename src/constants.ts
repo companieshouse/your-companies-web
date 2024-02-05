@@ -11,6 +11,7 @@ export const MANAGE_AUTHORISED_PEOPLE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLD
 export const COMMON = "common";
 export const YOUR_COMPANIES_LANG = "your-companies";
 export const ADD_COMPANY_LANG = "add-company";
+export const MANAGE_AUTHORISED_PEOPLE_LANG = "manage-authorised-people";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -20,6 +21,7 @@ export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
 export const MANAGE_AUTHORISED_PEOPLE_URL = "/manage-authorised-people";
+export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -49,7 +51,7 @@ export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 
 // session.extra_data
-export const COMPANY_NUMBER: string = "companyNumber";
+export const COMPANY_NUMBER = "companyNumber";
 export const COMPANY_PROFILE = "companyProfile";
 
 // Booleans

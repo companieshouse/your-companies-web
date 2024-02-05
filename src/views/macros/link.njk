@@ -1,0 +1,17 @@
+{% macro link(text, path, query_params) %}
+    {% if query_params %}
+        {% set query_elements = ["?"] %}
+        {% for key, value in query_params %}
+            {% set query_elements = (query_elements.push(key), query_elements) %}
+            {% set query_elements = (query_elements.push("="), query_elements) %}
+            {% set query_elements = (query_elements.push(value), query_elements) %}
+            {% if not loop.last %}
+                {% set query_elements = (query_elements.push("&"), query_elements) %}
+            {% endif %}
+        {% endfor %}
+        {% set query = query_elements | join %}
+        <a href="{{path}}{{query}}">{{text}}</a>
+    {% else %}
+        <a href="{{path}}">{{text}}</a>
+    {% endif %}
+{% endmacro %}

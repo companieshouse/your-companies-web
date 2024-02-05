@@ -34,3 +34,7 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
     } as Associations;
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [] } as Associations);
 };
+
+export const getCompanyAssociations = async (companyNumber: string): Promise<Associations> => {
+    return Promise.resolve({} as Associations);
+};

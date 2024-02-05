@@ -3,7 +3,7 @@ import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
 import {
     LANDING_URL,
-    MANAGE_AUTHORISED_PEOPLE_URL,
+    YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL,
     TRUE,
     YOUR_COMPANIES_ADD_COMPANY_URL,
     YOUR_COMPANIES_LANG
@@ -46,6 +46,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
             viewData.associationData = associationData;
             viewData.userHasCompanies = TRUE;
+            viewData.viewAndManageUrl = YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
         }
         return viewData;
     }
