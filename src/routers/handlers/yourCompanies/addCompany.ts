@@ -10,7 +10,8 @@ import {
     THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT,
     ADD_COMPANY_LANG,
     COMPNANY_ASSOCIATED_WITH_USER,
-    COMPANY_NUMBER
+    COMPANY_NUMBER,
+    ADD_COMPANY_URL
 } from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
@@ -70,7 +71,8 @@ export class AddCompanyHandler extends GenericHandler {
 
     private getViewData (): any {
         return {
-            backLinkHref: LANDING_URL
+            backLinkHref: LANDING_URL,
+            feedbackSource: `${LANDING_URL}${ADD_COMPANY_URL}`
         };
     }
 };

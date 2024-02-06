@@ -31,6 +31,7 @@ export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFI
 export const YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL = `${LANDING_URL}${COMPANY_ADDED_SUCCESS_URL}`;
 export const CREATE_TRANSACTION_PATH_FULL = LANDING_URL + `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
 export const CREATE_TRANSACTION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
+export const MANAGE_AUTHORISED_PEOPLE_URL = "/manage-authorised-people";
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -57,3 +58,6 @@ export const CHS_URL = getEnvironmentValue("CHS_URL");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
+
+// Booleans
+export const TRUE = "true";

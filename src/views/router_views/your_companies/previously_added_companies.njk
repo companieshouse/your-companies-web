@@ -1,0 +1,36 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set rowsData = [] %}
+{% for elem in associationData %}
+    {% set rowElem = [] %}
+    {% set rowElem = (rowElem.push(elem | first), rowElem) %}
+    {% set rowElem = (rowElem.push(elem | last), rowElem) %}
+    {% set rowElem = (rowElem.push({html: lang.view_and_manage_link}), rowElem) %}
+    {% set rowsData = (rowsData.push(rowElem), rowsData) %}
+{% endfor %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        {{ govukTable({
+                    caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
+                    captionClasses: "govuk-table__caption--m govuk-visually-hidden",
+                    firstCellIsHeader: true,
+                    head: [
+                        {
+                            text: lang.company_name
+                        },
+                        {
+                            text: lang.company_number
+                        },
+                        {
+                            text: lang.people_digitally_authorised_to_file_online
+                        }
+                    ],
+                    rows: rowsData
+                })
+            }}
+    </div>
+</div>

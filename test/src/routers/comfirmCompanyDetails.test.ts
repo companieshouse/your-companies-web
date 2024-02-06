@@ -5,7 +5,7 @@ import app from "../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 
-import { validActiveCompanyProfile } from "../../mocks/companyProfileMock";
+import { validActiveCompanyProfile } from "../../mocks/companyProfile.mock";
 const router = supertest(app);
 const en = require("../../../src/locales/en/translation/confirm-company-details.json");
 const cy = require("../../../src/locales/cy/translation/confirm-company-details.json");

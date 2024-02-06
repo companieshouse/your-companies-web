@@ -2,7 +2,7 @@ import mocks from "../../mocks/all.middleware.mock";
 import app from "../../../src/app";
 import supertest from "supertest";
 import { getCompanyProfile } from "../../../src/services/companyProfileService";
-import { validActiveCompanyProfile } from "../../mocks/companyProfileMock";
+import { validActiveCompanyProfile } from "../../mocks/companyProfile.mock";
 jest.mock("../../../src/services/companyProfileService");
 const router = supertest(app);
 const en = require("../../../src/locales/en/translation/confirmation-company-added.json");
