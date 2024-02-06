@@ -33,8 +33,8 @@ export const CANCEL_PERSON_URL = `/cancel-person/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_CANCEL_PERSON_URL = `${LANDING_URL}${CANCEL_PERSON_URL}`;
 export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-people-email-resent/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
-export const AUTHENTICATION_CODE_REMOVE = `/authentication-code-remove/:${USER_EMAIL}`;
-export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE = `${LANDING_URL}${AUTHENTICATION_CODE_REMOVE}`;
+export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
+export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${AUTHENTICATION_CODE_REMOVE_URL}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
