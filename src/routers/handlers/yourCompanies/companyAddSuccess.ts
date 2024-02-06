@@ -8,8 +8,6 @@ import { getCompanyProfile } from "../../../services/companyProfileService";
 
 export class CompanyAddSuccess extends GenericHandler {
     async execute (req: Request, response: Response): Promise<Object> {
-        logger.info(`GET request to serve company add success page`);
-        console.log(`GET request to serve company add success page`);
         this.viewData = await this.getViewData(req, response);
         this.viewData.lang = getTranslationsForView(
             req.t,
@@ -19,8 +17,6 @@ export class CompanyAddSuccess extends GenericHandler {
     }
 
     private async getViewData (req: Request, response: Response): Promise<Object> {
-        logger.debug(`getting COMPANY NAME from profile fetch`);
-
         const company: CompanyProfile = await getCompanyProfile(req.params.companyNumber as string);
 
         return Promise.resolve({

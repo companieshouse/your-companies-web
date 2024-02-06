@@ -7,8 +7,6 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import { createAccountsAssociation, postTransaction } from "../../services/transactionService";
 
 export const createTransaction = async (req: Request, res: Response, next: NextFunction) => {
-    logger.debug(`GET request for CREATE TRANSACTION`);
-
     try {
         const DESCRIPTION = "Accounts Association Transaction";
         const REFERENCE = "AccountsAssociationReference";

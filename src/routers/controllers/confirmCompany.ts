@@ -1,14 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { ConfirmCorrectCompany } from "../handlers/yourCompanies/confirmCorrectCompany";
 import * as constants from "../../constants";
-import logger from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import { getLoggedInUserEmail } from "../../lib/utils/sessionUtils";
 import { isCompanyAssociatedWithUser } from "../../services/userCompanyAssociationService";
 import * as urlUtils from "../../lib/utils/urlUtils";
 
 export const confirmCompanyGet = async (req: Request, res: Response, next: NextFunction) => {
-    logger.debug(`GET request for confirm company`);
     try {
         const session: Session = req.session as Session;
         const companyProfile = session.data.extra_data.companyProfile;
@@ -20,7 +18,6 @@ export const confirmCompanyGet = async (req: Request, res: Response, next: NextF
 };
 
 export const confirmCompanyPost = async (req: Request, res: Response, next: NextFunction) => {
-    logger.debug(`POST request for confirm company`);
     try {
         const session: Session = req.session as Session;
         const company = session.data.extra_data.companyProfile;
@@ -36,7 +33,6 @@ export const confirmCompanyPost = async (req: Request, res: Response, next: Next
         } else {
             nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_TRANSACTION_PATH_FULL, company.companyNumber);
         }
-        logger.debug(`POST CONFIRM IS redirecting to ${nextPageUrl}`);
         return res.redirect(nextPageUrl);
     } catch (e) {
         return next(e);

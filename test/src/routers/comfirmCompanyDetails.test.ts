@@ -55,7 +55,7 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.confirm_and_continue);
         expect(response.text).toContain(cy.choose_a_different_company);
     });
-    it("should return FORMATTEDD TEXT", async () => {
+    it("should return formatted company information from get profile request", async () => {
         const badFormatCompanyProfile = {
             accounts: {
                 nextAccounts: {
@@ -120,7 +120,7 @@ describe(`POST ${url}`, () => {
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("redirects to transaction page with company number param in transaction url", async () => {
+    it("redirects to transaction controller with company number param in url", async () => {
         const resp = await router.post(url);
         expect(resp.status).toEqual(302);
         expect(resp.header.location).toEqual("/your-companies/company/12345678/transaction");
