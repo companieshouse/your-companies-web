@@ -15,9 +15,9 @@ const app = express();
 
 // const viewPath = path.join(__dirname, "/views");
 app.set("views", [
-    path.join(__dirname, "./views"),
+    path.join(__dirname, "views"),
     path.join(__dirname, "/../node_modules/govuk-frontend"),
-    path.join(__dirname, "./node_modules/govuk-frontend")
+    path.join(__dirname, "node_modules/govuk-frontend")
 ]);
 
 const nunjucksLoaderOpts = {
