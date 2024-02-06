@@ -19,7 +19,7 @@ export const userAssociations: Associations = {
             companyName: "XYZ Ltd"
         }
     ]
-};
+} as Associations;
 
 export const emptyUserAssociations: Associations = {
     items: []
