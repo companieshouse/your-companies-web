@@ -23,9 +23,13 @@ export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFI
 export const MANAGE_AUTHORISED_PEOPLE_URL = "/manage-authorised-people/:companyNumber";
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
+export const YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL = `${LANDING_URL}${ADD_NEW_AUTHORISED_PERSON_URL}`;
 export const CANCEL_PERSON_URL = "/cancel-person/:userEmail";
+export const YOUR_COMPANIES_CANCEL_PERSON_URL = `${LANDING_URL}${CANCEL_PERSON_URL}`;
 export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = "/manage-authorised-people-email-resent/:userEmail";
+export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
 export const AUTHENTICATION_CODE_REMOVE = "/authentication-code-remove/:userEmail";
+export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE = `${LANDING_URL}${AUTHENTICATION_CODE_REMOVE}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
