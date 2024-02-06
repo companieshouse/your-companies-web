@@ -44,14 +44,34 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd"
+                companyName: "ABC Ltd",
+                status: "Awaiting confirmation"
             },
             {
                 id: "2345678901",
                 userId: "jsldkfjsd",
                 userEmail: "john.smith@test.com",
+                displayName: "Not provided",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd"
+                companyName: "ABC Ltd",
+                status: "Confirmed"
+            },
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "eva.brown@company.com",
+                companyNumber: "NI038379",
+                companyName: "ABC Ltd",
+                status: "Awaiting confirmation"
+            },
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "mark.black@private.com",
+                displayName: "Mark Black",
+                companyNumber: "NI038379",
+                companyName: "ABC Ltd",
+                status: "Confirmed"
             }
         ]
     } as Associations;
