@@ -2,5 +2,14 @@
     "back_to_your_companies": "Back to your companies",
     "people_digitally_authorised_to_file_online": "People digitally authorised to file online for this company",
     "anyone_with_access_to_the_current_authentication": "Anyone with access to the current authentication code can also file online for this company.",
-    "add_new_authorised_person": "Add new authorised person"
+    "add_new_authorised_person": "Add new authorised person",
+    "details_of_authorised_people": "Details of authorised people",
+    "title": "People digitally authorised to file online for this company - Companies House WebFiling account - GOV.UK",
+    "email_address": "Email address",
+    "name": "Name",
+    "status": "Status",
+    "cancel": "Cancel",
+    "resend_email": "Resend email",
+    "not_provided": "Not provided",
+    "remove": "Remove"
 }

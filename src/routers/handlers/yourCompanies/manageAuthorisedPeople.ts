@@ -3,7 +3,11 @@ import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
 import {
     ADD_NEW_AUTHORISED_PERSON_URL,
-    COMPANY_NUMBER, LANDING_URL,
+    AUTHENTICATION_CODE_REMOVE,
+    CANCEL_PERSON_URL,
+    COMPANY_NUMBER,
+    LANDING_URL,
+    MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
     MANAGE_AUTHORISED_PEOPLE_LANG
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
@@ -26,7 +30,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     private getViewData (): any {
         return {
             backLinkHref: LANDING_URL,
-            buttonHref: ADD_NEW_AUTHORISED_PERSON_URL
+            buttonHref: ADD_NEW_AUTHORISED_PERSON_URL,
+            cancelUrl: CANCEL_PERSON_URL,
+            resendEmailUrl: MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
+            removeUrl: AUTHENTICATION_CODE_REMOVE
         };
     }
 }
