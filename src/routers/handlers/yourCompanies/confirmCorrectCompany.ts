@@ -22,7 +22,7 @@ export class ConfirmCorrectCompany extends GenericHandler {
         return {
             ...formattedCompanyProfile,
             registeredOfficeAddress: buildAddress(formattedCompanyProfile),
-            bacbackLinkHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
+            bacLinkHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
             feedbackSource: constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL
         };
     }

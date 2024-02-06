@@ -2,11 +2,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% extends "layouts/default.njk" %}
 
-{% block beforeMainContent %}
-    {% block backLink %}
+    {% block back_link %}
     {% include "partials/back_link.njk" %}
     {% endblock %} 
-{% endblock %}
 
 {% block main_content %}
 
@@ -82,7 +80,7 @@
     </form>
 
         <p class="govuk-body">
-            <a href={{backLinkUrl}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>.
+            <a href={{backLinkHref}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>.
         </p>
     </div>
 {% endblock %}
