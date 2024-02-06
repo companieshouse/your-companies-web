@@ -8,10 +8,10 @@
     {% set rowElem = (rowElem.push(elem | first), rowElem) %}
     {% set rowElem = (rowElem.push(elem | last), rowElem) %}
     {% set company_number = elem | last %}
-    {% set query_params = {
+    {% set params = {
         companyNumber: company_number.text
     } %}
-    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageUrl, query_params) %}
+    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageUrl, params) %}
     {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}
