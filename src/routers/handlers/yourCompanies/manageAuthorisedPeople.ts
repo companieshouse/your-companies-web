@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
 import {
-    ADD_NEW_AUTHORISED_PERSON_URL,
-    AUTHENTICATION_CODE_REMOVE,
-    CANCEL_PERSON_URL,
     COMPANY_NUMBER,
     LANDING_URL,
-    MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
-    MANAGE_AUTHORISED_PEOPLE_LANG
+    MANAGE_AUTHORISED_PEOPLE_LANG,
+    YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL,
+    YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE,
+    YOUR_COMPANIES_CANCEL_PERSON_URL,
+    YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
@@ -30,10 +30,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     private getViewData (): any {
         return {
             backLinkHref: LANDING_URL,
-            buttonHref: ADD_NEW_AUTHORISED_PERSON_URL,
-            cancelUrl: CANCEL_PERSON_URL,
-            resendEmailUrl: MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
-            removeUrl: AUTHENTICATION_CODE_REMOVE
+            buttonHref: YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL,
+            cancelUrl: YOUR_COMPANIES_CANCEL_PERSON_URL,
+            resendEmailUrl: YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
+            removeUrl: YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE
         };
     }
 }
