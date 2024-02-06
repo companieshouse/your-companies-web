@@ -15,6 +15,8 @@
         {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         {{ govukTable({
+                    caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
+                    captionClasses: "govuk-table__caption--m govuk-visually-hidden",
                     firstCellIsHeader: true,
                     head: [
                         {
