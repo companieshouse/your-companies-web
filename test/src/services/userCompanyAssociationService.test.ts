@@ -1,5 +1,6 @@
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../src/constants";
-import { isCompanyAssociatedWithUser } from "../../../src/services/userCompanyAssociationService";
+import { getUserAssociations, isCompanyAssociatedWithUser } from "../../../src/services/userCompanyAssociationService";
+import { Associations } from "../../../src/types/associations";
 
 describe("User Company Association Service", () => {
     describe("isCompanyAssociatedWithUser", () => {
@@ -21,6 +22,47 @@ describe("User Company Association Service", () => {
             const result = isCompanyAssociatedWithUser(companyNumber, userEmailAddress);
             // Then
             expect(result).resolves.toEqual(COMPNANY_NOT_ASSOCIATED_WITH_USER);
+        });
+    });
+
+    describe("getUserAssociations", () => {
+        it("should return associations for the user if there are any", () => {
+            // Given
+            const userEmailAddress = "demo@ch.gov.uk";
+            const expectedAssociations: Associations = {
+                items: [
+                    {
+                        id: "1234567890",
+                        userId: "qwertyiop",
+                        userEmail: "demo@ch.gov.uk",
+                        companyNumber: "NI038379",
+                        companyName: "ABC Ltd"
+                    },
+                    {
+                        id: "2345678901",
+                        userId: "qwertyiop",
+                        userEmail: "demo@ch.gov.uk",
+                        companyNumber: "AB123456",
+                        companyName: "XYZ Ltd"
+                    }
+                ]
+            } as Associations;
+            // When
+            const result = getUserAssociations(userEmailAddress);
+            // Then
+            expect(result).resolves.toEqual(expectedAssociations);
+        });
+
+        it("should return no associations for the user if there are not any", () => {
+            // Given
+            const userEmailAddress = "test@test.com";
+            const expectedAssociations: Associations = {
+                items: []
+            } as Associations;
+            // When
+            const result = getUserAssociations(userEmailAddress);
+            // Then
+            expect(result).resolves.toEqual(expectedAssociations);
         });
     });
 });

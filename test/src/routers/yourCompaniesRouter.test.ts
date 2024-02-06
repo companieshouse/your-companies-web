@@ -1,7 +1,7 @@
 
 // the order of the mock imports matter
 import mocks from "../../mocks/all.middleware.mock";
-import { validActiveCompanyProfile, validDisolvedCompanyProfile, validSDKResource } from "../../mocks/companyProfileMock";
+import { validActiveCompanyProfile, validDisolvedCompanyProfile, validSDKResource } from "../../mocks/companyProfile.mock";
 import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import app from "../../../src/app";
@@ -11,6 +11,7 @@ import * as commpanyProfileService from "../../../src/services/companyProfileSer
 import * as associationService from "../../../src/services/userCompanyAssociationService";
 import errorManifest from "../../../src/lib/utils/error_manifests/default";
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../src/constants";
+import { emptyUserAssociations, userAssociations } from "../../mocks/associations.mock";
 
 const router = supertest(app);
 
@@ -44,23 +45,83 @@ describe("GET /your-companies", () => {
     });
 
     it("should return expected English content if no companies added and language version set to English", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValue(emptyUserAssociations);
+        // When
         const response = await router.get("/your-companies?lang=en");
+        // Then
         expect(response.text).toContain(en.add_a_company);
         expect(response.text).toContain(en.add_a_company_to_your_account);
         expect(response.text).toContain(en.bullet_list[0]);
         expect(response.text).toContain(en.bullet_list[1]);
         expect(response.text).toContain(en.you_have_not_added_any_companies);
         expect(response.text).toContain(en.your_companies);
+        expect(response.text).not.toContain(en.company_name);
+        expect(response.text).not.toContain(en.company_number);
+        expect(response.text).not.toContain(en.people_digitally_authorised_to_file_online);
     });
 
     it("should return expected Welsh content if no companies added and language version set to Welsh", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValue(null);
+        // When
         const response = await router.get("/your-companies?lang=cy");
+        // Then
         expect(response.text).toContain(cy.add_a_company);
         expect(response.text).toContain(cy.add_a_company_to_your_account);
         expect(response.text).toContain(cy.bullet_list[0]);
         expect(response.text).toContain(cy.bullet_list[1]);
         expect(response.text).toContain(cy.you_have_not_added_any_companies);
         expect(response.text).toContain(cy.your_companies);
+        expect(response.text).not.toContain(cy.company_name);
+        expect(response.text).not.toContain(cy.company_number);
+        expect(response.text).not.toContain(cy.people_digitally_authorised_to_file_online);
+    });
+
+    it("should return expected English content if companies are added and language version set to English", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValue(userAssociations);
+        // When
+        const response = await router.get("/your-companies?lang=en");
+        // Then
+        expect(response.text).toContain(userAssociations.items[0].companyName);
+        expect(response.text).toContain(userAssociations.items[0].companyNumber);
+        expect(response.text).toContain(en.view_and_manage_link);
+        expect(response.text).toContain(en.your_companies);
+        expect(response.text).toContain(en.company_name);
+        expect(response.text).toContain(en.company_number);
+        expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
+        expect(response.text).toContain(en.add_a_company);
+        expect(response.text).toContain(en.your_companies);
+        expect(response.text).not.toContain(en.add_a_company_to_your_account);
+        expect(response.text).not.toContain(en.bullet_list[0]);
+        expect(response.text).not.toContain(en.bullet_list[1]);
+        expect(response.text).not.toContain(en.you_have_not_added_any_companies);
+    });
+
+    it("should return expected Welsh content if companies are added and language version set to Welsh", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValue(userAssociations);
+        // When
+        const response = await router.get("/your-companies?lang=cy");
+        // Then
+        expect(response.text).toContain(userAssociations.items[0].companyName);
+        expect(response.text).toContain(userAssociations.items[0].companyNumber);
+        expect(response.text).toContain(cy.view_and_manage_link);
+        expect(response.text).toContain(cy.your_companies);
+        expect(response.text).toContain(cy.company_name);
+        expect(response.text).toContain(cy.company_number);
+        expect(response.text).toContain(cy.people_digitally_authorised_to_file_online);
+        expect(response.text).toContain(cy.add_a_company);
+        expect(response.text).toContain(cy.your_companies);
+        expect(response.text).not.toContain(cy.add_a_company_to_your_account);
+        expect(response.text).not.toContain(cy.bullet_list[0]);
+        expect(response.text).not.toContain(cy.bullet_list[1]);
+        expect(response.text).not.toContain(cy.you_have_not_added_any_companies);
     });
 });
 
