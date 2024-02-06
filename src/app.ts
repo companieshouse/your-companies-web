@@ -9,6 +9,7 @@ import { sessionMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
+import { companyAuthenticationMiddleware } from "./middleware/company.authentication";
 
 const app = express();
 
@@ -52,6 +53,8 @@ app.use(cookieParser());
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
+
+app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
 
 // Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);

@@ -20,6 +20,7 @@ export const MANAGE_AUTHORISED_PEOPLE_LANG = "manage-authorised-people";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
+export const COMPANY_AUTH_PROTECTED_BASE = `/company/:${COMPANY_NUMBER}`;
 export const ADD_COMPANY_URL = "/add-company";
 export const YOUR_COMPANIES_URL = "/";
 export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`;
