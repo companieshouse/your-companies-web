@@ -22,7 +22,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">
-                <span class="govuk-caption-l">{{company_association.companyName}}</span>
+                <span class="govuk-caption-l">{{company_association.companyName + " (" + company_association.companyNumber + ")"}}</span>
                 {{lang.people_digitally_authorised_to_file_online}}
             </h1>
             {{ govukInsetText({
