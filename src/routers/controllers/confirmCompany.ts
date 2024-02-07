@@ -17,16 +17,10 @@ export const confirmCompanyPost = async (req: Request, res: Response, next: Next
     const session: Session = req.session as Session;
     const company = session.data.extra_data.companyProfile;
     const userEmailAddress = getLoggedInUserEmail(req.session);
-    console.log("status ", company.companyStatus.toLocaleLowerCase());
-    console.log("checking ", constants.COMPANY_STATUS_ACTIVE);
-    console.log("name ", company.companyName);
     const companyNotActive = company.companyStatus.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE;
 
     const isAlreadyAssociated = await isCompanyAssociatedWithUser(company.companyNumber, userEmailAddress);
     const associationExists = isAlreadyAssociated === constants.COMPNANY_ASSOCIATED_WITH_USER;
-
-    console.log("not active is ", companyNotActive);
-    console.log("ass exists is ", associationExists);
 
     let nextPageUrl = "";
 
