@@ -1,5 +1,5 @@
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../src/constants";
-import { getUserAssociations, isCompanyAssociatedWithUser } from "../../../src/services/userCompanyAssociationService";
+import { getCompanyAssociations, getUserAssociations, isCompanyAssociatedWithUser } from "../../../src/services/userCompanyAssociationService";
 import { Associations } from "../../../src/types/associations";
 
 describe("User Company Association Service", () => {
@@ -63,6 +63,55 @@ describe("User Company Association Service", () => {
             const result = getUserAssociations(userEmailAddress);
             // Then
             expect(result).resolves.toEqual(expectedAssociations);
+        });
+    });
+
+    describe("getCompanyAssociations", () => {
+        it("should return associations for the company if there are any", () => {
+            // Given
+            const companyNumber = "NI038379";
+            const expectedCompanyAssociations = {
+                items: [
+                    {
+                        id: "1234567890",
+                        userId: "qwertyiop",
+                        userEmail: "demo@ch.gov.uk",
+                        companyNumber: "NI038379",
+                        companyName: "THE POLISH BREWERY",
+                        status: "Awaiting confirmation"
+                    },
+                    {
+                        id: "2345678901",
+                        userId: "jsldkfjsd",
+                        userEmail: "john.smith@test.com",
+                        displayName: "Not provided",
+                        companyNumber: "NI038379",
+                        companyName: "THE POLISH BREWERY",
+                        status: "Confirmed"
+                    },
+                    {
+                        id: "2345678901",
+                        userId: "jsldkfjsd",
+                        userEmail: "eva.brown@company.com",
+                        companyNumber: "NI038379",
+                        companyName: "THE POLISH BREWERY",
+                        status: "Awaiting confirmation"
+                    },
+                    {
+                        id: "2345678901",
+                        userId: "jsldkfjsd",
+                        userEmail: "mark.black@private.com",
+                        displayName: "Mark Black",
+                        companyNumber: "NI038379",
+                        companyName: "THE POLISH BREWERY",
+                        status: "Confirmed"
+                    }
+                ]
+            } as Associations;
+            // When
+            const result = getCompanyAssociations(companyNumber);
+            // Then
+            expect(result).resolves.toEqual(expectedCompanyAssociations);
         });
     });
 });
