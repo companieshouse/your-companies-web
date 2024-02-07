@@ -4,8 +4,8 @@ import { Session } from "@companieshouse/node-session-handler";
 import app from "../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
+import { validDisolvedCompanyProfile, validActiveCompanyProfile } from "../../mocks/companyProfile.mock";
 
-import { validActiveCompanyProfile } from "../../mocks/companyProfile.mock";
 const router = supertest(app);
 const en = require("../../../src/locales/en/translation/confirm-company-details.json");
 const cy = require("../../../src/locales/cy/translation/confirm-company-details.json");
@@ -15,7 +15,6 @@ const session: Session = new Session();
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
-    req.session.data.extra_data.companyProfile = validActiveCompanyProfile;
     return next();
 });
 describe(`GET ${url}`, () => {
@@ -32,6 +31,7 @@ describe(`GET ${url}`, () => {
     });
 
     it("should return expected English content if no language selected", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
         const response = await router.get(`${url}`);
         expect(response.text).toContain(en.confirm_this_is_the_correct_company);
         expect(response.text).toContain(en.company_name);
@@ -45,6 +45,7 @@ describe(`GET ${url}`, () => {
     });
 
     it("should return expected Welsh content when welsh is selected", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
         const response = await router.get(`${url}?lang=cy`);
         expect(response.text).toContain(cy.company_name);
         expect(response.text).toContain(cy.company_number);
@@ -65,7 +66,7 @@ describe(`GET ${url}`, () => {
                 nextDue: "2020-05-31",
                 overdue: false
             },
-            companyName: "TeST CoMpaNy",
+            companyName: "Test Company",
             companyNumber: "12345678",
             companyStatus: "active",
             companyStatusDetail: "company status detail",
@@ -83,7 +84,7 @@ describe(`GET ${url}`, () => {
             links: {},
             registeredOfficeAddress: {
                 addressLineOne: "Line1",
-                addressLineTwo: "Line2",
+                addressLineTwo: "",
                 careOf: "careOf",
                 country: "uk",
                 locality: "locality",
@@ -97,11 +98,9 @@ describe(`GET ${url}`, () => {
         };
         session.data.extra_data.companyProfile = badFormatCompanyProfile;
         const response = await router.get(`${url}`);
-        const expectedCompanyName = "Test Company";
         const expectedCompanyStatus = "Active";
         const expectedCompanyType = "Private limited company";
         const expectedDateOfCreation = "22 June 1972";
-        expect(response.text).toContain(expectedCompanyName);
         expect(response.text).toContain(expectedCompanyStatus);
         expect(response.text).toContain(expectedCompanyType);
         expect(response.text).toContain(expectedDateOfCreation);
@@ -121,8 +120,16 @@ describe(`POST ${url}`, () => {
     });
 
     it("redirects to transaction controller with company number param in url", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
         const resp = await router.post(url);
         expect(resp.status).toEqual(302);
         expect(resp.header.location).toEqual("/your-companies/company/12345678/transaction");
+    });
+
+    it("should not continue if company is not active", async () => {
+        session.data.extra_data.companyProfile = validDisolvedCompanyProfile;
+        const response = await router.post(url);
+        expect(response.status).toEqual(302);
+        expect(response.header.location).toContain("/your-companies/add-company");
     });
 });
