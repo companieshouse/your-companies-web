@@ -12,8 +12,7 @@ clean:
 	rm -f ./build.log
 
 .PHONY: build
-build:  
-		update_submodules
+build:  update_submodules
 		npm ci
 		npm run build
 
