@@ -37,7 +37,7 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
 
 export const getCompanyAssociations = async (companyNumber: string): Promise<Associations> => {
     // TODO - replace this hard coded value with the API call once the API is available
-    const associations: Associations = {
+    const associations: Associations = companyNumber === "NI038379" ? {
         items: [
             {
                 id: "1234567890",
@@ -71,6 +71,18 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
                 displayName: "Mark Black",
                 companyNumber: "NI038379",
                 companyName: "THE POLISH BREWERY",
+                status: "Confirmed"
+            }
+        ]
+    } as Associations : {
+        items: [
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "john.smith@test.com",
+                displayName: "John Smith",
+                companyNumber: "01777777",
+                companyName: "BRITISH AIRWAYS PLC",
                 status: "Confirmed"
             }
         ]
