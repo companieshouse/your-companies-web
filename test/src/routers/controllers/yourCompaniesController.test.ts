@@ -1,23 +1,23 @@
 
 // the order of the mock imports matter
-import mocks from "../../mocks/all.middleware.mock";
-import { validActiveCompanyProfile, validDisolvedCompanyProfile, validSDKResource } from "../../mocks/companyProfile.mock";
+import mocks from "../../../mocks/all.middleware.mock";
+import { validActiveCompanyProfile, validDisolvedCompanyProfile } from "../../../mocks/companyProfile.mock";
 import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import app from "../../../src/app";
+import app from "../../../../src/app";
 import supertest from "supertest";
 import { StatusCodes } from "http-status-codes";
-import * as commpanyProfileService from "../../../src/services/companyProfileService";
-import * as associationService from "../../../src/services/userCompanyAssociationService";
-import errorManifest from "../../../src/lib/utils/error_manifests/default";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../src/constants";
-import { emptyUserAssociations, userAssociations } from "../../mocks/associations.mock";
+import * as commpanyProfileService from "../../../../src/services/companyProfileService";
+import * as associationService from "../../../../src/services/userCompanyAssociationService";
+import errorManifest from "../../../../src/lib/utils/error_manifests/default";
+import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
+import { emptyAssociations, userAssociations } from "../../../mocks/associations.mock";
 
 const router = supertest(app);
 
-jest.mock("../../../src/lib/Logger");
-jest.mock("../../../src/lib/utils/sessionUtils", () => {
-    const originalModule = jest.requireActual("../../../src/lib/utils/sessionUtils");
+jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../src/lib/utils/sessionUtils", () => {
+    const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
 
     return {
         __esModule: true,
@@ -27,8 +27,8 @@ jest.mock("../../../src/lib/utils/sessionUtils", () => {
 });
 
 describe("GET /your-companies", () => {
-    const en = require("../../../src/locales/en/translation/your-companies.json");
-    const cy = require("../../../src/locales/cy/translation/your-companies.json");
+    const en = require("../../../../src/locales/en/translation/your-companies.json");
+    const cy = require("../../../../src/locales/cy/translation/your-companies.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -47,7 +47,7 @@ describe("GET /your-companies", () => {
     it("should return expected English content if no companies added and language version set to English", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValue(emptyUserAssociations);
+        userAssociationsSpy.mockReturnValue(emptyAssociations);
         // When
         const response = await router.get("/your-companies?lang=en");
         // Then
@@ -126,10 +126,10 @@ describe("GET /your-companies", () => {
 });
 
 describe("GET /your-companies/add-company", () => {
-    const en = require("../../../src/locales/en/translation/add-company.json");
-    const cy = require("../../../src/locales/cy/translation/add-company.json");
-    const enCommon = require("../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../src/locales/cy/translation/common.json");
+    const en = require("../../../../src/locales/en/translation/add-company.json");
+    const cy = require("../../../../src/locales/cy/translation/add-company.json");
+    const enCommon = require("../../../../src/locales/en/translation/common.json");
+    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -161,10 +161,10 @@ describe("GET /your-companies/add-company", () => {
 });
 
 describe("POST /your-companies/add-company", () => {
-    const en = require("../../../src/locales/en/translation/add-company.json");
-    const cy = require("../../../src/locales/cy/translation/add-company.json");
-    const enCommon = require("../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../src/locales/cy/translation/common.json");
+    const en = require("../../../../src/locales/en/translation/add-company.json");
+    const cy = require("../../../../src/locales/cy/translation/add-company.json");
+    const enCommon = require("../../../../src/locales/en/translation/common.json");
+    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
