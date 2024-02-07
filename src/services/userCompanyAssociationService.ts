@@ -21,14 +21,14 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd"
+                companyName: "THE POLISH BREWERY"
             },
             {
                 id: "2345678901",
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
-                companyNumber: "AB123456",
-                companyName: "XYZ Ltd"
+                companyNumber: "01777777",
+                companyName: "BRITISH AIRWAYS PLC"
             }
         ]
     } as Associations;
@@ -44,7 +44,7 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd",
+                companyName: "THE POLISH BREWERY",
                 status: "Awaiting confirmation"
             },
             {
@@ -53,7 +53,7 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
                 userEmail: "john.smith@test.com",
                 displayName: "Not provided",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd",
+                companyName: "THE POLISH BREWERY",
                 status: "Confirmed"
             },
             {
@@ -61,7 +61,7 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
                 userId: "jsldkfjsd",
                 userEmail: "eva.brown@company.com",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd",
+                companyName: "THE POLISH BREWERY",
                 status: "Awaiting confirmation"
             },
             {
@@ -70,7 +70,7 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
                 userEmail: "mark.black@private.com",
                 displayName: "Mark Black",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd",
+                companyName: "THE POLISH BREWERY",
                 status: "Confirmed"
             }
         ]

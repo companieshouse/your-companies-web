@@ -36,14 +36,14 @@ describe("User Company Association Service", () => {
                         userId: "qwertyiop",
                         userEmail: "demo@ch.gov.uk",
                         companyNumber: "NI038379",
-                        companyName: "ABC Ltd"
+                        companyName: "THE POLISH BREWERY"
                     },
                     {
                         id: "2345678901",
                         userId: "qwertyiop",
                         userEmail: "demo@ch.gov.uk",
-                        companyNumber: "AB123456",
-                        companyName: "XYZ Ltd"
+                        companyNumber: "01777777",
+                        companyName: "BRITISH AIRWAYS PLC"
                     }
                 ]
             } as Associations;
