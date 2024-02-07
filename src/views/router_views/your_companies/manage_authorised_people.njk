@@ -46,7 +46,10 @@
             .toLowerCase() === "confirmed" %}
             {% set tag = govukTag({text: association.status.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set removeLink = link(lang.remove, removeUrl, {userEmail: association.userEmail}) %}
+            {% set removeLink = link(lang.remove, removeUrl, {
+                userEmail: association.userEmail,
+                companyNumber: association.companyNumber
+            }) %}
             {% set row = (row.push({html: removeLink}), row) %}
             {% set row = (row.push({text: ""}), row) %}
         {% else %}
