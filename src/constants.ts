@@ -24,6 +24,7 @@ export const MANAGE_AUTHORISED_PEOPLE_URL = "/manage-authorised-people";
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
 export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";
 export const THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT = "this_company_has_already_been_added_to_your_account";
+export const ENTER_A_COMPANY_NUMBER = "enter_a_company_number";
 
 // HTTP Methods
 export const GET = "GET";
