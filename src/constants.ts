@@ -20,6 +20,7 @@ export const MANAGE_AUTHORISED_PEOPLE_LANG = "manage-authorised-people";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
+export const BASE_URL = "/your-companies/";
 export const COMPANY_AUTH_PROTECTED_BASE = `/company/:${COMPANY_NUMBER}`;
 export const ADD_COMPANY_URL = "/add-company";
 export const YOUR_COMPANIES_URL = "/";
@@ -36,6 +37,12 @@ export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-peo
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
 export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
+
+export const pages = {
+    ADD_PRESENTER: "add-presenter",
+    CHECK_PRESENTER: "add-presenter-check-details",
+    EMAIL_ADDED: "confirmation-person-added"
+} as const;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
