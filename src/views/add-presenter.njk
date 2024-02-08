@@ -1,6 +1,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% extends "layouts/default.njk" %}
 
@@ -11,6 +12,7 @@
 {% block main_content %}
 
     <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
         <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
             {{ lang.authorised_persons_email_address }}
         </h1>
@@ -25,14 +27,11 @@
             <form method="post">
                 {{ govukInput({
                         label: {
-                            text: lang.email_address,
-                            classes: "govuk-label--l",
-                            isPageHeading: true
+                            text: lang.email_address
                         },
                         hint: {
                             text: lang.well_send_them_an_email
                         },
-                        classes: "govuk-input--width-10",
                         id: "companyNumber",
                         name: "companyNumber",
                         errorMessage: message

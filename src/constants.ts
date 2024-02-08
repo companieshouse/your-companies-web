@@ -38,12 +38,23 @@ export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDI
 export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
 
-export const pages = {
+export const pages:Record<string, string> = {
     ADD_PRESENTER: "add-presenter",
     CHECK_PRESENTER: "add-presenter-check-details",
     EMAIL_ADDED: "confirmation-person-added"
 } as const;
 
+export const addToPages = (str:string, fromObj:Record<string, string>) => {
+    const newObj:Record<string, string> = {};
+    Object.keys(fromObj).forEach(key => {
+        newObj[key] = str + fromObj[key];
+    });
+    return newObj;
+};
+export const paths = addToPages("/", pages);
+export const pathsWithCompanyAuth = addToPages(COMPANY_AUTH_PROTECTED_BASE, paths);
+export const fullPathsWithCompanyAuth = addToPages(LANDING_URL, pathsWithCompanyAuth);
+// export const fullPaths = addToPages("/your-companies/");
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
 export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";
