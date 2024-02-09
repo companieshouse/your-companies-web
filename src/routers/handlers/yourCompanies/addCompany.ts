@@ -79,8 +79,7 @@ export class AddCompanyHandler extends GenericHandler {
 
     private getViewData (): any {
         return {
-            backLinkHref: LANDING_URL,
-            feedbackSource: `${LANDING_URL}${ADD_COMPANY_URL}`
+            backLinkHref: LANDING_URL
         };
     }
 };
