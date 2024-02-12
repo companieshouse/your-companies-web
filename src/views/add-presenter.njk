@@ -5,6 +5,16 @@
 
 {% extends "layouts/default.njk" %}
 
+{% set message = null %}
+
+{% for key, value in errors %}
+    {% if key == "email" %}
+        {% set message = {
+            text: lang[value.text]
+        } %}
+    {% endif %}
+{% endfor %}
+
     {% block back_link %}
     {% include "partials/back_link.njk" %}
     {% endblock %} 
@@ -32,8 +42,8 @@
                         hint: {
                             text: lang.well_send_them_an_email
                         },
-                        id: "companyNumber",
-                        name: "companyNumber",
+                        id: "email",
+                        name: "email",
                         errorMessage: message
                     })
                 }}

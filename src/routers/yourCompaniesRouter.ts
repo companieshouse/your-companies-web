@@ -8,7 +8,7 @@ import {
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet } from "./controllers/yourCompaniesController";
-import { addPresenterControllerGet, addPresenterControllerPost } from "./controllers/addPresenterController";
+import { addPresenterControllerGet } from "./controllers/addPresenterController";
 import { checkPresenterControllerGet, checkPresenterControllerPost } from "./controllers/checkPresenterController";
 import { emailAddedControllerGet } from "./controllers/emailAddedController";
 
@@ -20,7 +20,7 @@ router.get(ADD_COMPANY_URL, addCompanyControllerGet);
 router.post(ADD_COMPANY_URL, addCompanyControllerPost);
 router.get(ADD_COMPANY_URL, addCompanyControllerGet);
 router.get(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerGet);
-router.post(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerPost);
+router.post(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerGet);
 router.get(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerGet);
 router.post(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerPost);
 router.get(pathsWithCompanyAuth.EMAIL_ADDED, emailAddedControllerGet);
