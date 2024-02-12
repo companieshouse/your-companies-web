@@ -11,7 +11,8 @@
     {% set params = {
         companyNumber: company_number.text
     } %}
-    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageUrl, params) %}
+    {% set viewAndManageLinkAriaLabelText = lang.link_to_view_and_manage %}
+    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageLinkAriaLabelText, viewAndManageUrl, params) %}
     {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}

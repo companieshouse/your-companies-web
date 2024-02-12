@@ -11,5 +11,11 @@
     "cancel": "[CY] Cancel",
     "resend_email": "[CY] Resend email",
     "not_provided": "[CY] Not provided",
-    "remove": "[CY] Remove"
+    "remove": "[CY] Remove",
+    "confirmed": "[CY] Confirmed",
+    "awaiting_confirmation": "[CY] Awaiting \nconfirmation",
+    "link_to_remove_user_from_digitaly_authorised_start": "[CY] Link to remove ",
+    "link_to_remove_user_from_digitaly_authorised_end": " [CY] from people digitally authorised to file online for ",
+    "link_to_cancel_authorisation_for": "[CY] Link to cancel authorisation for ",
+    "link_to_resend_email_with_authorisation_request_for": "[CY] Link to resend email with authorisation request for "
 }

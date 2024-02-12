@@ -11,5 +11,11 @@
     "cancel": "Cancel",
     "resend_email": "Resend email",
     "not_provided": "Not provided",
-    "remove": "Remove"
+    "remove": "Remove",
+    "confirmed": "Confirmed",
+    "awaiting_confirmation": "Awaiting \nconfirmation",
+    "link_to_remove_user_from_digitaly_authorised_start": "Link to remove ",
+    "link_to_remove_user_from_digitaly_authorised_end": " from people digitally authorised to file online for ",
+    "link_to_cancel_authorisation_for": "Link to cancel authorisation for ",
+    "link_to_resend_email_with_authorisation_request_for": "Link to resend email with authorisation request for "
 }

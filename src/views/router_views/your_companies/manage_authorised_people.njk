@@ -4,12 +4,13 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 {% from "macros/link.njk" import link %}
+{% from "macros/providedTextOrDefault.njk" import providedTextOrDefault %}
 
 {% extends "layouts/default.njk" %}
 
 {% block back_link %}
 
-    <div role="navigation" "aria-label"="back link to previous page">
+    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
         {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref }) }}
     </div>
 
@@ -37,30 +38,32 @@
     {% for association in companyAssociations.items %}
         {% set row = [] %}
         {% set row = (row.push({text: association.userEmail}), row) %}
+        {% set defaultDisplayName = lang.not_provided if association.displayName and association.displayName === notProvided else 
+            "" %}
         {% set row = (row.push({
-            text: association.displayName if association.displayName else 
-                ""
+            text: providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)
         }), row) %}
-        {% if association
-            .status
-            .toLowerCase() === "confirmed" %}
-            {% set tag = govukTag({text: association.status.toUpperCase(), classes: "govuk-tag--green"}) %}
+        {% if association.status === confirmed %}
+            {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set removeLink = link(lang.remove, removeUrl, {
+            {% set removeLinkAriaLabelText = lang.link_to_remove_user_from_digitaly_authorised_start + association.userEmail + lang.link_to_remove_user_from_digitaly_authorised_end + association.companyName %}
+            {% set removeLink = link(lang.remove, removeLinkAriaLabelText, removeUrl, {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }) %}
             {% set row = (row.push({html: removeLink}), row) %}
             {% set row = (row.push({text: ""}), row) %}
         {% else %}
-            {% set text = association
-                .status
-                .toUpperCase() | replace(" ", "<br>") %}
-            {% set tag = govukTag({html: text, classes: "govuk-tag--yellow"}) %}
+            {% set awaitingConfirmationText %}
+            <span class="white-space-pre">{{lang.awaiting_confirmation}}</span>
+            {% endset %}
+            {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set cancelLink = link(lang.cancel, cancelUrl, {userEmail: association.userEmail})%}
+            {% set cancelLinkAriaLabelText = lang.link_to_cancel_authorisation_for + association.userEmail %}
+            {% set cancelLink = link(lang.cancel, cancelLinkAriaLabelText, cancelUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailUrl, {userEmail: association.userEmail})%}
+            {% set resendEmailLinkAriaLabelText = lang.link_to_resend_email_with_authorisation_request_for + association.userEmail %}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkAriaLabelText, resendEmailUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}
@@ -68,9 +71,10 @@
 
     <div class="govuk-grid-row govuk-!-padding-top-3">
         <div class="govuk-grid-column-full">
+            <h2 class="govuk-table__caption--m">{{lang.details_of_authorised_people}}</h2>
             {{ govukTable({
                     caption: lang.details_of_authorised_people,
-                    captionClasses: "govuk-table__caption--m",
+                    captionClasses: "govuk-table__caption--m govuk-visually-hidden",
                     firstCellIsHeader: true,
                     head: [
                         {
