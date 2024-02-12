@@ -66,3 +66,7 @@ export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 
 // Booleans
 export const TRUE = "true";
+
+// various
+export const NOT_PROVIDED = "Not provided";
+export const CONFIRMED = "Confirmed";
