@@ -177,7 +177,7 @@ describe("POST /your-companies/add-company", () => {
         const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isCompanyAssociatedWithUser");
         associationSpy.mockReturnValue(COMPNANY_NOT_ASSOCIATED_WITH_USER);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en");
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
         // Then
         expect(response.statusCode).toEqual(StatusCodes.MOVED_TEMPORARILY);
     });
@@ -187,7 +187,7 @@ describe("POST /your-companies/add-company", () => {
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validDisolvedCompanyProfile);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en");
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
@@ -204,7 +204,7 @@ describe("POST /your-companies/add-company", () => {
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validDisolvedCompanyProfile);
         // When
-        const response = await router.post("/your-companies/add-company?lang=cy");
+        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
@@ -223,7 +223,7 @@ describe("POST /your-companies/add-company", () => {
         const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isCompanyAssociatedWithUser");
         associationSpy.mockReturnValue(COMPNANY_ASSOCIATED_WITH_USER);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en");
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
@@ -242,7 +242,7 @@ describe("POST /your-companies/add-company", () => {
         const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isCompanyAssociatedWithUser");
         associationSpy.mockReturnValue(COMPNANY_ASSOCIATED_WITH_USER);
         // When
-        const response = await router.post("/your-companies/add-company?lang=cy");
+        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
@@ -261,7 +261,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.BAD_REQUEST
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en");
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "%£$£$£5343" });
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
@@ -280,7 +280,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.BAD_REQUEST
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company?lang=cy");
+        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "%£$£$£5343" });
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
@@ -299,7 +299,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.NOT_FOUND
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en");
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "11111111" });
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
@@ -318,7 +318,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.NOT_FOUND
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company?lang=cy");
+        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "11111111" });
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
@@ -330,6 +330,44 @@ describe("POST /your-companies/add-company", () => {
         expect(response.text).toContain(cy.enter_a_company_number_that_is_8_characters_long);
     });
 
+    it("should return expected English error message if there is no company number provided and language version set to English", async () => {
+        // Given
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockRejectedValue({
+            httpStatusCode: StatusCodes.NOT_FOUND
+        } as Resource<CompanyProfile>);
+        // When
+        const response = await router.post("/your-companies/add-company?lang=en");
+        // Then
+        expect(response.text).toContain(enCommon.back_link);
+        expect(response.text).toContain(enCommon.there_is_a_problem);
+        expect(response.text).toContain(en.what_is_the_company_number);
+        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(en.you_can_find_this_by_searching);
+        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enCommon.continue);
+        expect(response.text).toContain(en.enter_a_company_number);
+    });
+
+    it("should return expected Welsh error message if there is no company number provided and language version set to Welsh", async () => {
+        // Given
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockRejectedValue({
+            httpStatusCode: StatusCodes.NOT_FOUND
+        } as Resource<CompanyProfile>);
+        // When
+        const response = await router.post("/your-companies/add-company?lang=cy");
+        // Then
+        expect(response.text).toContain(cyCommon.back_link);
+        expect(response.text).toContain(cyCommon.there_is_a_problem);
+        expect(response.text).toContain(cy.what_is_the_company_number);
+        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cy.you_can_find_this_by_searching);
+        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyCommon.continue);
+        expect(response.text).toContain(cy.enter_a_company_number);
+    });
+
     it("should return expected generic error message if any other error happens", async () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
@@ -337,7 +375,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.BAD_GATEWAY
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company");
+        const response = await router.post("/your-companies/add-company").send({ companyNumber: "11111111" });
         // Then
         expect(response.text).toContain(errorManifest.generic.serverError.summary);
     });
