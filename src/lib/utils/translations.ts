@@ -1,7 +1,6 @@
 import { COMMON } from "../../constants";
 import i18next from "i18next";
-
-export type AnyRecord = Record<string, any>;
+import { AnyRecord } from "../../types/util-types";
 
 export const getTranslationsForView = (t: typeof i18next.t, viewName: string):AnyRecord => ({
     ...t(COMMON, { returnObjects: true }),

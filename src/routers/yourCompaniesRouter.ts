@@ -9,7 +9,7 @@ import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet } from "./controllers/yourCompaniesController";
 import { addPresenterControllerGet } from "./controllers/addPresenterController";
-import { checkPresenterControllerGet, checkPresenterControllerPost } from "./controllers/checkPresenterController";
+import { checkPresenterControllerGet } from "./controllers/checkPresenterController";
 import { emailAddedControllerGet } from "./controllers/emailAddedController";
 
 const router: Router = Router();
@@ -22,6 +22,6 @@ router.get(ADD_COMPANY_URL, addCompanyControllerGet);
 router.get(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerGet);
 router.post(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerGet);
 router.get(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerGet);
-router.post(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerPost);
+router.post(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerGet);
 router.get(pathsWithCompanyAuth.EMAIL_ADDED, emailAddedControllerGet);
 export default router;

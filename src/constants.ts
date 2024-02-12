@@ -83,3 +83,5 @@ export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 
 // Booleans
 export const TRUE = "true";
+
+export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";

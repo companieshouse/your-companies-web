@@ -1,0 +1,15 @@
+{% extends "layouts/default.njk" %}
+
+    {% block back_link %}
+    {% include "partials/back_link.njk" %}
+    {% endblock %} 
+
+{% block main_content %}
+
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+            People digitally authorised to file online for this company
+        </h1>
+    </div>
+{% endblock %}

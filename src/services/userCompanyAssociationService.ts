@@ -89,3 +89,8 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
     } as Associations;
     return Promise.resolve(associations);
 };
+
+export const isEmailAuthorised = async (email: string, companyNumber:string): Promise<boolean> => {
+    const companyAssociations: Associations = await getCompanyAssociations(companyNumber);
+    return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
+};
