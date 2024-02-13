@@ -11,6 +11,7 @@
     "company_name": "Company name",
     "company_number": "Company number",
     "people_digitally_authorised_to_file_online": "People digitally authorised to file online",
-    "view_and_manage_link": "<a href=\"/manage-authorised-people\">View and manage</a>",
-    "table_of_companies_you_are_digitally_autorised_to_file_for": "Table of companies you are digitally authorised to file for"
+    "view_and_manage": "View and manage",
+    "table_of_companies_you_are_digitally_autorised_to_file_for": "Table of companies you are digitally authorised to file for",
+    "link_to_view_and_manage": "Link to view and manage people digitally authorised to file online page"
 }

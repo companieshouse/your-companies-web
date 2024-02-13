@@ -9,6 +9,7 @@ import { sessionMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
+import { companyAuthenticationMiddleware } from "./middleware/company.authentication";
 
 const app = express();
 
@@ -40,6 +41,8 @@ njk.addGlobal("cdnUrlJs", process.env.CDN_URL_JS);
 njk.addGlobal("cdnHost", process.env.CDN_HOST);
 njk.addGlobal("chsUrl", process.env.CHS_URL);
 njk.addGlobal("chsMonitorGuiUrl", process.env.CHS_MONITOR_GUI_URL);
+njk.addGlobal("notProvided", constants.NOT_PROVIDED);
+njk.addGlobal("confirmed", constants.CONFIRMED);
 
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
@@ -52,6 +55,8 @@ app.use(cookieParser());
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
+
+app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
 
 // Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);

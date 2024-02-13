@@ -26,6 +26,10 @@ $govuk-global-styles: true;
     padding: 2em;
 }
 
+.white-space-pre {
+    white-space: pre !important;
+}
+
 /* styling from https://github.com/companieshouse/find-update-company-info-prototype/blob/main/app/assets/sass/custom.scss */
 
 .grid-row:after, fieldset:after, .form-section:after, .form-group:after, .form-block:after, .notice:after, #content:after, .panel:after, #global-nav .inner:after, .navigation-list:after, .pager ul:after, ol.breadcrumb:after, ul.pager:after, .section-tabs:after {

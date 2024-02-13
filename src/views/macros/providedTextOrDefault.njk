@@ -1,0 +1,9 @@
+{% macro providedTextOrDefault(providedText, defaultText, conditionText) %}
+    {% set displayText = providedText %}
+    {% if not providedText and defaultText %}
+        {% set displayText = defaultText %}
+    {% elif providedText and conditionText and providedText === conditionText %}
+        {% set displayText = defaultText %}
+    {% endif %}
+    {{displayText}}
+{% endmacro %}
