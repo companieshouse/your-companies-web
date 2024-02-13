@@ -1,5 +1,4 @@
 import mocks from "../../../mocks/all.middleware.mock";
-import { companyAssociations, emptyAssociations } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
@@ -28,7 +27,8 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
         __esModule: true,
         ...originalModule,
         getLoggedInUserEmail: jest.fn(() => "test@test.com"),
-        setExtraData: jest.fn()
+        setExtraData: jest.fn((session, key, value) => session.setExtraData(key, value)),
+        getExtraData: jest.fn((session, key) => session.getExtraData(key))
     };
 });
 
@@ -87,9 +87,17 @@ describe("POST /your-companies/cancel-person/:userEmail", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        session.setExtraData(REFERER_URL, "/");
+        session.setExtraData(COMPANY_NAME, "General Ltd");
     });
 
-    it("Should return status 302 if 'yes' option selected", async () => {
+    it("should check session and auth before returning the /your-companies/cancel-person/:userEmail page", async () => {
+        await router.get(url);
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+    });
+
+    it("Should return status 302 if `yes` option selected", async () => {
         // Given
         const langVersion = "?lang=en";
         // When
@@ -98,11 +106,9 @@ describe("POST /your-companies/cancel-person/:userEmail", () => {
         expect(response.statusCode).toEqual(302);
     });
 
-    it("Should return status 302 if 'no' option selected", async () => {
+    it("Should return status 302 if `no` option selected", async () => {
         // Given
         const langVersion = "?lang=en";
-        session.setExtraData(REFERER_URL, "/");
-        session.setExtraData(COMPANY_NAME, "General Ltd");
         // When
         const response = await router.post(`${url}${langVersion}`).send({ cancelPerson: "no" });
         // Then
