@@ -3,7 +3,6 @@ import { GenericHandler } from "../generic";
 import {
     CANCEL_PERSON,
     CANCEL_PERSON_LANG,
-    CANCEL_PERSON_URL,
     COMPANY_NAME,
     POST,
     REFERER_URL,
@@ -12,7 +11,7 @@ import {
     YES
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class CancelPersonHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<any> {
@@ -35,8 +34,8 @@ export class CancelPersonHandler extends GenericHandler {
 
     private getViewData (req: Request): any {
         return {
-            backLinkHref: req.session?.getExtraData(REFERER_URL),
-            companyName: req.session?.getExtraData(COMPANY_NAME),
+            backLinkHref: getExtraData(req.session, REFERER_URL),
+            companyName: getExtraData(req.session, COMPANY_NAME),
             userEmail: req.params[USER_EMAIL],
             buttonHref: req.originalUrl
         };

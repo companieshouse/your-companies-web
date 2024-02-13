@@ -16,3 +16,7 @@ export const getLoggedInUserEmail = (session: Session | undefined): string => {
 export const setExtraData = (session: Session | undefined, key: string, data: any): void => {
     return session?.setExtraData(key, data);
 };
+
+export const getExtraData = (session: Session | undefined, key: string): any => {
+    return session?.getExtraData(key);
+};
