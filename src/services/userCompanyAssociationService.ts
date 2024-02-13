@@ -21,16 +21,71 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "NI038379",
-                companyName: "ABC Ltd"
+                companyName: "THE POLISH BREWERY"
             },
             {
                 id: "2345678901",
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
-                companyNumber: "AB123456",
-                companyName: "XYZ Ltd"
+                companyNumber: "01777777",
+                companyName: "BRITISH AIRWAYS PLC"
             }
         ]
     } as Associations;
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [] } as Associations);
+};
+
+export const getCompanyAssociations = async (companyNumber: string): Promise<Associations> => {
+    // TODO - replace this hard coded value with the API call once the API is available
+    const associations: Associations = companyNumber === "NI038379" ? {
+        items: [
+            {
+                id: "1234567890",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "NI038379",
+                companyName: "THE POLISH BREWERY",
+                status: "Awaiting confirmation"
+            },
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "john.smith@test.com",
+                displayName: "Not provided",
+                companyNumber: "NI038379",
+                companyName: "THE POLISH BREWERY",
+                status: "Confirmed"
+            },
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "eva.brown@company.com",
+                companyNumber: "NI038379",
+                companyName: "THE POLISH BREWERY",
+                status: "Awaiting confirmation"
+            },
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "mark.black@private.com",
+                displayName: "Mark Black",
+                companyNumber: "NI038379",
+                companyName: "THE POLISH BREWERY",
+                status: "Confirmed"
+            }
+        ]
+    } as Associations : {
+        items: [
+            {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "john.smith@test.com",
+                displayName: "John Smith",
+                companyNumber: "01777777",
+                companyName: "BRITISH AIRWAYS PLC",
+                status: "Confirmed"
+            }
+        ]
+    } as Associations;
+    return Promise.resolve(associations);
 };

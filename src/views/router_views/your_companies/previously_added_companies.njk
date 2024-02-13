@@ -1,12 +1,19 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "macros/link.njk" import link %}
 
 {% set rowsData = [] %}
 {% for elem in associationData %}
     {% set rowElem = [] %}
     {% set rowElem = (rowElem.push(elem | first), rowElem) %}
     {% set rowElem = (rowElem.push(elem | last), rowElem) %}
-    {% set rowElem = (rowElem.push({html: lang.view_and_manage_link}), rowElem) %}
+    {% set company_number = elem | last %}
+    {% set params = {
+        companyNumber: company_number.text
+    } %}
+    {% set viewAndManageLinkAriaLabelText = lang.link_to_view_and_manage %}
+    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageLinkAriaLabelText, viewAndManageUrl, params) %}
+    {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}
 

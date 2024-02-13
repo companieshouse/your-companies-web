@@ -1,0 +1,21 @@
+{
+    "back_to_your_companies": "Back to your companies",
+    "people_digitally_authorised_to_file_online": "People digitally authorised to file online for this company",
+    "anyone_with_access_to_the_current_authentication": "Anyone with access to the current authentication code can also file online for this company.",
+    "add_new_authorised_person": "Add new authorised person",
+    "details_of_authorised_people": "Details of authorised people",
+    "title": "People digitally authorised to file online for this company - Find and update company information - GOV.UK",
+    "email_address": "Email address",
+    "name": "Name",
+    "status": "Status",
+    "cancel": "Cancel",
+    "resend_email": "Resend email",
+    "not_provided": "Not provided",
+    "remove": "Remove",
+    "confirmed": "Confirmed",
+    "awaiting_confirmation": "Awaiting \nconfirmation",
+    "link_to_remove_user_from_digitaly_authorised_start": "Link to remove ",
+    "link_to_remove_user_from_digitaly_authorised_end": " from people digitally authorised to file online for ",
+    "link_to_cancel_authorisation_for": "Link to cancel authorisation for ",
+    "link_to_resend_email_with_authorisation_request_for": "Link to resend email with authorisation request for "
+}
