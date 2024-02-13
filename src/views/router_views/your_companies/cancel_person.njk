@@ -9,7 +9,7 @@
 
 {% block back_link %}
 
-    <div role="navigation" aria-label="back link to previous page">
+    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
         {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
     </div>
 
@@ -63,7 +63,7 @@
 
                 {% set button_attributes = {
                     role: "button",
-                    "aria-label": "continue button to proceed to the next page"
+                    "aria-label": lang.continue_button_to_proceed_to_the_next_page
                 } %}
                 <div class="govuk-button-group">
                     {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
