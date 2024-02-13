@@ -11,7 +11,8 @@ import {
     ADD_COMPANY_LANG,
     COMPNANY_ASSOCIATED_WITH_USER,
     COMPANY_NUMBER,
-    ADD_COMPANY_URL
+    ADD_COMPANY_URL,
+    ENTER_A_COMPANY_NUMBER
 } from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
@@ -30,25 +31,34 @@ export class AddCompanyHandler extends GenericHandler {
             this.viewData.lang = getTranslationsForView(req.t, ADD_COMPANY_LANG);
             if (method === POST) {
                 const payload = Object.assign({}, req.body);
-                const companyProfile: CompanyProfile = await getCompanyProfile(payload.companyNumber);
-                if (companyProfile.companyStatus.toLocaleLowerCase() !== COMPANY_STATUS_ACTIVE) {
+                if (!payload.companyNumber) {
                     this.viewData.errors = {
                         companyNumber: {
-                            text: ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
+                            text: ENTER_A_COMPANY_NUMBER
                         }
                     };
                 } else {
-                    const userEmailAddress = getLoggedInUserEmail(req.session);
-                    const isAssociated: string = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
-                    if (isAssociated === COMPNANY_ASSOCIATED_WITH_USER) {
+                    const companyProfile: CompanyProfile = await getCompanyProfile(payload.companyNumber);
+                    if (companyProfile.companyStatus.toLocaleLowerCase() !== COMPANY_STATUS_ACTIVE) {
                         this.viewData.errors = {
                             companyNumber: {
-                                text: THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
+                                text: ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
                             }
                         };
                     } else {
                         setExtraData(req.session, COMPANY_PROFILE, companyProfile);
                         setExtraData(req.session, COMPANY_NUMBER, companyProfile.companyNumber);
+                        const userEmailAddress = getLoggedInUserEmail(req.session);
+                        const isAssociated: string = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
+                        if (isAssociated === COMPNANY_ASSOCIATED_WITH_USER) {
+                            this.viewData.errors = {
+                                companyNumber: {
+                                    text: THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
+                                }
+                            };
+                        } else {
+                            setExtraData(req.session, COMPANY_PROFILE, companyProfile);
+                        }
                     }
                 }
             }
