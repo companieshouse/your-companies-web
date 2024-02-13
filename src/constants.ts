@@ -18,6 +18,8 @@ export const YOUR_COMPANIES_LANG = "your-companies";
 export const ADD_COMPANY_LANG = "add-company";
 export const CONFIRM_COMPANY_LANG = "confirm-company-details";
 export const COMPANY_ADD_SUCCESS = "confirmation-company-added";
+export const COMPANY_STATUS_LANG = "company-status";
+export const COMPANY_TYPE_LANG = "company-type";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";

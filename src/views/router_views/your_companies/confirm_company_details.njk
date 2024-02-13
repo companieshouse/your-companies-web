@@ -36,7 +36,7 @@
         text: lang.status
       },
       value: {
-        text: companyStatus
+        text: lang["company-status-" + companyStatus]
       }
     },
     {
@@ -52,7 +52,7 @@
         text: lang.company_type
       },
       value: {
-        text: type
+        text: lang["company-type-" + type]
       }
     },
     {
@@ -80,7 +80,7 @@
     </form>
 
         <p class="govuk-body">
-            <a href={{backLinkHref}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>.
+            <a href={{backLinkHref}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>
         </p>
     </div>
 {% endblock %}

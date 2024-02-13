@@ -2,7 +2,7 @@ import { lookupCompanyStatus, lookupCompanyType } from "../lib/utils/api_enumera
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { toReadableFormat } from "../lib/utils/date";
 
-export const formatForDisplay = (companyProfile: CompanyProfile) => {
+export const formatForDisplay = (companyProfile: CompanyProfile, lang:string) => {
     const registeredOfficeAddress = {
         addressLineOne: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineOne),
         addressLineTwo: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineTwo),
@@ -16,9 +16,9 @@ export const formatForDisplay = (companyProfile: CompanyProfile) => {
     return {
         companyNumber: companyProfile.companyNumber,
         companyName: companyProfile.companyName,
-        type: lookupCompanyType(companyProfile.type),
-        companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
-        dateOfCreation: toReadableFormat(companyProfile.dateOfCreation),
+        type: companyProfile.type,
+        companyStatus: companyProfile.companyStatus,
+        dateOfCreation: toReadableFormat(companyProfile.dateOfCreation, lang),
         registeredOfficeAddress: registeredOfficeAddress
     };
 };

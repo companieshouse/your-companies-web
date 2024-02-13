@@ -9,7 +9,7 @@ import * as urlUtils from "../../lib/utils/urlUtils";
 export const confirmCompanyGet = async (req: Request, res: Response, next: NextFunction) => {
     const session: Session = req.session as Session;
     const companyProfile = session.data.extra_data.companyProfile;
-    const viewData = await new ConfirmCorrectCompany().execute(req.t, companyProfile);
+    const viewData = await new ConfirmCorrectCompany().execute(req.t, companyProfile, req.language);
     res.render(constants.CONFIRM_COMPANY_PAGE_TEMPLATE, viewData);
 };
 

@@ -17,6 +17,46 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     req.session = session;
     return next();
 });
+const badFormatCompanyProfile = {
+    accounts: {
+        nextAccounts: {
+            periodEndOn: "2019-10-10",
+            periodStartOn: "2019-01-01"
+        },
+        nextDue: "2020-05-31",
+        overdue: false
+    },
+    companyName: "Test Company",
+    companyNumber: "12345678",
+    companyStatus: "active",
+    companyStatusDetail: "company status detail",
+    confirmationStatement: {
+        lastMadeUpTo: "2019-04-30",
+        nextDue: "2020-04-30",
+        nextMadeUpTo: "2020-03-15",
+        overdue: false
+    },
+    dateOfCreation: "1972-06-22",
+    hasBeenLiquidated: false,
+    hasCharges: false,
+    hasInsolvencyHistory: false,
+    jurisdiction: "england-wales",
+    links: {},
+    registeredOfficeAddress: {
+        addressLineOne: "Line1",
+        addressLineTwo: "",
+        careOf: "careOf",
+        country: "uk",
+        locality: "locality",
+        poBox: "123",
+        postalCode: "POST CODE",
+        premises: "premises",
+        region: "region"
+    },
+    sicCodes: ["123"],
+    type: "ltd"
+};
+
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -57,45 +97,6 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.choose_a_different_company);
     });
     it("should return formatted company information from get profile request", async () => {
-        const badFormatCompanyProfile = {
-            accounts: {
-                nextAccounts: {
-                    periodEndOn: "2019-10-10",
-                    periodStartOn: "2019-01-01"
-                },
-                nextDue: "2020-05-31",
-                overdue: false
-            },
-            companyName: "Test Company",
-            companyNumber: "12345678",
-            companyStatus: "active",
-            companyStatusDetail: "company status detail",
-            confirmationStatement: {
-                lastMadeUpTo: "2019-04-30",
-                nextDue: "2020-04-30",
-                nextMadeUpTo: "2020-03-15",
-                overdue: false
-            },
-            dateOfCreation: "1972-06-22",
-            hasBeenLiquidated: false,
-            hasCharges: false,
-            hasInsolvencyHistory: false,
-            jurisdiction: "england-wales",
-            links: {},
-            registeredOfficeAddress: {
-                addressLineOne: "Line1",
-                addressLineTwo: "",
-                careOf: "careOf",
-                country: "uk",
-                locality: "locality",
-                poBox: "123",
-                postalCode: "POST CODE",
-                premises: "premises",
-                region: "region"
-            },
-            sicCodes: ["123"],
-            type: "ltd"
-        };
         session.data.extra_data.companyProfile = badFormatCompanyProfile;
         const response = await router.get(`${url}`);
         const expectedCompanyStatus = "Active";
@@ -104,6 +105,68 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(expectedCompanyStatus);
         expect(response.text).toContain(expectedCompanyType);
         expect(response.text).toContain(expectedDateOfCreation);
+    });
+    it("should return formatted Welsh company information from get profile request", async () => {
+        session.data.extra_data.companyProfile = badFormatCompanyProfile;
+        const response = await router.get(`${url}?lang=cy`);
+        const expectedCompanyStatus = "Gweithredol";
+        const expectedCompanyType = "Cwmni preifat cyfyngedig";
+        const expectedDateOfCreation = "22 Mehefin 1972";
+        expect(response.text).toContain(expectedCompanyStatus);
+        expect(response.text).toContain(expectedCompanyType);
+        expect(response.text).toContain(expectedDateOfCreation);
+    });
+    const companyTypeTestData = [
+        {
+            type: "private-unlimited",
+            expected: "Cwmni preifat anghyfynedig"
+        },
+        {
+            type: "ltd",
+            expected: "Cwmni preifat cyfyngedig"
+        },
+        {
+            type: "plc",
+            expected: "Cwmni cyfyngedig cyhoeddus"
+        },
+        {
+            type: "old-public-company",
+            expected: "Hen gwmni cyhoeddus"
+        },
+        {
+            type: "limited-partnership",
+            expected: "Partneriaeth gyfyngedig"
+        },
+        {
+            type: "private-limited-guarant-nsc",
+            expected: "Cwmni preifat cyfyngedig drwy warant heb gyfalaf cyfranddaliadau"
+        },
+        {
+            type: "converted-or-closed",
+            expected: "Cwmni wedi ei drosi/cau"
+        },
+        {
+            type: "private-unlimited-nsc",
+            expected: "Cwmni preifat anghyfyngedig heb gyfalaf cyfranddaliadau"
+        },
+        {
+            type: "protected-cell-company",
+            expected: "Cwmni Cell Warchodedig"
+        },
+        {
+            type: "assurance-company",
+            expected: "Cwmni aswiriant"
+        },
+        {
+            type: "oversea-company",
+            expected: "Cwmni tramor"
+        }
+    ];
+    it.each(companyTypeTestData)("should display company typs in Welsh - $type to $expected", async ({ type, expected }) => {
+        session.data.extra_data.companyProfile = { ...badFormatCompanyProfile };
+        session.data.extra_data.companyProfile.type = type;
+        const response = await router.get(`${url}?lang=cy`);
+        expect(response.text).toContain(expected);
     });
 });
 
