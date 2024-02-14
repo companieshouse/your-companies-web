@@ -1,5 +1,10 @@
-import { Association, Associations } from "types/associations";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../constants";
+import { Associations } from "types/associations";
+import {
+    COMPNANY_ASSOCIATED_WITH_USER,
+    COMPNANY_NOT_ASSOCIATED_WITH_USER,
+    USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS,
+    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
+} from "../constants";
 
 /**
  * Check if there is an association between the user and the company.
@@ -88,4 +93,9 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
         ]
     } as Associations;
     return Promise.resolve(associations);
+};
+
+export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {
+    // TODO - replace this hard coded value with the API call once the API is available
+    return Promise.resolve(userEmail === "eva.brown@company.com" ? USER_REMOVED_FROM_COMPANY_ASSOCIATIONS : USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };
