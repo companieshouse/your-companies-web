@@ -1,7 +1,7 @@
 import { getEnvironmentValue } from "./lib/utils/environmentValue";
 
 // session.extra_data
-export const COMPANY_NUMBER = "companyNumber";
+export const COMPANY_NUMBER: string = "companyNumber";
 export const COMPANY_PROFILE = "companyProfile";
 export const USER_EMAIL = "userEmail";
 
@@ -10,12 +10,18 @@ export const ERROR_400_TEMPLATE = "partials/error_400";
 export const YOUR_COMPANIES_TEMPLATE_FOLDER = "router_views/your_companies";
 export const YOUR_COMPANIES_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/your_companies`;
 export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_company`;
+export const CONFIRM_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirm_company_details`;
+export const COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirmation_company_added`;
 export const MANAGE_AUTHORISED_PEOPLE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/manage_authorised_people`;
 
 // English and Welsh translation file names
 export const COMMON = "common";
 export const YOUR_COMPANIES_LANG = "your-companies";
 export const ADD_COMPANY_LANG = "add-company";
+export const CONFIRM_COMPANY_LANG = "confirm-company-details";
+export const COMPANY_ADD_SUCCESS = "confirmation-company-added";
+export const COMPANY_STATUS_LANG = "company-status";
+export const COMPANY_TYPE_LANG = "company-type";
 export const MANAGE_AUTHORISED_PEOPLE_LANG = "manage-authorised-people";
 
 // Routing paths
@@ -25,7 +31,11 @@ export const ADD_COMPANY_URL = "/add-company";
 export const YOUR_COMPANIES_URL = "/";
 export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`;
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
+export const COMPANY_ADDED_SUCCESS_URL = COMPANY_AUTH_PROTECTED_BASE + "/confirmation-company-added";
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
+export const YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL = `${LANDING_URL}${COMPANY_ADDED_SUCCESS_URL}`;
+export const CREATE_TRANSACTION_PATH_FULL = LANDING_URL + `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
+export const CREATE_TRANSACTION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/manage-authorised-people/:${COMPANY_NUMBER}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";

@@ -1,3 +1,4 @@
+import "express-async-errors";
 import express, { Request, Response, NextFunction } from "express";
 import nunjucks from "nunjucks";
 import path from "path";
@@ -15,8 +16,9 @@ const app = express();
 
 // const viewPath = path.join(__dirname, "/views");
 app.set("views", [
-    path.join(__dirname, "/views"),
-    path.join(__dirname, "/../node_modules/govuk-frontend")
+    path.join(__dirname, "views"),
+    path.join(__dirname, "/../node_modules/govuk-frontend"),
+    path.join(__dirname, "node_modules/govuk-frontend")
 ]);
 
 const nunjucksLoaderOpts = {
@@ -61,20 +63,20 @@ app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, comp
 // Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);
 app.use((req: Request, res: Response, next: NextFunction) => {
-    njk.addGlobal("lang", req.language);
+    njk.addGlobal("locale", req.language);
     const userEmailAddress = getLoggedInUserEmail(req.session);
     njk.addGlobal("userEmailAddress", userEmailAddress);
     next();
 });
+
+// Channel all requests through router dispatch
+routerDispatch(app);
 
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
     res.render("partials/error_500");
 });
-
-// Channel all requests through router dispatch
-routerDispatch(app);
 
 // Unhandled exceptions
 process.on("uncaughtException", (err: any) => {
