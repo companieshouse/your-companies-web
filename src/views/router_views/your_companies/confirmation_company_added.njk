@@ -23,7 +23,7 @@
         {{ govukNotificationBanner({
         html: html,
         type: "success",
-        titleText: lang.success
+        titleHtml: "<h1 class=\"govuk-notification-banner__title\">" + lang.success + "</h1>"
         }) }}
 
             <p class="govuk-body">{{ lang.you_can_now }}</p>
