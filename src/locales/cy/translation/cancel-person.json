@@ -1,6 +1,5 @@
 {
     "are_you_sure_you_want_to_cancel_start": "[CY] Are you sure you want to cancel authorisation for ",
     "are_you_sure_you_want_to_cancel_end": "?",
-    "select_yes_if_you_want_to_cancel_authorisation": "[CY] Select yes if you want to cancel authorisation",
-    "continue_button_to_proceed_to_the_next_page": "[CY] Continue button to proceed to the next page"
+    "select_yes_if_you_want_to_cancel_authorisation": "[CY] Select yes if you want to cancel authorisation"
 }

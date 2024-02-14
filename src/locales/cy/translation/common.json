@@ -6,5 +6,10 @@
     "yes": "[CY] Yes",
     "no": "[CY] No",
     "cancel": "[CY] Cancel",
-    "title_end": " - Find and update company information - GOV.UK"
+    "title_end": "[CY] - Find and update company information - GOV.UK",
+    "skip_to_main_content": "[CY] Skip to main content",
+    "customer_insights": "[CY] Customer insights",
+    "main_nav_bar": "[CY] Main nav bar",
+    "language_switcher": "[CY] Language switcher",
+    "continue_button_to_proceed_to_the_next_page": "[CY] Continue button to proceed to the next page"
 }
