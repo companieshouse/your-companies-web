@@ -14,7 +14,7 @@
 
         {% set html %}
             <p class="govuk-notification-banner__heading">
-          {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}
+          {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}<br>
           <a href="/your-companies" class="govuk-link">{{lang.view_your_companies}}</a>.
           </p>
           
@@ -23,7 +23,8 @@
         {{ govukNotificationBanner({
         html: html,
         type: "success",
-        titleHtml: "<h1 class=\"govuk-notification-banner__title\">" + lang.success + "</h1>"
+        titleText: lang.success,
+        titleHeadingLevel:"1"
         }) }}
 
             <p class="govuk-body">{{ lang.you_can_now }}</p>
