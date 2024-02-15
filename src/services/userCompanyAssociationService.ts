@@ -94,7 +94,7 @@ export const getCompanyAssociations = async (companyNumber: string, cancellation
         ]
     } as Associations;
     if (cancellation && cancellation.cancelPerson === YES) {
-        associations.items.splice(associations.items.findIndex(item => item.userEmail === cancellation.userEmail));
+        associations.items.splice(associations.items.findIndex(item => item.userEmail === cancellation.userEmail), 1);
     }
     return Promise.resolve(associations);
 };
