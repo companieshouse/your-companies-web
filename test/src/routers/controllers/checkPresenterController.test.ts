@@ -79,7 +79,7 @@ describe(`POST ${url}`, () => {
         const response = await router.post(url);
         expect(response.status).toEqual(302);
         expect(response.header.location).toEqual(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
-            `:${constants.COMPANY_NUMBER}`, "12345678"
+            `:${constants.COMPANY_NUMBER}`, "NI038379"
         ));
     });
 });
