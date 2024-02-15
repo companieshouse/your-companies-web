@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ManageAuthorisedPeopleHandler } from "../handlers/yourCompanies/manageAuthorisedPeople";
+import { ManageAuthorisedPeopleHandler } from "../handlers/yourCompanies/manageAuthorisedPeopleHandler";
 import { MANAGE_AUTHORISED_PEOPLE_TEMPLATE } from "../../constants";
 
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response, next: NextFunction) => {

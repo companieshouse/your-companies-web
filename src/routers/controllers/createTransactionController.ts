@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import * as constants from "../../constants";
-import logger from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import * as urlUtils from "../../lib/utils/urlUtils";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { createAccountsAssociation, postTransaction } from "../../services/transactionService";
 
-export const createTransaction = async (req: Request, res: Response, next: NextFunction) => {
+export const createTransactionControllerGet = async (req: Request, res: Response, next: NextFunction) => {
     const DESCRIPTION = "Accounts Association Transaction";
     const REFERENCE = "AccountsAssociationReference";
     const session = req.session as Session;

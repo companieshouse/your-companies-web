@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "../generic";
+import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import {
     CANCEL_PERSON,
