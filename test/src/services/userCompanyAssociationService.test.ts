@@ -109,7 +109,7 @@ describe("User Company Association Service", () => {
                 ]
             } as Associations;
             // When
-            const result = getCompanyAssociations(companyNumber);
+            const result = getCompanyAssociations(companyNumber, undefined);
             // Then
             expect(result).resolves.toEqual(expectedCompanyAssociations);
         });

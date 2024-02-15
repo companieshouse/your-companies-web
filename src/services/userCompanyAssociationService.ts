@@ -1,10 +1,11 @@
-import { Associations } from "types/associations";
+import { Associations } from "../types/associations";
 import {
     COMPNANY_ASSOCIATED_WITH_USER,
     COMPNANY_NOT_ASSOCIATED_WITH_USER,
-    USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS,
-    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
+    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS,
+    YES
 } from "../constants";
+import { Cancellation } from "../types/cancellation";
 
 /**
  * Check if there is an association between the user and the company.
@@ -40,7 +41,7 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [] } as Associations);
 };
 
-export const getCompanyAssociations = async (companyNumber: string): Promise<Associations> => {
+export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
     // TODO - replace this hard coded value with the API call once the API is available
     const associations: Associations = companyNumber === "NI038379" ? {
         items: [
@@ -92,10 +93,13 @@ export const getCompanyAssociations = async (companyNumber: string): Promise<Ass
             }
         ]
     } as Associations;
+    if (cancellation && cancellation.cancelPerson === YES) {
+        associations.items.splice(associations.items.findIndex(item => item.userEmail === cancellation.userEmail));
+    }
     return Promise.resolve(associations);
 };
 
 export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {
     // TODO - replace this hard coded value with the API call once the API is available
-    return Promise.resolve(userEmail === "eva.brown@company.com" ? USER_REMOVED_FROM_COMPANY_ASSOCIATIONS : USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+    return Promise.resolve(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };

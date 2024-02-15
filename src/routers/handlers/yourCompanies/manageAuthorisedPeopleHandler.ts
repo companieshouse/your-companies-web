@@ -43,7 +43,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             }
         }
 
-        const companyAssociations: Associations = await getCompanyAssociations(companyNumber);
+        const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
         this.viewData.companyAssociations = companyAssociations;
         const href = YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, REFERER_URL, href);
