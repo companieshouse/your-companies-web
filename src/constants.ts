@@ -4,6 +4,7 @@ import { getEnvironmentValue } from "./lib/utils/environmentValue";
 export const COMPANY_NUMBER: string = "companyNumber";
 export const COMPANY_PROFILE = "companyProfile";
 export const USER_EMAIL = "userEmail";
+export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
@@ -52,6 +53,9 @@ export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_comp
 export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";
 export const THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT = "this_company_has_already_been_added_to_your_account";
 export const ENTER_A_COMPANY_NUMBER = "enter_a_company_number";
+export const ERRORS_EMAIL_REQUIRED = "errors_email_required";
+export const ERRORS_EMAIL_INVALID = "errors_email_invalid";
+export const ERRORS_EMAIL_ALREADY_AUTHORISED = "errors_email_already_authorised";
 
 // HTTP Methods
 export const GET = "GET";

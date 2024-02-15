@@ -10,7 +10,7 @@ import { ViewData } from "../../types/util-types";
 import { validateEmailString } from "../../lib/validation/generic";
 import { setExtraData } from "../../lib/utils/sessionUtils";
 
-export const addPresenterControllerGet = async (
+export const addPresenterController = async (
     req: Request,
     res: Response
 ) => {
@@ -29,7 +29,7 @@ export const addPresenterControllerGet = async (
         )
     };
 
-    if (req.method === "POST") {
+    if (req.method === constants.POST) {
         const setError = (prop: string) => {
             viewData.errors = {
                 email: {
@@ -39,16 +39,16 @@ export const addPresenterControllerGet = async (
         };
         const email = req.body.email.trim();
         if (!email) {
-            setError("errors_email_required");
+            setError(constants.ERRORS_EMAIL_REQUIRED);
         } else if (!validateEmailString(email)) {
-            setError("errors_email_invalid");
+            setError(constants.ERRORS_EMAIL_INVALID);
         } else if (await isEmailAuthorised(email, companyNumber)) {
-            viewData.lang.errors_email_already_authorised += companyName;
-            setError("errors_email_already_authorised");
+            viewData.lang[constants.ERRORS_EMAIL_ALREADY_AUTHORISED] += companyName;
+            setError(constants.ERRORS_EMAIL_ALREADY_AUTHORISED);
         }
 
         if (!viewData.errors) {
-            setExtraData(req.session, "authorisedPersonEmail", email);
+            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
             return res.redirect(
                 getUrlWithCompanyNumber(
                     constants.fullPathsWithCompanyAuth.CHECK_PRESENTER,

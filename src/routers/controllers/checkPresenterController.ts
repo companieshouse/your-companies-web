@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { pages } from "../../constants";
 import { getTranslationsForView } from "../../lib/utils/translations";
 import * as constants from "../../constants";
@@ -7,16 +7,16 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
 import { Session } from "@companieshouse/node-session-handler";
 
-export const checkPresenterControllerGet = async (req: Request, res: Response, next: NextFunction) => {
+export const checkPresenterController = async (req: Request, res: Response) => {
     const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER] as string);
-    if (req.method === "POST") {
+    if (req.method === constants.POST) {
         return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
             `:${constants.COMPANY_NUMBER}`,
             company.companyNumber
         ));
     }
     const session: Session = req.session as Session;
-    const emailAddress: string | undefined = session?.getExtraData("authorisedPersonEmail");
+    const emailAddress: string | undefined = session?.getExtraData(constants.AUTHORISED_PERSON_EMAIL);
 
     const viewData = {
         lang: getTranslationsForView(req.t, pages.CHECK_PRESENTER),

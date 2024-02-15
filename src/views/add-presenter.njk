@@ -21,7 +21,8 @@
 
 {% block main_content %}
 
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
         <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
         <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
             {{ lang.authorised_persons_email_address }}
@@ -54,6 +55,6 @@
                 } %}
                 {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
             </form>
-
+        </div>
     </div>
 {% endblock %}
