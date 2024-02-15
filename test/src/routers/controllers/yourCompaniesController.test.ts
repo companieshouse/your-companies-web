@@ -187,7 +187,7 @@ describe("POST /your-companies/add-company", () => {
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validDisolvedCompanyProfile);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "23456789" });
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
@@ -204,7 +204,7 @@ describe("POST /your-companies/add-company", () => {
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validDisolvedCompanyProfile);
         // When
-        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "12345678" });
+        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "23456789" });
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
@@ -337,7 +337,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.NOT_FOUND
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company?lang=en");
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "" });
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
@@ -356,7 +356,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.NOT_FOUND
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company?lang=cy");
+        const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "" });
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
@@ -375,7 +375,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.BAD_GATEWAY
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company").send({ companyNumber: "11111111" });
+        const response = await router.post("/your-companies/add-company").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(errorManifest.generic.serverError.summary);
     });

@@ -66,6 +66,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("locale", req.language);
     const userEmailAddress = getLoggedInUserEmail(req.session);
     njk.addGlobal("userEmailAddress", userEmailAddress);
+    njk.addGlobal("feedbackSource", req.originalUrl);
     next();
 });
 

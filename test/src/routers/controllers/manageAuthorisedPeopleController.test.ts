@@ -13,7 +13,8 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     return {
         __esModule: true,
         ...originalModule,
-        getLoggedInUserEmail: jest.fn(() => "test@test.com")
+        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
+        setExtraData: jest.fn()
     };
 });
 
@@ -29,7 +30,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {
-        companyAssociationsSpy.mockReturnValue(emptyAssociations);
+        companyAssociationsSpy.mockReturnValue(companyAssociations);
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();

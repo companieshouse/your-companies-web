@@ -2,5 +2,14 @@
     "back_link": "Back",
     "continue": "Continue",
     "there_is_a_problem": "There is a problem",
-    "link_back_to_previous_page": "Link back to the previous page"
+    "link_back_to_previous_page": "Link back to the previous page",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "title_end": " - Find and update company information - GOV.UK",
+    "skip_to_main_content": "Skip to main content",
+    "customer_insights": "Customer insights",
+    "main_nav_bar": "Main nav bar",
+    "language_switcher": "Language switcher",
+    "continue_button_to_proceed_to_the_next_page": "Continue button to proceed to the next page"
 }

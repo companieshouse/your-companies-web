@@ -1,0 +1,76 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.are_you_sure_you_want_to_cancel_start + userEmail + lang.are_you_sure_you_want_to_cancel_end + lang.title_end %}
+
+{% block back_link %}
+
+    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
+        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
+    </div>
+
+{% endblock %}
+
+{% block main_content %}
+
+    {% set legendContent %}
+    <span class="govuk-caption-l">{{ companyName }}</span>
+    <h1 class="govuk-fieldset__heading">
+        {{ lang.are_you_sure_you_want_to_cancel_start + userEmail + lang.are_you_sure_you_want_to_cancel_end }}
+    </h1>
+    {% endset %}
+
+    {% set message = null %}
+
+    {% for key, value in errors %}
+        {% if key == "cancelPerson" %}
+            {% set message = {
+                text: lang[value.text]
+            } %}
+        {% endif %}
+    {% endfor %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form method="post">
+                {{ govukRadios({
+                        classes: "govuk-radios--inline",
+                        name: "cancelPerson",
+                        fieldset: {
+                            legend: {
+                                html: legendContent,
+                                classes: "govuk-fieldset__legend--l"
+                            },
+                            classes: "govuk-fieldset"
+                        },
+                        items: [
+                            {
+                                value: "yes",
+                                text: lang.yes
+                            },
+                            {
+                                value: "no",
+                                text: lang.no
+                            }
+                        ],
+                        errorMessage: message
+                    })
+                }}
+
+                {% set button_attributes = {
+                    role: "button",
+                    "aria-label": lang.continue_button_to_proceed_to_the_next_page
+                } %}
+                <div class="govuk-button-group">
+                    {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
+
+                    <a class="govuk-link" href="{{backLinkHref}}" aria-label="{{lang.link_to_cancel_the_authorisation_cancellation_process}}">{{lang.cancel}}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
