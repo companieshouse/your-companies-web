@@ -1,0 +1,5 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+    <div role="navigation" aria-label="back link to previous page">
+        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
+    </div>

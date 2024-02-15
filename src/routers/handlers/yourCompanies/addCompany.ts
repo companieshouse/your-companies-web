@@ -10,6 +10,7 @@ import {
     THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT,
     ADD_COMPANY_LANG,
     COMPNANY_ASSOCIATED_WITH_USER,
+    COMPANY_NUMBER,
     ADD_COMPANY_URL,
     ENTER_A_COMPANY_NUMBER
 } from "../../../constants";
@@ -45,6 +46,8 @@ export class AddCompanyHandler extends GenericHandler {
                             }
                         };
                     } else {
+                        setExtraData(req.session, COMPANY_PROFILE, companyProfile);
+                        setExtraData(req.session, COMPANY_NUMBER, companyProfile.companyNumber);
                         const userEmailAddress = getLoggedInUserEmail(req.session);
                         const isAssociated: string = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
                         if (isAssociated === COMPNANY_ASSOCIATED_WITH_USER) {
@@ -73,7 +76,6 @@ export class AddCompanyHandler extends GenericHandler {
                 this.viewData.errors = this.processHandlerException(err);
             }
         }
-
         return Promise.resolve(this.viewData);
     }
 

@@ -1,0 +1,44 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% extends "layouts/default.njk" %}
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+        {% set html %}
+            <p class="govuk-notification-banner__heading">
+          {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}
+          <a href="/your-companies" class="govuk-link">{{lang.view_your_companies}}</a>.
+          </p>
+          
+        {% endset %}
+
+        {{ govukNotificationBanner({
+        html: html,
+        type: "success",
+        titleText: lang.success,
+        titleHeadingLevel:"1"
+        }) }}
+
+            <p class="govuk-body">{{ lang.you_can_now }}</p>
+            <ul class="govuk-list govuk-list--bullet">
+                 <li>{{ lang.bullet_1 }}</li>
+                 <li>{{ lang.bullet_2 }}</li>
+                 <li>{{ lang.bullet_3 }}</li>
+            </ul>
+
+            {{ govukInsetText({
+            text: lang.last_paragraph
+            }) }}
+
+        </div>
+    </div>
+
+{% endblock %}
