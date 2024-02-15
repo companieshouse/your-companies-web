@@ -1,4 +1,5 @@
 import { getEnvironmentValue } from "./lib/utils/environmentValue";
+import { appendToRecord } from "./lib/utils/urlUtils";
 
 // session.extra_data
 export const COMPANY_NUMBER: string = "companyNumber";
@@ -86,18 +87,15 @@ export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
 export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
 
-export const addToPages = (str:string, fromObj:Record<string, string>) => {
-    const newObj:Record<string, string> = {};
-    Object.keys(fromObj).forEach(key => {
-        newObj[key] = str + fromObj[key];
-    });
-    return newObj;
-};
-
+// pages names, also the template njk name and the translation file name
 export const pages:Record<string, string> = {
     ADD_PRESENTER: "add-presenter",
     CHECK_PRESENTER: "add-presenter-check-details"
 } as const;
-export const paths = addToPages("/", pages);
-export const pathsWithCompanyAuth = addToPages(COMPANY_AUTH_PROTECTED_BASE, paths);
-export const fullPathsWithCompanyAuth = addToPages(LANDING_URL, pathsWithCompanyAuth);
+
+// add-presenter => /add-presenter
+export const paths = appendToRecord(YOUR_COMPANIES_URL, pages);
+// /add-presenter => /company/:companyNumber/add-presenter
+export const pathsWithCompanyAuth = appendToRecord(COMPANY_AUTH_PROTECTED_BASE, paths);
+// /company/:companyNumber/add-presenter => /your-companies/company/:companyNumber/add-presenter
+export const fullPathsWithCompanyAuth = appendToRecord(LANDING_URL, pathsWithCompanyAuth);

@@ -30,10 +30,10 @@ export const addPresenterController = async (
     };
 
     if (req.method === constants.POST) {
-        const setError = (prop: string) => {
+        const setError = (errProp: string) => {
             viewData.errors = {
                 email: {
-                    text: prop
+                    text: errProp
                 }
             };
         };
