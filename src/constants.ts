@@ -2,10 +2,13 @@ import { getEnvironmentValue } from "./lib/utils/environmentValue";
 import { appendToRecord } from "./lib/utils/urlUtils";
 
 // session.extra_data
-export const COMPANY_NUMBER: string = "companyNumber";
+export const COMPANY_NUMBER = "companyNumber";
+export const COMPANY_NAME = "companyName";
 export const COMPANY_PROFILE = "companyProfile";
 export const USER_EMAIL = "userEmail";
 export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
+export const REFERER_URL = "refererUrl";
+export const CANCEL_PERSON = "cancelPerson";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
@@ -15,6 +18,7 @@ export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_
 export const CONFIRM_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirm_company_details`;
 export const COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirmation_company_added`;
 export const MANAGE_AUTHORISED_PEOPLE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/manage_authorised_people`;
+export const CANCEL_PERSON_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/cancel_person`;
 
 // English and Welsh translation file names
 export const COMMON = "common";
@@ -25,6 +29,7 @@ export const COMPANY_ADD_SUCCESS = "confirmation-company-added";
 export const COMPANY_STATUS_LANG = "company-status";
 export const COMPANY_TYPE_LANG = "company-type";
 export const MANAGE_AUTHORISED_PEOPLE_LANG = "manage-authorised-people";
+export const CANCEL_PERSON_LANG = "cancel-person";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -48,6 +53,8 @@ export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-peo
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
 export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
+export const CONFIRMATION_CANCEL_PERSON_URL = `/confirmation-cancel-person/:${USER_EMAIL}`;
+export const YOUR_COMPANIES_CONFIRMATION_CANCEL_PERSON_URL = `${LANDING_URL}${CONFIRMATION_CANCEL_PERSON_URL}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -57,6 +64,7 @@ export const ENTER_A_COMPANY_NUMBER = "enter_a_company_number";
 export const ERRORS_EMAIL_REQUIRED = "errors_email_required";
 export const ERRORS_EMAIL_INVALID = "errors_email_invalid";
 export const ERRORS_EMAIL_ALREADY_AUTHORISED = "errors_email_already_authorised";
+export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you_want_to_cancel_authorisation";
 
 // HTTP Methods
 export const GET = "GET";
@@ -86,6 +94,7 @@ export const TRUE = "true";
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
 export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
+export const YES = "yes";
 
 // pages names, also the template njk name and the translation file name
 export const pages:Record<string, string> = {

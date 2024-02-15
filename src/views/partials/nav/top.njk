@@ -3,7 +3,7 @@
         <div class="js-toggle-nav" id="global-nav">
             <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
 
-            <nav role="navigation" class="content mobile-hidden" aria-label="main nav bar">
+            <nav role="navigation" class="content mobile-hidden" aria-label="{{lang.main_nav_bar}}">
                 <ul id="navigation" class="mobile-hidden">
                     <li id="signed-in-user" class="user">
                         {{ userEmailAddress }}:
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<nav class="govuk-language-select" role="navigation" aria-label="Language switcher">
+<nav class="govuk-language-select" role="navigation" aria-label="{{lang.language_switcher}}">
     <ul class="govuk-language-select__list">
         {% if locale == "en" %}
             <li class="govuk-language-select__list-item">

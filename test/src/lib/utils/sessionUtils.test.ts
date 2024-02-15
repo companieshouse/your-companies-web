@@ -1,6 +1,6 @@
 import { Session } from "@companieshouse/node-session-handler";
 import { getSessionRequestWithPermission, userMail } from "../../../mocks/session.mock";
-import { getLoggedInUserEmail } from "../../../../src/lib/utils/sessionUtils";
+import { getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
@@ -15,6 +15,55 @@ describe("Session Utils", () => {
 
         it("should return undefined instead of user email address if session data is missing", () => {
             expect(getLoggedInUserEmail(new Session())).toBeUndefined;
+        });
+    });
+
+    describe("setExtraData", () => {
+        it("should set extra data to session if provided", () => {
+            // Given
+            const session: Session = new Session();
+            const key = "testKey";
+            const value = "testValue";
+            // When
+            setExtraData(session, key, value);
+            // Then
+            expect(session.data.extra_data[key]).toEqual(value);
+        });
+    });
+
+    describe("getExtraData", () => {
+        it("should return extra data from session if exists", () => {
+            // Given
+            const session: Session = new Session();
+            const key = "testKey";
+            const value = "testValue";
+            session.data.extra_data[key] = value;
+            // When
+            const result = getExtraData(session, key);
+            // Then
+            expect(result).toEqual(value);
+        });
+
+        it("should return undefined if session is not provided", () => {
+            // Given
+            const session = undefined;
+            const key = "testKey";
+            // When
+            const result = getExtraData(session, key);
+            // Then
+            expect(result).toEqual(undefined);
+        });
+
+        it("should return undefined if there is no data with the provided key", () => {
+            // Given
+            const session: Session = new Session();
+            const key = "testKey";
+            const value = "testValue";
+            session.data.extra_data[key] = value;
+            // When
+            const result = getExtraData(session, "test");
+            // Then
+            expect(result).toEqual(undefined);
         });
     });
 });

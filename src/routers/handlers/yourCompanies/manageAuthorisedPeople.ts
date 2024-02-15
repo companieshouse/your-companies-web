@@ -2,18 +2,22 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
 import {
+    COMPANY_NAME,
     COMPANY_NUMBER,
     LANDING_URL,
     MANAGE_AUTHORISED_PEOPLE_LANG,
     YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL,
     YOUR_COMPANIES_CANCEL_PERSON_URL,
     YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
-    fullPathsWithCompanyAuth
+    fullPathsWithCompanyAuth,
+    REFERER_URL,
+    YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
 import { getCompanyAssociations } from "../../../services/userCompanyAssociationService";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -25,6 +29,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.lang = getTranslationsForView(req.t, MANAGE_AUTHORISED_PEOPLE_LANG);
         const companyAssociations: Associations = await getCompanyAssociations(companyNumber);
         this.viewData.companyAssociations = companyAssociations;
+        const href = YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${COMPANY_NUMBER}`, companyNumber);
+        setExtraData(req.session, REFERER_URL, href);
+        setExtraData(req.session, COMPANY_NAME, companyAssociations.items[0].companyName);
         return Promise.resolve(this.viewData);
     }
 

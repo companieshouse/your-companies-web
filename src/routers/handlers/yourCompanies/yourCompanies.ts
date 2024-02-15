@@ -27,8 +27,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
     private getViewData (userAssociations: Associations): any {
         const viewData: Record<string, any> = {
-            buttonHref: YOUR_COMPANIES_ADD_COMPANY_URL,
-            feedbackSource: LANDING_URL
+            buttonHref: YOUR_COMPANIES_ADD_COMPANY_URL
         };
 
         if (userAssociations?.items?.length > 0) {
