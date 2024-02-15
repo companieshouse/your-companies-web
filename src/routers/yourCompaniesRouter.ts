@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
     ADD_COMPANY_URL,
     MANAGE_AUTHORISED_PEOPLE_URL,
-    YOUR_COMPANIES_URL
+    YOUR_COMPANIES_URL,
+    pathsWithCompanyAuth
 } from "../constants";
 import { createTransaction } from "./controllers/createTransaction";
 import { confirmCompanyGet, confirmCompanyPost } from "./controllers/confirmCompany";
@@ -11,6 +12,8 @@ import * as constants from "../constants";
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet } from "./controllers/yourCompaniesController";
+import { addPresenterControllerGet } from "./controllers/addPresenterController";
+import { checkPresenterControllerGet } from "./controllers/checkPresenterController";
 
 const router: Router = Router();
 
@@ -26,5 +29,10 @@ router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyPost);
 router.get(constants.CREATE_TRANSACTION_PATH, createTransaction);
 
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAdded);
+
+router.get(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerGet);
+router.post(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterControllerGet);
+router.get(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerGet);
+router.post(pathsWithCompanyAuth.CHECK_PRESENTER, checkPresenterControllerGet);
 
 export default router;

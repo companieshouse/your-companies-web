@@ -1,0 +1,69 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% extends "layouts/default.njk" %}
+
+    {% block back_link %}
+    {% include "partials/back_link.njk" %}
+    {% endblock %} 
+
+{% block main_content %}
+
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+            {{ lang.check_authorised_persons_email_address }}
+        </h1>
+
+
+            <form method="post">
+
+
+{{ govukSummaryList({
+  rows: [
+   {
+      key: {
+        text: ""
+      },
+      value: {
+        html: ""
+      },
+      actions: {
+        items: [
+          {
+          text:""
+          }
+        ]
+      }
+    },
+    {
+      key: {
+        text: lang.email_address
+      },
+      value: {
+        html: emailAddress
+      },
+      actions: {
+        items: [
+          {
+            href: backLinkHref,
+            text: lang.change,
+            visuallyHiddenText: lang.change
+          }
+        ]
+      }
+    }
+  ]
+}) }}
+
+
+                {% set button_attributes = {
+                    role: "button",
+                    "aria-label": "continue button to proceed to the next page"
+                } %}
+                {{ govukButton({text: lang.confirm_and_send_email, type: "submit", attributes: button_attributes }) }}
+            </form>
+
+    </div>
+{% endblock %}

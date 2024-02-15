@@ -1,0 +1,11 @@
+{
+    "authorised_persons_email_address": "What is the authorised person's email address?",
+    "tell_us_the_email": "Tell us the email address of the person you want to digitally authorise to file online for this company.",
+    "you_can_change_who": "You can change who is digitally authorised to file at any time.",
+    "email_address": "Email address",
+    "well_send_them_an_email": "We'll send them an email that contains a link.",
+    "title": "- Find and update company information - GOV.UK",
+    "errors_email_required": "There is a problem - Enter the authorised person’s email address",
+    "errors_email_invalid": "There is a problem - Enter an email address in the correct format, like name@example.com",
+    "errors_email_already_authorised": "There is a problem - This person is already authorised to file for "
+}

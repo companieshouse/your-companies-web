@@ -64,8 +64,8 @@ app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, comp
 enableI18next(app);
 app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("locale", req.language);
-    const userEmailAddress = getLoggedInUserEmail(req.session);
-    njk.addGlobal("userEmailAddress", userEmailAddress);
+    njk.addGlobal("userEmailAddress", getLoggedInUserEmail(req.session));
+    njk.addGlobal("feedbackSource", req.originalUrl);
     next();
 });
 

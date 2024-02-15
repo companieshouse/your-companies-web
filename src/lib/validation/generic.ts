@@ -4,6 +4,7 @@
 
 import logger from "./../Logger";
 import errorManifest from "./../utils/error_manifests/default";
+import { VALID_EMAIL_REGEX_PATTERN } from "../../constants";
 
 export class GenericValidator {
 
@@ -79,3 +80,10 @@ export class GenericValidator {
         return false;
     }
 };
+
+export function validateEmailString (emailString: string): boolean {
+    const regexResult: RegExpMatchArray | null = emailString.match(
+        VALID_EMAIL_REGEX_PATTERN
+    );
+    return regexResult !== null;
+}

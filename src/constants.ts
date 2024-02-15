@@ -80,3 +80,20 @@ export const TRUE = "true";
 // various
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
+export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
+
+export const addToPages = (str:string, fromObj:Record<string, string>) => {
+    const newObj:Record<string, string> = {};
+    Object.keys(fromObj).forEach(key => {
+        newObj[key] = str + fromObj[key];
+    });
+    return newObj;
+};
+
+export const pages:Record<string, string> = {
+    ADD_PRESENTER: "add-presenter",
+    CHECK_PRESENTER: "add-presenter-check-details"
+} as const;
+export const paths = addToPages("/", pages);
+export const pathsWithCompanyAuth = addToPages(COMPANY_AUTH_PROTECTED_BASE, paths);
+export const fullPathsWithCompanyAuth = addToPages(LANDING_URL, pathsWithCompanyAuth);
