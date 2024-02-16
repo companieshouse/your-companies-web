@@ -98,3 +98,39 @@ export const isEmailAuthorised = async (email: string, companyNumber:string): Pr
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
 };
+
+export const addUserEmailAssociation = async (email: string, companyNumber:string): Promise<void> => {
+    if (!email) return;
+    if (companyNumber === "NI038379") {
+        const isAssociated = await isEmailAuthorised(email, companyNumber);
+        if (!isAssociated) {
+            polishBrewItems.items.push(
+                {
+                    id: "",
+                    userId: "",
+                    userEmail: email,
+                    companyNumber: "NI038379",
+                    companyName: "THE POLISH BREWERY",
+                    status: "Awaiting confirmation",
+                    displayName: ""
+                }
+            );
+        }
+    }
+    if (companyNumber === "01777777") {
+        const isAssociated = await isEmailAuthorised(email, companyNumber);
+        if (!isAssociated) {
+            britishAirwaysItems.items.push(
+                {
+                    id: "",
+                    userId: "",
+                    userEmail: email,
+                    displayName: "",
+                    companyNumber: "01777777",
+                    companyName: "BRITISH AIRWAYS PLC",
+                    status: "Awaiting confirmation"
+                }
+            );
+        }
+    }
+};

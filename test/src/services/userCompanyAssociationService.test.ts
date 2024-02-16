@@ -6,7 +6,8 @@ import {
     getCompanyAssociations,
     getUserAssociations,
     isCompanyAssociatedWithUser,
-    isEmailAuthorised
+    isEmailAuthorised,
+    addUserEmailAssociation
 } from "../../../src/services/userCompanyAssociationService";
 import { Associations } from "../../../src/types/associations";
 
@@ -140,6 +141,46 @@ describe("User Company Association Service", () => {
             const companyNumber = "NI038379";
             const result = await isEmailAuthorised(userEmailAddress, companyNumber);
             expect(result).toEqual(false);
+        });
+    });
+    describe("addUserEmailAssociation", () => {
+        it("should not add the email if associated", async () => {
+            const userEmailAddress = "demo@ch.gov.uk";
+            const companyNumber = "NI038379";
+            await addUserEmailAssociation(userEmailAddress, companyNumber);
+            const resultAfter = await getCompanyAssociations(companyNumber);
+            expect(resultAfter.items.length).toEqual(4);
+        });
+        it("should add the email if not associated", async () => {
+            const userEmailAddress = "testemail@ch.gov.uk";
+            const companyNumber = "NI038379";
+            const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
+            await addUserEmailAssociation(userEmailAddress, companyNumber);
+            const result = await getCompanyAssociations(companyNumber);
+            const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
+            expect(userAuthorisedBefore).toBe(false);
+            expect(result.items.length).toEqual(5);
+            expect(userAuthorised).toBe(true);
+        });
+    });
+    describe("addUserEmailAssociation", () => {
+        it("should not add the email if associated", async () => {
+            const userEmailAddress = "john.smith@test.com";
+            const companyNumber = "01777777";
+            await addUserEmailAssociation(userEmailAddress, companyNumber);
+            const resultAfter = await getCompanyAssociations(companyNumber);
+            expect(resultAfter.items.length).toEqual(1);
+        });
+        it("should add the email if not associated", async () => {
+            const userEmailAddress = "testemail@ch.gov.uk";
+            const companyNumber = "01777777";
+            const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
+            await addUserEmailAssociation(userEmailAddress, companyNumber);
+            const result = await getCompanyAssociations(companyNumber);
+            const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
+            expect(userAuthorisedBefore).toBe(false);
+            expect(result.items.length).toEqual(2);
+            expect(userAuthorised).toBe(true);
         });
     });
 });

@@ -2,6 +2,7 @@ import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { getCompanyProfile } from "../../../../src/services/companyProfileService";
+import { addUserEmailAssociation } from "../../../../src/services/userCompanyAssociationService";
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
@@ -17,6 +18,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 
 const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
+const mockAddUserEmailAssociation = addUserEmailAssociation as jest.Mock;
 
 const router = supertest(app);
 const en = require("../../../../src/locales/en/translation/add-presenter-check-details.json");
@@ -67,7 +69,13 @@ describe(`POST ${url}`, () => {
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
     });
-
+    it("should call addUserEmailAssociation with correct data", async () => {
+        const companyNumber = "NI038379";
+        const email = "bruce@bruce.com";
+        session.data.extra_data.authorisedPersonEmail = email;
+        await router.post(url);
+        expect(mockAddUserEmailAssociation).toHaveBeenCalledWith(email, companyNumber);
+    });
     it("should redirect to the manage authorised people page", async () => {
         const response = await router.post(url);
         expect(response.status).toEqual(302);
