@@ -93,7 +93,6 @@ export const TRUE = "true";
 // various
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
-export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
 export const YES = "yes";
 
 // pages names, also the template njk name and the translation file name

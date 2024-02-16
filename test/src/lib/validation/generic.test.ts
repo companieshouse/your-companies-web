@@ -20,13 +20,10 @@ describe("Should validate emails", () => {
         { email: "a@b", expected: false },
         { email: "undefined", expected: false },
         { email: "12345", expected: false },
-        { email: "j@j.c", expected: true },
-        { email: "email@123.123.123.123", expected: true },
-        { email: "email@[123.123.123.123]", expected: true },
-        { email: "“email”@example.com", expected: true },
         { email: "234567890@example.com", expected: true },
         { email: "email@example-one.com", expected: true },
-        { email: "_______@example.com", expected: true }
+        { email: "_______@example.com", expected: true },
+        { email: "bob@e@xample.com", expected: false }
     ])("should return $expected for $email", ({ email, expected }) => {
         expect(validateEmailString(email)).toEqual(expected);
     });

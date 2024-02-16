@@ -4,7 +4,7 @@
 
 import logger from "./../Logger";
 import errorManifest from "./../utils/error_manifests/default";
-import { VALID_EMAIL_REGEX_PATTERN } from "../../constants";
+import { z } from "zod";
 
 export class GenericValidator {
 
@@ -81,9 +81,12 @@ export class GenericValidator {
     }
 };
 
-export function validateEmailString (emailString: string): boolean {
-    const regexResult: RegExpMatchArray | null = emailString.match(
-        VALID_EMAIL_REGEX_PATTERN
-    );
-    return regexResult !== null;
+export function validateEmailString (emailString: string) {
+    const emailSchema = z.string().email();
+    try {
+        emailSchema.parse(emailString);
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
