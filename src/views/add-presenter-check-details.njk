@@ -61,7 +61,7 @@
 
                 {% set button_attributes = {
                     role: "button",
-                    "aria-label": "continue button to proceed to the next page"
+                    "aria-label": lang.continue_button_to_proceed_to_the_next_page
                 } %}
                 {{ govukButton({text: lang.confirm_and_send_email, type: "submit", attributes: button_attributes }) }}
             </form>

@@ -5,7 +5,7 @@
     "email_address": "Email address",
     "well_send_them_an_email": "We'll send them an email that contains a link.",
     "title": "What is the authorised person's email address? - Find and update company information - GOV.UK",
-    "errors_email_required": "There is a problem - Enter the authorised person’s email address",
-    "errors_email_invalid": "There is a problem - Enter an email address in the correct format, like name@example.com",
-    "errors_email_already_authorised": "There is a problem - This person is already authorised to file for "
+    "errors_email_required": "Enter the authorised person’s email address",
+    "errors_email_invalid": "Enter an email address in the correct format, like name@example.com",
+    "errors_email_already_authorised": "This person is already authorised to file for "
 }

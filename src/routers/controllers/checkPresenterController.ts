@@ -5,13 +5,12 @@ import * as constants from "../../constants";
 import { getCompanyProfile } from "../../services/companyProfileService";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
-import { Session } from "@companieshouse/node-session-handler";
 import { addUserEmailAssociation } from "../../services/userCompanyAssociationService";
+import { getExtraData } from "../../lib/utils/sessionUtils";
 
 export const checkPresenterController = async (req: Request, res: Response) => {
     const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER] as string);
-    const session: Session = req.session as Session;
-    const emailAddress: string | undefined = session?.getExtraData(constants.AUTHORISED_PERSON_EMAIL);
+    const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
 
     if (req.method === constants.POST) {
         if (emailAddress) {
