@@ -1,5 +1,5 @@
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../src/constants";
-import { getCompanyAssociations, getUserAssociations, isCompanyAssociatedWithUser } from "../../../src/services/userCompanyAssociationService";
+import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER, USER_REMOVED_FROM_COMPANY_ASSOCIATIONS } from "../../../src/constants";
+import { getCompanyAssociations, getUserAssociations, isCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../src/services/userCompanyAssociationService";
 import { Associations } from "../../../src/types/associations";
 
 describe("User Company Association Service", () => {
@@ -112,6 +112,18 @@ describe("User Company Association Service", () => {
             const result = getCompanyAssociations(companyNumber, undefined);
             // Then
             expect(result).resolves.toEqual(expectedCompanyAssociations);
+        });
+    });
+
+    describe("removeUserFromCompanyAssociations", () => {
+        it("should remove user from company associations", () => {
+            // Given
+            const userEmail = "test@test.com";
+            const companyNumber = "12345678";
+            // When
+            const result = removeUserFromCompanyAssociations(userEmail, companyNumber);
+            // Then
+            expect(result).resolves.toEqual(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         });
     });
 });
