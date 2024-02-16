@@ -5,7 +5,6 @@ import { getCompanyProfile } from "../../../../src/services/companyProfileServic
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
-import { isCompanyAssociatedWithUser } from "../../../../src/services/userCompanyAssociationService";
 import { NextFunction, Request, Response } from "express";
 
 jest.mock("../../../../src/services/companyProfileService");
@@ -67,12 +66,6 @@ describe(`POST ${url}`, () => {
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
-    });
-
-    it("should add user", async () => {
-        await router.post(url);
-        session.data.extra_data.authorisedPersonEmail = "bob@bob.com";
-        expect(isCompanyAssociatedWithUser("NI038379", "bob@bob.com")).toBeTruthy;
     });
 
     it("should redirect to the manage authorised people page", async () => {

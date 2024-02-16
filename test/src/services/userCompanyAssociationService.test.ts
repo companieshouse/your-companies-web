@@ -1,5 +1,13 @@
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../src/constants";
-import { getCompanyAssociations, getUserAssociations, isCompanyAssociatedWithUser } from "../../../src/services/userCompanyAssociationService";
+import {
+    COMPNANY_ASSOCIATED_WITH_USER,
+    COMPNANY_NOT_ASSOCIATED_WITH_USER
+} from "../../../src/constants";
+import {
+    getCompanyAssociations,
+    getUserAssociations,
+    isCompanyAssociatedWithUser,
+    isEmailAuthorised
+} from "../../../src/services/userCompanyAssociationService";
 import { Associations } from "../../../src/types/associations";
 
 describe("User Company Association Service", () => {
@@ -9,7 +17,10 @@ describe("User Company Association Service", () => {
             const companyNumber = "NI038379";
             const userEmailAddress = "test@test.com";
             // When
-            const result = isCompanyAssociatedWithUser(companyNumber, userEmailAddress);
+            const result = isCompanyAssociatedWithUser(
+                companyNumber,
+                userEmailAddress
+            );
             // Then
             expect(result).resolves.toEqual(COMPNANY_ASSOCIATED_WITH_USER);
         });
@@ -19,7 +30,10 @@ describe("User Company Association Service", () => {
             const companyNumber = "NI012345";
             const userEmailAddress = "test@test.com";
             // When
-            const result = isCompanyAssociatedWithUser(companyNumber, userEmailAddress);
+            const result = isCompanyAssociatedWithUser(
+                companyNumber,
+                userEmailAddress
+            );
             // Then
             expect(result).resolves.toEqual(COMPNANY_NOT_ASSOCIATED_WITH_USER);
         });
@@ -112,6 +126,20 @@ describe("User Company Association Service", () => {
             const result = getCompanyAssociations(companyNumber);
             // Then
             expect(result).resolves.toEqual(expectedCompanyAssociations);
+        });
+    });
+    describe("isEmailAuthorised", () => {
+        it("should return true is the email is associated", async () => {
+            const userEmailAddress = "demo@ch.gov.uk";
+            const companyNumber = "NI038379";
+            const result = await isEmailAuthorised(userEmailAddress, companyNumber);
+            expect(result).toEqual(true);
+        });
+        it("should return false is the email is not associated", async () => {
+            const userEmailAddress = "demo2@ch.gov.uk";
+            const companyNumber = "NI038379";
+            const result = await isEmailAuthorised(userEmailAddress, companyNumber);
+            expect(result).toEqual(false);
         });
     });
 });
