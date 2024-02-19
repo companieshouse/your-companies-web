@@ -3,7 +3,7 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
 
-export class RemovePersonHandler extends GenericHandler {
+export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     async execute (req: Request, res: Response, method: string): Promise<any> {
         this.viewData = this.getViewData(req);
