@@ -1,17 +1,20 @@
 import {
     COMPNANY_ASSOCIATED_WITH_USER,
-    COMPNANY_NOT_ASSOCIATED_WITH_USER
+    COMPNANY_NOT_ASSOCIATED_WITH_USER,
+    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
 } from "../../../src/constants";
 import {
     getCompanyAssociations,
     getUserAssociations,
     isCompanyAssociatedWithUser,
     isEmailAuthorised,
-    addUserEmailAssociation
+    addUserEmailAssociation,
+    removeUserFromCompanyAssociations
 } from "../../../src/services/userCompanyAssociationService";
 import { Associations } from "../../../src/types/associations";
 
 describe("User Company Association Service", () => {
+
     describe("isCompanyAssociatedWithUser", () => {
         it("should return confirmation if the company is associated with the user", () => {
             // Given
@@ -80,7 +83,6 @@ describe("User Company Association Service", () => {
             expect(result).resolves.toEqual(expectedAssociations);
         });
     });
-
     describe("getCompanyAssociations", () => {
         it("should return associations for the company if there are any", () => {
             // Given
@@ -124,7 +126,7 @@ describe("User Company Association Service", () => {
                 ]
             } as Associations;
             // When
-            const result = getCompanyAssociations(companyNumber);
+            const result = getCompanyAssociations(companyNumber, undefined);
             // Then
             expect(result).resolves.toEqual(expectedCompanyAssociations);
         });
@@ -143,12 +145,25 @@ describe("User Company Association Service", () => {
             expect(result).toEqual(false);
         });
     });
+
+    describe("removeUserFromCompanyAssociations", () => {
+        it("should remove user from company associations", () => {
+            // Given
+            const userEmail = "test@test.com";
+            const companyNumber = "12345678";
+            // When
+            const result = removeUserFromCompanyAssociations(userEmail, companyNumber);
+            // Then
+            expect(result).resolves.toEqual(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+        });
+    });
+
     describe("addUserEmailAssociation", () => {
         it("should not add the email if associated", async () => {
             const userEmailAddress = "demo@ch.gov.uk";
             const companyNumber = "NI038379";
             await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const resultAfter = await getCompanyAssociations(companyNumber);
+            const resultAfter = await getCompanyAssociations(companyNumber, undefined);
             expect(resultAfter.items.length).toEqual(4);
         });
         it("should add the email if not associated", async () => {
@@ -156,19 +171,20 @@ describe("User Company Association Service", () => {
             const companyNumber = "NI038379";
             const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
             await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const result = await getCompanyAssociations(companyNumber);
+            const result = await getCompanyAssociations(companyNumber, undefined);
             const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
             expect(userAuthorisedBefore).toBe(false);
             expect(result.items.length).toEqual(5);
             expect(userAuthorised).toBe(true);
         });
     });
+
     describe("addUserEmailAssociation", () => {
         it("should not add the email if associated", async () => {
             const userEmailAddress = "john.smith@test.com";
             const companyNumber = "01777777";
             await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const resultAfter = await getCompanyAssociations(companyNumber);
+            const resultAfter = await getCompanyAssociations(companyNumber, undefined);
             expect(resultAfter.items.length).toEqual(1);
         });
         it("should add the email if not associated", async () => {
@@ -176,7 +192,7 @@ describe("User Company Association Service", () => {
             const companyNumber = "01777777";
             const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
             await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const result = await getCompanyAssociations(companyNumber);
+            const result = await getCompanyAssociations(companyNumber, undefined);
             const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
             expect(userAuthorisedBefore).toBe(false);
             expect(result.items.length).toEqual(2);

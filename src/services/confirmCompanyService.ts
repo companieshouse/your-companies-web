@@ -1,4 +1,3 @@
-import { lookupCompanyStatus, lookupCompanyType } from "../lib/utils/api_enumerations";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { toReadableFormat } from "../lib/utils/date";
 

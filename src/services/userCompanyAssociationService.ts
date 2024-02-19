@@ -1,5 +1,11 @@
-import { Association, Associations } from "types/associations";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../constants";
+import { Associations } from "../types/associations";
+import {
+    COMPNANY_ASSOCIATED_WITH_USER,
+    COMPNANY_NOT_ASSOCIATED_WITH_USER,
+    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS,
+    YES
+} from "../constants";
+import { Cancellation } from "../types/cancellation";
 
 /**
  * Check if there is an association between the user and the company.
@@ -88,14 +94,23 @@ export const britishAirwaysItems = {
     ]
 } as Associations;
 
-export const getCompanyAssociations = async (companyNumber: string): Promise<Associations> => {
+// export const getCompanyAssociations = async (companyNumber: string): Promise<Associations> => {
+//     // TODO - replace this hard coded value with the API call once the API is available
+//     const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+//     return Promise.resolve(associations);
+// };
+export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
     // TODO - replace this hard coded value with the API call once the API is available
-    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems
+        : britishAirwaysItems;
+    if (cancellation && cancellation.cancelPerson === YES) {
+        associations.items.splice(associations.items.findIndex(item => item.userEmail === cancellation.userEmail), 1);
+    }
     return Promise.resolve(associations);
 };
 
 export const isEmailAuthorised = async (email: string, companyNumber:string): Promise<boolean> => {
-    const companyAssociations: Associations = await getCompanyAssociations(companyNumber);
+    const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
 };
 
@@ -133,4 +148,10 @@ export const addUserEmailAssociation = async (email: string, companyNumber:strin
             );
         }
     }
+
+};
+
+export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {
+    // TODO - replace this hard coded value with the API call once the API is available
+    return Promise.resolve(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };

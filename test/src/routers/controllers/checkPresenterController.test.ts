@@ -76,10 +76,10 @@ describe(`POST ${url}`, () => {
         await router.post(url);
         expect(mockAddUserEmailAssociation).toHaveBeenCalledWith(email, companyNumber);
     });
-    it("should redirect to the manage authorised people page", async () => {
+    it("should redirect to the manage authorised person added success page", async () => {
         const response = await router.post(url);
         expect(response.status).toEqual(302);
-        expect(response.header.location).toEqual(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
+        expect(response.header.location).toContain(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
             `:${constants.COMPANY_NUMBER}`, "NI038379"
         ));
     });

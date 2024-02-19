@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AddCompanyHandler } from "../handlers/yourCompanies/addCompany";
+import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
 import {
     ADD_COMPANY_PAGE_TEMPLATE,
     GET,

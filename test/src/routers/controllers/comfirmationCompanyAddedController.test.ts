@@ -1,13 +1,14 @@
-import mocks from "../../mocks/all.middleware.mock";
-import app from "../../../src/app";
+import mocks from "../../../mocks/all.middleware.mock";
+import app from "../../../../src/app";
 import supertest from "supertest";
-import { getCompanyProfile } from "../../../src/services/companyProfileService";
-import { validActiveCompanyProfile } from "../../mocks/companyProfile.mock";
-jest.mock("../../../src/services/companyProfileService");
+import { getCompanyProfile } from "../../../../src/services/companyProfileService";
+import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
+import en from "../../../../src/locales/en/translation/confirmation-company-added.json";
+import cyCommon from "../../../../src/locales/cy/translation/common.json";
+import enCommon from "../../../../src/locales/en/translation/common.json";
+
+jest.mock("../../../../src/services/companyProfileService");
 const router = supertest(app);
-const en = require("../../../src/locales/en/translation/confirmation-company-added.json");
-const cyCommon = require("../../../src/locales/cy/translation/common.json");
-const enCommon = require("../../../src/locales/en/translation/common.json");
 const companyNumber = "12345678";
 const url = `/your-companies/company/${companyNumber}/confirmation-company-added`;
 const mockGetCompanyProfile = getCompanyProfile as jest.Mock;

@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "macros/link.njk" import link %}
 {% from "macros/providedTextOrDefault.njk" import providedTextOrDefault %}
 
@@ -19,6 +20,48 @@
 {% block main_content %}
 
     {% set company_association = companyAssociations.items | first %}
+
+    {% if cancelledPerson %}
+        {% set successHtml %}
+        <h3 class="govuk-notification-banner__heading">{{lang.digital_authorisation_cancelled}}</h3>
+        <p class="govuk-body">
+            {{lang.you_have_successfully_cancelled_digital_authorisation_start}}
+            <span class="govuk-body govuk-!-font-weight-bold">{{cancelledPerson}}</span>
+            {{lang.you_have_successfully_cancelled_digital_authorisation_end}}
+            {{company_association.companyName}}
+        </p>
+        <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
+        {% endset %}
+        <div class="govuk-grid-column-two-thirds">
+            {{
+                govukNotificationBanner({
+                    html: successHtml,
+                    type: "success"
+                })
+            }}
+        </div>
+    {% endif %}
+
+        {% if authorisedPersonSuccess %}
+        {% set successHtml %}
+        <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
+        <p class="govuk-body">
+            {{lang.authorised_person_success_msg1}}
+            {{authorisedPersonEmailAddress}}
+            {{lang.authorised_person_success_msg2}}
+            {{authorisedPersonCompanyName}}
+        </p>
+        {% endset %}
+        <div class="govuk-grid-column-two-thirds">
+            {{
+                govukNotificationBanner({
+                    html: successHtml,
+                    type: "success",
+                    titleText: lang.success
+                })
+            }}
+        </div>
+    {% endif %}
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">

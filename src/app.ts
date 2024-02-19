@@ -62,10 +62,31 @@ app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, comp
 
 // Add i18next middleware and retrieve user email address to use in view
 enableI18next(app);
+
+export const addLangToUrl = (url: string, lang: string | undefined): string => {
+    // if (lang == undefined || lang == "") {
+    //     return url;
+    // }
+    if (url.includes("lang=cy")) {
+        return url.replace("lang=cy", "lang=" + lang);
+    }
+    if (url.includes("lang=en")) {
+        return url.replace("lang=en", "lang=" + lang);
+    }
+    if (url.includes("?")) {
+        return url + "&lang=" + lang;
+    } else {
+        return url + "?lang=" + lang;
+    }
+};
+
 app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("locale", req.language);
     njk.addGlobal("userEmailAddress", getLoggedInUserEmail(req.session));
     njk.addGlobal("feedbackSource", req.originalUrl);
+    njk.addGlobal("ENGLISH", "en");
+    njk.addGlobal("WELSH", "cy");
+    njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
     next();
 });
 

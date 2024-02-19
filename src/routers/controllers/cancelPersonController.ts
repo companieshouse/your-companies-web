@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { CancelPersonHandler } from "../handlers/yourCompanies/cancelPersonHandler";
 import {
-    CANCEL_PERSON,
     CANCEL_PERSON_TEMPLATE,
     GET,
-    POST,
-    USER_EMAIL,
-    YES,
-    YOUR_COMPANIES_CONFIRMATION_CANCEL_PERSON_URL
+    POST
 } from "../../constants";
 
 export const cancelPersonControllerGet = async (req: Request, res: Response, next: NextFunction) => {
@@ -26,9 +22,6 @@ export const cancelPersonControllerPost = async (req: Request, res: Response, ne
             ...viewData
         });
     } else {
-        const url = req.session?.getExtraData(CANCEL_PERSON) === YES
-            ? YOUR_COMPANIES_CONFIRMATION_CANCEL_PERSON_URL.replace(`:${USER_EMAIL}`, req.params[USER_EMAIL])
-            : viewData.backLinkHref;
-        res.redirect(url);
+        res.redirect(viewData.backLinkHref);
     }
 };
