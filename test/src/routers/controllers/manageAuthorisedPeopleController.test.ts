@@ -30,6 +30,8 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
     const en = require("../../../../src/locales/en/translation/manage-authorised-people.json");
     const cy = require("../../../../src/locales/cy/translation/manage-authorised-people.json");
+    const enCommon = require("../../../../src/locales/en/translation/common.json");
+    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -67,6 +69,8 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         expect(response.text).toContain(en.status);
         expect(response.text).toContain(en.remove);
         expect(response.text).toContain(en.back_to_your_companies);
+        expect(response.text).not.toContain(enCommon.success);
+        expect(response.text).not.toContain(en.digital_authorisation_cancelled);
     });
 
     it("should return expected Welsh content if language version set to Welsh", async () => {
@@ -85,6 +89,8 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         expect(response.text).toContain(cy.status);
         expect(response.text).toContain(cy.remove);
         expect(response.text).toContain(cy.back_to_your_companies);
+        expect(response.text).not.toContain(cyCommon.success);
+        expect(response.text).not.toContain(cy.digital_authorisation_cancelled);
     });
 
     it("should return expected English content if person cancelled and language version set to English", async () => {
@@ -98,9 +104,9 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
-        const response = await router.get(`${url}?lang=en`);
+        const response = await router.get(`${url}$/confirmation-cancel-person?lang=en`);
         // Then
-        expect(response.text).toContain("Success");
+        expect(response.text).toContain(enCommon.success);
         expect(response.text).toContain(en.digital_authorisation_cancelled);
         expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_start);
         expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_end);
@@ -128,9 +134,9 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
-        const response = await router.get(`${url}?lang=cy`);
+        const response = await router.get(`${url}$/confirmation-cancel-person?lang=cy`);
         // Then
-        expect(response.text).toContain("Success");
+        expect(response.text).toContain(cyCommon.success);
         expect(response.text).toContain(cy.digital_authorisation_cancelled);
         expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_start);
         expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_end);
