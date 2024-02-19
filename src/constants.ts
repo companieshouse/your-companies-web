@@ -34,6 +34,7 @@ export const CHECK_PRESENTER_PAGE = "add-presenter-check-details";
 export const COMPANY_INVITATIONS_PAGE = "company-invitations";
 export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
+export const REMOVE_PERSON_PAGE = "remove-person";
 
 // Routing paths
 export const SEPARATOR = "/";
@@ -59,6 +60,7 @@ export const YOUR_COMPANIES_CANCEL_PERSON_URL = `${LANDING_URL}${CANCEL_PERSON_U
 export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-people-email-resent/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
 export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
+export const COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL = `${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
 export const CONFIRMATION_CANCEL_PERSON_URL = "/confirmation-cancel-person";
 export const AUTHORISATION_EMAIL_RESENT_URL = "/authorisation-email-resent";

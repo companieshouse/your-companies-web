@@ -12,6 +12,7 @@ import { resendEmailController } from "./controllers/resendEmailController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
 import { companyInvitationsControllerGet } from "./controllers/companyInvitationsController";
 import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvitationsAcceptController";
+import { removePersonControllerGet } from "./controllers/removePersonController";
 
 const router: Router = Router();
 
@@ -24,6 +25,7 @@ router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleControll
 
 router.get(constants.ADD_COMPANY_URL, addCompanyControllerGet as RequestHandler);
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removePersonControllerGet as RequestHandler);
 
 router.get(constants.CANCEL_PERSON_URL, cancelPersonControllerGet as RequestHandler);
 router.post(constants.CANCEL_PERSON_URL, cancelPersonControllerPost as RequestHandler);
