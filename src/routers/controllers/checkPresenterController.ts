@@ -7,12 +7,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
 import { addUserEmailAssociation } from "../../services/userCompanyAssociationService";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
-
-export interface AuthorisedPerson {
-    companyName: string,
-    userEmail: string,
-    companyNumber: string
-}
+import { AuthorisedPerson } from "../../types/associations";
 
 export const checkPresenterController = async (req: Request, res: Response) => {
     const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER] as string);
@@ -21,15 +16,12 @@ export const checkPresenterController = async (req: Request, res: Response) => {
     if (req.method === constants.POST) {
         if (emailAddress) {
             await addUserEmailAssociation(emailAddress, company.companyNumber);
-            setExtraData(req.session, constants.AUTHORISED_PERSON, {
+            const authorisedPerson:AuthorisedPerson = {
                 authorisedPersonEmailAddress: emailAddress,
                 authorisedPersonCompanyName: company.companyName
-            });
+            };
+            setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
         }
-        // return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
-        //     `:${constants.COMPANY_NUMBER}`,
-        //     company.companyNumber
-        // ) + "?authPersonSuccess=true");
         return res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(
             `:${constants.COMPANY_NUMBER}`,
             company.companyNumber

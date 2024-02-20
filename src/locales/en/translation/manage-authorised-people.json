@@ -19,7 +19,7 @@
     "link_to_cancel_authorisation_for": "Link to cancel authorisation for ",
     "link_to_resend_email_with_authorisation_request_for": "Link to resend email with authorisation request for ",
     "authorised_person_success_heading":"Email sent",
-    "authorised_person_success_msg1":"We've sent an email to ",
+    "authorised_person_success_msg1":"We’ve sent an email to ",
     "authorised_person_success_msg2":" inviting them to be digitally authorised to file online for ",
     "digital_authorisation_cancelled": "Digital authorisation cancelled",
     "you_have_successfully_cancelled_digital_authorisation_start": "You have successfully cancelled digital authorisation for ",

@@ -17,15 +17,14 @@ import { yourCompaniesControllerGet } from "./controllers/yourCompaniesControlle
 import { addPresenterController } from "./controllers/addPresenterController";
 import { checkPresenterController } from "./controllers/checkPresenterController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
-import { authPersonAdded } from "../middleware/journey.allowed.middleware";
+import { isComingFromCheckEmailPage } from "../middleware/navigation.middleware";
 
 const router: Router = Router();
 
 router.get(YOUR_COMPANIES_URL, yourCompaniesControllerGet);
 
-// AUTHORISED_PERSON_ADDED_URL
 router.get(MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet);
-router.get(AUTHORISED_PERSON_ADDED_URL, authPersonAdded, manageAuthorisedPeopleControllerGet);
+router.get(AUTHORISED_PERSON_ADDED_URL, isComingFromCheckEmailPage, manageAuthorisedPeopleControllerGet);
 
 router.get(ADD_COMPANY_URL, addCompanyControllerGet);
 router.post(ADD_COMPANY_URL, addCompanyControllerPost);
