@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../genericHandler";
 import {
     CANCEL_PERSON,
-    CANCEL_PERSON_LANG,
+    CANCEL_PERSON_PAGE,
     COMPANY_NAME,
     COMPANY_NUMBER,
     POST,
@@ -17,7 +17,7 @@ import { Cancellation } from "../../../types/cancellation";
 export class CancelPersonHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<any> {
         this.viewData = this.getViewData(req);
-        this.viewData.lang = getTranslationsForView(req.t, CANCEL_PERSON_LANG);
+        this.viewData.lang = getTranslationsForView(req.t, CANCEL_PERSON_PAGE);
         if (method === POST) {
             const payload = Object.assign({}, req.body);
             if (!payload.cancelPerson) {

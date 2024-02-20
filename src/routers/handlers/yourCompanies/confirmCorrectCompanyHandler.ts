@@ -9,9 +9,9 @@ export class ConfirmCorrectCompanyHandler extends GenericHandler {
         this.viewData = this.getViewData(companyProfile, lang);
         this.viewData.lang = {
             ...translateFn(constants.COMMON, { returnObjects: true }),
-            ...translateFn(constants.CONFIRM_COMPANY_LANG, { returnObjects: true }),
-            ...translateFn(constants.COMPANY_STATUS_LANG, { returnObjects: true }),
-            ...translateFn(constants.COMPANY_TYPE_LANG, { returnObjects: true })
+            ...translateFn(constants.CONFIRM_COMPANY_PAGE, { returnObjects: true }),
+            ...translateFn(constants.COMPANY_STATUS, { returnObjects: true }),
+            ...translateFn(constants.COMPANY_TYPE, { returnObjects: true })
         };
         return Promise.resolve(this.viewData);
     }

@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { pages } from "../../constants";
 import { getTranslationsForView } from "../../lib/utils/translations";
 import * as constants from "../../constants";
 import { getCompanyProfile } from "../../services/companyProfileService";
@@ -19,7 +18,7 @@ export const addPresenterController = async (
     );
     const { companyName, companyNumber } = company;
     const viewData: ViewData = {
-        lang: getTranslationsForView(req.t, pages.ADD_PRESENTER),
+        lang: getTranslationsForView(req.t, constants.ADD_PRESENTER_PAGE),
         companyName,
         companyNumber,
         errors: undefined,
@@ -51,12 +50,12 @@ export const addPresenterController = async (
             setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
             return res.redirect(
                 getUrlWithCompanyNumber(
-                    constants.fullPathsWithCompanyAuth.CHECK_PRESENTER,
+                    constants.YOUR_COMPANIES_CHECK_PRESENTER_URL,
                     companyNumber
                 )
             );
         }
     }
 
-    res.render(pages.ADD_PRESENTER, viewData);
+    res.render(constants.ADD_PRESENTER_PAGE, viewData);
 };

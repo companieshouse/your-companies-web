@@ -10,7 +10,7 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response, n
     const session: Session = req.session as Session;
     const companyProfile = session.data.extra_data.companyProfile;
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
-    res.render(constants.CONFIRM_COMPANY_PAGE_TEMPLATE, viewData);
+    res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };
 
 export const confirmCompanyControllerPost = async (req: Request, res: Response, next: NextFunction) => {

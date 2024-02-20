@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { pages } from "../../constants";
 import { getTranslationsForView } from "../../lib/utils/translations";
 import * as constants from "../../constants";
 import { getCompanyProfile } from "../../services/companyProfileService";
@@ -23,11 +22,11 @@ export const checkPresenterController = async (req: Request, res: Response) => {
     }
 
     const viewData = {
-        lang: getTranslationsForView(req.t, pages.CHECK_PRESENTER),
+        lang: getTranslationsForView(req.t, constants.CHECK_PRESENTER_PAGE),
         companyName: company.companyName,
         companyNumber: company.companyNumber,
         emailAddress,
-        backLinkHref: getUrlWithCompanyNumber(constants.fullPathsWithCompanyAuth.ADD_PRESENTER, company.companyNumber)
+        backLinkHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, company.companyNumber)
     };
-    res.render(pages.CHECK_PRESENTER, viewData);
+    res.render(constants.CHECK_PRESENTER_PAGE, viewData);
 };

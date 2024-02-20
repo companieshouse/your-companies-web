@@ -4,10 +4,10 @@
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">{{ lang.your_companies }}</h1>
     {% if userHasCompanies == "true" %}
-        {% include "router_views/your_companies/previously_added_companies.njk" %}
+        {% include "previously-added-companies.njk" %}
     {% else %}
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-        {% include "router_views/your_companies/no_companies_added.njk" %}
+        {% include "no-companies-added.njk" %}
     {% endif %}
 
 {% endblock %}
