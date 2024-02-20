@@ -29,7 +29,7 @@ describe("isComingFromCheckEmailPage", () => {
         jest.clearAllMocks();
     });
 
-    it("should ", () => {
+    it("should redirect if no referer", () => {
         const mockedNext = jest.fn();
         const mockedReq = mockReq();
         const mockedRes = mockRes();
@@ -38,13 +38,34 @@ describe("isComingFromCheckEmailPage", () => {
         expect(mockedNext).not.toHaveBeenCalled();
         expect(mockedRes.redirect).toHaveBeenCalled();
     });
-
-    // it("should redirect to xxx when no originalUrl", () => {
-    //     req.originalUrl = CONFIRMATION_STATEMENT + ACCESSIBILITY_STATEMENT;
-    //     authenticationMiddleware(req, res, next);
-
-    //     expect(mockAuthMiddleware).not.toHaveBeenCalled();
-    //     expect(next).toHaveBeenCalled();
+    it("should allow request from the check email page", () => {
+        const mockedNext = jest.fn();
+        const mockedReq = mockReq();
+        const mockedRes = mockRes();
+        const url = `/your-companies/company/12345678/add-presenter-check-details`;
+        mockedReq.headers.referer = url;
+        isComingFromCheckEmailPage(mockedReq, mockedRes, mockedNext);
+        expect(mockedNext).toHaveBeenCalled();
+    });
+    // it("should allow requests from the authorised email add success page", () => {
+    //     const mockedNext = jest.fn();
+    //     const mockedReq = mockReq();
+    //     const mockedRes = mockRes();
+    //     const companyNumber = "NI038379";
+    //     const url2 = "/your-companies/manage-authorised-people/12345/confirmation-person-added";
+    //     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-added`;
+    //     mockedReq.headers.referer = url2;
+    //     isComingFromCheckEmailPage(mockedReq, mockedRes, mockedNext);
+    //     expect(mockedNext).toHaveBeenCalled();
     // });
+    it("should return an error page if there is an unrecognised referer", () => {
+        const mockedNext = jest.fn();
+        const mockedReq = mockReq();
+        const mockedRes = mockRes();
+        //  mockedReq.headers.referer = undefined;
+        isComingFromCheckEmailPage(mockedReq, mockedRes, mockedNext);
+        expect(mockedNext).not.toHaveBeenCalled();
+        expect(mockedRes.redirect).toHaveBeenCalled();
+    });
 
 });
