@@ -8,8 +8,7 @@ import {
     POST,
     REFERER_URL,
     SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION,
-    USER_EMAIL,
-    YES
+    USER_EMAIL
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";

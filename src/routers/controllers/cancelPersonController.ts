@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { CancelPersonHandler } from "../handlers/yourCompanies/cancelPersonHandler";
 import {
     CANCEL_PERSON_TEMPLATE,
+    CONFIRMATION_CANCEL_PERSON_URL,
     GET,
     POST
 } from "../../constants";
@@ -22,6 +23,6 @@ export const cancelPersonControllerPost = async (req: Request, res: Response, ne
             ...viewData
         });
     } else {
-        res.redirect(viewData.backLinkHref);
+        res.redirect(`${viewData.backLinkHref}${CONFIRMATION_CANCEL_PERSON_URL}`);
     }
 };

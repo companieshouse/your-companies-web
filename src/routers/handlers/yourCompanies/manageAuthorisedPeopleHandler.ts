@@ -5,6 +5,7 @@ import {
     CANCEL_PERSON,
     COMPANY_NAME,
     COMPANY_NUMBER,
+    CONFIRMATION_CANCEL_PERSON_URL,
     LANDING_URL,
     MANAGE_AUTHORISED_PEOPLE_LANG,
     REFERER_URL,
@@ -32,9 +33,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const companyNumber: string = req.params[COMPANY_NUMBER];
         const cancellation: Cancellation = getExtraData(req.session, CANCEL_PERSON);
 
-        if (cancellation) {
-            deleteExtraData(req.session, CANCEL_PERSON);
-
+        if (cancellation && req.originalUrl.includes(CONFIRMATION_CANCEL_PERSON_URL)) {
             if (cancellation.cancelPerson === YES) {
                 const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(cancellation.userEmail, cancellation.companyNumber)) === USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
                 if (isUserRemovedFromCompanyAssociations) {
