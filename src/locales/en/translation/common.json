@@ -11,5 +11,6 @@
     "customer_insights": "Customer insights",
     "main_nav_bar": "Main nav bar",
     "language_switcher": "Language switcher",
-    "continue_button_to_proceed_to_the_next_page": "Continue button to proceed to the next page"
+    "continue_button_to_proceed_to_the_next_page": "Continue button to proceed to the next page",
+    "success": "Success"
 }

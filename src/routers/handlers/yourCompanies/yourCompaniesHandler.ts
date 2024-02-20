@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "../generic";
+import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import {
-    LANDING_URL,
     YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL,
     TRUE,
     YOUR_COMPANIES_ADD_COMPANY_URL,

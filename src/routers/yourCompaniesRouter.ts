@@ -2,13 +2,14 @@ import { Router } from "express";
 import {
     ADD_COMPANY_URL,
     CANCEL_PERSON_URL,
+    MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
     MANAGE_AUTHORISED_PEOPLE_URL,
     YOUR_COMPANIES_URL,
     pathsWithCompanyAuth
 } from "../constants";
-import { createTransaction } from "./controllers/createTransaction";
-import { confirmCompanyGet, confirmCompanyPost } from "./controllers/confirmCompany";
-import { companyAdded } from "./controllers/companyAdded";
+import { createTransactionControllerGet } from "./controllers/createTransactionController";
+import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "./controllers/confirmCompanyController";
+import { companyAddedControllerGet } from "./controllers/companyAddedController";
 import * as constants from "../constants";
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
@@ -23,16 +24,20 @@ router.get(YOUR_COMPANIES_URL, yourCompaniesControllerGet);
 
 router.get(MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet);
 
+router.get(MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleControllerGet);
+
 router.get(ADD_COMPANY_URL, addCompanyControllerGet);
 router.post(ADD_COMPANY_URL, addCompanyControllerPost);
 
 router.get(CANCEL_PERSON_URL, cancelPersonControllerGet);
 router.post(CANCEL_PERSON_URL, cancelPersonControllerPost);
 
-router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyGet);
-router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyPost);
-router.get(constants.CREATE_TRANSACTION_PATH, createTransaction);
-router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAdded);
+router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerGet);
+router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost);
+
+router.get(constants.CREATE_TRANSACTION_PATH, createTransactionControllerGet);
+
+router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedControllerGet);
 
 router.get(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterController);
 router.post(pathsWithCompanyAuth.ADD_PRESENTER, addPresenterController);

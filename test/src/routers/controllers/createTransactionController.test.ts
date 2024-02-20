@@ -1,15 +1,15 @@
 /* eslint-disable import/first */
 
-jest.mock("../../../src/services/transactionService");
-jest.mock("../../../src/lib/Logger");
+jest.mock("../../../../src/services/transactionService");
+jest.mock("../../../../src/lib/Logger");
 
-import mocks from "../../mocks/all.middleware.mock";
-import * as constants from "../../../src/constants";
-import app from "../../../src/app";
+import mocks from "../../../mocks/all.middleware.mock";
+import * as constants from "../../../../src/constants";
+import app from "../../../../src/app";
 import supertest from "supertest";
-import * as urlUtils from "../../../src/lib/utils/urlUtils";
+import * as urlUtils from "../../../../src/lib/utils/urlUtils";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { postTransaction, createAccountsAssociation } from "../../../src/services/transactionService";
+import { postTransaction, createAccountsAssociation } from "../../../../src/services/transactionService";
 
 const router = supertest(app);
 const companyNumber = "12345678";
