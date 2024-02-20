@@ -43,6 +43,27 @@
         </div>
     {% endif %}
 
+       {% if authorisedPersonSuccess %}
+        {% set successHtml %}
+        <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
+        <p class="govuk-body">
+            {{lang.authorised_person_success_msg1}}
+            {{authorisedPersonEmailAddress}}
+            {{lang.authorised_person_success_msg2}}
+            {{authorisedPersonCompanyName}}
+        </p>
+        {% endset %}
+        <div class="govuk-grid-column-two-thirds">
+            {{
+                govukNotificationBanner({
+                    html: successHtml,
+                    type: "success",
+                    titleText: lang.success
+                })
+            }}
+        </div>
+    {% endif %}
+    
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">

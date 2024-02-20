@@ -9,6 +9,7 @@ import { yourCompaniesControllerGet } from "./controllers/yourCompaniesControlle
 import { addPresenterController } from "./controllers/addPresenterController";
 import { checkPresenterController } from "./controllers/checkPresenterController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
+import { isComingFromCheckEmailPage } from "../middleware/navigation.middleware";
 
 const router: Router = Router();
 
@@ -41,5 +42,7 @@ router.post(constants.ADD_PRESENTER_URL, addPresenterController);
 router.get(constants.CHECK_PRESENTER_URL, checkPresenterController);
 
 router.post(constants.CHECK_PRESENTER_URL, checkPresenterController);
+
+router.get(constants.AUTHORISED_PERSON_ADDED_URL, isComingFromCheckEmailPage, manageAuthorisedPeopleControllerGet);
 
 export default router;

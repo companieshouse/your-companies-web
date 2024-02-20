@@ -8,6 +8,7 @@ export const USER_EMAIL = "userEmail";
 export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
 export const REFERER_URL = "refererUrl";
 export const CANCEL_PERSON = "cancelPerson";
+export const AUTHORISED_PERSON = "authorisedPerson";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
@@ -41,6 +42,8 @@ export const YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL = `${LANDING_URL}${COMPANY
 export const CREATE_TRANSACTION_PATH_FULL = LANDING_URL + `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
 export const CREATE_TRANSACTION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/manage-authorised-people/:${COMPANY_NUMBER}`;
+export const AUTHORISED_PERSON_ADDED_URL = `/manage-authorised-people/:${COMPANY_NUMBER}/confirmation-person-added`;
+export const YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}/confirmation-person-added`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
 export const YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL = `${LANDING_URL}${ADD_NEW_AUTHORISED_PERSON_URL}`;

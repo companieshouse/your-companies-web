@@ -27,6 +27,13 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
                 }
             }
         }
+        const authorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
+
+        if (authorisedPerson && req.originalUrl.includes("/confirmation-person-added")) {
+            this.viewData.authorisedPersonSuccess = true;
+            this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;
+            this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
+        }
 
         const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
         this.viewData.companyAssociations = companyAssociations;

@@ -11,3 +11,8 @@ export interface Association {
     companyName: string;
     status: string;
 }
+
+export type AuthorisedPerson = {
+    authorisedPersonCompanyName: string,
+    authorisedPersonEmailAddress: string,
+}
