@@ -18,8 +18,7 @@ locals {
   use_set_environment_files  = var.use_set_environment_files
   s3_config_bucket           = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename   = "your-companies-web.env"
-  parameter_store_secrets    = {
-  }
+  parameter_store_secrets    = {}
 
   vpc_name                   = data.aws_ssm_parameter.secret[format("/%s/%s", local.name_prefix, "vpc-name")].value
 
@@ -65,7 +64,5 @@ locals {
 
   # TODO: task_secrets don't seem to correspond with 'parameter_store_secrets'. What is the difference?
   #task_secrets = concat(local.global_secret_list, local.service_secret_list)
-
   task_environment = concat(local.ssm_global_version_map,local.ssm_service_version_map)
-
 }
