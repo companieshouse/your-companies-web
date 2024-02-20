@@ -11,16 +11,17 @@ import {
     REFERER_URL,
     USER_REMOVED_FROM_COMPANY_ASSOCIATIONS,
     YES,
-    YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL,
     YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL,
     YOUR_COMPANIES_CANCEL_PERSON_URL,
     YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
+    fullPathsWithCompanyAuth,
     YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
+import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/userCompanyAssociationService";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "types/cancellation";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
@@ -28,9 +29,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     async execute (req: Request, res: Response): Promise<Object> {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
-        this.viewData = this.getViewData();
-        this.viewData.lang = getTranslationsForView(req.t, MANAGE_AUTHORISED_PEOPLE_LANG);
         const companyNumber: string = req.params[COMPANY_NUMBER];
+        this.viewData = this.getViewData(companyNumber);
+        this.viewData.lang = getTranslationsForView(req.t, MANAGE_AUTHORISED_PEOPLE_LANG);
         const cancellation: Cancellation = getExtraData(req.session, CANCEL_PERSON);
 
         if (cancellation && req.originalUrl.includes(CONFIRMATION_CANCEL_PERSON_URL)) {
@@ -51,10 +52,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (): any {
+    private getViewData (companyNumber:string): any {
         return {
             backLinkHref: LANDING_URL,
-            buttonHref: YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL,
+            buttonHref: getUrlWithCompanyNumber(fullPathsWithCompanyAuth.ADD_PRESENTER, companyNumber),
             cancelUrl: YOUR_COMPANIES_CANCEL_PERSON_URL,
             resendEmailUrl: YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
             removeUrl: YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL

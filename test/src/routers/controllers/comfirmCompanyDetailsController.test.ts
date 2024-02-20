@@ -162,7 +162,7 @@ describe(`GET ${url}`, () => {
             expected: "Cwmni tramor"
         }
     ];
-    it.each(companyTypeTestData)("should display company typs in Welsh - $type to $expected", async ({ type, expected }) => {
+    it.each(companyTypeTestData)("should display company types in Welsh - $type to $expected", async ({ type, expected }) => {
         session.data.extra_data.companyProfile = { ...badFormatCompanyProfile };
         session.data.extra_data.companyProfile.type = type;
         const response = await router.get(`${url}?lang=cy`);

@@ -1,0 +1,61 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% extends "layouts/default.njk" %}
+
+{% set message = null %}
+
+{% for key, value in errors %}
+    {% if key == "email" %}
+        {% set message = {
+            text: lang[value.text]
+        } %}
+    {% endif %}
+{% endfor %}
+
+    {% block back_link %}
+    {% include "partials/back_link.njk" %}
+    {% endblock %} 
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+            {{ lang.authorised_persons_email_address }}
+        </h1>
+
+            <p class="govuk-body">{{ lang.tell_us_the_email }}</p>
+
+            {{ govukInsetText({
+                    text: lang.you_can_change_who
+                })
+            }}
+
+            <form method="post">
+                {{ govukInput({
+                        label: {
+                            text: lang.email_address
+                        },
+                        hint: {
+                            text: lang.well_send_them_an_email
+                        },
+                        id: "email",
+                        name: "email",
+                        type: "email",
+                        errorMessage: message
+                    })
+                }}
+
+                {% set button_attributes = {
+                    role: "button",
+                    "aria-label": lang.continue_button_to_proceed_to_the_next_page
+                } %}
+                {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

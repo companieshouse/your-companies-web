@@ -4,6 +4,7 @@
 
 import logger from "./../Logger";
 import errorManifest from "./../utils/error_manifests/default";
+import { z } from "zod";
 
 export class GenericValidator {
 
@@ -79,3 +80,13 @@ export class GenericValidator {
         return false;
     }
 };
+
+export function validateEmailString (emailString: string) {
+    const emailSchema = z.string().email();
+    try {
+        emailSchema.parse(emailString);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

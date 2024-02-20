@@ -41,58 +41,103 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [] } as Associations);
 };
 
+export const polishBrewItems = {
+    items: [
+        {
+            id: "1234567890",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: "Awaiting confirmation"
+        },
+        {
+            id: "2345678901",
+            userId: "jsldkfjsd",
+            userEmail: "john.smith@test.com",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: "Confirmed"
+        },
+        {
+            id: "2345678901",
+            userId: "jsldkfjsd",
+            userEmail: "eva.brown@company.com",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: "Awaiting confirmation"
+        },
+        {
+            id: "2345678901",
+            userId: "jsldkfjsd",
+            userEmail: "mark.black@private.com",
+            displayName: "Mark Black",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: "Confirmed"
+        }
+    ]
+} as Associations;
+
+export const britishAirwaysItems = {
+    items: [
+        {
+            id: "2345678901",
+            userId: "jsldkfjsd",
+            userEmail: "john.smith@test.com",
+            displayName: "John Smith",
+            companyNumber: "01777777",
+            companyName: "BRITISH AIRWAYS PLC",
+            status: "Confirmed"
+        }
+    ]
+} as Associations;
+
+export const isEmailAuthorised = async (email: string, companyNumber:string): Promise<boolean> => {
+    const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
+    return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
+};
+
+export const addUserEmailAssociation = async (email: string, companyNumber:string): Promise<void> => {
+    if (!email) return;
+    if (companyNumber === "NI038379") {
+        const isAssociated = await isEmailAuthorised(email, companyNumber);
+        if (!isAssociated) {
+            polishBrewItems.items.push(
+                {
+                    id: "",
+                    userId: "",
+                    userEmail: email,
+                    companyNumber: "NI038379",
+                    companyName: "THE POLISH BREWERY",
+                    status: "Awaiting confirmation",
+                    displayName: ""
+                }
+            );
+        }
+    }
+    if (companyNumber === "01777777") {
+        const isAssociated = await isEmailAuthorised(email, companyNumber);
+        if (!isAssociated) {
+            britishAirwaysItems.items.push(
+                {
+                    id: "",
+                    userId: "",
+                    userEmail: email,
+                    displayName: "",
+                    companyNumber: "01777777",
+                    companyName: "BRITISH AIRWAYS PLC",
+                    status: "Awaiting confirmation"
+                }
+            );
+        }
+    }
+};
 export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
     // TODO - replace this hard coded value with the API call once the API is available
-    const associations: Associations = companyNumber === "NI038379" ? {
-        items: [
-            {
-                id: "1234567890",
-                userId: "qwertyiop",
-                userEmail: "demo@ch.gov.uk",
-                companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY",
-                status: "Awaiting confirmation"
-            },
-            {
-                id: "2345678901",
-                userId: "jsldkfjsd",
-                userEmail: "john.smith@test.com",
-                displayName: "Not provided",
-                companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY",
-                status: "Confirmed"
-            },
-            {
-                id: "2345678901",
-                userId: "jsldkfjsd",
-                userEmail: "eva.brown@company.com",
-                companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY",
-                status: "Awaiting confirmation"
-            },
-            {
-                id: "2345678901",
-                userId: "jsldkfjsd",
-                userEmail: "mark.black@private.com",
-                displayName: "Mark Black",
-                companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY",
-                status: "Confirmed"
-            }
-        ]
-    } as Associations : {
-        items: [
-            {
-                id: "2345678901",
-                userId: "jsldkfjsd",
-                userEmail: "john.smith@test.com",
-                displayName: "John Smith",
-                companyNumber: "01777777",
-                companyName: "BRITISH AIRWAYS PLC",
-                status: "Confirmed"
-            }
-        ]
-    } as Associations;
+    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+
     if (cancellation && cancellation.cancelPerson === YES) {
         associations.items.splice(associations.items.findIndex(item => item.userEmail === cancellation.userEmail), 1);
     }
