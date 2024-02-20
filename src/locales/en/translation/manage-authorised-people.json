@@ -17,5 +17,9 @@
     "link_to_remove_user_from_digitaly_authorised_start": "Link to remove ",
     "link_to_remove_user_from_digitaly_authorised_end": " from people digitally authorised to file online for ",
     "link_to_cancel_authorisation_for": "Link to cancel authorisation for ",
-    "link_to_resend_email_with_authorisation_request_for": "Link to resend email with authorisation request for "
+    "link_to_resend_email_with_authorisation_request_for": "Link to resend email with authorisation request for ",
+    "digital_authorisation_cancelled": "Digital authorisation cancelled",
+    "you_have_successfully_cancelled_digital_authorisation_start": "You have successfully cancelled digital authorisation for ",
+    "you_have_successfully_cancelled_digital_authorisation_end": " to file online for ",
+    "weve_sent_an_email_to_the_company": "We’ve sent an email to the company’s registered email address and to any other people who are authorised to let them know."
 }

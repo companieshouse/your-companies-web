@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "../generic";
-import logger from "../../../lib/Logger";
+import { GenericHandler } from "../genericHandler";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 
-export class CompanyAddSuccess extends GenericHandler {
+export class CompanyAddSuccessHandler extends GenericHandler {
     async execute (req: Request, response: Response): Promise<Object> {
         this.viewData = await this.getViewData(req, response);
         this.viewData.lang = getTranslationsForView(

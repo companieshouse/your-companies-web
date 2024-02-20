@@ -1,10 +1,10 @@
-import { GenericHandler } from "../generic";
+import { GenericHandler } from "../genericHandler";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as constants from "../../../constants";
 import { formatForDisplay, buildAddress } from "../../../services/confirmCompanyService";
 import * as i18next from "i18next";
 
-export class ConfirmCorrectCompany extends GenericHandler {
+export class ConfirmCorrectCompanyHandler extends GenericHandler {
     async execute (translateFn:i18next.TFunction, companyProfile:CompanyProfile, lang:string): Promise<Object> {
         this.viewData = this.getViewData(companyProfile, lang);
         this.viewData.lang = {

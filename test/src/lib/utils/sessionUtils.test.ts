@@ -1,6 +1,6 @@
 import { Session } from "@companieshouse/node-session-handler";
 import { getSessionRequestWithPermission, userMail } from "../../../mocks/session.mock";
-import { getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
@@ -64,6 +64,21 @@ describe("Session Utils", () => {
             const result = getExtraData(session, "test");
             // Then
             expect(result).toEqual(undefined);
+        });
+    });
+
+    describe("deleteExtraData", () => {
+        it("should delete extra data from session if exist", () => {
+            // Given
+            const session: Session = new Session();
+            const key = "testKey";
+            const value = "testValue";
+            setExtraData(session, key, value);
+            expect(session.data.extra_data[key]).toEqual(value);
+            // When
+            deleteExtraData(session, key);
+            // Then
+            expect(session.data.extra_data[key]).toEqual(undefined);
         });
     });
 });

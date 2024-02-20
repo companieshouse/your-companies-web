@@ -51,8 +51,8 @@ export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-peo
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
 export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
-export const CONFIRMATION_CANCEL_PERSON_URL = `/confirmation-cancel-person/:${USER_EMAIL}`;
-export const YOUR_COMPANIES_CONFIRMATION_CANCEL_PERSON_URL = `${LANDING_URL}${CONFIRMATION_CANCEL_PERSON_URL}`;
+export const CONFIRMATION_CANCEL_PERSON_URL = "/confirmation-cancel-person";
+export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_CANCEL_PERSON_URL}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -71,6 +71,8 @@ export const COMPANY_STATUS_ACTIVE = "active";
 // Associations
 export const COMPNANY_ASSOCIATED_WITH_USER = "company associated with user";
 export const COMPNANY_NOT_ASSOCIATED_WITH_USER = "company not associated with user";
+export const USER_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user removed from company associations";
+export const USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user not removed from company associations";
 
 // APP config
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");

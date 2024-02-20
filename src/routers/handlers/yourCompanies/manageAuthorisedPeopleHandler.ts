@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "../generic";
+import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import {
+    CANCEL_PERSON,
     COMPANY_NAME,
     COMPANY_NUMBER,
+    CONFIRMATION_CANCEL_PERSON_URL,
     LANDING_URL,
     MANAGE_AUTHORISED_PEOPLE_LANG,
     REFERER_URL,
+    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS,
+    YES,
     YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL,
     YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL,
     YOUR_COMPANIES_CANCEL_PERSON_URL,
@@ -15,8 +19,9 @@ import {
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
-import { getCompanyAssociations } from "../../../services/userCompanyAssociationService";
-import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/userCompanyAssociationService";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { Cancellation } from "types/cancellation";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -26,11 +31,23 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData = this.getViewData();
         this.viewData.lang = getTranslationsForView(req.t, MANAGE_AUTHORISED_PEOPLE_LANG);
         const companyNumber: string = req.params[COMPANY_NUMBER];
-        const companyAssociations: Associations = await getCompanyAssociations(companyNumber);
+        const cancellation: Cancellation = getExtraData(req.session, CANCEL_PERSON);
+
+        if (cancellation && req.originalUrl.includes(CONFIRMATION_CANCEL_PERSON_URL)) {
+            if (cancellation.cancelPerson === YES) {
+                const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(cancellation.userEmail, cancellation.companyNumber)) === USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
+                if (isUserRemovedFromCompanyAssociations) {
+                    this.viewData.cancelledPerson = cancellation.userEmail;
+                }
+            }
+        }
+
+        const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
         this.viewData.companyAssociations = companyAssociations;
         const href = YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, REFERER_URL, href);
         setExtraData(req.session, COMPANY_NAME, companyAssociations.items[0].companyName);
+        setExtraData(req.session, COMPANY_NUMBER, companyNumber);
         return Promise.resolve(this.viewData);
     }
 

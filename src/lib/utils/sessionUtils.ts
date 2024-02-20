@@ -20,3 +20,7 @@ export const setExtraData = (session: Session | undefined, key: string, data: an
 export const getExtraData = (session: Session | undefined, key: string): any => {
     return session?.getExtraData(key);
 };
+
+export const deleteExtraData = (session: Session | undefined, key: string): any => {
+    return session?.deleteExtraData(key);
+};

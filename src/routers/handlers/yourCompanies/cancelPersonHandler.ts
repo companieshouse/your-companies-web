@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "../generic";
+import { GenericHandler } from "../genericHandler";
 import {
     CANCEL_PERSON,
     CANCEL_PERSON_LANG,
     COMPANY_NAME,
+    COMPANY_NUMBER,
     POST,
     REFERER_URL,
     SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION,
-    USER_EMAIL,
-    YES
+    USER_EMAIL
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { Cancellation } from "../../../types/cancellation";
 
 export class CancelPersonHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<any> {
@@ -26,7 +27,12 @@ export class CancelPersonHandler extends GenericHandler {
                     }
                 };
             } else {
-                setExtraData(req.session, CANCEL_PERSON, payload.cancelPerson);
+                const cancellation: Cancellation = {
+                    cancelPerson: payload.cancelPerson,
+                    userEmail: req.params[USER_EMAIL],
+                    companyNumber: getExtraData(req.session, COMPANY_NUMBER)
+                };
+                setExtraData(req.session, CANCEL_PERSON, cancellation);
             }
         }
         return Promise.resolve(this.viewData);

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { YourCompaniesHandler } from "../handlers/yourCompanies/yourCompanies";
+import { YourCompaniesHandler } from "../handlers/yourCompanies/yourCompaniesHandler";
 import { YOUR_COMPANIES_PAGE_TEMPLATE } from "../../constants";
 
 export const yourCompaniesControllerGet = async (req: Request, res: Response, next: NextFunction) => {
