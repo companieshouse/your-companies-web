@@ -9,6 +9,7 @@ import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../..
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
+import { Removal } from "../../../types/removal";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -20,12 +21,20 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
+        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
 
         if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
             if (cancellation.cancelPerson === constants.YES) {
                 const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(cancellation.userEmail, cancellation.companyNumber)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
                 if (isUserRemovedFromCompanyAssociations) {
                     this.viewData.cancelledPerson = cancellation.userEmail;
+                }
+            }
+        } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
+            if (removal.removePerson === constants.YES) {
+                const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(removal.userEmail, removal.companyNumber)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
+                if (isUserRemovedFromCompanyAssociations) {
+                    this.viewData.removedPerson = removal.userEmail;
                 }
             }
         }
