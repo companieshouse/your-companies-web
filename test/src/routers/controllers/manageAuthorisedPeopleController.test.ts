@@ -310,7 +310,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(en.you_may_wish_to);
         expect(response.text).toContain(en.change_the_authentication_code);
         expect(response.text).toContain(en.for_this_company_if + companyAssociations.items[1].userEmail + en.still_has_access_to_it);
+        expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
         expect(response.text).not.toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 
     it("should return expected Welsh content if person removed, their name not provided and language version set to Welsh", async () => {
@@ -335,7 +338,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(cy.you_may_wish_to);
         expect(response.text).toContain(cy.change_the_authentication_code);
         expect(response.text).toContain(cy.for_this_company_if + companyAssociations.items[1].userEmail + cy.still_has_access_to_it);
+        expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
         expect(response.text).not.toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 
     it("should return expected English content if person removed, their name provided and language version set to English", async () => {
@@ -361,6 +367,9 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(en.you_may_wish_to);
         expect(response.text).toContain(en.change_the_authentication_code);
         expect(response.text).toContain(en.for_this_company_if + companyAssociations.items[3].displayName + en.still_has_access_to_it);
+        expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
         expect(response.text).not.toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 
@@ -387,6 +396,9 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(cy.you_may_wish_to);
         expect(response.text).toContain(cy.change_the_authentication_code);
         expect(response.text).toContain(cy.for_this_company_if + companyAssociations.items[3].displayName + cy.still_has_access_to_it);
+        expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
         expect(response.text).not.toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 });
