@@ -13,3 +13,8 @@ export type ViewData = {
     companyName?: string;
     backLinkHref?:string;
 };
+
+export type CompanyNameAndNumber = {
+    companyName: string,
+    companyNumber: string,
+}

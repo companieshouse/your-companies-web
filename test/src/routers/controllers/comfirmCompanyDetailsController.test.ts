@@ -182,11 +182,11 @@ describe(`POST ${url}`, () => {
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("redirects to transaction controller with company number param in url", async () => {
+    it("redirects to create company association controller with company number param in url", async () => {
         session.data.extra_data.companyProfile = validActiveCompanyProfile;
         const resp = await router.post(url);
         expect(resp.status).toEqual(302);
-        expect(resp.header.location).toEqual("/your-companies/company/12345678/transaction");
+        expect(resp.header.location).toEqual("/your-companies/company/12345678/create-company-association");
     });
 
     it("should not continue if company is not active", async () => {

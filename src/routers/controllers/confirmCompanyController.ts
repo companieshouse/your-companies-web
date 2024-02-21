@@ -2,9 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmCorrectCompanyHandler";
 import * as constants from "../../constants";
 import { Session } from "@companieshouse/node-session-handler";
-import { getLoggedInUserEmail } from "../../lib/utils/sessionUtils";
+import { getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
 import { isCompanyAssociatedWithUser } from "../../services/userCompanyAssociationService";
 import * as urlUtils from "../../lib/utils/urlUtils";
+import { CompanyNameAndNumber } from "../../types/util-types";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response, next: NextFunction) => {
     const session: Session = req.session as Session;
@@ -27,7 +28,12 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response, 
     if (companyNotActive || associationExists) {
         nextPageUrl = constants.YOUR_COMPANIES_ADD_COMPANY_URL;
     } else {
-        nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_TRANSACTION_PATH_FULL, company.companyNumber);
+        const confirmedCompanyForAssocation: CompanyNameAndNumber = {
+            companyNumber: company.companyNumber,
+            companyName: company.companyName
+        };
+        setExtraData(req.session, "confirmedCompanyForAssocation", confirmedCompanyForAssocation);
+        nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
     }
     return res.redirect(nextPageUrl);
 

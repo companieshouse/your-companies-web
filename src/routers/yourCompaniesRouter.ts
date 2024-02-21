@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTransactionControllerGet } from "./controllers/createTransactionController";
+import { createCompanyAssociationControllerGet } from "./controllers/createCompanyAssociationController";
 import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "./controllers/confirmCompanyController";
 import { companyAddedControllerGet } from "./controllers/companyAddedController";
 import * as constants from "../constants";
@@ -28,7 +28,7 @@ router.post(constants.CANCEL_PERSON_URL, cancelPersonControllerPost);
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerGet);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost);
 
-router.get(constants.CREATE_TRANSACTION_PATH, createTransactionControllerGet);
+router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, createCompanyAssociationControllerGet);
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedControllerGet);
 
 router.get(constants.ADD_PRESENTER_URL, addPresenterController);
