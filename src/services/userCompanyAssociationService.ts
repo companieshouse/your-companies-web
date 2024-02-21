@@ -139,7 +139,7 @@ export const getCompanyAssociations = async (companyNumber: string, cancellation
     const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
 
     if (cancellation && cancellation.cancelPerson === YES) {
-        associations.items.splice(associations.items.findIndex(item => item.userEmail === cancellation.userEmail), 1);
+        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
     }
     return Promise.resolve(associations);
 };
