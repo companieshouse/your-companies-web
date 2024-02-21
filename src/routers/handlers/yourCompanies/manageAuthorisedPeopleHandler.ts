@@ -35,6 +35,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
                 const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(removal.userEmail, removal.companyNumber)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
                 if (isUserRemovedFromCompanyAssociations) {
                     this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
+                    this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
                 }
             }
         }

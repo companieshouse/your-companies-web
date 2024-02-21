@@ -39,7 +39,7 @@
         {% if removedPerson %}
             <p class="govuk-body">
                 {{lang.you_may_wish_to}}
-                <a class="govuk-notification-banner__link">{{lang.change_the_authentication_code}}</a>
+                <a class="govuk-notification-banner__link" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer" aria-label="{{lang.link_to_company_authentication_codes_for_online_filling}}">{{lang.change_the_authentication_code}}</a>
                 {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
             </p>
         {% endif %}
