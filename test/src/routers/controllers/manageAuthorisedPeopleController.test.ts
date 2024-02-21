@@ -27,8 +27,9 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
+const companyNumber = "NI038379";
+
 describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
-    const companyNumber = "NI038379";
     const url = `/your-companies/manage-authorised-people/${companyNumber}`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "removeUserFromCompanyAssociations");
@@ -93,6 +94,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         expect(response.text).not.toContain(cyCommon.success);
         expect(response.text).not.toContain(cy.digital_authorisation_cancelled);
     });
+});
+
+describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-cancel-person", () => {
+    const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-cancel-person`;
+    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
+    const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "removeUserFromCompanyAssociations");
+    const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
     it("should return expected English content if person cancelled and language version set to English", async () => {
         // Given
@@ -105,7 +117,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
-        const response = await router.get(`${url}$/confirmation-cancel-person?lang=en`);
+        const response = await router.get(`${url}?lang=en`);
         // Then
         expect(response.text).toContain(enCommon.success);
         expect(response.text).toContain(en.digital_authorisation_cancelled);
@@ -135,7 +147,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
-        const response = await router.get(`${url}$/confirmation-cancel-person?lang=cy`);
+        const response = await router.get(`${url}?lang=cy`);
         // Then
         expect(response.text).toContain(cyCommon.success);
         expect(response.text).toContain(cy.digital_authorisation_cancelled);
@@ -262,5 +274,18 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text.includes(en.email_resent_success_success_msg1)).toBe(false);
             expect(response.text.includes("bob@bob.com")).toBe(false);
         });
+    });
+});
+
+describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-person-removed", () => {
+    const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-removed`;
+    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
+    const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "removeUserFromCompanyAssociations");
+    const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
+
+    it("", () => {
+        // Given
+        // When
+        // Then
     });
 });
