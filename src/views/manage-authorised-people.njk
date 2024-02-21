@@ -21,16 +21,28 @@
 
     {% set company_association = companyAssociations.items | first %}
 
-    {% if cancelledPerson %}
+    {% if cancelledPerson or removedPerson %}
+        {% set heading_text = lang.digital_authorisation_cancelled if cancelledPerson else 
+            removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName %}
+
         {% set successHtml %}
-        <h3 class="govuk-notification-banner__heading">{{lang.digital_authorisation_cancelled}}</h3>
-        <p class="govuk-body">
-            {{lang.you_have_successfully_cancelled_digital_authorisation_start}}
-            <span class="govuk-body govuk-!-font-weight-bold">{{cancelledPerson}}</span>
-            {{lang.you_have_successfully_cancelled_digital_authorisation_end}}
-            {{company_association.companyName}}
-        </p>
+        <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
+        {% if cancelledPerson %}
+            <p class="govuk-body">
+                {{lang.you_have_successfully_cancelled_digital_authorisation_start}}
+                <span class="govuk-body govuk-!-font-weight-bold">{{cancelledPerson}}</span>
+                {{lang.you_have_successfully_cancelled_digital_authorisation_end}}
+                {{company_association.companyName}}
+            </p>
+        {% endif %}
         <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
+        {% if removedPerson %}
+            <p class="govuk-body">
+                {{lang.you_may_wish_to}}
+                <a class="govuk-notification-banner__link">{{lang.change_the_authentication_code}}</a>
+                {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
+            </p>
+        {% endif %}
         {% endset %}
         <div class="govuk-grid-column-two-thirds">
             {{

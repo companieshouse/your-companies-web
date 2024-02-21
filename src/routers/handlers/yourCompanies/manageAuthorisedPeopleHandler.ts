@@ -34,7 +34,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             if (removal.removePerson === constants.YES) {
                 const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(removal.userEmail, removal.companyNumber)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
                 if (isUserRemovedFromCompanyAssociations) {
-                    this.viewData.removedPerson = removal.userEmail;
+                    this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
                 }
             }
         }
