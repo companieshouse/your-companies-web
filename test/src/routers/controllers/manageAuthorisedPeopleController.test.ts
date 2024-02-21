@@ -74,6 +74,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         expect(response.text).toContain(en.back_to_your_companies);
         expect(response.text).not.toContain(enCommon.success);
         expect(response.text).not.toContain(en.digital_authorisation_cancelled);
+        expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 
     it("should return expected Welsh content if language version set to Welsh", async () => {
@@ -94,6 +98,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         expect(response.text).toContain(cy.back_to_your_companies);
         expect(response.text).not.toContain(cyCommon.success);
         expect(response.text).not.toContain(cy.digital_authorisation_cancelled);
+        expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 });
 
@@ -109,12 +117,14 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
 
     it("should return expected English content if person cancelled and language version set to English", async () => {
         // Given
-        getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
         const cancellation: Cancellation = {
             cancelPerson: YES,
             userEmail: companyAssociations.items[0].userEmail,
             companyNumber: companyAssociations.items[0].companyNumber
         };
+        const expectedCompanyAssociations = Object.assign({}, companyAssociations);
+        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
@@ -135,16 +145,22 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(en.status);
         expect(response.text).toContain(en.remove);
         expect(response.text).toContain(en.back_to_your_companies);
+        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 
     it("should return expected Welsh content if person cancelled and language version set to Welsh", async () => {
         // Given
-        getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
         const cancellation: Cancellation = {
             cancelPerson: YES,
             userEmail: companyAssociations.items[0].userEmail,
             companyNumber: companyAssociations.items[0].companyNumber
         };
+        const expectedCompanyAssociations = Object.assign({}, companyAssociations);
+        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
@@ -165,6 +181,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(cy.status);
         expect(response.text).toContain(cy.remove);
         expect(response.text).toContain(cy.back_to_your_companies);
+        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 });
 
