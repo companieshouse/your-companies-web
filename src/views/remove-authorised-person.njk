@@ -1,15 +1,63 @@
-{# {% from "govuk/components/back-link/macro.njk" import govukBackLink %} #}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% extends "layouts/default.njk" %}
-{# 
+
 {% block back_link %}
-
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
-        {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref }) }}
+        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
     </div>
-
-{% endblock %} #}
+{% endblock %}
 
 {% block main_content %}
-    <h1>Hello World</h1>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-xl">INSERT COMPANY NAME</span>
+            <h1 class = "govuk-heading-l">
+                <span "govuk-caption-l">{{ lang.remove + userEmail + lang.authorisation_to_file_online }}</span>
+            </h1>
+
+            <p>{{ lang.if_you_remove + userEmail + lang.digital_authorisation_this_means_they + "(INSERT COMPANY NAME HERE)" + lang.without_a_current_auth_code + userEmail + lang.to_let_them_know_you_have_removed }}</p>
+        
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                <span class="govuk-visually-hidden">Warning</span>
+                {{ userEmail + lang.will_still_be_able_to_file }}
+                <br>
+                <br>
+                {{ lang.you_may_wish_to_change_the_auth_code + userEmail + lang.digital_authorisation }}
+                </strong>
+            </div>
+
+            <p>{{ lang.if + userEmail + lang.is_appointed_as_an_officer }}</p>
+
+            {{ govukCheckboxes({
+                name: "confirm-removal",
+
+                items: [{
+                    value: "confirm",
+                    text: "I confirm that I have read and understood this information."
+                }]
+            }) }}
+
+            <div class="govuk-button-group">
+                {{ govukButton({
+                    text: "Remove authorisation",
+                    classes: "govuk-button--warning"
+                }) }}
+
+                {{ govukButton({
+                    text: "Cancel",
+                    classes: "govuk-button--secondary"
+                }) }}
+            </div>
+      
+      </div>
+    </div>
 {% endblock %}
+
+
+

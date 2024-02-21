@@ -7,7 +7,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     async execute (req: Request, res: Response, method: string): Promise<any> {
         this.viewData = this.getViewData(req);
-        this.viewData.lang = getTranslationsForView(req.t, constants.REMOVE_PERSON_PAGE);
+        this.viewData.lang = getTranslationsForView(req.t, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         return Promise.resolve(this.viewData);
     }
 

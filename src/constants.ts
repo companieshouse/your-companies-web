@@ -34,7 +34,7 @@ export const CHECK_PRESENTER_PAGE = "add-presenter-check-details";
 export const COMPANY_INVITATIONS_PAGE = "company-invitations";
 export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
-export const REMOVE_PERSON_PAGE = "remove-person";
+export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
 
 // Routing paths
 export const SEPARATOR = "/";
