@@ -35,6 +35,12 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
         }
 
+        const resentSuccessEmail = getExtraData(req.session, "resentSuccessEmail");
+        if (resentSuccessEmail && req.originalUrl.includes("/authorisation-email-resent")) {
+            this.viewData.showEmailResentSuccess = true;
+            this.viewData.resentSuccessEmail = resentSuccessEmail;
+        }
+
         const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
         this.viewData.companyAssociations = companyAssociations;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);

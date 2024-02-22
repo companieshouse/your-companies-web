@@ -63,6 +63,27 @@
             }}
         </div>
     {% endif %}
+
+    {% if showEmailResentSuccess %}
+        {% set successHtml %}
+        <h3 class="govuk-notification-banner__heading">{{lang.email_resent_success_heading}}</h3>
+        <p class="govuk-body">
+            {{lang.email_resent_success_success_msg1}}
+            {{resentSuccessEmail}}
+            {{lang.email_resent_success_success_msg1}}
+            {{company_association.companyName}}.
+        </p>
+        {% endset %}
+        <div class="govuk-grid-column-two-thirds">
+            {{
+                govukNotificationBanner({
+                    html: successHtml,
+                    type: "success",
+                    titleText: lang.success
+                })
+            }}
+        </div>
+    {% endif %}
     
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
