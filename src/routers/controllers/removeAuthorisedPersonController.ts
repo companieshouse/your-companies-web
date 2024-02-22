@@ -9,3 +9,13 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
         ...viewData
     });
 };
+
+export const removeAuthorisedPersonControllerPost = async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new RemoveAuthorisedPersonHandler();
+    const viewData = await handler.execute(req, res, constants.POST);
+    if (viewData.errors && Object.keys(viewData.errors).length > 0) {
+        res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
+    } else {
+        res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, viewData.companyNumber));
+    }
+};

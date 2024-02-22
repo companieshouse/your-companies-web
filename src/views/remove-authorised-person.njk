@@ -12,48 +12,69 @@
 {% endblock %}
 
 {% block main_content %}
+    {% set user_details = userName if userName else userEmail %}
+    {% set message = null %}
+
+    {% for key, value in errors %}
+        {% if key == "confirmRemoval" %}
+            {% set message = {
+                text: lang[value.text]
+            } %}
+        {% endif %}
+    {% endfor %}
+
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">INSERT COMPANY NAME</span>
-            <h1 class = "govuk-heading-l">
-                <span "govuk-caption-l">{{ lang.remove + userEmail + lang.authorisation_to_file_online }}</span>
+            <span class="govuk-caption-xl">{{ companyName }}</span>
+            <h1 class = "govuk-heading-xl">
+                {{ lang.remove + user_details + lang.authorisation_to_file_online }}
             </h1>
 
-            <p>{{ lang.if_you_remove + userEmail + lang.digital_authorisation_this_means_they + "(INSERT COMPANY NAME HERE)" + lang.without_a_current_auth_code + userEmail + lang.to_let_them_know_you_have_removed }}</p>
+            <p>{{ lang.if_you_remove + user_details + lang.digital_authorisation_this_means_they + companyName + lang.without_a_current_auth_code + user_details + lang.to_let_them_know_you_have_removed }}</p>
         
-            <div class="govuk-warning-text">
-                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                <strong class="govuk-warning-text__text">
-                <span class="govuk-visually-hidden">Warning</span>
-                {{ userEmail + lang.will_still_be_able_to_file }}
-                <br>
-                <br>
-                {{ lang.you_may_wish_to_change_the_auth_code + userEmail + lang.digital_authorisation }}
-                </strong>
-            </div>
+            {% set warning_text_html %}
+                <p class="govuk-!-font-weight-bold">
+                    {{ user_details + lang.will_still_be_able_to_file }}
+                </p>
+                <p class="govuk-!-font-weight-bold">
+                    {{ lang.you_may_wish_to_change_the_auth_code + user_details + lang.digital_authorisation }}
+                </p>
+            {% endset %}
 
-            <p>{{ lang.if + userEmail + lang.is_appointed_as_an_officer }}</p>
+            {{
+                govukWarningText({
+                    html: warning_text_html,
+                    iconFallbackText: lang.warning
+                })
+            }}
 
-            {{ govukCheckboxes({
-                name: "confirm-removal",
+            <p>{{ lang.if + user_details + lang.is_appointed_as_an_officer }}</p>
 
-                items: [{
-                    value: "confirm",
-                    text: "I confirm that I have read and understood this information."
-                }]
-            }) }}
+            <form method = "post">
+                {{ govukCheckboxes({
+                        name: "confirmRemoval",
 
-            <div class="govuk-button-group">
-                {{ govukButton({
-                    text: "Remove authorisation",
-                    classes: "govuk-button--warning"
-                }) }}
+                        items: [{
+                            value: "confirm",
+                            text: lang.i_confirm_that_i_have_read
+                        }],
+                        errorMessage: message
+                    }) 
+                }}
 
-                {{ govukButton({
-                    text: "Cancel",
-                    classes: "govuk-button--secondary"
-                }) }}
-            </div>
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: lang.remove_authorisation,
+                        classes: "govuk-button--warning"
+                    }) }}
+
+                    {{ govukButton({
+                        text: lang.cancel,
+                        classes: "govuk-button--secondary"
+                    }) }}
+                </div>
+
+            </form>
       
       </div>
     </div>
