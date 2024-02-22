@@ -9,7 +9,7 @@ import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { AuthorisedPerson } from "../../types/associations";
 
 export const checkPresenterController = async (req: Request, res: Response) => {
-    const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER] as string);
+    const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER]);
     const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
 
     if (req.method === constants.POST) {

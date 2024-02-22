@@ -3,7 +3,7 @@
 // Examples of fields common to multiple forms (to include in this class) are: email, username, phone number, postcode, gender, etc...
 
 import logger from "./../Logger";
-import errorManifest from "./../utils/error_manifests/default";
+import errorManifest from "../utils/error_manifests/errorManifest";
 import { z } from "zod";
 
 export class GenericValidator {
@@ -79,7 +79,7 @@ export class GenericValidator {
         }
         return false;
     }
-};
+}
 
 export function validateEmailString (emailString: string) {
     const emailSchema = z.string().email();

@@ -83,4 +83,4 @@ export class AddCompanyHandler extends GenericHandler {
             backLinkHref: LANDING_URL
         };
     }
-};
+}

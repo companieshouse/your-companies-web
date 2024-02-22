@@ -1,7 +1,7 @@
 // Generic handler is the base handler that is extended by all other handlers
 // It contains methods that are common to multiple route handlers
 
-import errorManifest from "../../lib/utils/error_manifests/default";
+import errorManifest from "../../lib/utils/error_manifests/errorManifest";
 
 export class GenericHandler {
 

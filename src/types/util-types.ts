@@ -7,8 +7,7 @@ export type ViewData = {
         [key: string]: {
           text: string;
         };
-      }
-    | undefined;
+      };
     companyNumber?: string;
     companyName?: string;
     backLinkHref?:string;

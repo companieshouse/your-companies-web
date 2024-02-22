@@ -1,4 +1,4 @@
-import { Application, NextFunction, Request, Response } from "express";
+import { Application } from "express";
 import i18next, { InitOptions, Resource } from "i18next";
 import * as middleware from "i18next-http-middleware";
 import requireDir from "require-directory";

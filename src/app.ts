@@ -3,7 +3,7 @@ import express, { Request, Response, NextFunction } from "express";
 import nunjucks from "nunjucks";
 import path from "path";
 import logger from "./lib/Logger";
-import routerDispatch from "./router.dispatch";
+import routerDispatch from "./routerDispatch";
 import { enableI18next } from "./middleware/i18next.language";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
@@ -14,7 +14,6 @@ import { companyAuthenticationMiddleware } from "./middleware/company.authentica
 
 const app = express();
 
-// const viewPath = path.join(__dirname, "/views");
 app.set("views", [
     path.join(__dirname, "views"),
     path.join(__dirname, "/../node_modules/govuk-frontend"),
@@ -36,7 +35,6 @@ app.set("view engine", "njk");
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "/../assets/public")));
-// app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
 
 njk.addGlobal("cdnUrlCss", process.env.CDN_URL_CSS);
 njk.addGlobal("cdnUrlJs", process.env.CDN_URL_JS);
