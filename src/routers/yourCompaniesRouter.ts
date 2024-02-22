@@ -9,7 +9,6 @@ import { yourCompaniesControllerGet } from "./controllers/yourCompaniesControlle
 import { addPresenterController } from "./controllers/addPresenterController";
 import { checkPresenterController } from "./controllers/checkPresenterController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
-import { isComingFromCheckEmailPage } from "../middleware/navigation.middleware";
 
 const router: Router = Router();
 
@@ -17,7 +16,7 @@ router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet);
 
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleControllerGet);
-router.get(constants.AUTHORISED_PERSON_ADDED_URL, isComingFromCheckEmailPage, manageAuthorisedPeopleControllerGet);
+router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleControllerGet);
 
 router.get(constants.ADD_COMPANY_URL, addCompanyControllerGet);
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost);

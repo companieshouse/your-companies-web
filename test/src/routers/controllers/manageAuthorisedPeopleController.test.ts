@@ -7,15 +7,10 @@ import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { Cancellation } from "../../../../src/types/cancellation";
 import { USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
 import { AuthorisedPerson } from "../../../../src/types/associations";
-import { NextFunction, Request, Response } from "express";
-import { isComingFromCheckEmailPage } from "../../../../src/middleware/navigation.middleware";
 
 const router = supertest(app);
 
 jest.mock("../../../../src/lib/Logger");
-jest.mock("../../../../src/middleware/navigation.middleware");
-const mockIsComingFromCheckEmailPageMiddleware = isComingFromCheckEmailPage as jest.Mock;
-mockIsComingFromCheckEmailPageMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => next());
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
 
