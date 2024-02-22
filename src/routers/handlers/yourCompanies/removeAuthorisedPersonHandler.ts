@@ -15,7 +15,8 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         return {
             backLinkHref: constants.LANDING_URL,
             companyNumber: req.params[constants.COMPANY_NUMBER],
-            userEmail: req.params[constants.USER_EMAIL]
+            userEmail: req.params[constants.USER_EMAIL],
+            userName: req.query[constants.USER_NAME]
             // buttonHref: req.originalUrl
         };
     };

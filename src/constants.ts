@@ -13,6 +13,7 @@ export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
 export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssocation";
 export const USER_ASSOCIATIONS = "userAssociations";
 export const ASSOCIATIONS_ID = "associationId";
+export const USER_NAME = "userName";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
