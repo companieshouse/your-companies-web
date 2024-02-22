@@ -10,7 +10,6 @@ export const resendEmailController = async (req: Request, res: Response) => {
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const email = req.params[constants.USER_EMAIL];
     const validEmail = validateEmailString(email);
-    logger.debug("validating resend email");
     let emailOnList = false;
     if (validEmail) {
         emailOnList = await isEmailAuthorised(email, companyNumber);
@@ -24,10 +23,8 @@ export const resendEmailController = async (req: Request, res: Response) => {
             email,
             companyNumber
         );
-
         if (emailSendResponse.httpStatusCode === 201) {
             setExtraData(req.session, "resentSuccessEmail", email);
-            logger.debug(`storing resend ${email} and redirecting`);
 
             return res.redirect(
                 constants.YOUR_COMPANIES_CONFIRMATION_EMAIL_RESENT_URL.replace(
