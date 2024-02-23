@@ -69,7 +69,7 @@
         <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
         <p class="govuk-body">
             {{lang.email_resent_success_success_msg1}}
-            {{resentSuccessEmail}}.{{lang.email_resent_success_success_msg2}}
+            <span class="govuk-body govuk-!-font-weight-bold">{{resentSuccessEmail}}</span>.{{lang.email_resent_success_success_msg2}}
             {{company_association.companyName}}.
         </p>
         {% endset %}
