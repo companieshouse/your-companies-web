@@ -5,7 +5,7 @@ import {
     YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL,
     TRUE,
     YOUR_COMPANIES_ADD_COMPANY_URL,
-    YOUR_COMPANIES_LANG
+    YOUR_COMPANIES_PAGE
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
@@ -20,7 +20,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const userEmailAddress = getLoggedInUserEmail(req.session);
         const userAssociations: Associations = await getUserAssociations(userEmailAddress);
         this.viewData = this.getViewData(userAssociations);
-        this.viewData.lang = getTranslationsForView(req.t, YOUR_COMPANIES_LANG);
+        this.viewData.lang = getTranslationsForView(req.t, YOUR_COMPANIES_PAGE);
         return Promise.resolve(this.viewData);
     }
 

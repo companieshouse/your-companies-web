@@ -1,5 +1,4 @@
 import { getEnvironmentValue } from "./lib/utils/environmentValue";
-import { appendToRecord } from "./lib/utils/urlUtils";
 
 // session.extra_data
 export const COMPANY_NUMBER = "companyNumber";
@@ -9,33 +8,32 @@ export const USER_EMAIL = "userEmail";
 export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
 export const REFERER_URL = "refererUrl";
 export const CANCEL_PERSON = "cancelPerson";
+export const AUTHORISED_PERSON = "authorisedPerson";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
-export const YOUR_COMPANIES_TEMPLATE_FOLDER = "router_views/your_companies";
-export const YOUR_COMPANIES_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/your_companies`;
-export const ADD_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/add_company`;
-export const CONFIRM_COMPANY_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirm_company_details`;
-export const COMPANY_ADDED_SUCCESS_PAGE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/confirmation_company_added`;
-export const MANAGE_AUTHORISED_PEOPLE_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/manage_authorised_people`;
-export const CANCEL_PERSON_TEMPLATE = `${YOUR_COMPANIES_TEMPLATE_FOLDER}/cancel_person`;
 
-// English and Welsh translation file names
+// English and Welsh translation
 export const COMMON = "common";
-export const YOUR_COMPANIES_LANG = "your-companies";
-export const ADD_COMPANY_LANG = "add-company";
-export const CONFIRM_COMPANY_LANG = "confirm-company-details";
-export const COMPANY_ADD_SUCCESS = "confirmation-company-added";
-export const COMPANY_STATUS_LANG = "company-status";
-export const COMPANY_TYPE_LANG = "company-type";
-export const MANAGE_AUTHORISED_PEOPLE_LANG = "manage-authorised-people";
-export const CANCEL_PERSON_LANG = "cancel-person";
+export const COMPANY_STATUS = "company-status";
+export const COMPANY_TYPE = "company-type";
+
+// English and Welsh translation files AND Nunjucks template files
+export const YOUR_COMPANIES_PAGE = "your-companies";
+export const ADD_COMPANY_PAGE = "add-company";
+export const CONFIRM_COMPANY_PAGE = "confirm-company-details";
+export const COMPANY_ADD_SUCCESS_PAGE = "confirmation-company-added";
+export const MANAGE_AUTHORISED_PEOPLE_PAGE = "manage-authorised-people";
+export const CANCEL_PERSON_PAGE = "cancel-person";
+export const ADD_PRESENTER_PAGE = "add-presenter";
+export const CHECK_PRESENTER_PAGE = "add-presenter-check-details";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
 export const COMPANY_AUTH_PROTECTED_BASE = `/company/:${COMPANY_NUMBER}`;
 export const ADD_COMPANY_URL = "/add-company";
 export const YOUR_COMPANIES_URL = "/";
+export const SEPARATOR = YOUR_COMPANIES_URL;
 export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`;
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const COMPANY_ADDED_SUCCESS_URL = COMPANY_AUTH_PROTECTED_BASE + "/confirmation-company-added";
@@ -44,6 +42,8 @@ export const YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL = `${LANDING_URL}${COMPANY
 export const CREATE_TRANSACTION_PATH_FULL = LANDING_URL + `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
 export const CREATE_TRANSACTION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/transaction`;
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/manage-authorised-people/:${COMPANY_NUMBER}`;
+export const AUTHORISED_PERSON_ADDED_URL = `/manage-authorised-people/:${COMPANY_NUMBER}/confirmation-person-added`;
+export const YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}/confirmation-person-added`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
 export const YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL = `${LANDING_URL}${ADD_NEW_AUTHORISED_PERSON_URL}`;
@@ -55,6 +55,10 @@ export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${US
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
 export const CONFIRMATION_CANCEL_PERSON_URL = "/confirmation-cancel-person";
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_CANCEL_PERSON_URL}`;
+export const ADD_PRESENTER_URL = COMPANY_AUTH_PROTECTED_BASE + SEPARATOR + ADD_PRESENTER_PAGE;
+export const YOUR_COMPANIES_ADD_PRESENTER_URL = LANDING_URL + ADD_PRESENTER_URL;
+export const CHECK_PRESENTER_URL = COMPANY_AUTH_PROTECTED_BASE + SEPARATOR + CHECK_PRESENTER_PAGE;
+export const YOUR_COMPANIES_CHECK_PRESENTER_URL = LANDING_URL + CHECK_PRESENTER_URL;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -96,16 +100,3 @@ export const TRUE = "true";
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
 export const YES = "yes";
-
-// pages names, also the template njk name and the translation file name
-export const pages:Record<string, string> = {
-    ADD_PRESENTER: "add-presenter",
-    CHECK_PRESENTER: "add-presenter-check-details"
-} as const;
-
-// add-presenter => /add-presenter
-export const paths = appendToRecord(YOUR_COMPANIES_URL, pages);
-// /add-presenter => /company/:companyNumber/add-presenter
-export const pathsWithCompanyAuth = appendToRecord(COMPANY_AUTH_PROTECTED_BASE, paths);
-// /company/:companyNumber/add-presenter => /your-companies/company/:companyNumber/add-presenter
-export const fullPathsWithCompanyAuth = appendToRecord(LANDING_URL, pathsWithCompanyAuth);

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { CancelPersonHandler } from "../handlers/yourCompanies/cancelPersonHandler";
 import {
-    CANCEL_PERSON_TEMPLATE,
+    CANCEL_PERSON_PAGE,
     CONFIRMATION_CANCEL_PERSON_URL,
     GET,
     POST
@@ -10,7 +10,7 @@ import {
 export const cancelPersonControllerGet = async (req: Request, res: Response, next: NextFunction) => {
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, GET);
-    res.render(CANCEL_PERSON_TEMPLATE, {
+    res.render(CANCEL_PERSON_PAGE, {
         ...viewData
     });
 };
@@ -19,7 +19,7 @@ export const cancelPersonControllerPost = async (req: Request, res: Response, ne
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
-        res.render(CANCEL_PERSON_TEMPLATE, {
+        res.render(CANCEL_PERSON_PAGE, {
             ...viewData
         });
     } else {

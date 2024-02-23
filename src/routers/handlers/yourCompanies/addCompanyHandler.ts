@@ -8,7 +8,7 @@ import {
     ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG,
     ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE,
     THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT,
-    ADD_COMPANY_LANG,
+    ADD_COMPANY_PAGE,
     COMPNANY_ASSOCIATED_WITH_USER,
     COMPANY_NUMBER,
     ENTER_A_COMPANY_NUMBER
@@ -27,7 +27,7 @@ export class AddCompanyHandler extends GenericHandler {
         // ...process request here and return data for the view
         try {
             this.viewData = this.getViewData();
-            this.viewData.lang = getTranslationsForView(req.t, ADD_COMPANY_LANG);
+            this.viewData.lang = getTranslationsForView(req.t, ADD_COMPANY_PAGE);
             if (method === POST) {
                 const payload = Object.assign({}, req.body);
                 if (!payload.companyNumber) {
