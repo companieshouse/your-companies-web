@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../genericHandler";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { getCompanyProfile } from "../../../services/companyProfileService";
+import { getExtraData } from "../../../lib/utils/sessionUtils";
 
 export class CompanyAddSuccessHandler extends GenericHandler {
     async execute (req: Request, response: Response): Promise<Object> {
@@ -16,11 +15,9 @@ export class CompanyAddSuccessHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request, response: Response): Promise<Object> {
-        const company: CompanyProfile = await getCompanyProfile(req.params.companyNumber as string);
-
+        const companyNowAssociated = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
         return Promise.resolve({
-            companyName: company.companyName,
-            feedbackSource: constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL
+            companyName: companyNowAssociated.companyName
         });
     }
 }

@@ -24,5 +24,7 @@
   "weve_sent_an_email_to_the_company": "We’ve sent an email to the company’s registered email address and to any other people who are authorised to let them know.",
   "authorised_person_success_heading": "Email sent",
   "authorised_person_success_msg1": "We’ve sent an email to ",
-  "authorised_person_success_msg2": " inviting them to be digitally authorised to file online for "
+  "authorised_person_success_msg2": " inviting them to be digitally authorised to file online for ",
+  "email_resent_success_success_msg1": "We’ve sent another email to ",
+  "email_resent_success_success_msg2": " They must select the link in the email to be digitally authorised to file online for"
 }

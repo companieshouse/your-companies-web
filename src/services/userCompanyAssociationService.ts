@@ -14,12 +14,12 @@ import { Cancellation } from "../types/cancellation";
  * @param userEmailAddress the user email address for which to check the association
  */
 export const isCompanyAssociatedWithUser = async (companyNumber: string, userEmailAddress: string): Promise<string> => {
-    // TODO - replace this hard coded value with the API call once the API is available
+    // We will replace this hard coded value with the API call once the API is available
     return Promise.resolve(companyNumber === "NI038379" ? COMPNANY_ASSOCIATED_WITH_USER : COMPNANY_NOT_ASSOCIATED_WITH_USER);
 };
 
 export const getUserAssociations = async (userEmailAddress: string): Promise<Associations> => {
-    // TODO - replace this hard coded value with the API call once the API is available
+    // We will replace this hard coded value with the API call once the API is available
     const associations: Associations = {
         items: [
             {
@@ -135,7 +135,7 @@ export const addUserEmailAssociation = async (email: string, companyNumber:strin
     }
 };
 export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
-    // TODO - replace this hard coded value with the API call once the API is available
+    // We will replace this hard coded value with the API call once the API is available
     const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
 
     if (cancellation && cancellation.cancelPerson === YES) {
@@ -145,6 +145,6 @@ export const getCompanyAssociations = async (companyNumber: string, cancellation
 };
 
 export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {
-    // TODO - replace this hard coded value with the API call once the API is available
+    // We will replace this hard coded value with the API call once the API is available
     return Promise.resolve(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };
