@@ -35,8 +35,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
         }
 
-        const resentSuccessEmail = getExtraData(req.session, "resentSuccessEmail");
-        if (resentSuccessEmail && req.originalUrl.includes("/authorisation-email-resent")) {
+        const resentSuccessEmail = getExtraData(req.session, constants.RESENT_SUCCESS_EMAIL);
+        if (resentSuccessEmail && req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL)) {
             this.viewData.showEmailResentSuccess = true;
             this.viewData.resentSuccessEmail = resentSuccessEmail;
         }

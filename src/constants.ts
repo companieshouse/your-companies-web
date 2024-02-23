@@ -9,6 +9,7 @@ export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
 export const REFERER_URL = "refererUrl";
 export const CANCEL_PERSON = "cancelPerson";
 export const AUTHORISED_PERSON = "authorisedPerson";
+export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";

@@ -24,7 +24,7 @@ export const resendEmailController = async (req: Request, res: Response) => {
             companyNumber
         );
         if (emailSendResponse.httpStatusCode === 201) {
-            setExtraData(req.session, "resentSuccessEmail", email);
+            setExtraData(req.session, constants.RESENT_SUCCESS_EMAIL, email);
 
             return res.redirect(
                 constants.YOUR_COMPANIES_CONFIRMATION_EMAIL_RESENT_URL.replace(
