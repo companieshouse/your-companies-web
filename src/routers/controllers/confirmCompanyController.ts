@@ -32,7 +32,7 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response, 
             companyNumber: company.companyNumber,
             companyName: company.companyName
         };
-        setExtraData(req.session, "confirmedCompanyForAssocation", confirmedCompanyForAssocation);
+        setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
         nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
     }
     return res.redirect(nextPageUrl);

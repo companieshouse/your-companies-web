@@ -15,7 +15,7 @@ export class CompanyAddSuccessHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request, response: Response): Promise<Object> {
-        const companyNowAssociated = getExtraData(req.session, "confirmedCompanyForAssocation");
+        const companyNowAssociated = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
         return Promise.resolve({
             companyName: companyNowAssociated.companyName
         });

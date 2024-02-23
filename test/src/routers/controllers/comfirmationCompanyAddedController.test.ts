@@ -6,7 +6,6 @@ import { NextFunction, Request, Response } from "express";
 const router = supertest(app);
 const en = require("../../../../src/locales/en/translation/confirmation-company-added.json");
 const enCommon = require("../../../../src/locales/en/translation/common.json");
-const cy = require("../../../../src/locales/cy/translation/confirmation-company-added.json");
 const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 const url = `/your-companies/confirmation-company-added`;
 const companyNumber = "1122334455";
