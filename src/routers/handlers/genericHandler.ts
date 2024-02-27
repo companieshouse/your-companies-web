@@ -24,4 +24,4 @@ export class GenericHandler {
             serverError: this.errorManifest.generic.serverError
         };
     }
-};
+}
