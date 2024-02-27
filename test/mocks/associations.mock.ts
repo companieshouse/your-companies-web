@@ -61,5 +61,6 @@ export const companyAssociations: Associations = {
 } as Associations;
 
 export const emptyAssociations: Associations = {
-    items: []
+    items: [],
+    totalResults: 0
 };

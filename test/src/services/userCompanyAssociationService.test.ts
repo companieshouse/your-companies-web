@@ -62,7 +62,8 @@ describe("User Company Association Service", () => {
                         companyNumber: "01777777",
                         companyName: "BRITISH AIRWAYS PLC"
                     }
-                ]
+                ],
+                totalResults: 5
             } as Associations;
             // When
             const result = getUserAssociations(userEmailAddress);
@@ -74,7 +75,8 @@ describe("User Company Association Service", () => {
             // Given
             const userEmailAddress = "test@test.com";
             const expectedAssociations: Associations = {
-                items: []
+                items: [],
+                totalResults: 0
             } as Associations;
             // When
             const result = getUserAssociations(userEmailAddress);
