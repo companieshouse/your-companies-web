@@ -11,6 +11,7 @@ export const CANCEL_PERSON = "cancelPerson";
 export const AUTHORISED_PERSON = "authorisedPerson";
 export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
 export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssocation";
+export const USER_ASSOCIATIONS = "userAssociations";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";

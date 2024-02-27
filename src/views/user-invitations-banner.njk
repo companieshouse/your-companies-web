@@ -1,0 +1,15 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% set html %}
+<p class="govuk-notification-banner__heading">
+    {{lang.youve_been_invited_to_be_digitally_authorised_start}}{{numberOfInvitations}}
+    {{lang.youve_been_invited_to_be_digitally_authorised_end}}
+    <a class="govuk-notification-banner__link" href="{{viewInvitationsPageUrl}}">{{lang.view_invitations}}</a>.
+</p>
+{% endset %}
+
+{{ govukNotificationBanner({
+        html: html,
+        titleText: lang.important
+    })
+}}
