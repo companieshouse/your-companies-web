@@ -42,7 +42,7 @@ export class YourCompaniesHandler extends GenericHandler {
             viewData.userHasCompanies = constants.TRUE;
             viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
             viewData.numberOfInvitations = userAssociations.totalResults;
-            viewData.viewInvitationsPageUrl = "";
+            viewData.viewInvitationsPageUrl = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
         }
         return viewData;
     }
