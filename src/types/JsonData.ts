@@ -5,7 +5,7 @@ type JSONValue =
     | JSONObject
     | JSONArray;
 
-interface JSONArray extends Array<JSONValue> { }
+type JSONArray = Array<JSONValue>
 
 export interface JSONObject {
     [x: string]: JSONValue;

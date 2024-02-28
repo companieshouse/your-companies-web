@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { Associations } from "../types/associations";
 import {
     COMPNANY_ASSOCIATED_WITH_USER,
@@ -27,14 +29,81 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY"
+                companyName: "THE POLISH BREWERY",
+                status: "confirmed",
+                invitations:
+                [
+                    {
+                        invited_by: "123454321",
+                        invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
             },
             {
                 id: "2345678901",
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "01777777",
-                companyName: "BRITISH AIRWAYS PLC"
+                companyName: "BRITISH AIRWAYS PLC",
+                status: "confirmed",
+                invitations:
+                [
+                    {
+                        invited_by: "123454321",
+                        invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
+            },
+            {
+                id: "44345677554",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "10866549",
+                companyName: "ANDROID TECHNOLOGY LTD",
+                status: "awaiting-approval",
+                invitations:
+                [
+                    {
+                        invited_by: "1122334455",
+                        invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
+                    },
+                    {
+                        invited_by: "75853993475",
+                        invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
+            },
+            {
+                id: "234322344",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "08449801",
+                companyName: "BROWN AND SALTER LIMITED",
+                status: "awaiting-approval",
+                invitations:
+                [
+                    {
+                        invited_by: "5544332211",
+                        invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
+
+            },
+            {
+                id: "6654463562412",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "18882777",
+                companyName: "FLOWERS LIMITED",
+                status: "awaiting-approval",
+                invitations:
+                [
+                    {
+                        invited_by: "76896789",
+                        invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
+
             }
         ]
     } as Associations;
@@ -94,12 +163,12 @@ export const britishAirwaysItems = {
     ]
 } as Associations;
 
-export const isEmailAuthorised = async (email: string, companyNumber:string): Promise<boolean> => {
+export const isEmailAuthorised = async (email: string, companyNumber: string): Promise<boolean> => {
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
 };
 
-export const addUserEmailAssociation = async (email: string, companyNumber:string): Promise<void> => {
+export const addUserEmailAssociation = async (email: string, companyNumber: string): Promise<void> => {
     if (!email) return;
     if (companyNumber === "NI038379") {
         const isAssociated = await isEmailAuthorised(email, companyNumber);

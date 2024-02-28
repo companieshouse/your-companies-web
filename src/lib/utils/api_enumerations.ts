@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as yaml from "js-yaml";
 
 interface ApiEnumerationsConstants {
-  [propName: string]: any
+  [propName: string]: any;
 }
 
 const apiConstantsFile = fs.readFileSync("api-enumerations/constants.yml", "utf8");

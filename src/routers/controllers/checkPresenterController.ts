@@ -15,7 +15,7 @@ export const checkPresenterController = async (req: Request, res: Response) => {
     if (req.method === constants.POST) {
         if (emailAddress) {
             await addUserEmailAssociation(emailAddress, company.companyNumber);
-            const authorisedPerson:AuthorisedPerson = {
+            const authorisedPerson: AuthorisedPerson = {
                 authorisedPersonEmailAddress: emailAddress,
                 authorisedPersonCompanyName: company.companyName
             };

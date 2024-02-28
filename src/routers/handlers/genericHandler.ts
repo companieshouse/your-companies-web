@@ -16,7 +16,7 @@ export class GenericHandler {
         };
     }
 
-    processHandlerException (err: any): Object {
+    processHandlerException (err: any): Record<string, any> {
         if (err.name === "VALIDATION_ERRORS") {
             return err.stack;
         }
@@ -24,4 +24,4 @@ export class GenericHandler {
             serverError: this.errorManifest.generic.serverError
         };
     }
-};
+}

@@ -1,7 +1,18 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { toReadableFormat } from "../lib/utils/date";
 
-export const formatForDisplay = (companyProfile: CompanyProfile, lang:string) => {
+export const formatTitleCase = (str: string|undefined): string => {
+    if (!str) {
+        return "";
+    }
+
+    return str.replace(
+        /\w\S*/g, (word) => {
+            return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+        });
+};
+
+export const formatForDisplay = (companyProfile: CompanyProfile, lang: string) => {
     const registeredOfficeAddress = {
         addressLineOne: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineOne),
         addressLineTwo: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineTwo),
@@ -20,17 +31,6 @@ export const formatForDisplay = (companyProfile: CompanyProfile, lang:string) =>
         dateOfCreation: toReadableFormat(companyProfile.dateOfCreation, lang),
         registeredOfficeAddress: registeredOfficeAddress
     };
-};
-
-export const formatTitleCase = (str: string|undefined): string => {
-    if (!str) {
-        return "";
-    }
-
-    return str.replace(
-        /\w\S*/g, (word) => {
-            return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
-        });
 };
 
 export const buildAddress = (formattedCompanyProfile: any): string => {

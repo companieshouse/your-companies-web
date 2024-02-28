@@ -9,14 +9,16 @@ export const userAssociations: Associations = {
             userId: "qwertyiop",
             userEmail: "demo@ch.gov.uk",
             companyNumber: "NI038379",
-            companyName: "THE POLISH BREWERY"
+            companyName: "THE POLISH BREWERY",
+            status: "confirmed"
         },
         {
             id: "2345678901",
             userId: "qwertyiop",
             userEmail: "demo@ch.gov.uk",
             companyNumber: "01777777",
-            companyName: "BRITISH AIRWAYS PLC"
+            companyName: "BRITISH AIRWAYS PLC",
+            status: "confirmed"
         }
     ]
 } as Associations;

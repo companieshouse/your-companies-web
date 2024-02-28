@@ -43,7 +43,7 @@ describe("User Company Association Service", () => {
     });
 
     describe("getUserAssociations", () => {
-        it("should return associations for the user if there are any", () => {
+        it("should return associations for the user if there are any", async () => {
             // Given
             const userEmailAddress = "demo@ch.gov.uk";
             const expectedAssociations: Associations = {
@@ -65,9 +65,15 @@ describe("User Company Association Service", () => {
                 ]
             } as Associations;
             // When
-            const result = getUserAssociations(userEmailAddress);
+            const result = await getUserAssociations(userEmailAddress);
             // Then
-            expect(result).resolves.toEqual(expectedAssociations);
+            expect(result.items).toEqual(expect.arrayContaining([
+                expect.objectContaining(expectedAssociations.items[0])
+            ]));
+            expect(result.items).toEqual(expect.arrayContaining([
+                expect.objectContaining(expectedAssociations.items[1])
+            ]));
+
         });
 
         it("should return no associations for the user if there are not any", () => {

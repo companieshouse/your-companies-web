@@ -10,10 +10,10 @@ export type ViewData = {
       };
     companyNumber?: string;
     companyName?: string;
-    backLinkHref?:string;
+    backLinkHref?: string;
 };
 
 export type CompanyNameAndNumber = {
-    companyName: string,
-    companyNumber: string,
+    companyName: string;
+    companyNumber: string;
 }

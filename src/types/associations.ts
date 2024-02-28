@@ -1,7 +1,3 @@
-export interface Associations {
-    items: Association[];
-}
-
 export interface Association {
     id: string;
     userId: string;
@@ -10,6 +6,16 @@ export interface Association {
     companyNumber: string;
     companyName: string;
     status: string;
+    invitations?: [
+        {
+          "invited_by": string,
+          "invited_at": string
+        }
+      ]
+}
+
+export interface Associations  {
+    items: Association[];
 }
 
 export type AuthorisedPerson = {

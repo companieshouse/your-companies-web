@@ -167,7 +167,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         jest.clearAllMocks();
     });
 
-    const authorisedPerson:AuthorisedPerson = {
+    const authorisedPerson: AuthorisedPerson = {
         authorisedPersonEmailAddress: "bob@bob.com",
         authorisedPersonCompanyName: "Acme Ltd"
     };
