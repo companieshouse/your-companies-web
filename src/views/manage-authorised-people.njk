@@ -12,7 +12,7 @@
 {% block back_link %}
 
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
-        {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref }) }}
+        {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref }) }}
     </div>
 
 {% endblock %}
@@ -23,7 +23,7 @@
 
     {% if cancelledPerson or removedPerson %}
         {% set heading_text = lang.digital_authorisation_cancelled if cancelledPerson else 
-            removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName %}
+            removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName + "." %}
 
         {% set successHtml %}
         <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
@@ -39,7 +39,7 @@
         {% if removedPerson %}
             <p class="govuk-body">
                 {{lang.you_may_wish_to}}
-                <a class="govuk-notification-banner__link" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer" aria-label="{{lang.link_to_company_authentication_codes_for_online_filling}}">{{lang.change_the_authentication_code}}</a>
+                <a class="govuk-notification-banner__link" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
                 {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
             </p>
         {% endif %}
@@ -123,7 +123,11 @@
             {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set removeLinkAriaLabelText = lang.link_to_remove_user_from_digitaly_authorised_start + association.userEmail + lang.link_to_remove_user_from_digitaly_authorised_end + association.companyName %}
-            {% set query_params = {userName: association.displayName} if association.displayName and association.displayName !== "Not provided" else undefined %}
+            {% set query_params = {
+                userName: association.displayName
+            }
+            if association.displayName and association.displayName !== "Not provided" else 
+                undefined %}
             {% set removeLink = link(lang.remove, removeLinkAriaLabelText, removeUrl, {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
