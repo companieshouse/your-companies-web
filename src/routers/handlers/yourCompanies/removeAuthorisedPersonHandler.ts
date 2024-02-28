@@ -16,8 +16,9 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
                 this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
             } else {
                 const removal: Removal = {
-                    removePerson: payload.removePerson,
+                    removePerson: payload.confirmRemoval,
                     userEmail: req.params[constants.USER_EMAIL],
+                    userName: req.query[constants.USER_NAME] ? req.query[constants.USER_NAME] as string : undefined,
                     companyNumber: getExtraData(req.session, constants.COMPANY_NUMBER)
                 };
                 setExtraData(req.session, constants.REMOVE_PERSON, removal);
@@ -28,12 +29,12 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     private getViewData (req: Request): any {
         return {
-            backLinkHref: constants.LANDING_URL,
             companyNumber: req.params[constants.COMPANY_NUMBER],
+            cancelLinkHref: getExtraData(req.session, constants.REFERER_URL),
+            backLinkHref: getExtraData(req.session, constants.REFERER_URL),
             companyName: getExtraData(req.session, constants.COMPANY_NAME),
             userEmail: req.params[constants.USER_EMAIL],
             userName: req.query[constants.USER_NAME]
-            // buttonHref: req.originalUrl
         };
     };
 

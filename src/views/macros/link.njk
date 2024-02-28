@@ -5,6 +5,8 @@ This macro creates a hyperlink
 @param href - (string, required) is the URL that the hyperlink points to
 @param urlParams - ({ [key: string]: string }, optional) contains key/value pairs
                 to replace the route parameters in href
+@param queryParams - ({ [key: string]: string }, optional) contains key/value pairs
+                to replace the query parameters in href
 #}
 {% macro link(text, ariaLabelText, href, urlParams, queryParams) %}
     {% if urlParams %}
@@ -15,11 +17,11 @@ This macro creates a hyperlink
     {% if queryParams %}
         {% for key, value in queryParams %}
             {% if loop.first %}
-                {% set href = href + "?" + key + "=" + value %}
+                {% set href = href + "?" + key + "=" + value | replace(" ", "+") %}
             {% endif %}
 
             {% if not loop.first %}
-                {% set href = href + "&" + key + "=" + value %}
+                {% set href = href + "&" + key + "=" + value | replace(" ", "+") %}
             {% endif %}
         {% endfor %}
     {% endif %}

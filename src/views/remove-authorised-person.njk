@@ -61,20 +61,19 @@
                         errorMessage: message
                     }) 
                 }}
-
+                
                 <div class="govuk-button-group">
+
                     {{ govukButton({
                         text: lang.remove_authorisation,
                         classes: "govuk-button--warning"
                     }) }}
 
-                    {{ govukButton({
-                        text: lang.cancel,
-                        classes: "govuk-button--secondary"
-                    }) }}
-                </div>
+                    <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
 
-            </form>
+                </div>
+            
+            </form> 
       
       </div>
     </div>
