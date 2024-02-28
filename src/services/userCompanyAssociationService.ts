@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 
 import { Associations } from "../types/associations";
 import {
@@ -163,11 +163,20 @@ export const britishAirwaysItems = {
     ]
 } as Associations;
 
+export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
+    // We will replace this hard coded value with the API call once the API is available
+    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+
+    if (cancellation && cancellation.cancelPerson === YES) {
+        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
+    }
+    return Promise.resolve(associations);
+};
+
 export const isEmailAuthorised = async (email: string, companyNumber: string): Promise<boolean> => {
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
 };
-
 export const addUserEmailAssociation = async (email: string, companyNumber: string): Promise<void> => {
     if (!email) return;
     if (companyNumber === "NI038379") {
@@ -202,15 +211,6 @@ export const addUserEmailAssociation = async (email: string, companyNumber: stri
             );
         }
     }
-};
-export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
-    // We will replace this hard coded value with the API call once the API is available
-    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
-
-    if (cancellation && cancellation.cancelPerson === YES) {
-        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
-    }
-    return Promise.resolve(associations);
 };
 
 export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {

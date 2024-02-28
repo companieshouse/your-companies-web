@@ -12,6 +12,12 @@ import * as associationService from "../../../../src/services/userCompanyAssocia
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
 import { emptyAssociations, userAssociations } from "../../../mocks/associations.mock";
+import * as en from "../../../../src/locales/en/translation/your-companies.json";
+import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
+import * as enAddCompany from "../../../../src/locales/en/translation/add-company.json";
+import * as cyAddCompany from "../../../../src/locales/cy/translation/add-company.json";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 
 const router = supertest(app);
 
@@ -27,8 +33,6 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
 });
 
 describe("GET /your-companies", () => {
-    const en = require("../../../../src/locales/en/translation/your-companies.json");
-    const cy = require("../../../../src/locales/cy/translation/your-companies.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -126,10 +130,6 @@ describe("GET /your-companies", () => {
 });
 
 describe("GET /your-companies/add-company", () => {
-    const en = require("../../../../src/locales/en/translation/add-company.json");
-    const cy = require("../../../../src/locales/cy/translation/add-company.json");
-    const enCommon = require("../../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -142,29 +142,25 @@ describe("GET /your-companies/add-company", () => {
     it("should return expected English content if language version set to English", async () => {
         const response = await router.get("/your-companies/add-company?lang=en");
         expect(response.text).toContain(enCommon.back_link);
-        expect(response.text).toContain(en.what_is_the_company_number);
-        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(enAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(enAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(enCommon.continue);
     });
 
     it("should return expected Welsh content if language version set to Welsh", async () => {
         const response = await router.get("/your-companies/add-company?lang=cy");
         expect(response.text).toContain(cyCommon.back_link);
-        expect(response.text).toContain(cy.what_is_the_company_number);
-        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(cyAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(cyAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
     });
 });
 
 describe("POST /your-companies/add-company", () => {
-    const en = require("../../../../src/locales/en/translation/add-company.json");
-    const cy = require("../../../../src/locales/cy/translation/add-company.json");
-    const enCommon = require("../../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -191,12 +187,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
-        expect(response.text).toContain(en.what_is_the_company_number);
-        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(enAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(enAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(enCommon.continue);
-        expect(response.text).toContain(en.enter_a_company_number_for_a_company_that_is_active);
+        expect(response.text).toContain(enAddCompany.enter_a_company_number_for_a_company_that_is_active);
     });
 
     it("should return expected Welsh error message if company number is correct but company status is not active and language version set to Welsh", async () => {
@@ -208,12 +204,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
-        expect(response.text).toContain(cy.what_is_the_company_number);
-        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(cyAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(cyAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
-        expect(response.text).toContain(cy.enter_a_company_number_for_a_company_that_is_active);
+        expect(response.text).toContain(cyAddCompany.enter_a_company_number_for_a_company_that_is_active);
     });
 
     it("should return expected English error message if company number is correct but company has already been added to user account and language version set to English", async () => {
@@ -227,12 +223,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
-        expect(response.text).toContain(en.what_is_the_company_number);
-        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(enAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(enAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(enCommon.continue);
-        expect(response.text).toContain(en.this_company_has_already_been_added_to_your_account);
+        expect(response.text).toContain(enAddCompany.this_company_has_already_been_added_to_your_account);
     });
 
     it("should return expected Welsh error message if company number is correct but company has already been added to user account and language version set to Welsh", async () => {
@@ -246,12 +242,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
-        expect(response.text).toContain(cy.what_is_the_company_number);
-        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(cyAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(cyAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
-        expect(response.text).toContain(cy.this_company_has_already_been_added_to_your_account);
+        expect(response.text).toContain(cyAddCompany.this_company_has_already_been_added_to_your_account);
     });
 
     it("should return expected English error message if company number is incorrect and language version set to English", async () => {
@@ -265,12 +261,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
-        expect(response.text).toContain(en.what_is_the_company_number);
-        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(enAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(enAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(enCommon.continue);
-        expect(response.text).toContain(en.enter_a_company_number_that_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.enter_a_company_number_that_is_8_characters_long);
     });
 
     it("should return expected Welsh error message if company number is incorrect and language version set to Welsh", async () => {
@@ -284,12 +280,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
-        expect(response.text).toContain(cy.what_is_the_company_number);
-        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(cyAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(cyAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
-        expect(response.text).toContain(cy.enter_a_company_number_that_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.enter_a_company_number_that_is_8_characters_long);
     });
 
     it("should return expected English error message if there is no company with provided number and language version set to English", async () => {
@@ -303,12 +299,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
-        expect(response.text).toContain(en.what_is_the_company_number);
-        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(enAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(enAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(enCommon.continue);
-        expect(response.text).toContain(en.enter_a_company_number_that_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.enter_a_company_number_that_is_8_characters_long);
     });
 
     it("should return expected Welsh error message if there is no company with provided number and language version set to Welsh", async () => {
@@ -322,12 +318,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
-        expect(response.text).toContain(cy.what_is_the_company_number);
-        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(cyAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(cyAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
-        expect(response.text).toContain(cy.enter_a_company_number_that_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.enter_a_company_number_that_is_8_characters_long);
     });
 
     it("should return expected English error message if there is no company number provided and language version set to English", async () => {
@@ -341,12 +337,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(enCommon.back_link);
         expect(response.text).toContain(enCommon.there_is_a_problem);
-        expect(response.text).toContain(en.what_is_the_company_number);
-        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(en.you_can_find_this_by_searching);
-        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(enAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(enAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(enAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(enCommon.continue);
-        expect(response.text).toContain(en.enter_a_company_number);
+        expect(response.text).toContain(enAddCompany.enter_a_company_number);
     });
 
     it("should return expected Welsh error message if there is no company number provided and language version set to Welsh", async () => {
@@ -360,12 +356,12 @@ describe("POST /your-companies/add-company", () => {
         // Then
         expect(response.text).toContain(cyCommon.back_link);
         expect(response.text).toContain(cyCommon.there_is_a_problem);
-        expect(response.text).toContain(cy.what_is_the_company_number);
-        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
-        expect(response.text).toContain(cy.you_can_find_this_by_searching);
-        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyAddCompany.what_is_the_company_number);
+        expect(response.text).toContain(cyAddCompany.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cyAddCompany.you_can_find_this_by_searching);
+        expect(response.text).toContain(cyAddCompany.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
-        expect(response.text).toContain(cy.enter_a_company_number);
+        expect(response.text).toContain(cyAddCompany.enter_a_company_number);
     });
 
     it("should return expected generic error message if any other error happens", async () => {

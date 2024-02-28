@@ -5,10 +5,10 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import { validDisolvedCompanyProfile, validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
+import * as en from "../../../../src/locales/en/translation/confirm-company-details.json";
+import * as cy from "../../../../src/locales/cy/translation/confirm-company-details.json";
 
 const router = supertest(app);
-const en = require("../../../../src/locales/en/translation/confirm-company-details.json");
-const cy = require("../../../../src/locales/cy/translation/confirm-company-details.json");
 const url = "/your-companies/confirm-company-details";
 
 const session: Session = new Session();
@@ -62,11 +62,15 @@ describe(`GET ${url}`, () => {
         jest.clearAllMocks();
     });
     it("should check session and auth before returning the your-companies page", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
+
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should return status 200", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
+
         await router.get(url).expect(200);
     });
 

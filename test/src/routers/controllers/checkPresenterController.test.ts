@@ -7,6 +7,8 @@ import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
+import * as en from "../../../../src/locales/en/translation/add-presenter-check-details.json";
+import * as cy from "../../../../src/locales/cy/translation/add-presenter-check-details.json";
 
 jest.mock("../../../../src/services/companyProfileService");
 jest.mock("../../../../src/services/userCompanyAssociationService");
@@ -21,8 +23,6 @@ const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
 const mockAddUserEmailAssociation = addUserEmailAssociation as jest.Mock;
 
 const router = supertest(app);
-const en = require("../../../../src/locales/en/translation/add-presenter-check-details.json");
-const cy = require("../../../../src/locales/cy/translation/add-presenter-check-details.json");
 const url = "/your-companies/add-presenter-check-details/12345678";
 
 describe(`GET ${url}`, () => {

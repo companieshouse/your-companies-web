@@ -20,24 +20,28 @@ export const companyInvitationsController = async (
         backLinkHref: constants.LANDING_URL
     };
     const awaitingApproval = userAssociations.items?.filter(item => item.status === "awaiting-approval");
-
-    const rowsData = awaitingApproval.flatMap((item) => {
-        return item.invitations?.map((invite) => {
-            const user = getUserRecord(invite.invited_by);
-
-            return [
-                { text: item.companyName },
-                { text: item.companyNumber },
-                { text: user?.email },
-                {
-                    html: `<a href="/your-companies/company-invitations-accept/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.accept}</a>`
-                },
-                {
-                    html: `<a href="/your-companies/company-invitations-decline/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.decline}</a>`
+    let rows: any[] = [];
+    if (awaitingApproval?.length) {
+        rows = await Promise.all(awaitingApproval?.map(async (item) => {
+            if (item?.invitations?.length) {
+                const invitationsForCompany: any[] = [];
+                for (const invite of item.invitations) {
+                    const user = await getUserRecord(invite.invited_by);
+                    invitationsForCompany.push([
+                        { text: item.companyName },
+                        { text: item.companyNumber },
+                        { text: user?.email },
+                        {
+                            html: `<a href="/your-companies/company-invitations-accept/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.accept}</a>`
+                        },
+                        {
+                            html: `<a href="/your-companies/company-invitations-decline/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.decline}</a>`
+                        }
+                    ]);
                 }
-            ];
-        });
-    });
-
-    res.render(constants.COMPANY_INVITATIONS_PAGE, { ...viewData, rowsData });
+                return invitationsForCompany;
+            }
+        }));
+    }
+    res.render(constants.COMPANY_INVITATIONS_PAGE, { ...viewData, rowsData: rows.flat() });
 };

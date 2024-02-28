@@ -7,6 +7,10 @@ import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { Cancellation } from "../../../../src/types/cancellation";
 import { USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
 import { AuthorisedPerson } from "../../../../src/types/associations";
+import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
+import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 
 const router = supertest(app);
 
@@ -29,10 +33,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "removeUserFromCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-    const en = require("../../../../src/locales/en/translation/manage-authorised-people.json");
-    const cy = require("../../../../src/locales/cy/translation/manage-authorised-people.json");
-    const enCommon = require("../../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -160,8 +160,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-added`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-    const en = require("../../../../src/locales/en/translation/manage-authorised-people.json");
-    const cy = require("../../../../src/locales/cy/translation/manage-authorised-people.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -219,8 +217,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         const url = `/your-companies/manage-authorised-people/${companyNumber}/authorisation-email-resent`;
         const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
         const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-        const en = require("../../../../src/locales/en/translation/manage-authorised-people.json");
-        const cy = require("../../../../src/locales/cy/translation/manage-authorised-people.json");
 
         beforeEach(() => {
             jest.clearAllMocks();

@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 
 import { User } from "../types/user";
 
@@ -27,8 +27,7 @@ const users: User[] = [{
     roles: ""
 }];
 
-export const getUserRecord = (userId: string): User | undefined => {
+export const getUserRecord = (userId: string): Promise<User | undefined> => {
     const user = users.find(user => user.user_id === userId);
-    console.log("found user", user);
-    return user;
+    return Promise.resolve(user);
 };

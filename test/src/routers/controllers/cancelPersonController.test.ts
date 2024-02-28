@@ -4,15 +4,15 @@ import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import { COMPANY_NAME, REFERER_URL } from "../../../../src/constants";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../src/locales/en/translation/cancel-person.json";
+import * as cy from "../../../../src/locales/cy/translation/cancel-person.json";
 
 const router = supertest(app);
 const session: Session = new Session();
 const userEmail = "test@test.com";
 const url = `/your-companies/cancel-person/${userEmail}`;
-const enCommon = require("../../../../src/locales/en/translation/common.json");
-const cyCommon = require("../../../../src/locales/cy/translation/common.json");
-const en = require("../../../../src/locales/en/translation/cancel-person.json");
-const cy = require("../../../../src/locales/cy/translation/cancel-person.json");
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
