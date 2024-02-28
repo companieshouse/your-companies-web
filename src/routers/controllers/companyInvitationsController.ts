@@ -22,21 +22,21 @@ export const companyInvitationsController = async (
     const awaitingApproval = userAssociations.items?.filter(item => item.status === "awaiting-approval");
 
     const rowsData = awaitingApproval.flatMap((item) => {
-        // return item.invitations?.map((invite) => {
-        //     const user = getUserRecord(invite.invited_by);
+        return item.invitations?.map((invite) => {
+            const user = getUserRecord(invite.invited_by);
 
-        //     return [
-        //         { text: item.companyName },
-        //         { text: item.companyNumber },
-        //         { text: user?.email },
-        //         {
-        //             html: `<a href="/your-companies/company-invitations-accept/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.accept}</a>`
-        //         },
-        //         {
-        //             html: `<a href="/your-companies/company-invitations-decline/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.decline}</a>`
-        //         }
-        //     ];
-        // });
+            return [
+                { text: item.companyName },
+                { text: item.companyNumber },
+                { text: user?.email },
+                {
+                    html: `<a href="/your-companies/company-invitations-accept/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.accept}</a>`
+                },
+                {
+                    html: `<a href="/your-companies/company-invitations-decline/${item.id}" class="govuk-link govuk-link--no-visited-state">${viewData.lang.decline}</a>`
+                }
+            ];
+        });
     });
 
     res.render(constants.COMPANY_INVITATIONS_PAGE, { ...viewData, rowsData });

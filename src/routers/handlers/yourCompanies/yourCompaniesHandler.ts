@@ -33,8 +33,8 @@ export class YourCompaniesHandler extends GenericHandler {
             ?.filter(item => item.status === "confirmed");
 
         if (confirmedAssociations?.length) {
-            // viewData.associationData = confirmedAssociations.map(item =>
-            //     [{ text: item.companyName }, { text: item.companyNumber }]); ;
+            viewData.associationData = confirmedAssociations.map(item =>
+                [{ text: item.companyName }, { text: item.companyNumber }]); ;
             viewData.userHasCompanies = TRUE;
             viewData.viewAndManageUrl = YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
         }
