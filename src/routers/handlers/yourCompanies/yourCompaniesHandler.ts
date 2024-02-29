@@ -11,6 +11,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { Associations } from "../../../types/associations";
 import { getUserAssociations } from "../../../services/userCompanyAssociationService";
 import { getLoggedInUserEmail } from "../../../lib/utils/sessionUtils";
+import { AssociationStatus } from "../../../types/associations";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -30,7 +31,7 @@ export class YourCompaniesHandler extends GenericHandler {
         };
 
         const confirmedAssociations = userAssociations?.items
-            ?.filter(item => item.status === "confirmed");
+            ?.filter(item => item.status === AssociationStatus.CONFIRMED);
 
         if (confirmedAssociations?.length) {
             viewData.associationData = confirmedAssociations?.map(item =>

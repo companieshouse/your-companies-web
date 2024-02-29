@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable import/first */
 
 const READABLE_COMPANY_STATUS = "Receiver Action";

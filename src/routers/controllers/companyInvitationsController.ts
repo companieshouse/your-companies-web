@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { getUserAssociations } from "../../services/userCompanyAssociationService";
 import { getLoggedInUserEmail } from "../../lib/utils/sessionUtils";
-import { Associations } from "../../types/associations";
+import { Associations, AssociationStatus } from "../../types/associations";
 import { getTranslationsForView } from "../../lib/utils/translations";
 import { getUserRecord } from "../../services/userService";
 
@@ -19,7 +19,7 @@ export const companyInvitationsController = async (
         lang: getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE),
         backLinkHref: constants.LANDING_URL
     };
-    const awaitingApproval = userAssociations.items?.filter(item => item.status === "awaiting-approval");
+    const awaitingApproval = userAssociations.items?.filter(item => item.status === AssociationStatus.AWAITING_APPROVAL);
     let rows: any[] = [];
     if (awaitingApproval?.length) {
         rows = await Promise.all(awaitingApproval?.map(async (item) => {

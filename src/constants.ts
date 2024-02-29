@@ -11,6 +11,7 @@ export const CANCEL_PERSON = "cancelPerson";
 export const AUTHORISED_PERSON = "authorisedPerson";
 export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
 export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssocation";
+export const ASSOCIATIONS_ID = "associationId";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
@@ -30,6 +31,8 @@ export const CANCEL_PERSON_PAGE = "cancel-person";
 export const ADD_PRESENTER_PAGE = "add-presenter";
 export const CHECK_PRESENTER_PAGE = "add-presenter-check-details";
 export const COMPANY_INVITATIONS_PAGE = "company-invitations";
+export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
+export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -66,6 +69,8 @@ export const YOUR_COMPANIES_ADD_PRESENTER_URL = LANDING_URL + ADD_PRESENTER_URL;
 export const CHECK_PRESENTER_URL = `${SEPARATOR}${CHECK_PRESENTER_PAGE}${SEPARATOR}:${COMPANY_NUMBER}`;
 export const YOUR_COMPANIES_CHECK_PRESENTER_URL = LANDING_URL + CHECK_PRESENTER_URL;
 export const COMPANY_INVITATIONS_URL = SEPARATOR + COMPANY_INVITATIONS_PAGE;
+export const COMPANY_INVITATIONS_ACCEPT_URL = `/${COMPANY_INVITATIONS_ACCEPT_PAGE}/:${ASSOCIATIONS_ID}`;
+export const COMPANY_INVITATIONS_DECLINE_URL = `/${COMPANY_INVITATIONS_DECLINE_PAGE}/:${ASSOCIATIONS_ID}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import { Associations } from "../types/associations";
 import {
     COMPNANY_ASSOCIATED_WITH_USER,
