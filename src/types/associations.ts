@@ -24,9 +24,9 @@ export type AuthorisedPerson = {
 }
 
 export const AssociationStatus = {
-    CONFIRMED: 'confirmed',
-    REMOVED: 'removed',
-    AWAITING_APPROVAL: 'awaiting-approval'
-  } as const;
+    CONFIRMED: "confirmed",
+    REMOVED: "removed",
+    AWAITING_APPROVAL: "awaiting-approval"
+} as const;
 
 export type AssociationStatus = typeof AssociationStatus[keyof typeof AssociationStatus];

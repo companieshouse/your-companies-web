@@ -8,10 +8,9 @@ import {
     YOUR_COMPANIES_PAGE
 } from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { Associations } from "../../../types/associations";
+import { Associations, AssociationStatus } from "../../../types/associations";
 import { getUserAssociations } from "../../../services/userCompanyAssociationService";
 import { getLoggedInUserEmail } from "../../../lib/utils/sessionUtils";
-import { AssociationStatus } from "../../../types/associations";
 
 export class YourCompaniesHandler extends GenericHandler {
 
