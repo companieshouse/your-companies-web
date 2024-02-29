@@ -15,7 +15,7 @@ const router = supertest(app);
 const en = require("../../../../src/locales/en/translation/add-presenter.json");
 const cy = require("../../../../src/locales/cy/translation/add-presenter.json");
 const companyNumber = "12345678";
-const urlwithCompNum = "/your-companies/company/:companyNumber/add-presenter";
+const urlwithCompNum = "/your-companies/add-presenter/:companyNumber";
 const url = getUrlWithCompanyNumber(urlwithCompNum, companyNumber);
 
 describe(`GET ${url}`, () => {
@@ -27,7 +27,6 @@ describe(`GET ${url}`, () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should return status 200", async () => {
         await router.get(url).expect(200);
@@ -59,7 +58,6 @@ describe(`POST ${url}`, () => {
         await router.post(url).send({ email: "" });
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
     });
 
     it("should display current page with error message if no email provided", async () => {
@@ -79,6 +77,6 @@ describe(`POST ${url}`, () => {
         mockIsEmailAuthorised.mockResolvedValueOnce(false);
         const response = await router.post(url).send({ email: "bob@bob.com" });
         expect(response.status).toEqual(302);
-        expect(response.header.location).toEqual("/your-companies/company/12345678/add-presenter-check-details");
+        expect(response.header.location).toEqual("/your-companies/add-presenter-check-details/12345678");
     });
 });
