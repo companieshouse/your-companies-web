@@ -14,7 +14,7 @@ export const addPresenterController = async (
     res: Response
 ) => {
     const company: CompanyProfile = await getCompanyProfile(
-    req.params[constants.COMPANY_NUMBER] as string
+        req.params[constants.COMPANY_NUMBER]
     );
     const { companyName, companyNumber } = company;
     const viewData: ViewData = {
