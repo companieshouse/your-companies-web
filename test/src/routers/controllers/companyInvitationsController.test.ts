@@ -13,7 +13,7 @@ const mockGetUserAssociations = getUserAssociations as jest.Mock;
 const mockGetUserRecord = getUserRecord as jest.Mock;
 
 const router = supertest(app);
-const url = "/your-companies/company-invitations"
+const url = "/your-companies/company-invitations";
 
 const associations: Associations = {
     items: [
@@ -132,8 +132,8 @@ describe(`GET ${url}`, () => {
     });
     it("should return user email who created the invitation", async () => {
         const response = await router.get(`${url}?lang=cy`);
-        const expectedEmail = "another.email@acme.com"
-        const expectedCompanyNumber = "08449801"
+        const expectedEmail = "another.email@acme.com";
+        const expectedCompanyNumber = "08449801";
         expect(response.text).toContain(expectedCompanyNumber);
         expect(response.text).toContain(expectedEmail);
     });
