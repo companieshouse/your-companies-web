@@ -27,6 +27,6 @@ const users: User[] = [{
 }];
 
 export const getUserRecord = (userId: string): Promise<User | undefined> => {
-    const user = users.find(user => user.user_id === userId);
-    return Promise.resolve(user);
+    const userRecord = users.find(user => user.user_id === userId);
+    return Promise.resolve(userRecord);
 };
