@@ -42,10 +42,10 @@ export class CompanyInvitationsHandler extends GenericHandler {
                             { text: association.companyNumber },
                             { text: user?.email as string },
                             {
-                                html: this.getLink(acceptPath, translations.accept_an_invitation_from as string, translations.accept as string)
+                                html: this.getLink(acceptPath, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
                             },
                             {
-                                html: this.getLink(declinePath, translations.accept_an_invitation_from as string, translations.decline as string)
+                                html: this.getLink(declinePath, `${translations.decline_an_invitation_from} ${association.companyName}`, translations.decline as string)
                             }
                         ]);
                     }
