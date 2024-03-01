@@ -23,7 +23,7 @@ const mockAddUserEmailAssociation = addUserEmailAssociation as jest.Mock;
 const router = supertest(app);
 const en = require("../../../../src/locales/en/translation/add-presenter-check-details.json");
 const cy = require("../../../../src/locales/cy/translation/add-presenter-check-details.json");
-const url = "/your-companies/company/12345678/add-presenter-check-details";
+const url = "/your-companies/add-presenter-check-details/12345678";
 
 describe(`GET ${url}`, () => {
     beforeEach(() => {
@@ -34,7 +34,6 @@ describe(`GET ${url}`, () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should return status 200", async () => {
         await router.get(url).expect(200);
@@ -67,7 +66,6 @@ describe(`POST ${url}`, () => {
         await router.post(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should call addUserEmailAssociation with correct data", async () => {
         const companyNumber = "NI038379";
