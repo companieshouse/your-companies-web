@@ -25,12 +25,12 @@ const associations: Associations = {
             companyName: "THE POLISH BREWERY",
             status: "confirmed",
             invitations:
-            [
-                {
-                    invited_by: "123454321",
-                    invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
-                }
-            ]
+                [
+                    {
+                        invitedBy: "123454321",
+                        invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
         },
         {
             id: "2345678901",
@@ -40,12 +40,12 @@ const associations: Associations = {
             companyName: "BRITISH AIRWAYS PLC",
             status: "confirmed",
             invitations:
-            [
-                {
-                    invited_by: "123454321",
-                    invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
-                }
-            ]
+                [
+                    {
+                        invitedBy: "123454321",
+                        invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
         },
         {
             id: "44345677554",
@@ -55,16 +55,16 @@ const associations: Associations = {
             companyName: "ANDROID TECHNOLOGY LTD",
             status: "awaiting-approval",
             invitations:
-            [
-                {
-                    invited_by: "1122334455",
-                    invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
-                },
-                {
-                    invited_by: "75853993475",
-                    invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
-                }
-            ]
+                [
+                    {
+                        invitedBy: "1122334455",
+                        invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                    },
+                    {
+                        invitedBy: "75853993475",
+                        invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
         },
         {
             id: "234322344",
@@ -74,12 +74,12 @@ const associations: Associations = {
             companyName: "BROWN AND SALTER LIMITED",
             status: "awaiting-approval",
             invitations:
-            [
-                {
-                    invited_by: "5544332211",
-                    invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
-                }
-            ]
+                [
+                    {
+                        invitedBy: "5544332211",
+                        invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
 
         },
         {
@@ -90,12 +90,12 @@ const associations: Associations = {
             companyName: "FLOWERS LIMITED",
             status: "awaiting-approval",
             invitations:
-            [
-                {
-                    invited_by: "76896789",
-                    invited_at: "2022-04-05T11:41:09.568+00:00 UTC"
-                }
-            ]
+                [
+                    {
+                        invitedBy: "76896789",
+                        invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ]
 
         }
     ]

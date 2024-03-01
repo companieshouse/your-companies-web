@@ -8,10 +8,10 @@ export interface Association {
     status: string;
     invitations?: [
         {
-          "invited_by": string,
-          "invited_at": string
+            "invitedBy": string,
+            "invitedAy": string
         }
-      ]
+    ]
 }
 
 export interface Associations {

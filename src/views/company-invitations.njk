@@ -1,7 +1,6 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "macros/link.njk" import link %}
 
 {% extends "layouts/default.njk" %}
 
@@ -16,12 +15,11 @@
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ lang.h1 }}</h1>
 
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-        {{ govukTable({
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+            {{ govukTable({
                     caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
                     captionClasses: "govuk-table__caption--m govuk-visually-hidden",
                     firstCellIsHeader: true,
@@ -45,7 +43,7 @@
                     rows: rowsData
                 })
             }}
+        </div>
     </div>
-</div>
 
 {% endblock %}

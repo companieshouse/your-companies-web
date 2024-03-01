@@ -5,5 +5,7 @@
     "company_number": "[CH] Company number",
     "invited_by": "[CH] Invited by",
     "accept": "[CH] Accept",
-    "decline": "[CH] Decline"
+    "decline": "[CH] Decline",
+    "accept_an_invitation_from": "[CH] Accept an invitation from ",
+    "decline_an_invitation_from": "[CH] Decline an invitation from "
 }
