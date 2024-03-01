@@ -1,3 +1,8 @@
+export interface Invitation {
+    "invitedBy": string,
+    "invitedAy": string
+}
+
 export interface Association {
     id: string;
     userId: string;
@@ -6,12 +11,7 @@ export interface Association {
     companyNumber: string;
     companyName: string;
     status: string;
-    invitations?: [
-        {
-            "invitedBy": string,
-            "invitedAy": string
-        }
-    ]
+    invitations?: Invitation[]
 }
 
 export interface Associations {
