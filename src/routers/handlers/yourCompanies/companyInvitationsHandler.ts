@@ -35,15 +35,17 @@ export class CompanyInvitationsHandler extends GenericHandler {
                 if (association.invitations?.length) {
                     for (const invite of association.invitations) {
                         const user = await getUserRecord(invite.invitedBy);
+                        const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
+                        const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
                         rows.push([
                             { text: association.companyName },
                             { text: association.companyNumber },
                             { text: user?.email as string },
                             {
-                                html: this.getLink(association.id, translations.accept_an_invitation_from as string, translations.accept as string)
+                                html: this.getLink(acceptPath, translations.accept_an_invitation_from as string, translations.accept as string)
                             },
                             {
-                                html: this.getLink(association.id, translations.accept_an_invitation_from as string, translations.decline as string)
+                                html: this.getLink(declinePath, translations.accept_an_invitation_from as string, translations.decline as string)
                             }
                         ]);
                     }
@@ -53,7 +55,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
         return rows;
     }
 
-    private getLink (id: string, ariaLabel: string, text: string): string {
-        return `<a href="/your-companies/company-invitations-accept/${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}">${text}</a>`;
+    private getLink (path: string, ariaLabel: string, text: string): string {
+        return `<a href="${path}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}">${text}</a>`;
     }
 }
