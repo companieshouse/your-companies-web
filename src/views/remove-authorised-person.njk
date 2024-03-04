@@ -5,6 +5,9 @@
 
 {% extends "layouts/default.njk" %}
 
+{% set user_details = userName if userName else userEmail %}
+{% set title = lang.remove + user_details + lang.authorisation_to_file_online + lang.title_end %}
+
 {% block back_link %}
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
         {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
@@ -12,7 +15,6 @@
 {% endblock %}
 
 {% block main_content %}
-    {% set user_details = userName if userName else userEmail %}
     {% set message = null %}
 
     {% for key, value in errors %}
@@ -33,18 +35,19 @@
             <p>{{ lang.if_you_remove + user_details + lang.digital_authorisation_this_means_they + companyName + lang.without_a_current_auth_code + user_details + lang.to_let_them_know_you_have_removed }}</p>
         
             {% set warning_text_html %}
-                <p class="govuk-!-font-weight-bold">
+                <span class="govuk-!-display-block govuk-!-margin-bottom-5">
                     {{ user_details + lang.will_still_be_able_to_file }}
-                </p>
-                <p class="govuk-!-font-weight-bold">
+                </span>
+                <span class="govuk-!-display-block">
                     {{ lang.you_may_wish_to_change_the_auth_code + user_details + lang.digital_authorisation }}
-                </p>
+                </span>
             {% endset %}
 
             {{
                 govukWarningText({
                     html: warning_text_html,
-                    iconFallbackText: lang.warning
+                    iconFallbackText: lang.warning,
+                    classes: "govuk-!-margin-bottom-6"
                 })
             }}
 
@@ -53,12 +56,20 @@
             <form method = "post">
                 {{ govukCheckboxes({
                         name: "confirmRemoval",
+                        fieldset: {
+                        legend: {
+                            text: "",
+                            isPageHeading: true,
+                            classes: "govuk-fieldset__legend--l"
+                        }
+                        },
 
                         items: [{
                             value: "confirm",
                             text: lang.i_confirm_that_i_have_read
                         }],
-                        errorMessage: message
+                        errorMessage: message,
+                        describedBy: ""
                     }) 
                 }}
                 
