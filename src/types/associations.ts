@@ -1,5 +1,6 @@
 export interface Associations {
     items: Association[];
+    totalResults: number
 }
 
 export interface Association {

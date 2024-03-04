@@ -36,9 +36,10 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
                 companyNumber: "01777777",
                 companyName: "BRITISH AIRWAYS PLC"
             }
-        ]
+        ],
+        totalResults: 5
     } as Associations;
-    return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [] } as Associations);
+    return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [], totalResults: 0 } as Associations);
 };
 
 export const polishBrewItems = {
