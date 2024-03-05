@@ -5,7 +5,7 @@ WORKDIR /opt/dist
 
 COPY api-enumerations ./api-enumerations
 COPY dist docker_start.sh ./
-COPY ./package.json ./package-lock.json /opt/dist/
+COPY ./package.json ./package-lock.json /opt/
 
 CMD ["./docker_start.sh"]
 
