@@ -27,14 +27,81 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY"
+                companyName: "THE POLISH BREWERY",
+                status: "confirmed",
+                invitations:
+                    [
+                        {
+                            invitedBy: "123454321",
+                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                        }
+                    ]
             },
             {
                 id: "2345678901",
                 userId: "qwertyiop",
                 userEmail: "demo@ch.gov.uk",
                 companyNumber: "01777777",
-                companyName: "BRITISH AIRWAYS PLC"
+                companyName: "BRITISH AIRWAYS PLC",
+                status: "confirmed",
+                invitations:
+                    [
+                        {
+                            invitedBy: "123454321",
+                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                        }
+                    ]
+            },
+            {
+                id: "44345677554",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "10866549",
+                companyName: "ANDROID TECHNOLOGY LTD",
+                status: "awaiting-approval",
+                invitations:
+                    [
+                        {
+                            invitedBy: "1122334455",
+                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                        },
+                        {
+                            invitedBy: "75853993475",
+                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                        }
+                    ]
+            },
+            {
+                id: "234322344",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "08449801",
+                companyName: "BROWN AND SALTER LIMITED",
+                status: "awaiting-approval",
+                invitations:
+                    [
+                        {
+                            invitedBy: "5544332211",
+                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                        }
+                    ]
+
+            },
+            {
+                id: "6654463562412",
+                userId: "qwertyiop",
+                userEmail: "demo@ch.gov.uk",
+                companyNumber: "18882777",
+                companyName: "FLOWERS LIMITED",
+                status: "awaiting-approval",
+                invitations:
+                    [
+                        {
+                            invitedBy: "76896789",
+                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
+                        }
+                    ]
+
             }
         ],
         totalResults: 5
@@ -95,12 +162,22 @@ export const britishAirwaysItems = {
     ]
 } as Associations;
 
-export const isEmailAuthorised = async (email: string, companyNumber:string): Promise<boolean> => {
+export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
+    // We will replace this hard coded value with the API call once the API is available
+    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+
+    if (cancellation && cancellation.cancelPerson === YES) {
+        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
+    }
+    return Promise.resolve(associations);
+};
+
+export const isEmailAuthorised = async (email: string, companyNumber: string): Promise<boolean> => {
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
 };
 
-export const addUserEmailAssociation = async (email: string, companyNumber:string): Promise<void> => {
+export const addUserEmailAssociation = async (email: string, companyNumber: string): Promise<void> => {
     if (!email) return;
     if (companyNumber === "NI038379") {
         const isAssociated = await isEmailAuthorised(email, companyNumber);
@@ -134,15 +211,6 @@ export const addUserEmailAssociation = async (email: string, companyNumber:strin
             );
         }
     }
-};
-export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
-    // We will replace this hard coded value with the API call once the API is available
-    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
-
-    if (cancellation && cancellation.cancelPerson === YES) {
-        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
-    }
-    return Promise.resolve(associations);
 };
 
 export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {
