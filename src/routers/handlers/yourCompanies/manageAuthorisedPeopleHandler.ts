@@ -11,7 +11,7 @@ import { Cancellation } from "types/cancellation";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
-    async execute (req: Request, res: Response): Promise<Object> {
+    async execute (req: Request, res: Response): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
@@ -50,7 +50,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (companyNumber:string): any {
+    private getViewData (companyNumber: string): any {
         return {
             backLinkHref: constants.LANDING_URL,
             buttonHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber),

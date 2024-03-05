@@ -5,7 +5,7 @@ import { formatForDisplay, buildAddress } from "../../../services/confirmCompany
 import * as i18next from "i18next";
 
 export class ConfirmCorrectCompanyHandler extends GenericHandler {
-    async execute (translateFn:i18next.TFunction, companyProfile:CompanyProfile, lang:string): Promise<Object> {
+    async execute (translateFn: i18next.TFunction, companyProfile: CompanyProfile, lang: string): Promise<Record<string, unknown>> {
         this.viewData = this.getViewData(companyProfile, lang);
         this.viewData.lang = {
             ...translateFn(constants.COMMON, { returnObjects: true }),
@@ -16,7 +16,7 @@ export class ConfirmCorrectCompanyHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (companyProfile:CompanyProfile, lang:string): any {
+    private getViewData (companyProfile: CompanyProfile, lang: string): any {
 
         const formattedCompanyProfile = formatForDisplay(companyProfile, lang);
 

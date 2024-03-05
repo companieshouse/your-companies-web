@@ -9,7 +9,7 @@ import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUt
 
 export class YourCompaniesHandler extends GenericHandler {
 
-    async execute (req: Request, response: Response): Promise<Object> {
+    async execute (req: Request, response: Response): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve Your Companies landing page`);
         // ...process request here and return data for the view
         const userEmailAddress = getLoggedInUserEmail(req.session);
@@ -26,7 +26,7 @@ export class YourCompaniesHandler extends GenericHandler {
         };
 
         if (userAssociations?.items?.length > 0) {
-            const associationData: { text: string}[][] = [];
+            const associationData: { text: string }[][] = [];
             for (let index = 0; index < userAssociations.items.length; index++) {
                 associationData[index] = [
                     {

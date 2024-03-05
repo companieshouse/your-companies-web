@@ -10,6 +10,10 @@ import * as commpanyProfileService from "../../../../src/services/companyProfile
 import * as associationService from "../../../../src/services/userCompanyAssociationService";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
+import * as en from "../../../../src/locales/en/translation/add-company.json";
+import * as cy from "../../../../src/locales/cy/translation/add-company.json";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 
 const router = supertest(app);
 
@@ -31,10 +35,6 @@ it("should check session and auth before returning the add company page", async 
 });
 
 describe("GET /your-companies/add-company", () => {
-    const en = require("../../../../src/locales/en/translation/add-company.json");
-    const cy = require("../../../../src/locales/cy/translation/add-company.json");
-    const enCommon = require("../../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -66,10 +66,6 @@ describe("GET /your-companies/add-company", () => {
 });
 
 describe("POST /your-companies/add-company", () => {
-    const en = require("../../../../src/locales/en/translation/add-company.json");
-    const cy = require("../../../../src/locales/cy/translation/add-company.json");
-    const enCommon = require("../../../../src/locales/en/translation/common.json");
-    const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();

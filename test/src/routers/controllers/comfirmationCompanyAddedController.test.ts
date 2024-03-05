@@ -3,10 +3,12 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
+import * as en from "../../../../src/locales/en/translation/confirmation-company-added.json";
+import * as cy from "../../../../src/locales/cy/translation/confirmation-company-added.json";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+
 const router = supertest(app);
-const en = require("../../../../src/locales/en/translation/confirmation-company-added.json");
-const enCommon = require("../../../../src/locales/en/translation/common.json");
-const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 const url = `/your-companies/confirmation-company-added`;
 const companyNumber = "1122334455";
 const companyName = "Acme Ltd";
@@ -41,11 +43,18 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain("Acme Ltd");
     });
 
-    it("should display 3 bullet points", async () => {
-        const response = await router.get(`${url}`);
+    it("should display 3 bullet points in English if language set to English", async () => {
+        const response = await router.get(`${url}?lang=en`);
         expect(response.text).toContain(en.bullet_1);
         expect(response.text).toContain(en.bullet_2);
         expect(response.text).toContain(en.bullet_3);
+    });
+
+    it("should display 3 bullet points in Welsh if language set to Welsh", async () => {
+        const response = await router.get(`${url}?lang=cy`);
+        expect(response.text).toContain(cy.bullet_1);
+        expect(response.text).toContain(cy.bullet_2);
+        expect(response.text).toContain(cy.bullet_3);
     });
 
     it("should return expected Welsh content when welsh is selected", async () => {

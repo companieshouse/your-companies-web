@@ -5,6 +5,10 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import * as associationService from "../../../../src/services/userCompanyAssociationService";
 import { emptyAssociations, userAssociations, userAssociationsWithNumberOfInvitations } from "../../../mocks/associations.mock";
+import * as en from "../../../../src/locales/en/translation/your-companies.json";
+import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
+import * as commonEn from "../../../../src/locales/en/translation/common.json";
+import * as commonCy from "../../../../src/locales/cy/translation/common.json";
 
 const router = supertest(app);
 
@@ -20,10 +24,6 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
 });
 
 describe("GET /your-companies", () => {
-    const en = require("../../../../src/locales/en/translation/your-companies.json");
-    const cy = require("../../../../src/locales/cy/translation/your-companies.json");
-    const commonEn = require("../../../../src/locales/en/translation/common.json");
-    const commonCy = require("../../../../src/locales/cy/translation/common.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
