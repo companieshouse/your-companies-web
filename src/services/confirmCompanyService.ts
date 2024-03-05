@@ -1,7 +1,7 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { toReadableFormat } from "../lib/utils/date";
 
-export const formatForDisplay = (companyProfile: CompanyProfile, lang:string) => {
+export const formatForDisplay = (companyProfile: CompanyProfile, lang: string) => {
     const registeredOfficeAddress = {
         addressLineOne: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineOne),
         addressLineTwo: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineTwo),
@@ -22,7 +22,7 @@ export const formatForDisplay = (companyProfile: CompanyProfile, lang:string) =>
     };
 };
 
-export const formatTitleCase = (str: string|undefined): string => {
+export const formatTitleCase = (str: string | undefined): string => {
     if (!str) {
         return "";
     }

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
 import {
     ADD_COMPANY_PAGE,
@@ -7,7 +7,7 @@ import {
     YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL
 } from "../../constants";
 
-export const addCompanyControllerGet = async (req: Request, res: Response, next: NextFunction) => {
+export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, GET);
     res.render(ADD_COMPANY_PAGE, {
@@ -15,7 +15,7 @@ export const addCompanyControllerGet = async (req: Request, res: Response, next:
     });
 };
 
-export const addCompanyControllerPost = async (req: Request, res: Response, next: NextFunction) => {
+export const addCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {

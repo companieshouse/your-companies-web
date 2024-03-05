@@ -24,8 +24,8 @@ export type AuthorisedPerson = {
     authorisedPersonEmailAddress: string,
 }
 
-export const AssociationStatus = {
-    CONFIRMED: "confirmed",
-    REMOVED: "removed",
-    AWAITING_APPROVAL: "awaiting-approval"
-} as const;
+export enum AssociationStatus {
+    CONFIRMED = "confirmed",
+    REMOVED = "removed",
+    AWAITING_APPROVAL = "awaiting-approval"
+}

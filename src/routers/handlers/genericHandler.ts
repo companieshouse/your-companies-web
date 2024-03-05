@@ -1,11 +1,13 @@
 // Generic handler is the base handler that is extended by all other handlers
 // It contains methods that are common to multiple route handlers
 
+import { ViewData } from "../../types/util-types";
 import errorManifest from "../../lib/utils/error_manifests/errorManifest";
+import { ErrorSignature } from "../../types/errorSignature";
 
 export class GenericHandler {
 
-    viewData: any;
+    viewData: ViewData;
     errorManifest: any;
 
     constructor () {
@@ -16,7 +18,7 @@ export class GenericHandler {
         };
     }
 
-    processHandlerException (err: any): unknown {
+    processHandlerException (err: ErrorSignature): unknown {
         if (err.name === "VALIDATION_ERRORS") {
             return err.stack;
         }

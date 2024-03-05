@@ -8,14 +8,14 @@ import { addUserEmailAssociation } from "../../services/userCompanyAssociationSe
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { AuthorisedPerson } from "../../types/associations";
 
-export const checkPresenterController = async (req: Request, res: Response) => {
+export const checkPresenterController = async (req: Request, res: Response): Promise<void> => {
     const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER]);
     const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
 
     if (req.method === constants.POST) {
         if (emailAddress) {
             await addUserEmailAssociation(emailAddress, company.companyNumber);
-            const authorisedPerson:AuthorisedPerson = {
+            const authorisedPerson: AuthorisedPerson = {
                 authorisedPersonEmailAddress: emailAddress,
                 authorisedPersonCompanyName: company.companyName
             };

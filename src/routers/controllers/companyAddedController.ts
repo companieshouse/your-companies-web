@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { CompanyAddSuccessHandler } from "../handlers/yourCompanies/companyAddSuccessHandler";
 import * as constants from "../../constants";
 
-export const companyAddedControllerGet = async (req: Request, res: Response, next: NextFunction) => {
-    const viewData = await new CompanyAddSuccessHandler().execute(req, res);
+export const companyAddedControllerGet = async (req: Request, res: Response): Promise<void> => {
+    const viewData = await new CompanyAddSuccessHandler().execute(req);
     res.render(constants.COMPANY_ADD_SUCCESS_PAGE, viewData);
 };

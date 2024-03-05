@@ -19,10 +19,11 @@ import { StatusCodes } from "http-status-codes";
 import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { isCompanyAssociatedWithUser } from "../../../services/userCompanyAssociationService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
+import { ViewData } from "../../../types/util-types";
 
 export class AddCompanyHandler extends GenericHandler {
 
-    async execute (req: Request, res: Response, method: string): Promise<any> {
+    async execute (req: Request, res: Response, method: string): Promise<ViewData> {
         logger.info(`${method} request to add company to user account`);
         // ...process request here and return data for the view
         try {
@@ -78,9 +79,9 @@ export class AddCompanyHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (): any {
+    private getViewData (): ViewData {
         return {
             backLinkHref: LANDING_URL
-        };
+        } as ViewData;
     }
 }

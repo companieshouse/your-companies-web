@@ -9,10 +9,7 @@ import { ViewData } from "../../types/util-types";
 import { validateEmailString } from "../../lib/validation/generic";
 import { setExtraData } from "../../lib/utils/sessionUtils";
 
-export const addPresenterController = async (
-    req: Request,
-    res: Response
-) => {
+export const addPresenterController = async (req: Request, res: Response): Promise<void> => {
     const company: CompanyProfile = await getCompanyProfile(
         req.params[constants.COMPANY_NUMBER]
     );

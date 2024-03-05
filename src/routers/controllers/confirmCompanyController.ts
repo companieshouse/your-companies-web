@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmCorrectCompanyHandler";
 import * as constants from "../../constants";
 import { Session } from "@companieshouse/node-session-handler";
@@ -7,14 +7,14 @@ import { isCompanyAssociatedWithUser } from "../../services/userCompanyAssociati
 import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
 
-export const confirmCompanyControllerGet = async (req: Request, res: Response, next: NextFunction) => {
+export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const session: Session = req.session as Session;
     const companyProfile = session.data.extra_data.companyProfile;
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };
 
-export const confirmCompanyControllerPost = async (req: Request, res: Response, next: NextFunction) => {
+export const confirmCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
     const session: Session = req.session as Session;
     const company = session.data.extra_data.companyProfile;
     const userEmailAddress = getLoggedInUserEmail(req.session);

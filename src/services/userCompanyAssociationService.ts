@@ -1,4 +1,4 @@
-import { Associations } from "../types/associations";
+import { Associations, AssociationStatus } from "../types/associations";
 import {
     COMPNANY_ASSOCIATED_WITH_USER,
     COMPNANY_NOT_ASSOCIATED_WITH_USER,
@@ -18,7 +18,7 @@ export const isCompanyAssociatedWithUser = async (companyNumber: string, userEma
     return Promise.resolve(companyNumber === "NI038379" ? COMPNANY_ASSOCIATED_WITH_USER : COMPNANY_NOT_ASSOCIATED_WITH_USER);
 };
 
-export const getUserAssociations = async (userEmailAddress: string): Promise<Associations> => {
+export const getUserAssociations = async (userEmailAddress: string, status?: AssociationStatus): Promise<Associations> => {
     // We will replace this hard coded value with the API call once the API is available
     const associations: Associations = {
         items: [
@@ -106,6 +106,11 @@ export const getUserAssociations = async (userEmailAddress: string): Promise<Ass
         ],
         totalResults: 5
     } as Associations;
+
+    if (status) {
+        associations.items = associations.items.filter(association => association.status === status);
+    }
+
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [], totalResults: 0 } as Associations);
 };
 

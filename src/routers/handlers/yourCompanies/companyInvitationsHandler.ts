@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
@@ -9,7 +9,7 @@ import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserRecord } from "../../../services/userService";
 
 export class CompanyInvitationsHandler extends GenericHandler {
-    async execute (req: Request, res: Response): Promise<ViewData> {
+    async execute (req: Request): Promise<ViewData> {
         this.viewData = await this.getViewData(req);
         return Promise.resolve(this.viewData);
     }
