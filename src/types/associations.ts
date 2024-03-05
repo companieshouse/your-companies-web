@@ -1,3 +1,8 @@
+export interface Invitation {
+    invitedBy: string;
+    invitedAy: string;
+}
+
 export interface Association {
     id: string;
     userId: string;
@@ -6,6 +11,7 @@ export interface Association {
     companyNumber: string;
     companyName: string;
     status: string;
+    invitations?: Invitation[]
 }
 
 export interface Associations {
@@ -17,3 +23,9 @@ export type AuthorisedPerson = {
     authorisedPersonCompanyName: string,
     authorisedPersonEmailAddress: string,
 }
+
+export const AssociationStatus = {
+    CONFIRMED: "confirmed",
+    REMOVED: "removed",
+    AWAITING_APPROVAL: "awaiting-approval"
+} as const;
