@@ -36,6 +36,6 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             userEmail: req.params[constants.USER_EMAIL],
             userName: req.query[constants.USER_NAME]
         };
-    };
+    }
 
 }

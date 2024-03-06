@@ -47,11 +47,11 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("should return status 200", async () => {
+    it("should return status 200 for authentication-code-remove/:userEmail page", async () => {
         await router.get(urlWithEmail).expect(200);
     });
 
-    it("should return expected English content if language version set to English", async () => {
+    it("should return expected English content if language version set to English for authentication-code-remove/:userEmail page", async () => {
         // Given
         const langVersion = "?lang=en";
         const expectedCompanyName = "Doughnuts Limited";
@@ -74,9 +74,10 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(en.i_confirm_that_i_have_read);
         expect(response.text).toContain(en.remove_authorisation);
         expect(response.text).toContain(enCommon.cancel);
+        expect(response.text).not.toContain(userName);
     });
 
-    it("should return expected Welsh content if language version set to Welsh", async () => {
+    it("should return expected Welsh content if language version set to Welsh for authentication-code-remove/:userEmail page", async () => {
         // Given
         const langVersion = "?lang=cy";
         const expectedCompanyName = "Doughnuts Limited";
@@ -99,19 +100,20 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(cy.i_confirm_that_i_have_read);
         expect(response.text).toContain(cy.remove_authorisation);
         expect(response.text).toContain(cyCommon.cancel);
+        expect(response.text).not.toContain(userName);
     });
 
-    it("should check session and auth before returning the /your-companies/authentication-code-remove/:userEmail page", async () => {
+    it("should check session and auth before returning the /your-companies/authentication-code-remove/:userEmail?userName=:userName page", async () => {
         await router.get(urlWithName);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("should return status 200", async () => {
+    it("should return status 200 for authentication-code-remove/:userEmail?userName=:userName page", async () => {
         await router.get(urlWithName).expect(200);
     });
 
-    it("should return expected English content if language version set to English", async () => {
+    it("should return expected English content if language version set to English for authentication-code-remove/:userEmail?userName=:userName page", async () => {
         // Given
         const langVersion = "&lang=en";
         const expectedCompanyName = "Doughnuts Limited";
@@ -136,7 +138,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(enCommon.cancel);
     });
 
-    it("should return expected Welsh content if language version set to Welsh", async () => {
+    it("should return expected Welsh content if language version set to Welsh authentication-code-remove/:userEmail?userName=:userName page", async () => {
         // Given
         const langVersion = "&lang=cy";
         const expectedCompanyName = "Doughnuts Limited";
@@ -162,7 +164,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
     });
 });
 
-describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
+describe("POST /your-companies/remove-authenticated-person/:userEmail WITH AND WITHOUT ?userName=:userName", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -176,7 +178,7 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("Should return status 302 if checkbox is selected", async () => {
+    it("Should return status 302 if checkbox is selected for remove-authenticated-person/:userEmail page", async () => {
         // Given
         const langVersion = "?lang=en";
         // When
@@ -185,7 +187,7 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
         expect(response.statusCode).toEqual(302);
     });
 
-    it("Should return expected English error message if no option selected and language version set to English", async () => {
+    it("Should return expected English error message if no option selected and language version set to English for remove-authenticated-person/:userEmail page", async () => {
         // Given
         const langVersion = "?lang=en";
         const expectedErrorMessage = en.select_if_you_confirm_that_you_have_read;
@@ -195,12 +197,47 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
         expect(response.text).toContain(expectedErrorMessage);
     });
 
-    it("Should return expected English error message if no option selected and language version set to English", async () => {
+    it("Should return expected Welsh error message if no option selected and language version set to Welsh for remove-authenticated-person/:userEmail page", async () => {
         // Given
         const langVersion = "?lang=cy";
         const expectedErrorMessage = cy.select_if_you_confirm_that_you_have_read;
         // When
         const response = await router.post(`${urlWithEmail}${langVersion}`);
+        // Then
+        expect(response.text).toContain(expectedErrorMessage);
+    });
+
+    it("should check session and auth before returning the /your-companies/remove-authenticated-person/:userEmail?userName=:userName page", async () => {
+        await router.get(urlWithName);
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+    });
+
+    it("Should return status 302 if checkbox is selected for remove-authenticated-person/:userEmail?userName=:userName page", async () => {
+        // Given
+        const langVersion = "&lang=en";
+        // When
+        const response = await router.post(`${urlWithName}${langVersion}`).send({ confirmRemoval: "confirm" });
+        // Then
+        expect(response.statusCode).toEqual(302);
+    });
+
+    it("Should return expected English error message if no option selected and language version set to English for remove-authenticated-person/:userEmail?userName=:userName page", async () => {
+        // Given
+        const langVersion = "&lang=en";
+        const expectedErrorMessage = en.select_if_you_confirm_that_you_have_read;
+        // When
+        const response = await router.post(`${urlWithName}${langVersion}`);
+        // Then
+        expect(response.text).toContain(expectedErrorMessage);
+    });
+
+    it("Should return expected Welsh error message if no option selected and language version set to Welsh for remove-authenticated-person/:userEmail?userName=:userName page", async () => {
+        // Given
+        const langVersion = "&lang=cy";
+        const expectedErrorMessage = cy.select_if_you_confirm_that_you_have_read;
+        // When
+        const response = await router.post(`${urlWithName}${langVersion}`);
         // Then
         expect(response.text).toContain(expectedErrorMessage);
     });
