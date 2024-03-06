@@ -4,12 +4,12 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Removal } from "../../../types/removal";
+import { ViewData } from "../../../types/util-types";
 
 export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
-    async execute (req: Request, res: Response, method: string): Promise<any> {
+    async execute (req: Request, res: Response, method: string): Promise<ViewData> {
         this.viewData = this.getViewData(req);
-        this.viewData.lang = getTranslationsForView(req.t, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         if (method === constants.POST) {
             const payload = Object.assign({}, req.body);
             if (!payload.confirmRemoval) {
@@ -27,8 +27,10 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (req: Request): any {
+    private getViewData (req: Request): ViewData {
+        const lang = getTranslationsForView(req.t, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         return {
+            lang: lang,
             companyNumber: req.params[constants.COMPANY_NUMBER],
             cancelLinkHref: getExtraData(req.session, constants.REFERER_URL),
             backLinkHref: getExtraData(req.session, constants.REFERER_URL),
