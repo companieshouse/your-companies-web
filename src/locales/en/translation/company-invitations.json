@@ -6,7 +6,9 @@
     "invited_by": "Invited by",
     "accept": "Accept",
     "decline": "Decline",
+    "accept_an_invitation": "Accept an invitation",
     "accept_an_invitation_from": "Accept an invitation from ",
+    "decline_an_invitation": "Decline an invitation",
     "decline_an_invitation_from": "Decline an invitation from ",
     "invitations_to_be_digitally_authorised": "Invitations to be digitally authorised for a company"
 }

@@ -13,6 +13,14 @@
 {% endblock %}
 {% block main_content %}
 
+    {% set acceptHeader %}
+    <span class="govuk-visually-hidden">{{lang.accept_an_invitation}}</span>
+    {% endset %}
+
+    {% set declineHeader %}
+    <span class="govuk-visually-hidden">{{lang.decline_an_invitation}}</span>
+    {% endset %}
+
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ lang.h1 }}</h1>
 
     <div class="govuk-grid-row">
@@ -34,10 +42,10 @@
                             text: lang.invited_by
                         },
                         {
-                            text: ""
+                            html: acceptHeader
                         },
                         {
-                            text: ""
+                            html: declineHeader
                         }
                     ],
                     rows: rowsData

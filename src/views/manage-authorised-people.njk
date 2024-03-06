@@ -43,7 +43,7 @@
         </div>
     {% endif %}
 
-       {% if authorisedPersonSuccess %}
+    {% if authorisedPersonSuccess %}
         {% set successHtml %}
         <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
         <p class="govuk-body">
@@ -83,7 +83,7 @@
             }}
         </div>
     {% endif %}
-    
+
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">
@@ -133,6 +133,14 @@
         {% set rows = (rows.push(row), rows) %}
     {% endfor %}
 
+    {% set cancelOrRemoveHeader %}
+    <span class="govuk-visually-hidden">{{lang.cancel_or_remove}}</span>
+    {% endset %}
+
+    {% set resendEmailInvitationHeader %}
+    <span class="govuk-visually-hidden">{{lang.resend_amail_invitation}}</span>
+    {% endset %}
+
     <div class="govuk-grid-row govuk-!-padding-top-3">
         <div class="govuk-grid-column-full">
             <h2 class="govuk-table__caption--m">{{lang.details_of_authorised_people}}</h2>
@@ -151,10 +159,10 @@
                             text: lang.status
                         },
                         {
-                            text: ""
+                            html: cancelOrRemoveHeader
                         },
                         {
-                            text: ""
+                            html: resendEmailInvitationHeader
                         }
                     ],
                     rows: rows
