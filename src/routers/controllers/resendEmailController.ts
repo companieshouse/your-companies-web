@@ -6,7 +6,7 @@ import { sendAuthorisationEmail } from "../../services/emailNotificationService"
 import logger from "../../lib/Logger";
 import { validateEmailString } from "../../lib/validation/generic";
 
-export const resendEmailController = async (req: Request, res: Response) => {
+export const resendEmailController = async (req: Request, res: Response): Promise<void> => {
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const email = req.params[constants.USER_EMAIL];
     const validEmail = validateEmailString(email);

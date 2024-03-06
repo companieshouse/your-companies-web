@@ -1,14 +1,13 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import { Session } from "@companieshouse/node-session-handler";
-
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import { validDisolvedCompanyProfile, validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
+import * as en from "../../../../src/locales/en/translation/confirm-company-details.json";
+import * as cy from "../../../../src/locales/cy/translation/confirm-company-details.json";
 
 const router = supertest(app);
-const en = require("../../../../src/locales/en/translation/confirm-company-details.json");
-const cy = require("../../../../src/locales/cy/translation/confirm-company-details.json");
 const url = "/your-companies/confirm-company-details";
 
 const session: Session = new Session();

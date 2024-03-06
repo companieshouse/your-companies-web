@@ -13,11 +13,11 @@ import {
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
+import { ViewData } from "../../../types/util-types";
 
 export class CancelPersonHandler extends GenericHandler {
-    async execute (req: Request, res: Response, method: string): Promise<any> {
+    async execute (req: Request, res: Response, method: string): Promise<ViewData> {
         this.viewData = this.getViewData(req);
-        this.viewData.lang = getTranslationsForView(req.t, CANCEL_PERSON_PAGE);
         if (method === POST) {
             const payload = Object.assign({}, req.body);
             if (!payload.cancelPerson) {
@@ -38,8 +38,10 @@ export class CancelPersonHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (req: Request): any {
+    private getViewData (req: Request): ViewData {
+        const lang = getTranslationsForView(req.t, CANCEL_PERSON_PAGE);
         return {
+            lang: lang,
             backLinkHref: getExtraData(req.session, REFERER_URL),
             companyName: getExtraData(req.session, COMPANY_NAME),
             userEmail: req.params[USER_EMAIL],

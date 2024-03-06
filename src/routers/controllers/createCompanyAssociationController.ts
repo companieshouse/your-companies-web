@@ -3,7 +3,7 @@ import * as constants from "../../constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { createCompanyAssociation } from "../../services/companyAssociationService";
 
-export const createCompanyAssociationControllerGet = async (req: Request, res: Response) => {
+export const createCompanyAssociationControllerGet = async (req: Request, res: Response): Promise<void> => {
 
     const session = req.session as Session;
     const submissionResponse = await createCompanyAssociation(session);

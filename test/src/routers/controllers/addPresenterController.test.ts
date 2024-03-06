@@ -5,6 +5,8 @@ import { getCompanyProfile } from "../../../../src/services/companyProfileServic
 import { isEmailAuthorised } from "../../../../src/services/userCompanyAssociationService";
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
+import * as en from "../../../../src/locales/en/translation/add-presenter.json";
+import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
 jest.mock("../../../../src/services/companyProfileService");
 jest.mock("../../../../src/services/userCompanyAssociationService");
 
@@ -12,8 +14,6 @@ const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
 const mockIsEmailAuthorised = isEmailAuthorised as jest.Mock;
 
 const router = supertest(app);
-const en = require("../../../../src/locales/en/translation/add-presenter.json");
-const cy = require("../../../../src/locales/cy/translation/add-presenter.json");
 const companyNumber = "12345678";
 const urlwithCompNum = "/your-companies/add-presenter/:companyNumber";
 const url = getUrlWithCompanyNumber(urlwithCompNum, companyNumber);
@@ -47,7 +47,6 @@ describe(`GET ${url}`, () => {
 });
 
 describe(`POST ${url}`, () => {
-    const en = require("../../../../src/locales/en/translation/add-presenter.json");
 
     beforeEach(() => {
         jest.clearAllMocks();

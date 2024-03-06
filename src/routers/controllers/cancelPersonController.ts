@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { CancelPersonHandler } from "../handlers/yourCompanies/cancelPersonHandler";
 import {
     CANCEL_PERSON_PAGE,
@@ -7,7 +7,7 @@ import {
     POST
 } from "../../constants";
 
-export const cancelPersonControllerGet = async (req: Request, res: Response, next: NextFunction) => {
+export const cancelPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, GET);
     res.render(CANCEL_PERSON_PAGE, {
@@ -15,7 +15,7 @@ export const cancelPersonControllerGet = async (req: Request, res: Response, nex
     });
 };
 
-export const cancelPersonControllerPost = async (req: Request, res: Response, next: NextFunction) => {
+export const cancelPersonControllerPost = async (req: Request, res: Response): Promise<void> => {
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {

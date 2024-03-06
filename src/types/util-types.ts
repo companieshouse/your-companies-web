@@ -1,19 +1,21 @@
-export type AnyRecord = Record<string, any>;
+export type AnyRecord = Record<string, unknown>;
 
 export type ViewData = {
-  lang: AnyRecord;
-  errors?:
+    lang: AnyRecord;
+    errors?:
     | {
         [key: string]: {
-          text: string;
+            text: string;
         };
-      };
+    }
+    | unknown;
     companyNumber?: string;
     companyName?: string;
-    backLinkHref?:string;
+    backLinkHref?: string;
+    [key: string]: unknown;
 };
 
 export type CompanyNameAndNumber = {
-    companyName: string,
-    companyNumber: string,
+    companyName: string;
+    companyNumber: string;
 }
