@@ -1,14 +1,12 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "layouts/default.njk" %}
 
 {% block main_content %}
     {% set html %}
     <p class="govuk-notification-banner__heading">
-        {{lang.weve_added}}{{companyName}}
-        {{lang.to_your_account}}
-        <a class="govuk-notification-banner__link" href="{{yourCompaniesUrl}}">{{lang.view_your_companies}}</a>.
+        {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}
     </p>
     {% endset %}
     <div class="govuk-grid-row">
@@ -20,6 +18,8 @@
                 })
             }}
 
+            <h1 class="govuk-heading-l">{{lang.what_happens_now}}</h1>
+
             <p>{{lang.you_can_now}}</p>
             <ul class="govuk-list govuk-list--bullet">
                 {% for item in lang.bullet_list %}
@@ -27,8 +27,11 @@
                 {% endfor %}
             </ul>
 
-            {{ govukInsetText({
-                    text: lang.weve_sent_an_email_to_the_company
+            <p>{{ lang.weve_sent_an_email_to_the_company}}</p>
+
+            {{ govukButton({
+                    text: lang.view_your_companies,
+                    href: yourCompaniesUrl
                 })
             }}
         </div>
