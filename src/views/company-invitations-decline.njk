@@ -19,7 +19,8 @@
             {{ govukNotificationBanner({
             html: html,
             titleHtml: lang.invitation_declined,
-            type: "success"
+            type: "success",
+            disableAutoFocus: true
             }) }}
 
             <h1 class="govuk-heading-l">{{lang.what_happens_now_youve_declined}}</h1>
