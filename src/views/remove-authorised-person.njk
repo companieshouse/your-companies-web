@@ -54,22 +54,14 @@
             <p>{{ lang.if + user_details + lang.is_appointed_as_an_officer }}</p>
 
             <form method = "post">
-                {{ govukCheckboxes({
+              {{ govukCheckboxes({
                         name: "confirmRemoval",
-                        fieldset: {
-                        legend: {
-                            text: "",
-                            isPageHeading: true,
-                            classes: "govuk-fieldset__legend--l"
-                        }
-                        },
 
                         items: [{
                             value: "confirm",
                             text: lang.i_confirm_that_i_have_read
                         }],
-                        errorMessage: message,
-                        describedBy: ""
+                        errorMessage: message
                     }) 
                 }}
                 
