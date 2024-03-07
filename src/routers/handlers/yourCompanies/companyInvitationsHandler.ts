@@ -37,15 +37,16 @@ export class CompanyInvitationsHandler extends GenericHandler {
                         const user = await getUserRecord(invite.invitedBy);
                         const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
                         const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
+                        const companyNameQueryParam = `?${constants.COMPANY_NAME}=${association.companyName}`;
                         rows.push([
                             { text: association.companyName },
                             { text: association.companyNumber },
                             { text: user?.email as string },
                             {
-                                html: this.getLink(acceptPath, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
+                                html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
                             },
                             {
-                                html: this.getLink(declinePath, `${translations.decline_an_invitation_from} ${association.companyName}`, translations.decline as string)
+                                html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${association.companyName}`, translations.decline as string)
                             }
                         ]);
                     }
