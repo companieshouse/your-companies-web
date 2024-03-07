@@ -6,6 +6,10 @@ import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { CONFIRM, USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
 import { Removal } from "../../../../src/types/removal";
+import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
+import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 
 const router = supertest(app);
 
@@ -22,10 +26,6 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const en = require("../../../../src/locales/en/translation/manage-authorised-people.json");
-const cy = require("../../../../src/locales/cy/translation/manage-authorised-people.json");
-const enCommon = require("../../../../src/locales/en/translation/common.json");
-const cyCommon = require("../../../../src/locales/cy/translation/common.json");
 const companyNumber = "NI038379";
 
 describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-person-removed", () => {
@@ -46,7 +46,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     });
 
     it("should return expected English content if person removed, their name not provided and language version set to English", async () => {
-    // Given
+        // Given
         const removal: Removal = {
             removePerson: CONFIRM,
             userEmail: companyAssociations.items[1].userEmail,
@@ -74,7 +74,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     });
 
     it("should return expected Welsh content if person removed, their name not provided and language version set to Welsh", async () => {
-    // Given
+        // Given
         const removal: Removal = {
             removePerson: CONFIRM,
             userEmail: companyAssociations.items[1].userEmail,
@@ -102,7 +102,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     });
 
     it("should return expected English content if person removed, their name provided and language version set to English", async () => {
-    // Given
+        // Given
         const removal: Removal = {
             removePerson: CONFIRM,
             userEmail: companyAssociations.items[3].userEmail,
@@ -131,7 +131,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     });
 
     it("should return expected Welsh content if person removed, their name provided and language version set to Welsh", async () => {
-    // Given
+        // Given
         const removal: Removal = {
             removePerson: CONFIRM,
             userEmail: companyAssociations.items[3].userEmail,

@@ -4,6 +4,8 @@ import app from "../../../../src/app";
 import * as userCompanyAssociationService from "../../../../src/services/userCompanyAssociationService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
+import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
+import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 
 const router = supertest(app);
 
@@ -25,8 +27,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     const url = `/your-companies/manage-authorised-people/${companyNumber}/authorisation-email-resent`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-    const en = require("../../../../src/locales/en/translation/manage-authorised-people.json");
-    const cy = require("../../../../src/locales/cy/translation/manage-authorised-people.json");
 
     beforeEach(() => {
         jest.clearAllMocks();
