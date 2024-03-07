@@ -1,0 +1,41 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.what_happens_now_youve_declined + lang.title_end %}
+
+{% block main_content %}
+    
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% set html %}
+            <h3 class="govuk-notification-banner__heading">
+                {{lang.you_have_declined_to_be_digitally_authorised + companyName}}
+            </h3>
+            {% endset %}
+
+            {{ govukNotificationBanner({
+            html: html,
+            titleHtml: lang.invitation_declined,
+            type: "success"
+            }) }}
+
+            <h1 class="govuk-heading-l">{{lang.what_happens_now_youve_declined}}</h1>
+
+            <p class="govuk-body govuk-!-margin-bottom-6">{{lang.weve_sent_an_email}}</p>
+
+            {{ govukButton({
+                text: lang.view_your_companies,
+                href: buttonLinkHref
+            }) }}
+
+        </div>
+    </div>
+
+    
+
+
+
+{% endblock %}
