@@ -11,6 +11,7 @@ import { authenticationMiddleware } from "./middleware/authentication.middleware
 import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
 import { companyAuthenticationMiddleware } from "./middleware/company.authentication";
+import { addLangToUrl } from "./lib/utils/urlUtils";
 
 const app = express();
 
@@ -64,6 +65,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("locale", req.language);
     njk.addGlobal("userEmailAddress", getLoggedInUserEmail(req.session));
     njk.addGlobal("feedbackSource", req.originalUrl);
+    njk.addGlobal("ENGLISH", "en");
+    njk.addGlobal("WELSH", "cy");
+    njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
     next();
 });
 
