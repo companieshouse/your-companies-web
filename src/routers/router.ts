@@ -11,6 +11,7 @@ import { checkPresenterController } from "./controllers/checkPresenterController
 import { resendEmailController } from "./controllers/resendEmailController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
 import { companyInvitationsControllerGet } from "./controllers/companyInvitationsController";
+import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvitationsAcceptController";
 
 const router: Router = Router();
 
@@ -42,5 +43,7 @@ router.post(constants.CHECK_PRESENTER_URL, checkPresenterController as RequestHa
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL, resendEmailController as RequestHandler);
 
 router.get(constants.COMPANY_INVITATIONS_URL, companyInvitationsControllerGet as RequestHandler);
+
+router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptControllerGet as RequestHandler);
 
 export default router;

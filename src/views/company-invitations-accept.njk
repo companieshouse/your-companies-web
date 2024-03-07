@@ -1,0 +1,36 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% extends "layouts/default.njk" %}
+
+{% block main_content %}
+    {% set html %}
+    <p class="govuk-notification-banner__heading">
+        {{lang.weve_added}}{{companyName}}
+        {{lang.to_your_account}}
+        <a class="govuk-notification-banner__link" href="{{yourCompaniesUrl}}">{{lang.view_your_companies}}</a>.
+    </p>
+    {% endset %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {{ govukNotificationBanner({
+                    html: html,
+                    titleText: lang.success,
+                    type: "success"
+                })
+            }}
+
+            <p>{{lang.you_can_now}}</p>
+            <ul class="govuk-list govuk-list--bullet">
+                {% for item in lang.bullet_list %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            {{ govukInsetText({
+                    text: lang.weve_sent_an_email_to_the_company
+                })
+            }}
+        </div>
+    </div>
+{% endblock %}
