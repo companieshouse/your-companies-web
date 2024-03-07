@@ -1,18 +1,18 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { RemoveAuthorisedPersonHandler } from "../handlers/yourCompanies/removeAuthorisedPersonHandler";
 import * as constants from "../../constants";
 
-export const removeAuthorisedPersonControllerGet = async (req: Request, res: Response, next: NextFunction) => {
+export const removeAuthorisedPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveAuthorisedPersonHandler();
-    const viewData = await handler.execute(req, res, constants.GET);
+    const viewData = await handler.execute(req, constants.GET);
     res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, {
         ...viewData
     });
 };
 
-export const removeAuthorisedPersonControllerPost = async (req: Request, res: Response, next: NextFunction) => {
+export const removeAuthorisedPersonControllerPost = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveAuthorisedPersonHandler();
-    const viewData = await handler.execute(req, res, constants.POST);
+    const viewData = await handler.execute(req, constants.POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
         res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
     } else {

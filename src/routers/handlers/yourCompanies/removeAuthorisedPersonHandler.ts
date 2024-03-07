@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
@@ -8,7 +8,7 @@ import { ViewData } from "../../../types/util-types";
 
 export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
-    async execute (req: Request, res: Response, method: string): Promise<ViewData> {
+    async execute (req: Request, method: string): Promise<ViewData> {
         this.viewData = this.getViewData(req);
         if (method === constants.POST) {
             const payload = Object.assign({}, req.body);

@@ -4,6 +4,10 @@ import supertest from "supertest";
 import { COMPANY_NAME, REFERER_URL } from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
+import * as en from "../../../../src/locales/en/translation/remove-authorised-person.json";
+import * as cy from "../../../../src/locales/cy/translation/remove-authorised-person.json";
+import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 
 const router = supertest(app);
 const userEmail = "test@test.com";
@@ -11,10 +15,7 @@ const companyNumber = "123456";
 const userName = "John Black";
 const urlWithEmail = `/your-companies/company/${companyNumber}/authentication-code-remove/${userEmail}`;
 const urlWithName = `/your-companies/company/${companyNumber}/authentication-code-remove/${userEmail}?userName=${userName}`;
-const en = require("../../../../src/locales/en/translation/remove-authorised-person.json");
-const cy = require("../../../../src/locales/cy/translation/remove-authorised-person.json");
-const enCommon = require("../../../../src/locales/en/translation/common.json");
-const cyCommon = require("../../../../src/locales/cy/translation/common.json");
+
 const session: Session = new Session();
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
