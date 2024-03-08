@@ -29,8 +29,8 @@ router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandle
 router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerPost as RequestHandler);
 
-router.get(constants.CANCEL_PERSON_URL, cancelPersonControllerGet as RequestHandler);
-router.post(constants.CANCEL_PERSON_URL, cancelPersonControllerPost as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonControllerGet as RequestHandler);
+router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonControllerPost as RequestHandler);
 
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
