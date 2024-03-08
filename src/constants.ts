@@ -13,6 +13,8 @@ export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
 export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssocation";
 export const USER_ASSOCIATIONS = "userAssociations";
 export const ASSOCIATIONS_ID = "associationId";
+export const REMOVE_PERSON = "removePerson";
+export const USER_NAME = "userName";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
@@ -34,6 +36,7 @@ export const CHECK_PRESENTER_PAGE = "add-presenter-check-details";
 export const COMPANY_INVITATIONS_PAGE = "company-invitations";
 export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
+export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
 
 // Routing paths
 export const SEPARATOR = "/";
@@ -59,6 +62,7 @@ export const YOUR_COMPANIES_CANCEL_PERSON_URL = `${LANDING_URL}${CANCEL_PERSON_U
 export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-people-email-resent/:${USER_EMAIL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
 export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
+export const COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL = `${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
 export const YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL = `${LANDING_URL}${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
 export const CONFIRMATION_CANCEL_PERSON_URL = "/confirmation-cancel-person";
 export const AUTHORISATION_EMAIL_RESENT_URL = "/authorisation-email-resent";
@@ -75,6 +79,9 @@ export const COMPANY_INVITATIONS_ACCEPT_URL = `/${COMPANY_INVITATIONS_ACCEPT_PAG
 export const YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL = LANDING_URL + COMPANY_INVITATIONS_ACCEPT_URL;
 export const COMPANY_INVITATIONS_DECLINE_URL = `/${COMPANY_INVITATIONS_DECLINE_PAGE}/:${ASSOCIATIONS_ID}`;
 export const YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL = LANDING_URL + COMPANY_INVITATIONS_DECLINE_URL;
+export const CONFIRMATION_PERSON_REMOVED_URL = "/confirmation-person-removed";
+export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_REMOVED_URL}`;
+export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL}`;
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -85,6 +92,7 @@ export const ERRORS_EMAIL_REQUIRED = "errors_email_required";
 export const ERRORS_EMAIL_INVALID = "errors_email_invalid";
 export const ERRORS_EMAIL_ALREADY_AUTHORISED = "errors_email_already_authorised";
 export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you_want_to_cancel_authorisation";
+export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_that_you_have_read";
 
 // HTTP Methods
 export const GET = "GET";

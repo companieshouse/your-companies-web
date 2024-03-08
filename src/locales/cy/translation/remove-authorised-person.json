@@ -1,0 +1,16 @@
+{
+    "remove": "[CY] Remove ",
+    "authorisation_to_file_online": "[CY] ’s authorisation to file online for this company",
+    "if_you_remove": "[CY] If you remove ",
+    "digital_authorisation_this_means_they": "[CY] ’s digital authorisation, this means they will no longer be able to file online for ",
+    "without_a_current_auth_code": " [CY] without a current authentication code. We’ll email ",
+    "to_let_them_know_you_have_removed": " [CY] to let them know you have removed their digital authorisation.",
+    "will_still_be_able_to_file": " [CY] will still be able to file online for this company if they have access to the current authentication code.",
+    "you_may_wish_to_change_the_auth_code": "[CY] You may wish to change the authentication code for this company as soon as possible after you have removed ",
+    "digital_authorisation": "[CY] ’s digital authorisation.",
+    "if": "[CY] If ",
+    "is_appointed_as_an_officer": " [CY] is appointed as an officer of the company, such as director or secretary, removing their digital authorisation to file does not remove their appointment.",
+    "i_confirm_that_i_have_read": "[CY] I confirm that I have read and understood this information.",
+    "remove_authorisation": "[CY] Remove authorisation",
+    "select_if_you_confirm_that_you_have_read": "[CY] Select if you confirm that you have read and understood this information"
+}

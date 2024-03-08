@@ -3,13 +3,26 @@ This macro creates a hyperlink
 @param text - (string, required) is the text to enclose in <a></a> tags
 @param ariaLabelText - (string, required) is the aria-label text for screen readers
 @param href - (string, required) is the URL that the hyperlink points to
-@param params - ({ [key: string]: string }, optional) contains key/value pairs
+@param urlParams - ({ [key: string]: string }, optional) contains key/value pairs
                 to replace the route parameters in href
+@param queryParams - ({ [key: string]: string }, optional) contains key/value pairs
+                to replace the query parameters in href
 #}
-{% macro link(text, ariaLabelText, href, params) %}
-    {% if params %}
-        {% for key, value in params %}
+{% macro link(text, ariaLabelText, href, urlParams, queryParams) %}
+    {% if urlParams %}
+        {% for key, value in urlParams %}
             {% set href = href | replace(":" + key, value) %}
+        {% endfor %}
+    {% endif %}
+    {% if queryParams %}
+        {% for key, value in queryParams %}
+            {% if loop.first %}
+                {% set href = href + "?" + key + "=" + value | replace(" ", "+") %}
+            {% endif %}
+
+            {% if not loop.first %}
+                {% set href = href + "&" + key + "=" + value | replace(" ", "+") %}
+            {% endif %}
         {% endfor %}
     {% endif %}
     <a href="{{href}}" aria-label="{{ariaLabelText}}">{{text}}</a>

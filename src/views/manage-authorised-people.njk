@@ -111,10 +111,11 @@
             {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set removeLinkAriaLabelText = lang.link_to_remove_user_from_digitaly_authorised_start + association.userEmail + lang.link_to_remove_user_from_digitaly_authorised_end + association.companyName %}
+            {% set query_params = {userName: association.displayName} if association.displayName and association.displayName !== "Not provided" else undefined %}
             {% set removeLink = link(lang.remove, removeLinkAriaLabelText, removeUrl, {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
-            }) %}
+            }, query_params) %}
             {% set row = (row.push({html: removeLink}), row) %}
             {% set row = (row.push({text: ""}), row) %}
         {% else %}

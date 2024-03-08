@@ -19,6 +19,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
+        const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
 
         if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
             if (cancellation.cancelPerson === constants.YES) {
@@ -42,7 +43,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.resentSuccessEmail = resentSuccessEmail;
         }
 
-        const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation);
         this.viewData.companyAssociations = companyAssociations;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
