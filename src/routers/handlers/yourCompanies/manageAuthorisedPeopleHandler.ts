@@ -47,7 +47,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             lang: lang,
             backLinkHref: constants.LANDING_URL,
             buttonHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber),
-            cancelUrl: constants.YOUR_COMPANIES_CANCEL_PERSON_URL,
+            cancelUrl: constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber),
             resendEmailUrl: constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
             removeUrl: constants.YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL
         };
