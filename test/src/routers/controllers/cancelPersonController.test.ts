@@ -12,7 +12,8 @@ import * as cy from "../../../../src/locales/cy/translation/cancel-person.json";
 const router = supertest(app);
 const session: Session = new Session();
 const userEmail = "test@test.com";
-const url = `/your-companies/cancel-person/${userEmail}`;
+const companyNumber = "012345678";
+const url = `/your-companies/company/${companyNumber}/cancel-person/${userEmail}`;
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
@@ -32,13 +33,13 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-describe("GET /your-companies/cancel-person/:userEmail", () => {
+describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("should check session and auth before returning the /your-companies/cancel-person/:userEmail page", async () => {
+    it("should check session and auth before returning the /your-companies/company/:companyNumber/cancel-person/:userEmail page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -83,7 +84,7 @@ describe("GET /your-companies/cancel-person/:userEmail", () => {
     });
 });
 
-describe("POST /your-companies/cancel-person/:userEmail", () => {
+describe("POST /your-companies/company/:companyNumber/cancel-person/:userEmail", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -91,7 +92,7 @@ describe("POST /your-companies/cancel-person/:userEmail", () => {
         session.setExtraData(COMPANY_NAME, "General Ltd");
     });
 
-    it("should check session and auth before returning the /your-companies/cancel-person/:userEmail page", async () => {
+    it("should check session and auth before returning the /your-companies/company/:companyNumber/cancel-person/:userEmail page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
