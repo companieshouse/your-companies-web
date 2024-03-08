@@ -4,7 +4,7 @@ import app from "../../../../src/app";
 import * as userCompanyAssociationService from "../../../../src/services/userCompanyAssociationService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
-import { CONFIRM, USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
+import { CONFIRM, USER_REMOVED_FROM_COMPANY_ASSOCIATIONS } from "../../../../src/constants";
 import { Removal } from "../../../../src/types/removal";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
