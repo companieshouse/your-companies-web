@@ -5,7 +5,8 @@
 
 {% extends "layouts/default.njk" %}
 
-{% set user_details = userName if userName else userEmail %}
+{% set user_details = userName if userName else 
+    userEmail %}
 {% set title = lang.remove + user_details + lang.authorisation_to_file_online + lang.title_end %}
 
 {% block back_link %}
@@ -26,21 +27,21 @@
     {% endfor %}
 
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-xl">{{ companyName }}</span>
             <h1 class = "govuk-heading-xl">
                 {{ lang.remove + user_details + lang.authorisation_to_file_online }}
             </h1>
 
             <p>{{ lang.if_you_remove + user_details + lang.digital_authorisation_this_means_they + companyName + lang.without_a_current_auth_code + user_details + lang.to_let_them_know_you_have_removed }}</p>
-        
+
             {% set warning_text_html %}
-                <span class="govuk-!-display-block govuk-!-margin-bottom-5">
-                    {{ user_details + lang.will_still_be_able_to_file }}
-                </span>
-                <span class="govuk-!-display-block">
-                    {{ lang.you_may_wish_to_change_the_auth_code + user_details + lang.digital_authorisation }}
-                </span>
+            <span class="govuk-!-display-block govuk-!-margin-bottom-5">
+                {{ user_details + lang.will_still_be_able_to_file }}
+            </span>
+            <span class="govuk-!-display-block">
+                {{ lang.you_may_wish_to_change_the_auth_code + user_details + lang.digital_authorisation }}
+            </span>
             {% endset %}
 
             {{
@@ -54,7 +55,7 @@
             <p>{{ lang.if + user_details + lang.is_appointed_as_an_officer }}</p>
 
             <form method = "post">
-              {{ govukCheckboxes({
+                {{ govukCheckboxes({
                         name: "confirmRemoval",
 
                         items: [{
@@ -64,7 +65,7 @@
                         errorMessage: message
                     }) 
                 }}
-                
+
                 <div class="govuk-button-group">
 
                     {{ govukButton({
@@ -75,12 +76,9 @@
                     <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
 
                 </div>
-            
-            </form> 
-      
-      </div>
+
+            </form>
+
+        </div>
     </div>
 {% endblock %}
-
-
-

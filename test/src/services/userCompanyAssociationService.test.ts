@@ -11,7 +11,9 @@ import {
     addUserEmailAssociation,
     removeUserFromCompanyAssociations
 } from "../../../src/services/userCompanyAssociationService";
-import { Associations } from "../../../src/types/associations";
+import { Association, Associations } from "../../../src/types/associations";
+import { Cancellation } from "../../../src/types/cancellation";
+import { Removal } from "../../../src/types/removal";
 
 describe("User Company Association Service", () => {
     describe("isCompanyAssociatedWithUser", () => {
@@ -153,7 +155,7 @@ describe("User Company Association Service", () => {
     });
 
     describe("getCompanyAssociations", () => {
-        it("should return associations for the company if there are any", () => {
+        it("should return associations for the company if there are any", async () => {
             // Given
             const companyNumber = "NI038379";
             const expectedCompanyAssociations = {
@@ -195,9 +197,54 @@ describe("User Company Association Service", () => {
                 ]
             } as Associations;
             // When
-            const result = getCompanyAssociations(companyNumber, undefined);
+            const result = await getCompanyAssociations(companyNumber, undefined);
             // Then
-            expect(result).resolves.toEqual(expectedCompanyAssociations);
+            expect(result).toEqual(expectedCompanyAssociations);
+        });
+
+        it("should not contain cancelled association in returned associations for the company", async () => {
+            // Given
+            const companyNumber = "NI038379";
+            const cancellation = {
+                cancelPerson: "yes",
+                userEmail: "eva.brown@company.com",
+                companyNumber: companyNumber
+            } as Cancellation;
+            const cancelledCompanyAssociation = {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "eva.brown@company.com",
+                companyNumber: "NI038379",
+                companyName: "THE POLISH BREWERY",
+                status: "Awaiting confirmation"
+            } as Association;
+            // When
+            const result = await getCompanyAssociations(companyNumber, cancellation);
+            // Then
+            expect(result).not.toContain(cancelledCompanyAssociation);
+        });
+
+        it("should return association for the company after removal", async () => {
+            // Given
+            const companyNumber = "NI038379";
+            const cancellation = {
+                removePerson: "confirm",
+                userEmail: "john.smith@test.com",
+                companyNumber: companyNumber
+            } as Removal;
+            const removedCompanyAssociation = {
+                id: "2345678901",
+                userId: "jsldkfjsd",
+                userEmail: "john.smith@test.com",
+                displayName: "Not provided",
+                companyNumber: "NI038379",
+                companyName: "THE POLISH BREWERY",
+                status: "Confirmed"
+            } as Association;
+            // When
+            const result = await getCompanyAssociations(companyNumber, cancellation);
+            // Then
+            expect(result).not.toContain(removedCompanyAssociation);
         });
     });
     describe("removeUserFromCompanyAssociations", () => {
@@ -229,19 +276,23 @@ describe("User Company Association Service", () => {
         it("should not add the email if associated", async () => {
             const userEmailAddress = "demo@ch.gov.uk";
             const companyNumber = "NI038379";
+            const companyAssociations = await getCompanyAssociations(companyNumber, undefined);
+            const numberOfAssociations = companyAssociations.items.length;
             await addUserEmailAssociation(userEmailAddress, companyNumber);
             const resultAfter = await getCompanyAssociations(companyNumber, undefined);
-            expect(resultAfter.items.length).toEqual(4);
+            expect(resultAfter.items.length).toEqual(numberOfAssociations);
         });
         it("should add the email if not associated", async () => {
             const userEmailAddress = "testemail@ch.gov.uk";
             const companyNumber = "NI038379";
+            const companyAssociations = await getCompanyAssociations(companyNumber, undefined);
+            const numberOfAssociations = companyAssociations.items.length;
             const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
             await addUserEmailAssociation(userEmailAddress, companyNumber);
             const result = await getCompanyAssociations(companyNumber, undefined);
             const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
             expect(userAuthorisedBefore).toBe(false);
-            expect(result.items.length).toEqual(5);
+            expect(result.items.length).toEqual(numberOfAssociations + 1);
             expect(userAuthorised).toBe(true);
         });
     });

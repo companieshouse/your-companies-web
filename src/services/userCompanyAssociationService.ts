@@ -2,10 +2,12 @@ import { Associations, AssociationStatus } from "../types/associations";
 import {
     COMPNANY_ASSOCIATED_WITH_USER,
     COMPNANY_NOT_ASSOCIATED_WITH_USER,
+    CONFIRM,
     USER_REMOVED_FROM_COMPANY_ASSOCIATIONS,
     YES
 } from "../constants";
 import { Cancellation } from "../types/cancellation";
+import { Removal } from "types/removal";
 
 /**
  * Check if there is an association between the user and the company.
@@ -167,16 +169,6 @@ export const britishAirwaysItems = {
     ]
 } as Associations;
 
-export const getCompanyAssociations = async (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
-    // We will replace this hard coded value with the API call once the API is available
-    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
-
-    if (cancellation && cancellation.cancelPerson === YES) {
-        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
-    }
-    return Promise.resolve(associations);
-};
-
 export const isEmailAuthorised = async (email: string, companyNumber: string): Promise<boolean> => {
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
@@ -216,6 +208,32 @@ export const addUserEmailAssociation = async (email: string, companyNumber: stri
             );
         }
     }
+};
+export const getCompanyAssociations = async (companyNumber: string, cancellationOrRemoval: Cancellation | Removal | undefined): Promise<Associations> => {
+    // We will replace this hard coded value with the API call once the API is available
+
+    if (cancellationOrRemoval && "cancelPerson" in cancellationOrRemoval) {
+        return getCompanyAssociationsAfterCancellation(companyNumber, cancellationOrRemoval);
+    } else {
+        return getCompanyAssociationsAfterRemoval(companyNumber, cancellationOrRemoval);
+    }
+};
+
+const getCompanyAssociationsAfterCancellation = (companyNumber: string, cancellation: Cancellation | undefined): Promise<Associations> => {
+    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+
+    if (cancellation && cancellation.cancelPerson === YES) {
+        associations.items = associations.items.filter(user => user.userEmail !== cancellation.userEmail);
+    }
+    return Promise.resolve(associations);
+};
+const getCompanyAssociationsAfterRemoval = (companyNumber: string, removal: Removal | undefined): Promise<Associations> => {
+    const associations: Associations = companyNumber === "NI038379" ? polishBrewItems : britishAirwaysItems;
+
+    if (removal && removal.removePerson === CONFIRM) {
+        associations.items = associations.items.filter(user => user.userEmail !== removal.userEmail);
+    }
+    return Promise.resolve(associations);
 };
 
 export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {

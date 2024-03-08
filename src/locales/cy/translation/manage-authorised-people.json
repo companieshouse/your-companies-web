@@ -1,5 +1,5 @@
 {
-  "back_to_your_companies": "[CY] Back to your companies",
+  "go_back_to_your_companies": "[CY] Go back to ’Your companies’",
   "people_digitally_authorised_to_file_online": "[CY] People digitally authorised to file online for this company",
   "anyone_with_access_to_the_current_authentication": "[CY] Anyone with access to the current authentication code can also file online for this company.",
   "add_new_authorised_person": "[CY] Add new authorised person",
@@ -28,5 +28,10 @@
   "email_resent_success_success_msg1": "[CY] We’ve sent another email to ",
   "email_resent_success_success_msg2": " [CY] They must select the link in the email to be digitally authorised to file online for",
   "cancel_or_remove": "[CY] Cancel or remove",
-  "resend_amail_invitation": "[CY] Resend email invitation"
+  "resend_amail_invitation": "[CY] Resend email invitation",
+  "is_no_longer_digitally_authorised": " [CY] is no longer digitally authorised to file online for ",
+  "you_may_wish_to": "[CY] You may wish to ",
+  "change_the_authentication_code": "[CY] change the authentication code",
+  "for_this_company_if": "[CY] for this company if ",
+  "still_has_access_to_it": " [CY] still has access to it."
 }

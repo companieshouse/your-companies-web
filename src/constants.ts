@@ -124,3 +124,4 @@ export const TRUE = "true";
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
 export const YES = "yes";
+export const CONFIRM = "confirm";
