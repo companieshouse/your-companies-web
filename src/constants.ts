@@ -93,6 +93,7 @@ export const ERRORS_EMAIL_INVALID = "errors_email_invalid";
 export const ERRORS_EMAIL_ALREADY_AUTHORISED = "errors_email_already_authorised";
 export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you_want_to_cancel_authorisation";
 export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_that_you_have_read";
+export const ERRORS_PERSON_ALREADY_INVITED = "errors_person_already_invited";
 
 // HTTP Methods
 export const GET = "GET";
