@@ -1,7 +1,7 @@
 {
-    "check_authorised_persons_email_address": "[CY] Check the authorised person's email address before we send the email",
+    "check_authorised_persons_email_address": "[CY] Check the email address is correct before we send the email",
     "email_address": "[CY] Email address",
     "change": "[CY] Change",
     "confirm_and_send_email": "[CY] Confirm and send email",
-    "title": "[CY] Check the authorised person's email address before we send the email - Find and update company information - GOV.UK"
+    "title": "[CY] Check the email address is correct before we send the email - Find and update company information - GOV.UK"
 }
