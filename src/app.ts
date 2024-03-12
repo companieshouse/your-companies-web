@@ -75,10 +75,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 routerDispatch(app);
 
 // Unhandled errors
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: Request, res: Response) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
     res.render("partials/error_500");
-    next();
 });
 
 // Unhandled exceptions

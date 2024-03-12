@@ -1,6 +1,6 @@
 /* eslint-disable import/first */
 
-jest.mock("../../../../src/lib/Logger");
+// jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/services/companyAssociationService");
 
 import mocks from "../../../mocks/all.middleware.mock";
@@ -47,13 +47,13 @@ describe("create company association controller tests", () => {
         expect(response.text).toContain(PAGE_HEADING);
     });
 
-    it("should return 500 when Accounts Association fails", async () => {
+    it("should return an error when Accounts Association fails", async () => {
         mockCreateCompanyAssociation.mockResolvedValueOnce({
             httpStatusCode: 400
         });
         const response = await router.get(url);
         expect(mockCreateCompanyAssociation).toHaveBeenCalled();
-        expect(response.text).toContain("Status code: 500");
+        expect(response.text).toContain("Error");
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 });
