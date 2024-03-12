@@ -37,7 +37,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
                         const user = await getUserRecord(invite.invitedBy);
                         const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
                         const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
-                        const companyNameQueryParam = `?${constants.COMPANY_NAME}=${association.companyName}`;
+                        const companyNameQueryParam = `?${constants.COMPANY_NAME}=${association.companyName.replace(/ /g, "+")}`;
                         rows.push([
                             { text: association.companyName },
                             { text: association.companyNumber },
