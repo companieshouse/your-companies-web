@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import { CHS_URL, LANDING_URL, HEALTHCHECK } from "../constants";
+import logger from "../lib/Logger";
 
 const WHITELISTED_URLS: string[] = [
     LANDING_URL + HEALTHCHECK
@@ -9,6 +10,7 @@ const WHITELISTED_URLS: string[] = [
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
 
     if (isWhitelistedUrl(req.originalUrl)) {
+        logger.debug("whitelist endpoint called, skipping authentication.");
         return next();
     }
 
