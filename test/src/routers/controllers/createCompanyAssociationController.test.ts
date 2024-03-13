@@ -1,6 +1,5 @@
 /* eslint-disable import/first */
 
-// jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/services/companyAssociationService");
 
 import mocks from "../../../mocks/all.middleware.mock";

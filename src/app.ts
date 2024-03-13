@@ -74,7 +74,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Channel all requests through router dispatch
 routerDispatch(app);
 
-// Unhandled errors (error handlers takes four arguments, first is the error)
+// Unhandled errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
