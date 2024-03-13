@@ -47,13 +47,13 @@ describe("create company association controller tests", () => {
         expect(response.text).toContain(PAGE_HEADING);
     });
 
-    it("should return an error when Accounts Association fails", async () => {
+    it("should return 500 when Accounts Association fails", async () => {
         mockCreateCompanyAssociation.mockResolvedValueOnce({
             httpStatusCode: 400
         });
         const response = await router.get(url);
         expect(mockCreateCompanyAssociation).toHaveBeenCalled();
-        expect(response.text).toContain("Error");
+        expect(response.text).toContain("Status code: 500");
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 });
