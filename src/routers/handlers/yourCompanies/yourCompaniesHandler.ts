@@ -7,7 +7,6 @@ import { AssociationStatus, Associations } from "../../../types/associations";
 import { getUserAssociations } from "../../../services/userCompanyAssociationService";
 import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
-// import { fakeAssociations } from "../../../lib/createRandomAssociation";
 import { buildPaginationElement, PaginationData } from "../../../services/buildPaginationService";
 
 export class YourCompaniesHandler extends GenericHandler {
@@ -15,7 +14,6 @@ export class YourCompaniesHandler extends GenericHandler {
     async execute (req: Request): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve Your Companies landing page`);
         // ...process request here and return data for the view
-        console.log("1");
         const userEmailAddress = getLoggedInUserEmail(req.session);
         const confirmedUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.CONFIRMED);
         let paginationElement: PaginationData | undefined;
@@ -23,9 +21,7 @@ export class YourCompaniesHandler extends GenericHandler {
             items: [],
             totalResults: 0
         };
-        console.log("1.5");
 
-        //   console.table(fakeAssociations);
         //  confirmedUserAssociations.items.push(...fakeAssociations);
         if (confirmedUserAssociations?.items?.length) {
             confirmedUserAssociations.items.sort((a, b) => {
@@ -38,7 +34,6 @@ export class YourCompaniesHandler extends GenericHandler {
                 // names must be equal
                 return 0;
             });
-            console.log("2");
 
             console.log("len of CONFIRMED ASSOCIATIONS - ", confirmedUserAssociations.items.length);
 
@@ -50,7 +45,6 @@ export class YourCompaniesHandler extends GenericHandler {
                 });
             }
         }
-        console.log("3");
 
         if (confirmedUserAssociations?.items?.length) {
             // Get current page number
@@ -72,12 +66,10 @@ export class YourCompaniesHandler extends GenericHandler {
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.AWAITING_APPROVAL);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
-        console.log("4");
 
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(paginatedList, awaitingApprovalUserAssociations, lang);
         this.viewData.pagination = paginationElement;
-        console.log("5");
 
         return Promise.resolve(this.viewData);
     }
@@ -86,7 +78,6 @@ export class YourCompaniesHandler extends GenericHandler {
         const viewData: AnyRecord = {
             buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL
         };
-        console.log("6");
 
         if (confirmedUserAssociations?.items?.length > 0) {
             const associationData: { text: string }[][] = [];
@@ -100,7 +91,6 @@ export class YourCompaniesHandler extends GenericHandler {
                     }
                 ];
             }
-            console.log("7");
 
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
@@ -108,7 +98,6 @@ export class YourCompaniesHandler extends GenericHandler {
             viewData.numberOfInvitations = awaitingApprovalUserAssociations.totalResults;
             viewData.viewInvitationsPageUrl = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
         }
-        console.log("8");
 
         return { ...viewData, lang: lang };
     }
