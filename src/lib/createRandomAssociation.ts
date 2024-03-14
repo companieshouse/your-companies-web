@@ -1,13 +1,17 @@
 import { faker } from "@faker-js/faker";
 import { Association } from "../types/associations";
 
+const addLimitedSometimes = () => {
+    return Math.floor(Math.random() * 4) === 0 ? " LIMITED" : "";
+};
+
 export function createRandomAssociation (): Association {
     return {
         id: faker.string.uuid(),
         userId: "qwertyiop",
         userEmail: "demo@ch.gov.uk",
         companyNumber: Math.random().toString().slice(2, 10),
-        companyName: faker.company.name().toUpperCase(),
+        companyName: faker.company.name().toUpperCase() + addLimitedSometimes(),
         status: "confirmed",
         invitations:
             [
