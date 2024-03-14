@@ -1,5 +1,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
 {% from "macros/link.njk" import link %}
 
 {% set rowsData = [] %}
@@ -20,6 +23,37 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
+
+        <form method="post">
+            <div class="govuk-grid-row">
+
+                <div class="govuk-grid-column-two-thirds">
+
+                    {{ govukInput({
+                        label: {
+                            text: "Search for a company",
+                                classes: "govuk-label--m"
+                        },
+                        id: "search",
+                        hint: {
+                            text: "Enter the company number"
+                        },
+                        name: "search",
+                        spellcheck: false
+                        }) }}
+                </div>
+                <div class="govuk-grid-column-one-third">
+
+                    {{ govukButton({
+                        text: "Search",
+                        classes: "govuk-button--secondary"
+                        }) }}
+
+                </div>
+            </div>
+
+        </form>
+
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         {{ govukTable({
                     caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
@@ -39,5 +73,10 @@
                     rows: rowsData
                 })
             }}
+
+        {% if pagination and pagination.items | length %}
+            {{ govukPagination(pagination) }}
+        {% endif %}
+
     </div>
 </div>

@@ -8,6 +8,7 @@ import {
 } from "../constants";
 import { Cancellation } from "../types/cancellation";
 import { Removal } from "types/removal";
+import { fakeAssociations } from "../lib/createRandomAssociation";
 
 /**
  * Check if there is an association between the user and the company.
@@ -111,6 +112,10 @@ export const getUserAssociations = async (userEmailAddress: string, status?: Ass
 
     if (status) {
         associations.items = associations.items.filter(association => association.status === status);
+    }
+
+    if (status === AssociationStatus.CONFIRMED) {
+        associations.items.push(...fakeAssociations);
     }
 
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [], totalResults: 0 } as Associations);
