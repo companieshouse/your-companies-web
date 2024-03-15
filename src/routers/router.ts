@@ -14,8 +14,11 @@ import { companyInvitationsControllerGet } from "./controllers/companyInvitation
 import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvitationsAcceptController";
 import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPost } from "./controllers/removeAuthorisedPersonController";
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
+import { healthCheckController } from "./controllers/healthCheckController";
 
 const router: Router = Router();
+
+router.get(constants.HEALTHCHECK, healthCheckController);
 
 router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
 
