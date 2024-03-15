@@ -27,6 +27,8 @@ export class YourCompaniesHandler extends GenericHandler {
             items: [],
             totalResults: confirmedUserAssociations?.totalResults
         };
+
+        // this is the segment of 15 or so paginated associations displayed on the page
         paginatedList.items = paginatedSection(sortedAndFilteredItems, pageNumber) || [];
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.AWAITING_APPROVAL);
@@ -35,11 +37,19 @@ export class YourCompaniesHandler extends GenericHandler {
 
         this.viewData = this.getViewData(paginatedList, awaitingApprovalUserAssociations, lang);
         this.viewData.search = search;
-        this.viewData.displaySearch = !!search?.length;
+
+        // displaySearchForm toggles diplay for search input form
+        if ((sortedAndFilteredItems && sortedAndFilteredItems?.length > 15) || !!search?.length) {
+            this.viewData.displaySearchForm = true;
+        }
+
+        // toggles display for number of matches found
+        this.viewData.showNumOfMatches = !!search?.length;
+        this.viewData.numOfMatches = sortedAndFilteredItems?.length;
+
         if (search?.length) {
             this.viewData.userHasCompanies = constants.TRUE;
         }
-        this.viewData.searchCount = sortedAndFilteredItems?.length;
 
         if (sortedAndFilteredItems?.length) {
             this.viewData.pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, search);

@@ -23,9 +23,6 @@ export function createRandomAssociation (): Association {
     };
 }
 
-export const fakeAssociations: Association[] = faker.helpers.multiple(createRandomAssociation, {
+export const randomAssociations: Association[] = faker.helpers.multiple(createRandomAssociation, {
     count: 150
 });
-
-// export const fakeAssociations: Association[] =
-// if exists return it otherwise gen new

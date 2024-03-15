@@ -24,42 +24,40 @@
     <div class="govuk-grid-column-full">
         {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
 
-        <form method="post">
-            <div class="govuk-grid-row">
+        {% if displaySearchForm %}
 
-                <div class="govuk-grid-column-two-thirds">
+            <form method="post">
+                <div class="govuk-grid-row">
 
-                    {{ govukInput({
-                        label: {
-                            text: "Search for a company",
-                                classes: "govuk-label--m"
-                        },
-                        id: "search",
-                        hint: {
-                            text: "Enter the company number"
-                        },
-                        name: "search",
-                        value: search,
-                        spellcheck: false
-                        }) }}
-                </div>
-                <div class="govuk-grid-column-one-third">
-
-                    {{ govukButton({
-                        text: "Search",
-                        classes: "govuk-button--secondary"
-                        }) }}
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--m" for="search">
+                            Search for a company
+                        </label>
+                        <div id="event-name-hint" class="govuk-hint">
+                            Enter the company number
+                        </div>
+                        <input class="govuk-input govuk-input--width-10" id="search" name="search" type="text" aria-describedby="event-name-hint" value={{search}}>
+                        <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                            Search
+                        </button>
+                    </div>
 
                 </div>
-            </div>
+            </form>
+        {% endif %}
 
-        </form>
-
-        {% if displaySearch  %}
-        <h2 class="govuk-heading-s">{{searchCount}} matches found for '{{search}}'</h2>
+        {% if showNumOfMatches %}
+            {% if numOfMatches == 1 %}
+                <h2 class="govuk-heading-s">{{numOfMatches}}
+                    match found for '{{search}}'</h2>
+            {% else %}
+                <h2 class="govuk-heading-s">{{numOfMatches}}
+                    matches found for '{{search}}'</h2>
+            {% endif %}
         {% endif %}
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
         {{ govukTable({
                     caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
                     captionClasses: "govuk-table__caption--m govuk-visually-hidden",
