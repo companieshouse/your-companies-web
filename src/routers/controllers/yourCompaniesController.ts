@@ -12,9 +12,8 @@ export const yourCompaniesControllerGet = async (req: Request, res: Response): P
 
 export const yourCompaniesControllerPost = async (req: Request, res: Response): Promise<void> => {
     const search = req.body.search.trim();
-    // validate search string
-    // and save ?
+    // validate search string?
     if (search.length) {
         return res.redirect("/your-companies?search=" + search);
-    }
+    } else return res.redirect("/your-companies");
 };

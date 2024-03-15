@@ -34,9 +34,15 @@ export class YourCompaniesHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
 
         this.viewData = this.getViewData(paginatedList, awaitingApprovalUserAssociations, lang);
+        this.viewData.search = search;
+        this.viewData.displaySearch = !!search?.length;
+        if (search?.length) {
+            this.viewData.userHasCompanies = constants.TRUE;
+        }
+        this.viewData.searchCount = sortedAndFilteredItems?.length;
 
         if (sortedAndFilteredItems?.length) {
-            this.viewData.pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length);
+            this.viewData.pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, search);
         }
 
         return Promise.resolve(this.viewData);

@@ -22,27 +22,33 @@ export interface PaginationData {
 export const buildPaginationElement = (
     currentPageNumber: number,
     numOfPages: number,
-    urlPrefix: string
+    urlPrefix: string,
+    search: string
 ): PaginationData => {
     const pagination: PaginationData = { items: [] };
     const pageItems: PageItem[] = [];
+    console.log("search string is ", search);
+    let seachQuery = "";
+    if (search) {
+        seachQuery = "&search=" + search;
+    }
     if (numOfPages <= 1 || currentPageNumber < 1) return pagination;
 
     // Add Previous and Next
     if (currentPageNumber !== 1) {
         pagination.previous = {
-            href: `${urlPrefix}?page=${currentPageNumber - 1}`
+            href: `${urlPrefix}?page=${currentPageNumber - 1}${seachQuery}`
         };
     }
-    if (currentPageNumber !== numOfPages) { pagination.next = { href: `${urlPrefix}?page=${currentPageNumber + 1}` }; }
+    if (currentPageNumber !== numOfPages) { pagination.next = { href: `${urlPrefix}?page=${currentPageNumber + 1}${seachQuery}` }; }
 
     // Add first element by default
-    pageItems.push(createPageItem(1, currentPageNumber, false, urlPrefix));
+    pageItems.push(createPageItem(1, currentPageNumber, false, urlPrefix, seachQuery));
 
     // Add second element if applicable - possible ellipsis
     if (numOfPages >= 3) {
         const isEllipsis = numOfPages >= 5 && currentPageNumber >= 5;
-        pageItems.push(createPageItem(2, currentPageNumber, isEllipsis, urlPrefix));
+        pageItems.push(createPageItem(2, currentPageNumber, isEllipsis, urlPrefix, seachQuery));
     }
 
     // Add element at middle left position if applicable
@@ -52,7 +58,7 @@ export const buildPaginationElement = (
     numOfPages - currentPageNumber >= 1
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber - 1, currentPageNumber, false, urlPrefix)
+            createPageItem(currentPageNumber - 1, currentPageNumber, false, urlPrefix, seachQuery)
         );
     }
 
@@ -63,7 +69,7 @@ export const buildPaginationElement = (
     numOfPages - currentPageNumber >= 2
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber, currentPageNumber, false, urlPrefix)
+            createPageItem(currentPageNumber, currentPageNumber, false, urlPrefix, seachQuery)
         );
     }
 
@@ -74,7 +80,7 @@ export const buildPaginationElement = (
     numOfPages - currentPageNumber >= 3
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber + 1, currentPageNumber, false, urlPrefix)
+            createPageItem(currentPageNumber + 1, currentPageNumber, false, urlPrefix, seachQuery)
         );
     }
 
@@ -82,14 +88,14 @@ export const buildPaginationElement = (
     if (numOfPages >= 4) {
         const isEllipsis = numOfPages >= 5 && numOfPages - currentPageNumber >= 4;
         pageItems.push(
-            createPageItem(numOfPages - 1, currentPageNumber, isEllipsis, urlPrefix)
+            createPageItem(numOfPages - 1, currentPageNumber, isEllipsis, urlPrefix, seachQuery)
         );
     }
 
     // Add last element if applicable
     if (numOfPages > 1) {
         pageItems.push(
-            createPageItem(numOfPages, currentPageNumber, false, urlPrefix)
+            createPageItem(numOfPages, currentPageNumber, false, urlPrefix, seachQuery)
         );
     }
 
@@ -101,7 +107,8 @@ const createPageItem = (
     pageNumber: number,
     currentPageNumber: number,
     isEllipsis: boolean,
-    prefix: string
+    prefix: string,
+    searchQuery: string
 ): PageItem => {
     if (isEllipsis) {
         return {
@@ -111,7 +118,7 @@ const createPageItem = (
     return {
         current: currentPageNumber === pageNumber,
         number: pageNumber,
-        href: `${prefix}?page=${pageNumber}`
+        href: `${prefix}?page=${pageNumber}${searchQuery}`
     };
 };
 
@@ -160,13 +167,15 @@ export const paginatedSection = (
 
 export const paginationElement = (
     page: number,
-    arrayLength: number
+    arrayLength: number,
+    search: string
 ): PaginationData | undefined => {
     // Create pagination element to navigate pages
     const numOfPages = Math.ceil(arrayLength / objectsPerPage);
     return buildPaginationElement(
         page, // current page
         numOfPages, // number of pages
-        "/your-companies"
+        "/your-companies",
+        search
     );
 };

@@ -39,6 +39,7 @@
                             text: "Enter the company number"
                         },
                         name: "search",
+                        value: search,
                         spellcheck: false
                         }) }}
                 </div>
@@ -53,6 +54,10 @@
             </div>
 
         </form>
+
+        {% if displaySearch  %}
+        <h2 class="govuk-heading-s">{{searchCount}} matches found for '{{search}}'</h2>
+        {% endif %}
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         {{ govukTable({
