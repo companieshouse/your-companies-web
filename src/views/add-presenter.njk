@@ -35,7 +35,7 @@
                 })
             }}
 
-            <form method="post">
+            <form method="post" novalidate>
                 {{ govukInput({
                         label: {
                             text: lang.email_address
@@ -46,6 +46,7 @@
                         id: "email",
                         name: "email",
                         type: "email",
+                        spellcheck: "false",
                         errorMessage: message
                     })
                 }}
