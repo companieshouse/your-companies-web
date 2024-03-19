@@ -36,3 +36,14 @@ export function validateEmailString (emailString: string): boolean {
         return false;
     }
 }
+
+export function validateSearchString (str: string): boolean {
+    const searchSchema = z.string()
+        .min(1);
+    try {
+        searchSchema.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

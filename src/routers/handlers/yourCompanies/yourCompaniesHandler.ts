@@ -39,7 +39,7 @@ export class YourCompaniesHandler extends GenericHandler {
         this.viewData.search = search;
 
         // displaySearchForm toggles diplay for search input form
-        if ((sortedAndFilteredItems && sortedAndFilteredItems?.length > 15) || !!search?.length) {
+        if ((sortedAndFilteredItems && sortedAndFilteredItems?.length > constants.ITEMS_PER_PAGE) || !!search?.length) {
             this.viewData.displaySearchForm = true;
         }
 

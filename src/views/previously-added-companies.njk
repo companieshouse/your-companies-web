@@ -27,32 +27,28 @@
         {% if displaySearchForm %}
 
             <form method="post">
-                <div class="govuk-grid-row">
-
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-label--m" for="search">
-                            Search for a company
+                            {{lang.search_for_a_company}}
                         </label>
                         <div id="event-name-hint" class="govuk-hint">
-                            Enter the company number
+                            {{lang.enter_company_num}}
                         </div>
                         <input class="govuk-input govuk-input--width-10" id="search" name="search" type="text" aria-describedby="event-name-hint" value={{search}}>
                         <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                            Search
+                            {{lang.search}}
                         </button>
                     </div>
-
-                </div>
             </form>
         {% endif %}
 
         {% if showNumOfMatches %}
             {% if numOfMatches == 1 %}
                 <h2 class="govuk-heading-s">{{numOfMatches}}
-                    match found for '{{search}}'</h2>
+                    {{lang.match_found_for}} '{{search}}'</h2>
             {% else %}
                 <h2 class="govuk-heading-s">{{numOfMatches}}
-                    matches found for '{{search}}'</h2>
+                    {{lang.matches_found_for}} '{{search}}'</h2>
             {% endif %}
         {% endif %}
 

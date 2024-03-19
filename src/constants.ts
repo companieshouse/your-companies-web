@@ -126,3 +126,6 @@ export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "Confirmed";
 export const YES = "yes";
 export const CONFIRM = "confirm";
+
+// number of (association) items returned per page
+export const ITEMS_PER_PAGE = 15;

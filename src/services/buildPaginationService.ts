@@ -1,6 +1,5 @@
 import { Association } from "../types/associations";
-
-const objectsPerPage = 15;
+import { LANDING_URL, ITEMS_PER_PAGE } from "../constants";
 
 export interface PageItem {
   number?: number;
@@ -144,7 +143,7 @@ export const sortAndSearch = (
         items = items.filter((item) => {
             return (
                 item.companyName.includes(search.toUpperCase()) ||
-        item.companyNumber.includes(search)
+        item.companyNumber.includes(search.toUpperCase())
             );
         });
     }
@@ -160,8 +159,8 @@ export const paginatedSection = (
     if (!items?.length) {
         return;
     }
-    const startIndex = (page - 1) * objectsPerPage;
-    const endIndex = startIndex + objectsPerPage;
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
     return items.slice(startIndex, endIndex);
 };
 
@@ -171,11 +170,11 @@ export const paginationElement = (
     search: string
 ): PaginationData | undefined => {
     // Create pagination element to navigate pages
-    const numOfPages = Math.ceil(arrayLength / objectsPerPage);
+    const numOfPages = Math.ceil(arrayLength / ITEMS_PER_PAGE);
     return buildPaginationElement(
         page, // current page
-        numOfPages, // number of pages
-        "/your-companies",
+        numOfPages,
+        LANDING_URL,
         search
     );
 };
