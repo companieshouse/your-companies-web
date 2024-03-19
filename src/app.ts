@@ -55,6 +55,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
+logger.debug("checking authentication... ");
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
 
 app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
