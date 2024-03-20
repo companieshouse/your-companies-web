@@ -14,7 +14,7 @@ export const buildPaginationElement = (
     if (numOfPages <= 1 || currentPageNumber < 1) return pagination;
 
     // Add Previous and Next
-    if (currentPageNumber !== 1) {
+    if (currentPageNumber > 1) {
         pagination.previous = {
             href: `${urlPrefix}?page=${currentPageNumber - 1}${searchQuery}`
         };
