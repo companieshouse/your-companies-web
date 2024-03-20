@@ -29,6 +29,26 @@ describe("GET /your-companies", () => {
         expect(response.text).toContain("Page 2");
         expect(response.text).toContain("Next");
     });
+    it("should return selected page", async () => {
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.get("/your-companies?page=2");
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.text).toContain("Search");
+        expect(response.text).toContain("Page 1");
+        expect(response.text).toContain("Page 2");
+        expect(response.text).not.toContain("Next");
+    });
+    it("should ignore incorrect page numbers", async () => {
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.get("/your-companies?page=abc");
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.text).toContain("Search");
+        expect(response.text).toContain("Page 1");
+        expect(response.text).toContain("Page 2");
+        expect(response.text).toContain("Next");
+    });
     it("should display company when company number provided and match is found", async () => {
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
         const response = await router.get("/your-companies?search=NI03837");
