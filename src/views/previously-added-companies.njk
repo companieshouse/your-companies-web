@@ -34,8 +34,8 @@
                         <div id="event-name-hint" class="govuk-hint">
                             {{lang.enter_company_num}}
                         </div>
-                        <input class="govuk-input govuk-input--width-10" id="search" name="search" type="text" aria-describedby="event-name-hint" value={{search}}>
-                        <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label={{lang.search}}>
+                        <input class="govuk-input govuk-input--width-10" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
+                        <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
                             {{lang.search}}
                         </button>
                     </div>
@@ -43,7 +43,9 @@
         {% endif %}
 
         {% if showNumOfMatches %}
-            {% if numOfMatches == 1 %}
+            {% if numOfMatches == 0 %}
+                <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{search}}'</h2>
+            {% elif numOfMatches == 1 %}
                 <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.match_found_for}} '{{search}}'</h2>
             {% else %}
                 <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.matches_found_for}} '{{search}}'</h2>

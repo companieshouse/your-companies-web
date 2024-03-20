@@ -73,7 +73,7 @@ describe("GET /your-companies", () => {
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         expect(response.text).toContain(en.search);
-        expect(response.text).toContain(`0 ${en.matches_found_for}`);
+        expect(response.text).toContain(en.no_results_found);
     });
     it("should not display number of matches if empty string is provided in query param", async () => {
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
