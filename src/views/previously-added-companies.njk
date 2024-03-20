@@ -44,11 +44,9 @@
 
         {% if showNumOfMatches %}
             {% if numOfMatches == 1 %}
-                <h2 class="govuk-heading-s">{{numOfMatches}}
-                    {{lang.match_found_for}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.match_found_for}} '{{search}}'</h2>
             {% else %}
-                <h2 class="govuk-heading-s">{{numOfMatches}}
-                    {{lang.matches_found_for}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.matches_found_for}} '{{search}}'</h2>
             {% endif %}
         {% endif %}
 

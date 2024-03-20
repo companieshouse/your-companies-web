@@ -1,4 +1,4 @@
-import { buildPaginationElement } from "../../../src/services/buildPaginationService";
+import { buildPaginationElement } from "../../../src/lib/helper/buildPaginationHelper";
 
 const prefix = "prefix";
 const ellipsis = "...";

@@ -7,7 +7,7 @@ import { AssociationStatus, Associations } from "../../../types/associations";
 import { getUserAssociations } from "../../../services/userCompanyAssociationService";
 import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
-import { sortAndSearch, paginatedSection, paginationElement } from "../../../services/buildPaginationService";
+import { sortAndSearch, paginatedSection, paginationElement } from "../../../lib/helper/buildPaginationHelper";
 
 export class YourCompaniesHandler extends GenericHandler {
 

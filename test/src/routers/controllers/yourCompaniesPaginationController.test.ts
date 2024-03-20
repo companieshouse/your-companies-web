@@ -20,11 +20,8 @@ describe("GET /your-companies", () => {
     });
 
     it("should return pagination if more than 15 companies returned", async () => {
-        // Given
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
-        // When
         const response = await router.get("/your-companies");
-        // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         expect(response.text).toContain("Search");
@@ -32,7 +29,34 @@ describe("GET /your-companies", () => {
         expect(response.text).toContain("Page 2");
         expect(response.text).toContain("Next");
     });
-
+    it("should display company when company number provided and match is found", async () => {
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.get("/your-companies?search=NI03837");
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.text).toContain("Search");
+        expect(response.text).toContain("1 match found for ");
+        expect(response.text).toContain("THE POLISH BREWERY");
+        expect(response.text).toContain("NI038379");
+        expect(response.text).not.toContain("Page 2");
+        expect(response.text).not.toContain("Next");
+    });
+    it("should display no matches when no matches found", async () => {
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.get("/your-companies?search=search-string-with-no-match");
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.text).toContain("Search");
+        expect(response.text).toContain("0 matches found for ");
+    });
+    it("should not display matches if empty string is provided in query param", async () => {
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.get("/your-companies?search=");
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.text).toContain("Search");
+        expect(response.text).not.toContain("found for ");
+    });
 });
 
 describe("Post /your-companies", () => {
@@ -61,5 +85,4 @@ describe("Post /your-companies", () => {
         expect(response.status).toBe(302);
         expect(response.text).toContain(redirectMessage);
     });
-
 });

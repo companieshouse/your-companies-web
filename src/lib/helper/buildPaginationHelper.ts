@@ -1,22 +1,6 @@
-import { Association } from "../types/associations";
-import { LANDING_URL, ITEMS_PER_PAGE } from "../constants";
-
-export interface PageItem {
-  number?: number;
-  href?: string;
-  current?: boolean;
-  ellipsis?: boolean;
-}
-
-export interface PaginationPreviousNext {
-  href: string;
-}
-
-export interface PaginationData {
-  previous?: PaginationPreviousNext;
-  next?: PaginationPreviousNext;
-  items: PageItem[];
-}
+import { Association } from "../../types/associations";
+import { LANDING_URL, ITEMS_PER_PAGE } from "../../constants";
+import { PageItem, PaginationData } from "../../types/pagination";
 
 export const buildPaginationElement = (
     currentPageNumber: number,
@@ -26,7 +10,6 @@ export const buildPaginationElement = (
 ): PaginationData => {
     const pagination: PaginationData = { items: [] };
     const pageItems: PageItem[] = [];
-    console.log("search string is ", search);
     let seachQuery = "";
     if (search) {
         seachQuery = "&search=" + search;
