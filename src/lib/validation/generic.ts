@@ -49,10 +49,10 @@ export function validateSearchString (str: string): boolean {
 }
 
 export function validatePageNumber (pageNum:number, maxNumber:number): boolean {
-    const searchSchema = z.number()
+    const pageNoSchema = z.number()
         .min(1).max(maxNumber);
     try {
-        searchSchema.parse(pageNum);
+        pageNoSchema.parse(pageNum);
         return true;
     } catch (e) {
         return false;
