@@ -1,4 +1,4 @@
-import { validateEmailString } from "../../../../src/lib/validation/generic";
+import { validateEmailString, validateSearchString } from "../../../../src/lib/validation/generic";
 
 describe("Should validate emails", () => {
     it.each([
@@ -13,5 +13,15 @@ describe("Should validate emails", () => {
         { email: "bob@e@xample.com", expected: false }
     ])("should return $expected for $email", ({ email, expected }) => {
         expect(validateEmailString(email)).toEqual(expected);
+    });
+});
+
+describe("Should validate search string", () => {
+    it.each([
+        { search: "", expected: false },
+        { search: "a", expected: true },
+        { search: "1", expected: true }
+    ])("should return $expected for $search", ({ search, expected }) => {
+        expect(validateSearchString(search)).toEqual(expected);
     });
 });

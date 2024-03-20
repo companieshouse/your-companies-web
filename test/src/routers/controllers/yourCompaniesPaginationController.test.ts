@@ -34,3 +34,32 @@ describe("GET /your-companies", () => {
     });
 
 });
+
+describe("Post /your-companies", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+
+    });
+
+    it("should redirect with search query param when search string is posted", async () => {
+        const redirectMessage = "Found. Redirecting to /your-companies?search=NI03837";
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.post("/your-companies").send({ search: "NI038379" });
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.status).toBe(302);
+        expect(response.text).toContain(redirectMessage);
+    });
+    it("should redirect without search query pararm when search string is empty", async () => {
+        const redirectMessage = "Found. Redirecting to /your-companies";
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        const response = await router.post("/your-companies").send({ search: "" });
+        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(response.status).toBe(302);
+        expect(response.text).toContain(redirectMessage);
+    });
+
+});
