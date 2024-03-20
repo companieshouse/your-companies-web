@@ -10,7 +10,7 @@ export function createRandomAssociation (): Association {
         id: faker.string.uuid(),
         userId: "qwertyiop",
         userEmail: "demo@ch.gov.uk",
-        companyNumber: Math.random().toString().slice(2, 10),
+        companyNumber: faker.number.int({ min: 9999999, max: 100000000 }).toString(),
         companyName: faker.company.name().toUpperCase() + addLimitedSometimes(),
         status: "confirmed",
         invitations:
