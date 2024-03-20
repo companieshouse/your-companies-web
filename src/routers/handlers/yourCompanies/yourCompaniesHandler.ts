@@ -69,7 +69,6 @@ export class YourCompaniesHandler extends GenericHandler {
             if (search) {
                 searchQuery = "&search=" + search;
             }
-            // HERE HERE HERE
             const pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, searchQuery, associationsPerPage);
             if (pagination?.next && lang?.next) {
                 pagination.next.text = lang.next.toString();
