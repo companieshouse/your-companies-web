@@ -7,8 +7,8 @@ locals {
   container_port             = "3000" # default Node port to match start script
   docker_repo                = "your-companies-web"
   lb_listener_rule_priority  = 18
-  lb_listener_paths          = ["/your-companies/*"]
-  healthcheck_path           = "/your-companies" #healthcheck path for accounts association service
+  lb_listener_paths          = ["/your-companies*"]
+  healthcheck_path           = "/your-companies/healthcheck" #healthcheck path for accounts association service
   healthcheck_matcher        = "200"
   application_subnet_ids     = data.aws_subnets.application.ids
   kms_alias                  = "alias/${var.aws_profile}/environment-services-kms"

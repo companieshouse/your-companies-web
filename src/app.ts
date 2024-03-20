@@ -55,6 +55,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
+logger.debug("checking authentication... ");
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
 
 app.use(`${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_BASE}`, companyAuthenticationMiddleware);
@@ -75,10 +76,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 routerDispatch(app);
 
 // Unhandled errors
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
     res.render("partials/error_500");
-    next();
 });
 
 // Unhandled exceptions

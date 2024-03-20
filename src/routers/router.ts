@@ -6,7 +6,7 @@ import * as constants from "../constants";
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet, yourCompaniesControllerPost } from "./controllers/yourCompaniesController";
-import { addPresenterController } from "./controllers/addPresenterController";
+import { addPresenterControllerGet, addPresenterControllerPost } from "./controllers/addPresenterController";
 import { checkPresenterController } from "./controllers/checkPresenterController";
 import { resendEmailController } from "./controllers/resendEmailController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
@@ -14,8 +14,11 @@ import { companyInvitationsControllerGet } from "./controllers/companyInvitation
 import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvitationsAcceptController";
 import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPost } from "./controllers/removeAuthorisedPersonController";
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
+import { healthCheckController } from "./controllers/healthCheckController";
 
 const router: Router = Router();
+
+router.get(constants.HEALTHCHECK, healthCheckController);
 
 router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
 router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost);
@@ -40,8 +43,8 @@ router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost 
 router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, createCompanyAssociationControllerGet as RequestHandler);
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedControllerGet as RequestHandler);
 
-router.get(constants.ADD_PRESENTER_URL, addPresenterController as RequestHandler);
-router.post(constants.ADD_PRESENTER_URL, addPresenterController as RequestHandler);
+router.get(constants.ADD_PRESENTER_URL, addPresenterControllerGet as RequestHandler);
+router.post(constants.ADD_PRESENTER_URL, addPresenterControllerPost as RequestHandler);
 
 router.get(constants.CHECK_PRESENTER_URL, checkPresenterController as RequestHandler);
 router.post(constants.CHECK_PRESENTER_URL, checkPresenterController as RequestHandler);

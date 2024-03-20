@@ -129,7 +129,7 @@ export const polishBrewItems = {
             userEmail: "demo@ch.gov.uk",
             companyNumber: "NI038379",
             companyName: "THE POLISH BREWERY",
-            status: "Awaiting confirmation"
+            status: "awaiting-approval"
         },
         {
             id: "2345678901",
@@ -146,7 +146,7 @@ export const polishBrewItems = {
             userEmail: "eva.brown@company.com",
             companyNumber: "NI038379",
             companyName: "THE POLISH BREWERY",
-            status: "Awaiting confirmation"
+            status: "awaiting-approval"
         },
         {
             id: "2345678901",
@@ -176,7 +176,12 @@ export const britishAirwaysItems = {
 
 export const isEmailAuthorised = async (email: string, companyNumber: string): Promise<boolean> => {
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
-    return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase());
+    return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase() && item.status.toLowerCase() === AssociationStatus.CONFIRMED);
+};
+
+export const isEmailInvited = async (email: string, companyNumber: string): Promise<boolean> => {
+    const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
+    return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase() && item.status.toLowerCase() === AssociationStatus.AWAITING_APPROVAL);
 };
 
 export const addUserEmailAssociation = async (email: string, companyNumber: string): Promise<void> => {
@@ -191,7 +196,7 @@ export const addUserEmailAssociation = async (email: string, companyNumber: stri
                     userEmail: email,
                     companyNumber: "NI038379",
                     companyName: "THE POLISH BREWERY",
-                    status: "Awaiting confirmation",
+                    status: "awaiting-approval",
                     displayName: ""
                 }
             );
@@ -208,7 +213,7 @@ export const addUserEmailAssociation = async (email: string, companyNumber: stri
                     displayName: "",
                     companyNumber: "01777777",
                     companyName: "BRITISH AIRWAYS PLC",
-                    status: "Awaiting confirmation"
+                    status: "awaiting-approval"
                 }
             );
         }

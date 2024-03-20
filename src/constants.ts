@@ -83,6 +83,7 @@ export const YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL = LANDING_URL + COMP
 export const CONFIRMATION_PERSON_REMOVED_URL = "/confirmation-person-removed";
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_REMOVED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL}`;
+export const HEALTHCHECK = "/healthcheck";
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
@@ -94,6 +95,7 @@ export const ERRORS_EMAIL_INVALID = "errors_email_invalid";
 export const ERRORS_EMAIL_ALREADY_AUTHORISED = "errors_email_already_authorised";
 export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you_want_to_cancel_authorisation";
 export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_that_you_have_read";
+export const ERRORS_PERSON_ALREADY_INVITED = "errors_person_already_invited";
 
 // HTTP Methods
 export const GET = "GET";

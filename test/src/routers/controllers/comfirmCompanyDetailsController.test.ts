@@ -61,11 +61,13 @@ describe(`GET ${url}`, () => {
         jest.clearAllMocks();
     });
     it("should check session and auth before returning the your-companies page", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should return status 200", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
         await router.get(url).expect(200);
     });
 
@@ -176,6 +178,7 @@ describe(`POST ${url}`, () => {
     });
 
     it("should check session and auth", async () => {
+        session.data.extra_data.companyProfile = validActiveCompanyProfile;
         await router.post(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();

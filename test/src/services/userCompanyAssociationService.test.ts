@@ -9,7 +9,8 @@ import {
     isCompanyAssociatedWithUser,
     isEmailAuthorised,
     addUserEmailAssociation,
-    removeUserFromCompanyAssociations
+    removeUserFromCompanyAssociations,
+    isEmailInvited
 } from "../../../src/services/userCompanyAssociationService";
 import { Association, Associations } from "../../../src/types/associations";
 import { Cancellation } from "../../../src/types/cancellation";
@@ -166,7 +167,7 @@ describe("User Company Association Service", () => {
                         userEmail: "demo@ch.gov.uk",
                         companyNumber: "NI038379",
                         companyName: "THE POLISH BREWERY",
-                        status: "Awaiting confirmation"
+                        status: "awaiting-approval"
                     },
                     {
                         id: "2345678901",
@@ -183,7 +184,7 @@ describe("User Company Association Service", () => {
                         userEmail: "eva.brown@company.com",
                         companyNumber: "NI038379",
                         companyName: "THE POLISH BREWERY",
-                        status: "Awaiting confirmation"
+                        status: "awaiting-approval"
                     },
                     {
                         id: "2345678901",
@@ -216,7 +217,7 @@ describe("User Company Association Service", () => {
                 userEmail: "eva.brown@company.com",
                 companyNumber: "NI038379",
                 companyName: "THE POLISH BREWERY",
-                status: "Awaiting confirmation"
+                status: "awaiting-approval"
             } as Association;
             // When
             const result = await getCompanyAssociations(companyNumber, cancellation);
@@ -247,6 +248,7 @@ describe("User Company Association Service", () => {
             expect(result).not.toContain(removedCompanyAssociation);
         });
     });
+
     describe("removeUserFromCompanyAssociations", () => {
         it("should remove user from company associations", () => {
             // Given
@@ -258,62 +260,68 @@ describe("User Company Association Service", () => {
             expect(result).resolves.toEqual(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         });
     });
+
     describe("isEmailAuthorised", () => {
         it("should return true is the email is associated", async () => {
-            const userEmailAddress = "demo@ch.gov.uk";
+            const userEmailAddress = "mark.black@private.com";
             const companyNumber = "NI038379";
             const result = await isEmailAuthorised(userEmailAddress, companyNumber);
-            expect(result).toEqual(true);
+            expect(result).toBeTruthy();
         });
+
         it("should return false is the email is not associated", async () => {
             const userEmailAddress = "demo2@ch.gov.uk";
             const companyNumber = "NI038379";
             const result = await isEmailAuthorised(userEmailAddress, companyNumber);
-            expect(result).toEqual(false);
+            expect(result).toBeFalsy();
         });
     });
-    describe("addUserEmailAssociation", () => {
-        it("should not add the email if associated", async () => {
+
+    describe("isEmailInvited", () => {
+        it("should return true is the email is associated", async () => {
             const userEmailAddress = "demo@ch.gov.uk";
             const companyNumber = "NI038379";
-            const companyAssociations = await getCompanyAssociations(companyNumber, undefined);
-            const numberOfAssociations = companyAssociations.items.length;
-            await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const resultAfter = await getCompanyAssociations(companyNumber, undefined);
-            expect(resultAfter.items.length).toEqual(numberOfAssociations);
+            const result = await isEmailInvited(userEmailAddress, companyNumber);
+            expect(result).toBeTruthy();
         });
-        it("should add the email if not associated", async () => {
-            const userEmailAddress = "testemail@ch.gov.uk";
+
+        it("should return false is the email is not associated", async () => {
+            const userEmailAddress = "demo5@ch.gov.uk";
             const companyNumber = "NI038379";
-            const companyAssociations = await getCompanyAssociations(companyNumber, undefined);
-            const numberOfAssociations = companyAssociations.items.length;
-            const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
-            await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const result = await getCompanyAssociations(companyNumber, undefined);
-            const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
-            expect(userAuthorisedBefore).toBe(false);
-            expect(result.items.length).toEqual(numberOfAssociations + 1);
-            expect(userAuthorised).toBe(true);
+            const result = await isEmailInvited(userEmailAddress, companyNumber);
+            expect(result).toBeFalsy();
         });
     });
+
     describe("addUserEmailAssociation", () => {
         it("should not add the email if associated", async () => {
-            const userEmailAddress = "john.smith@test.com";
-            const companyNumber = "01777777";
-            await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const resultAfter = await getCompanyAssociations(companyNumber, undefined);
-            expect(resultAfter.items.length).toEqual(1);
-        });
-        it("should add the email if not associated", async () => {
-            const userEmailAddress = "testemail@ch.gov.uk";
-            const companyNumber = "01777777";
-            const userAuthorisedBefore = await isEmailAuthorised(userEmailAddress, companyNumber);
+            // Given
+            const userEmailAddress = "eva.brown@company.com";
+            const companyNumber = "NI038379";
+            // When
             await addUserEmailAssociation(userEmailAddress, companyNumber);
             const result = await getCompanyAssociations(companyNumber, undefined);
-            const userAuthorised = await isEmailAuthorised(userEmailAddress, companyNumber);
-            expect(userAuthorisedBefore).toBe(false);
-            expect(result.items.length).toEqual(2);
-            expect(userAuthorised).toBe(true);
+            const userInvited = await isEmailInvited(userEmailAddress, companyNumber);
+            const userInvetedOnce = result.items.filter(item => item.userEmail === userEmailAddress).length === 1;
+            // Then
+            expect(userInvited).toBeTruthy();
+            expect(userInvetedOnce).toBeTruthy();
+        });
+
+        it("should add the email if not associated", async () => {
+            // Given
+            const userEmailAddress = "testemail@ch.gov.uk";
+            const companyNumber = "NI038379";
+            const userInvitedBefore = await isEmailInvited(userEmailAddress, companyNumber);
+            // When
+            await addUserEmailAssociation(userEmailAddress, companyNumber);
+            const result = await getCompanyAssociations(companyNumber, undefined);
+            const userInvited = await isEmailInvited(userEmailAddress, companyNumber);
+            const userInvetedOnce = result.items.filter(item => item.userEmail === userEmailAddress).length === 1;
+            // Then
+            expect(userInvitedBefore).toBeFalsy();
+            expect(userInvited).toBeTruthy();
+            expect(userInvetedOnce).toBeTruthy();
         });
     });
 });

@@ -93,7 +93,7 @@ export const companyAssociations: Associations = {
             userEmail: "demo@ch.gov.uk",
             companyNumber: "NI038379",
             companyName: "THE POLISH BREWERY",
-            status: "Awaiting confirmation"
+            status: "awaiting-approval"
         },
         {
             id: "2345678901",
@@ -110,7 +110,7 @@ export const companyAssociations: Associations = {
             userEmail: "eva.brown@company.com",
             companyNumber: "NI038379",
             companyName: "THE POLISH BREWERY",
-            status: "Awaiting confirmation"
+            status: "awaiting-approval"
         },
         {
             id: "2345678901",
