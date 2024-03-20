@@ -1,4 +1,4 @@
-import { validateEmailString, validateSearchString } from "../../../../src/lib/validation/generic";
+import { validateEmailString, validateSearchString, validatePageNumber } from "../../../../src/lib/validation/generic";
 
 describe("Should validate emails", () => {
     it.each([
@@ -23,5 +23,17 @@ describe("Should validate search string", () => {
         { search: "1", expected: true }
     ])("should return $expected for $search", ({ search, expected }) => {
         expect(validateSearchString(search)).toEqual(expected);
+    });
+});
+
+describe("Should validate page number", () => {
+    it.each([
+        { page: 1, max: 4, expected: true },
+        { page: 3, max: 5, expected: true },
+        { page: 14, max: 4, expected: false },
+        { page: -1, max: 4, expected: false },
+        { page: 0, max: 4, expected: false }
+    ])("should return $expected for $page when max num is $max", ({ page, max, expected }) => {
+        expect(validatePageNumber(page, max)).toEqual(expected);
     });
 });
