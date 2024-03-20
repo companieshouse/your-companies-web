@@ -1,5 +1,5 @@
 import { Association } from "../../types/associations";
-import { LANDING_URL, ITEMS_PER_PAGE } from "../../constants";
+import { LANDING_URL } from "../../constants";
 import { PageItem, PaginationData } from "../../types/pagination";
 
 export const buildPaginationElement = (
@@ -19,47 +19,73 @@ export const buildPaginationElement = (
             href: `${urlPrefix}?page=${currentPageNumber - 1}${searchQuery}`
         };
     }
-    if (currentPageNumber !== numOfPages) { pagination.next = { href: `${urlPrefix}?page=${currentPageNumber + 1}${searchQuery}` }; }
+    if (currentPageNumber !== numOfPages) {
+        pagination.next = {
+            href: `${urlPrefix}?page=${currentPageNumber + 1}${searchQuery}`
+        };
+    }
 
     // Add first element by default
-    pageItems.push(createPageItem(1, currentPageNumber, false, urlPrefix, searchQuery));
+    pageItems.push(
+        createPageItem(1, currentPageNumber, false, urlPrefix, searchQuery)
+    );
 
     // Add second element if applicable - possible ellipsis
     if (numOfPages >= 3) {
         const isEllipsis = numOfPages >= 5 && currentPageNumber >= 5;
-        pageItems.push(createPageItem(2, currentPageNumber, isEllipsis, urlPrefix, searchQuery));
+        pageItems.push(
+            createPageItem(2, currentPageNumber, isEllipsis, urlPrefix, searchQuery)
+        );
     }
 
     // Add element at middle left position if applicable
     if (
         numOfPages >= 5 &&
-    currentPageNumber >= 4 &&
-    numOfPages - currentPageNumber >= 1
+        currentPageNumber >= 4 &&
+        numOfPages - currentPageNumber >= 1
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber - 1, currentPageNumber, false, urlPrefix, searchQuery)
+            createPageItem(
+                currentPageNumber - 1,
+                currentPageNumber,
+                false,
+                urlPrefix,
+                searchQuery
+            )
         );
     }
 
     // Add element at middle position if applicable
     if (
         numOfPages >= 5 &&
-    currentPageNumber >= 3 &&
-    numOfPages - currentPageNumber >= 2
+        currentPageNumber >= 3 &&
+        numOfPages - currentPageNumber >= 2
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber, currentPageNumber, false, urlPrefix, searchQuery)
+            createPageItem(
+                currentPageNumber,
+                currentPageNumber,
+                false,
+                urlPrefix,
+                searchQuery
+            )
         );
     }
 
     // Add element at middle right position if applicable
     if (
         numOfPages >= 5 &&
-    currentPageNumber >= 2 &&
-    numOfPages - currentPageNumber >= 3
+        currentPageNumber >= 2 &&
+        numOfPages - currentPageNumber >= 3
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber + 1, currentPageNumber, false, urlPrefix, searchQuery)
+            createPageItem(
+                currentPageNumber + 1,
+                currentPageNumber,
+                false,
+                urlPrefix,
+                searchQuery
+            )
         );
     }
 
@@ -67,14 +93,26 @@ export const buildPaginationElement = (
     if (numOfPages >= 4) {
         const isEllipsis = numOfPages >= 5 && numOfPages - currentPageNumber >= 4;
         pageItems.push(
-            createPageItem(numOfPages - 1, currentPageNumber, isEllipsis, urlPrefix, searchQuery)
+            createPageItem(
+                numOfPages - 1,
+                currentPageNumber,
+                isEllipsis,
+                urlPrefix,
+                searchQuery
+            )
         );
     }
 
     // Add last element if applicable
     if (numOfPages > 1) {
         pageItems.push(
-            createPageItem(numOfPages, currentPageNumber, false, urlPrefix, searchQuery)
+            createPageItem(
+                numOfPages,
+                currentPageNumber,
+                false,
+                urlPrefix,
+                searchQuery
+            )
         );
     }
 
@@ -125,7 +163,7 @@ export const sortAndSearch = (
         items = items.filter((item) => {
             return (
                 item.companyName.includes(search.toUpperCase()) ||
-        item.companyNumber.includes(search.toUpperCase())
+                item.companyNumber.includes(search.toUpperCase())
             );
         });
     }
@@ -135,24 +173,26 @@ export const sortAndSearch = (
 
 export const paginatedSection = (
     items: Association[] | undefined,
-    page: number
+    page: number,
+    itemsPerPage: number
 ): Association[] | undefined => {
     // paginated associations for display
     if (!items?.length) {
         return;
     }
-    const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
     return items.slice(startIndex, endIndex);
 };
 
 export const paginationElement = (
     page: number,
     arrayLength: number,
-    search: string
+    search: string,
+    itemsPerPage: number
 ): PaginationData | undefined => {
     // Create pagination element to navigate pages
-    const numOfPages = Math.ceil(arrayLength / ITEMS_PER_PAGE);
+    const numOfPages = Math.ceil(arrayLength / itemsPerPage);
     return buildPaginationElement(
         page, // current page
         numOfPages,

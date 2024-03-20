@@ -21,5 +21,7 @@
   "enter_company_num": "Enter the company number",
   "search": "Search",
   "matches_found_for": "matches found for",
-  "match_found_for": "match found for"
+  "match_found_for": "match found for",
+  "next": "Next",
+  "previous": "Previous"
 }

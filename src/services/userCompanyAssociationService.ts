@@ -116,6 +116,7 @@ export const getUserAssociations = async (userEmailAddress: string, status?: Ass
 
     if (status === AssociationStatus.CONFIRMED) {
         associations.items.push(...randomAssociations);
+        associations.itemsPerPage = 15;
     }
 
     return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [], totalResults: 0 } as Associations);

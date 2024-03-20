@@ -8,6 +8,7 @@ import { getUserAssociations } from "../../../services/userCompanyAssociationSer
 import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { sortAndSearch, paginatedSection, paginationElement } from "../../../lib/helper/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -20,7 +21,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const search = req.query.search as string;
         const page = req.query.page as string;
 
-        const pageNumber = isNaN(Number(page)) ? 1 : Number(page);
+        let pageNumber = isNaN(Number(page)) ? 1 : Number(page);
 
         const sortedAndFilteredItems = sortAndSearch(confirmedUserAssociations?.items, search);
         const paginatedList: Associations = {
@@ -28,8 +29,20 @@ export class YourCompaniesHandler extends GenericHandler {
             totalResults: confirmedUserAssociations?.totalResults
         };
 
+        // this is the number of associations being displayed on each page
+        const associationsPerPage = confirmedUserAssociations?.itemsPerPage || constants.ITEMS_PER_PAGE;
+
+        // validate the page number
+        let maxNumOfPages = 1;
+        if (sortedAndFilteredItems?.length) {
+            maxNumOfPages = Math.ceil(sortedAndFilteredItems?.length / associationsPerPage);
+        }
+        if (!validatePageNumber(pageNumber, maxNumOfPages)) {
+            pageNumber = 1;
+        }
+
         // this is the segment of 15 or so paginated associations displayed on the page
-        paginatedList.items = paginatedSection(sortedAndFilteredItems, pageNumber) || [];
+        paginatedList.items = paginatedSection(sortedAndFilteredItems, pageNumber, associationsPerPage) || [];
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.AWAITING_APPROVAL);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
@@ -39,7 +52,7 @@ export class YourCompaniesHandler extends GenericHandler {
         this.viewData.search = search;
 
         // displaySearchForm toggles diplay for search input form
-        if ((sortedAndFilteredItems && sortedAndFilteredItems?.length > constants.ITEMS_PER_PAGE) || !!search?.length) {
+        if ((sortedAndFilteredItems && sortedAndFilteredItems?.length > associationsPerPage) || !!search?.length) {
             this.viewData.displaySearchForm = true;
         }
 
@@ -56,7 +69,15 @@ export class YourCompaniesHandler extends GenericHandler {
             if (search) {
                 searchQuery = "&search=" + search;
             }
-            this.viewData.pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, searchQuery);
+            // HERE HERE HERE
+            const pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, searchQuery, associationsPerPage);
+            if (pagination?.next && lang?.next) {
+                pagination.next.text = lang.next.toString();
+            }
+            if (pagination?.previous && lang?.previous) {
+                pagination.previous.text = lang.previous.toString();
+            }
+            this.viewData.pagination = pagination;
         }
 
         return Promise.resolve(this.viewData);

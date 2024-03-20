@@ -6,6 +6,7 @@ export interface PageItem {
   }
 
 export interface PaginationPreviousNext {
+    text?: string;
     href: string;
   }
 

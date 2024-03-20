@@ -47,3 +47,14 @@ export function validateSearchString (str: string): boolean {
         return false;
     }
 }
+
+export function validatePageNumber (pageNum:number, maxNumber:number): boolean {
+    const searchSchema = z.number()
+        .min(1).max(maxNumber);
+    try {
+        searchSchema.parse(pageNum);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
