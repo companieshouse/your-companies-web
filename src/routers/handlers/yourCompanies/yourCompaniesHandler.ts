@@ -52,7 +52,11 @@ export class YourCompaniesHandler extends GenericHandler {
         }
 
         if (sortedAndFilteredItems?.length) {
-            this.viewData.pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, search);
+            let searchQuery = "";
+            if (search) {
+                searchQuery = "&search=" + search;
+            }
+            this.viewData.pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, searchQuery);
         }
 
         return Promise.resolve(this.viewData);

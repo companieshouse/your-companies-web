@@ -6,31 +6,28 @@ export const buildPaginationElement = (
     currentPageNumber: number,
     numOfPages: number,
     urlPrefix: string,
-    search: string
+    searchQuery: string
 ): PaginationData => {
     const pagination: PaginationData = { items: [] };
     const pageItems: PageItem[] = [];
-    let seachQuery = "";
-    if (search) {
-        seachQuery = "&search=" + search;
-    }
+
     if (numOfPages <= 1 || currentPageNumber < 1) return pagination;
 
     // Add Previous and Next
     if (currentPageNumber !== 1) {
         pagination.previous = {
-            href: `${urlPrefix}?page=${currentPageNumber - 1}${seachQuery}`
+            href: `${urlPrefix}?page=${currentPageNumber - 1}${searchQuery}`
         };
     }
-    if (currentPageNumber !== numOfPages) { pagination.next = { href: `${urlPrefix}?page=${currentPageNumber + 1}${seachQuery}` }; }
+    if (currentPageNumber !== numOfPages) { pagination.next = { href: `${urlPrefix}?page=${currentPageNumber + 1}${searchQuery}` }; }
 
     // Add first element by default
-    pageItems.push(createPageItem(1, currentPageNumber, false, urlPrefix, seachQuery));
+    pageItems.push(createPageItem(1, currentPageNumber, false, urlPrefix, searchQuery));
 
     // Add second element if applicable - possible ellipsis
     if (numOfPages >= 3) {
         const isEllipsis = numOfPages >= 5 && currentPageNumber >= 5;
-        pageItems.push(createPageItem(2, currentPageNumber, isEllipsis, urlPrefix, seachQuery));
+        pageItems.push(createPageItem(2, currentPageNumber, isEllipsis, urlPrefix, searchQuery));
     }
 
     // Add element at middle left position if applicable
@@ -40,7 +37,7 @@ export const buildPaginationElement = (
     numOfPages - currentPageNumber >= 1
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber - 1, currentPageNumber, false, urlPrefix, seachQuery)
+            createPageItem(currentPageNumber - 1, currentPageNumber, false, urlPrefix, searchQuery)
         );
     }
 
@@ -51,7 +48,7 @@ export const buildPaginationElement = (
     numOfPages - currentPageNumber >= 2
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber, currentPageNumber, false, urlPrefix, seachQuery)
+            createPageItem(currentPageNumber, currentPageNumber, false, urlPrefix, searchQuery)
         );
     }
 
@@ -62,7 +59,7 @@ export const buildPaginationElement = (
     numOfPages - currentPageNumber >= 3
     ) {
         pageItems.push(
-            createPageItem(currentPageNumber + 1, currentPageNumber, false, urlPrefix, seachQuery)
+            createPageItem(currentPageNumber + 1, currentPageNumber, false, urlPrefix, searchQuery)
         );
     }
 
@@ -70,14 +67,14 @@ export const buildPaginationElement = (
     if (numOfPages >= 4) {
         const isEllipsis = numOfPages >= 5 && numOfPages - currentPageNumber >= 4;
         pageItems.push(
-            createPageItem(numOfPages - 1, currentPageNumber, isEllipsis, urlPrefix, seachQuery)
+            createPageItem(numOfPages - 1, currentPageNumber, isEllipsis, urlPrefix, searchQuery)
         );
     }
 
     // Add last element if applicable
     if (numOfPages > 1) {
         pageItems.push(
-            createPageItem(numOfPages, currentPageNumber, false, urlPrefix, seachQuery)
+            createPageItem(numOfPages, currentPageNumber, false, urlPrefix, searchQuery)
         );
     }
 
