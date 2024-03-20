@@ -1,58 +1,26 @@
 import { Request, Response } from "express";
-import { getTranslationsForView } from "../../lib/utils/translations";
 import * as constants from "../../constants";
-import { getCompanyProfile } from "../../services/companyProfileService";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
-import { isEmailAuthorised } from "../../services/userCompanyAssociationService";
-import { ViewData } from "../../types/util-types";
-import { validateEmailString } from "../../lib/validation/generic";
-import { setExtraData } from "../../lib/utils/sessionUtils";
+import { AddPresenterHandler } from "../handlers/yourCompanies/addPresenterHandler";
 
-export const addPresenterController = async (req: Request, res: Response): Promise<void> => {
-    const company: CompanyProfile = await getCompanyProfile(
-        req.params[constants.COMPANY_NUMBER]
-    );
-    const { companyName, companyNumber } = company;
-    const viewData: ViewData = {
-        lang: getTranslationsForView(req.t, constants.ADD_PRESENTER_PAGE),
-        companyName,
-        companyNumber,
-        errors: undefined,
-        backLinkHref: constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
-            `:${constants.COMPANY_NUMBER}`,
-            companyNumber
-        )
-    };
+export const addPresenterControllerGet = async (req: Request, res: Response): Promise<void> => {
+    const handler = new AddPresenterHandler();
+    const viewData = await handler.execute(req, constants.GET);
+    res.render(constants.ADD_PRESENTER_PAGE, viewData);
+};
 
-    if (req.method === constants.POST) {
-        const setError = (errProp: string) => {
-            viewData.errors = {
-                email: {
-                    text: errProp
-                }
-            };
-        };
-        const email = req.body.email.trim();
-        if (!email) {
-            setError(constants.ERRORS_EMAIL_REQUIRED);
-        } else if (!validateEmailString(email)) {
-            setError(constants.ERRORS_EMAIL_INVALID);
-        } else if (await isEmailAuthorised(email, companyNumber)) {
-            viewData.lang[constants.ERRORS_EMAIL_ALREADY_AUTHORISED] += companyName;
-            setError(constants.ERRORS_EMAIL_ALREADY_AUTHORISED);
-        }
+export const addPresenterControllerPost = async (req: Request, res: Response): Promise<void> => {
+    const handler = new AddPresenterHandler();
+    const viewData = await handler.execute(req, constants.POST);
 
-        if (!viewData.errors) {
-            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
-            return res.redirect(
-                getUrlWithCompanyNumber(
-                    constants.YOUR_COMPANIES_CHECK_PRESENTER_URL,
-                    companyNumber
-                )
-            );
-        }
+    if (!viewData.errors) {
+        const url = getUrlWithCompanyNumber(
+            constants.YOUR_COMPANIES_CHECK_PRESENTER_URL,
+            viewData.companyNumber as string
+        );
+        res.redirect(url);
+    } else {
+        res.render(constants.ADD_PRESENTER_PAGE, viewData);
     }
 
-    res.render(constants.ADD_PRESENTER_PAGE, viewData);
 };
