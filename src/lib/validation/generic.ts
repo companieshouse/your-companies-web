@@ -39,7 +39,7 @@ export function validateEmailString (emailString: string): boolean {
 
 export function validateSearchString (str: string): boolean {
     const searchSchema = z.string()
-        .min(1);
+        .trim().min(1);
     try {
         searchSchema.parse(str);
         return true;

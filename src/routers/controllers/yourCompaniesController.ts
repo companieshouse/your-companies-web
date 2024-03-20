@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { YourCompaniesHandler } from "../handlers/yourCompanies/yourCompaniesHandler";
 import { YOUR_COMPANIES_PAGE, LANDING_URL } from "../../constants";
 import { validateSearchString } from "../../lib/validation/generic";
+import { sanitizeUrl } from "@braintree/sanitize-url";
 
 export const yourCompaniesControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new YourCompaniesHandler();
@@ -12,8 +13,12 @@ export const yourCompaniesControllerGet = async (req: Request, res: Response): P
 };
 
 export const yourCompaniesControllerPost = async (req: Request, res: Response): Promise<void> => {
-    const search = req.body.search.trim();
-    if (validateSearchString(search)) {
-        return res.redirect(`${LANDING_URL}?search=${search}`);
-    } else return res.redirect(LANDING_URL);
+    if (!validateSearchString(req.body.search)) {
+        return res.redirect(LANDING_URL);
+    } else {
+        const search = req.body.search.trim();
+        const url = `${LANDING_URL}?search=${search}`;
+        const sanitizedUrl = sanitizeUrl(url);
+        return res.redirect(sanitizedUrl);
+    }
 };
