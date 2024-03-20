@@ -48,9 +48,13 @@ export function validateSearchString (str: string): boolean {
     }
 }
 
-export function validatePageNumber (pageNum:number, maxNumber:number): boolean {
-    const pageNoSchema = z.number()
-        .min(1).max(maxNumber);
+export function validatePageNumber (pageNum:number, arrayLength:number, perPage:number): boolean {
+    let maxNumOfPages = 1;
+    if (arrayLength) {
+        maxNumOfPages = Math.ceil(arrayLength / perPage);
+    }
+    const pageNoSchema = z.number().min(1).max(maxNumOfPages);
+
     try {
         pageNoSchema.parse(pageNum);
         return true;

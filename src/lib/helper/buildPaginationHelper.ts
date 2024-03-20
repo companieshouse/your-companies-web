@@ -1,6 +1,7 @@
 import { Association } from "../../types/associations";
-import { LANDING_URL } from "../../constants";
+import { ITEMS_PER_PAGE, LANDING_URL } from "../../constants";
 import { PageItem, PaginationData } from "../../types/pagination";
+import { AnyRecord } from "../../types/util-types";
 
 export const buildPaginationElement = (
     currentPageNumber: number,
@@ -199,4 +200,25 @@ export const paginationElement = (
         LANDING_URL,
         search
     );
+};
+
+export const getAssociationsPerPage = (apiValue: number | undefined): number => {
+    return apiValue || ITEMS_PER_PAGE;
+};
+
+export const getTotalAssociations = (arrayLength: number | undefined): number => {
+    return arrayLength || 0;
+};
+
+export const setLangForPagination = (pagination: PaginationData | undefined, lang: AnyRecord): void => {
+    if (pagination?.next && lang?.next) {
+        pagination.next.text = lang.next.toString();
+    }
+    if (pagination?.previous && lang?.previous) {
+        pagination.previous.text = lang.previous.toString();
+    }
+};
+
+export const getSearchQuery = (searchString: string): string => {
+    return searchString ? "&search=" + searchString : "";
 };

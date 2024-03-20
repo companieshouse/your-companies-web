@@ -28,12 +28,12 @@ describe("Should validate search string", () => {
 
 describe("Should validate page number", () => {
     it.each([
-        { page: 1, max: 4, expected: true },
-        { page: 3, max: 5, expected: true },
-        { page: 14, max: 4, expected: false },
-        { page: -1, max: 4, expected: false },
-        { page: 0, max: 4, expected: false }
-    ])("should return $expected for $page when max num is $max", ({ page, max, expected }) => {
-        expect(validatePageNumber(page, max)).toEqual(expected);
+        { page: 1, results: 54, perPage: 15, expected: true },
+        { page: 3, results: 45, perPage: 15, expected: true },
+        { page: 14, results: 24, perPage: 15, expected: false },
+        { page: -1, results: 200, perPage: 15, expected: false },
+        { page: 0, results: 4, perPage: 15, expected: false }
+    ])("should return $expected for $page when max num is $max", ({ page, results, perPage, expected }) => {
+        expect(validatePageNumber(page, results, perPage)).toEqual(expected);
     });
 });
