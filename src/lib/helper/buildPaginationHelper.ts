@@ -114,11 +114,13 @@ export const sortAndSearch = (
 
     // sort
     items.sort((a, b) => {
-        return a.companyName < b.companyName
-            ? -1
-            : a.companyName > b.companyName
-                ? 1
-                : 0;
+        if (a.companyName < b.companyName) {
+            return -1;
+        }
+        if (a.companyName > b.companyName) {
+            return 1;
+        }
+        return 0;
     });
 
     // filter / search
