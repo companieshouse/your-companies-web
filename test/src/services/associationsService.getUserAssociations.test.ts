@@ -8,17 +8,18 @@ import { Request } from "express";
 jest.mock("../../../src/services/apiClientService");
 
 const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
+const mockSearchAssociations = jest.fn();
+
+mockCreateOauthPrivateApiClient.mockReturnValue({
+    associationsService: {
+        searchAssociations: mockSearchAssociations
+    }
+});
+
 const reqest = {} as Request;
 
 describe("associationsService", () => {
     describe("getUserAssociations", () => {
-        const mockSearchAssociations = jest.fn();
-
-        mockCreateOauthPrivateApiClient.mockReturnValue({
-            associationsService: {
-                searchAssociations: mockSearchAssociations
-            }
-        });
 
         beforeEach(() => {
             jest.clearAllMocks();
