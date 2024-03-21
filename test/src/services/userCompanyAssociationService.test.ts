@@ -1,159 +1,12 @@
 import {
-    COMPNANY_ASSOCIATED_WITH_USER,
-    COMPNANY_NOT_ASSOCIATED_WITH_USER,
-    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
-} from "../../../src/constants";
-import {
     getCompanyAssociations,
-    getUserAssociations,
-    isCompanyAssociatedWithUser,
-    isEmailAuthorised,
-    addUserEmailAssociation,
-    removeUserFromCompanyAssociations,
-    isEmailInvited
+    isEmailAuthorised
 } from "../../../src/services/userCompanyAssociationService";
 import { Association, Associations } from "../../../src/types/associations";
 import { Cancellation } from "../../../src/types/cancellation";
 import { Removal } from "../../../src/types/removal";
 
 describe("User Company Association Service", () => {
-    describe("isCompanyAssociatedWithUser", () => {
-        it("should return confirmation if the company is associated with the user", () => {
-            // Given
-            const companyNumber = "NI038379";
-            const userEmailAddress = "test@test.com";
-            // When
-            const result = isCompanyAssociatedWithUser(
-                companyNumber,
-                userEmailAddress
-            );
-            // Then
-            expect(result).resolves.toEqual(COMPNANY_ASSOCIATED_WITH_USER);
-        });
-
-        it("should return negation if the company is not associated with the user", () => {
-            // Given
-            const companyNumber = "NI012345";
-            const userEmailAddress = "test@test.com";
-            // When
-            const result = isCompanyAssociatedWithUser(
-                companyNumber,
-                userEmailAddress
-            );
-            // Then
-            expect(result).resolves.toEqual(COMPNANY_NOT_ASSOCIATED_WITH_USER);
-        });
-    });
-
-    describe("getUserAssociations", () => {
-        it("should return associations for the user if there are any", () => {
-            // Given
-            const userEmailAddress = "demo@ch.gov.uk";
-            const expectedAssociations: Associations = {
-                items: [
-                    {
-                        id: "1234567890",
-                        userId: "qwertyiop",
-                        userEmail: "demo@ch.gov.uk",
-                        companyNumber: "NI038379",
-                        companyName: "THE POLISH BREWERY",
-                        status: "confirmed",
-                        invitations:
-                            [
-                                {
-                                    invitedBy: "123454321",
-                                    invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                                }
-                            ]
-                    },
-                    {
-                        id: "2345678901",
-                        userId: "qwertyiop",
-                        userEmail: "demo@ch.gov.uk",
-                        companyNumber: "01777777",
-                        companyName: "BRITISH AIRWAYS PLC",
-                        status: "confirmed",
-                        invitations:
-                            [
-                                {
-                                    invitedBy: "123454321",
-                                    invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                                }
-                            ]
-                    },
-                    {
-                        id: "44345677554",
-                        userId: "qwertyiop",
-                        userEmail: "demo@ch.gov.uk",
-                        companyNumber: "10866549",
-                        companyName: "ANDROID TECHNOLOGY LTD",
-                        status: "awaiting-approval",
-                        invitations:
-                            [
-                                {
-                                    invitedBy: "1122334455",
-                                    invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                                },
-                                {
-                                    invitedBy: "75853993475",
-                                    invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                                }
-                            ]
-                    },
-                    {
-                        id: "234322344",
-                        userId: "qwertyiop",
-                        userEmail: "demo@ch.gov.uk",
-                        companyNumber: "08449801",
-                        companyName: "BROWN AND SALTER LIMITED",
-                        status: "awaiting-approval",
-                        invitations:
-                            [
-                                {
-                                    invitedBy: "5544332211",
-                                    invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                                }
-                            ]
-
-                    },
-                    {
-                        id: "6654463562412",
-                        userId: "qwertyiop",
-                        userEmail: "demo@ch.gov.uk",
-                        companyNumber: "18882777",
-                        companyName: "FLOWERS LIMITED",
-                        status: "awaiting-approval",
-                        invitations:
-                            [
-                                {
-                                    invitedBy: "76896789",
-                                    invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                                }
-                            ]
-
-                    }
-                ],
-                totalResults: 5
-            } as Associations;
-            // When
-            const result = getUserAssociations(userEmailAddress);
-            // Then
-            expect(result).resolves.toEqual(expectedAssociations);
-        });
-
-        it("should return no associations for the user if there are not any", () => {
-            // Given
-            const userEmailAddress = "test@test.com";
-            const expectedAssociations: Associations = {
-                items: [],
-                totalResults: 0
-            } as Associations;
-            // When
-            const result = getUserAssociations(userEmailAddress);
-            // Then
-            expect(result).resolves.toEqual(expectedAssociations);
-        });
-    });
 
     describe("getCompanyAssociations", () => {
         it("should return associations for the company if there are any", async () => {
@@ -249,18 +102,6 @@ describe("User Company Association Service", () => {
         });
     });
 
-    describe("removeUserFromCompanyAssociations", () => {
-        it("should remove user from company associations", () => {
-            // Given
-            const userEmail = "test@test.com";
-            const companyNumber = "12345678";
-            // When
-            const result = removeUserFromCompanyAssociations(userEmail, companyNumber);
-            // Then
-            expect(result).resolves.toEqual(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
-        });
-    });
-
     describe("isEmailAuthorised", () => {
         it("should return true is the email is associated", async () => {
             const userEmailAddress = "mark.black@private.com";
@@ -274,54 +115,6 @@ describe("User Company Association Service", () => {
             const companyNumber = "NI038379";
             const result = await isEmailAuthorised(userEmailAddress, companyNumber);
             expect(result).toBeFalsy();
-        });
-    });
-
-    describe("isEmailInvited", () => {
-        it("should return true is the email is associated", async () => {
-            const userEmailAddress = "demo@ch.gov.uk";
-            const companyNumber = "NI038379";
-            const result = await isEmailInvited(userEmailAddress, companyNumber);
-            expect(result).toBeTruthy();
-        });
-
-        it("should return false is the email is not associated", async () => {
-            const userEmailAddress = "demo5@ch.gov.uk";
-            const companyNumber = "NI038379";
-            const result = await isEmailInvited(userEmailAddress, companyNumber);
-            expect(result).toBeFalsy();
-        });
-    });
-
-    describe("addUserEmailAssociation", () => {
-        it("should not add the email if associated", async () => {
-            // Given
-            const userEmailAddress = "eva.brown@company.com";
-            const companyNumber = "NI038379";
-            // When
-            await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const result = await getCompanyAssociations(companyNumber, undefined);
-            const userInvited = await isEmailInvited(userEmailAddress, companyNumber);
-            const userInvetedOnce = result.items.filter(item => item.userEmail === userEmailAddress).length === 1;
-            // Then
-            expect(userInvited).toBeTruthy();
-            expect(userInvetedOnce).toBeTruthy();
-        });
-
-        it("should add the email if not associated", async () => {
-            // Given
-            const userEmailAddress = "testemail@ch.gov.uk";
-            const companyNumber = "NI038379";
-            const userInvitedBefore = await isEmailInvited(userEmailAddress, companyNumber);
-            // When
-            await addUserEmailAssociation(userEmailAddress, companyNumber);
-            const result = await getCompanyAssociations(companyNumber, undefined);
-            const userInvited = await isEmailInvited(userEmailAddress, companyNumber);
-            const userInvetedOnce = result.items.filter(item => item.userEmail === userEmailAddress).length === 1;
-            // Then
-            expect(userInvitedBefore).toBeFalsy();
-            expect(userInvited).toBeTruthy();
-            expect(userInvetedOnce).toBeTruthy();
         });
     });
 });

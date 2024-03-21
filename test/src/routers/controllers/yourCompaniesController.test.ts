@@ -3,7 +3,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as associationService from "../../../../src/services/userCompanyAssociationService";
+import * as associationsService from "../../../../src/services/associationsService";
 import { emptyAssociations, userAssociations, userAssociationsWithNumberOfInvitations } from "../../../mocks/associations.mock";
 import * as en from "../../../../src/locales/en/translation/your-companies.json";
 import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
@@ -41,7 +41,7 @@ describe("GET /your-companies", () => {
 
     it("should return expected English content if no companies added and language version set to English", async () => {
         // Given
-        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(emptyAssociations);
         // When
         const response = await router.get("/your-companies?lang=en");
@@ -59,7 +59,7 @@ describe("GET /your-companies", () => {
 
     it("should return expected Welsh content if no companies added and language version set to Welsh", async () => {
         // Given
-        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(null);
         // When
         const response = await router.get("/your-companies?lang=cy");
@@ -77,8 +77,8 @@ describe("GET /your-companies", () => {
 
     it("should return expected English content if companies are added and language version set to English", async () => {
         // Given
-        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValue(userAssociations);
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValueOnce(userAssociations).mockReturnValueOnce(emptyAssociations);
         const expectedTextStart = en.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
         const expectedTextEnd = en.youve_been_invited_to_be_digitally_authorised_end;
@@ -106,8 +106,8 @@ describe("GET /your-companies", () => {
 
     it("should return expected Welsh content if companies are added and language version set to Welsh", async () => {
         // Given
-        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValue(userAssociations);
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValueOnce(userAssociations).mockReturnValueOnce(emptyAssociations);
         const expectedTextStart = cy.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
         const expectedTextEnd = cy.youve_been_invited_to_be_digitally_authorised_end;
@@ -135,7 +135,7 @@ describe("GET /your-companies", () => {
 
     it("should display English version of a banner with information about number of invitations if language version set to English", async () => {
         // Given
-        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
         const expectedTextStart = en.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
@@ -151,7 +151,7 @@ describe("GET /your-companies", () => {
 
     it("should display Welsh version of a banner with information about number of invitations if language version set to Welsh", async () => {
         // Given
-        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationService, "getUserAssociations");
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
         const expectedTextStart = cy.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;

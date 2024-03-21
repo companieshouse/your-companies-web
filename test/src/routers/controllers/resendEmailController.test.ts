@@ -2,7 +2,7 @@ import { resendEmailController } from "../../../../src/routers/controllers/resen
 import { mockRequest } from "../../../mocks/request.mock";
 import { mockResponse } from "../../../mocks/response.mock";
 import * as constants from "../../../../src/constants";
-import { isEmailAuthorised } from "../../../../src/services/userCompanyAssociationService";
+import * as associationsService from "../../../../src/services/associationsService";
 import { Session } from "@companieshouse/node-session-handler";
 jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/services/userCompanyAssociationService");
@@ -15,7 +15,7 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
         setExtraData: jest.fn()
     };
 });
-const mockIsEmailAuthorised = isEmailAuthorised as jest.Mock;
+const mockIsEmailAuthorised = jest.spyOn(associationsService, "isEmailAuthorised");
 const session: Session = new Session();
 
 describe("resendEmailController", () => {

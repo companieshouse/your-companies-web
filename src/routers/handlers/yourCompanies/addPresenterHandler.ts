@@ -6,7 +6,7 @@ import { getCompanyProfile } from "../../../services/companyProfileService";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as constants from "../../../constants";
 import { validateEmailString } from "../../../lib/validation/generic";
-import { isEmailAuthorised, isEmailInvited } from "../../../services/userCompanyAssociationService";
+import { isEmailAuthorised, isEmailInvited } from "../../../services/associationsService";
 import { setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class AddPresenterHandler extends GenericHandler {
@@ -20,7 +20,7 @@ export class AddPresenterHandler extends GenericHandler {
 
         if (method === constants.POST) {
             const email = req.body.email.trim();
-            await this.validateEmail(email, companyNumber, companyName);
+            await this.validateEmail(req, email, companyNumber, companyName);
             if (!this.viewData.errors) {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
             }
@@ -42,15 +42,15 @@ export class AddPresenterHandler extends GenericHandler {
         };
     }
 
-    private async validateEmail (email: string, companyNumber: string, companyName: string) {
+    private async validateEmail (req: Request, email: string, companyNumber: string, companyName: string) {
         if (!email) {
             this.setError(constants.ERRORS_EMAIL_REQUIRED);
         } else if (!validateEmailString(email)) {
             this.setError(constants.ERRORS_EMAIL_INVALID);
-        } else if (await isEmailAuthorised(email, companyNumber)) {
+        } else if (await isEmailAuthorised(req, email, companyNumber)) {
             this.viewData.lang[constants.ERRORS_EMAIL_ALREADY_AUTHORISED] += companyName;
             this.setError(constants.ERRORS_EMAIL_ALREADY_AUTHORISED);
-        } else if (await isEmailInvited(email, companyNumber)) {
+        } else if (await isEmailInvited(req, email, companyNumber)) {
             this.viewData.lang[constants.ERRORS_PERSON_ALREADY_INVITED] += companyName;
             this.setError(constants.ERRORS_PERSON_ALREADY_INVITED);
         }

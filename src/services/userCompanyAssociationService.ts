@@ -1,120 +1,10 @@
 import { Associations, AssociationStatus } from "../types/associations";
 import {
-    COMPNANY_ASSOCIATED_WITH_USER,
-    COMPNANY_NOT_ASSOCIATED_WITH_USER,
     CONFIRM,
-    USER_REMOVED_FROM_COMPANY_ASSOCIATIONS,
     YES
 } from "../constants";
 import { Cancellation } from "../types/cancellation";
 import { Removal } from "types/removal";
-
-/**
- * Check if there is an association between the user and the company.
- *
- * @param companyNumber the company number for which to check the association
- * @param userEmailAddress the user email address for which to check the association
- */
-export const isCompanyAssociatedWithUser = async (companyNumber: string, userEmailAddress: string): Promise<string> => {
-    // We will replace this hard coded value with the API call once the API is available
-    return Promise.resolve(companyNumber === "NI038379" ? COMPNANY_ASSOCIATED_WITH_USER : COMPNANY_NOT_ASSOCIATED_WITH_USER);
-};
-
-export const getUserAssociations = async (userEmailAddress: string, status?: AssociationStatus): Promise<Associations> => {
-    // We will replace this hard coded value with the API call once the API is available
-    const associations: Associations = {
-        items: [
-            {
-                id: "1234567890",
-                userId: "qwertyiop",
-                userEmail: "demo@ch.gov.uk",
-                companyNumber: "NI038379",
-                companyName: "THE POLISH BREWERY",
-                status: "confirmed",
-                invitations:
-                    [
-                        {
-                            invitedBy: "123454321",
-                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                        }
-                    ]
-            },
-            {
-                id: "2345678901",
-                userId: "qwertyiop",
-                userEmail: "demo@ch.gov.uk",
-                companyNumber: "01777777",
-                companyName: "BRITISH AIRWAYS PLC",
-                status: "confirmed",
-                invitations:
-                    [
-                        {
-                            invitedBy: "123454321",
-                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                        }
-                    ]
-            },
-            {
-                id: "44345677554",
-                userId: "qwertyiop",
-                userEmail: "demo@ch.gov.uk",
-                companyNumber: "10866549",
-                companyName: "ANDROID TECHNOLOGY LTD",
-                status: "awaiting-approval",
-                invitations:
-                    [
-                        {
-                            invitedBy: "1122334455",
-                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                        },
-                        {
-                            invitedBy: "75853993475",
-                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                        }
-                    ]
-            },
-            {
-                id: "234322344",
-                userId: "qwertyiop",
-                userEmail: "demo@ch.gov.uk",
-                companyNumber: "08449801",
-                companyName: "BROWN AND SALTER LIMITED",
-                status: "awaiting-approval",
-                invitations:
-                    [
-                        {
-                            invitedBy: "5544332211",
-                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                        }
-                    ]
-
-            },
-            {
-                id: "6654463562412",
-                userId: "qwertyiop",
-                userEmail: "demo@ch.gov.uk",
-                companyNumber: "18882777",
-                companyName: "FLOWERS LIMITED",
-                status: "awaiting-approval",
-                invitations:
-                    [
-                        {
-                            invitedBy: "76896789",
-                            invitedAy: "2022-04-05T11:41:09.568+00:00 UTC"
-                        }
-                    ]
-
-            }
-        ],
-        totalResults: 5
-    } as Associations;
-
-    if (status) {
-        associations.items = associations.items.filter(association => association.status === status);
-    }
-
-    return Promise.resolve(userEmailAddress === "demo@ch.gov.uk" ? associations : { items: [], totalResults: 0 } as Associations);
-};
 
 export const polishBrewItems = {
     items: [
@@ -172,11 +62,6 @@ export const britishAirwaysItems = {
 export const isEmailAuthorised = async (email: string, companyNumber: string): Promise<boolean> => {
     const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
     return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase() && item.status.toLowerCase() === AssociationStatus.CONFIRMED);
-};
-
-export const isEmailInvited = async (email: string, companyNumber: string): Promise<boolean> => {
-    const companyAssociations: Associations = await getCompanyAssociations(companyNumber, undefined);
-    return companyAssociations.items.some(item => item.userEmail.toLowerCase() === email.toLowerCase() && item.status.toLowerCase() === AssociationStatus.AWAITING_APPROVAL);
 };
 
 export const addUserEmailAssociation = async (email: string, companyNumber: string): Promise<void> => {
@@ -239,9 +124,4 @@ const getCompanyAssociationsAfterRemoval = (companyNumber: string, removal: Remo
         associations.items = associations.items.filter(user => user.userEmail !== removal.userEmail);
     }
     return Promise.resolve(associations);
-};
-
-export const removeUserFromCompanyAssociations = async (userEmail: string, companyNumber: string): Promise<string> => {
-    // We will replace this hard coded value with the API call once the API is available
-    return Promise.resolve(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };

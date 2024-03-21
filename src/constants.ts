@@ -113,6 +113,7 @@ export const USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user not removed from
 // APP config
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
+export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 
 export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const CHS_URL = getEnvironmentValue("CHS_URL");
@@ -125,6 +126,6 @@ export const TRUE = "true";
 
 // various
 export const NOT_PROVIDED = "Not provided";
-export const CONFIRMED = "Confirmed";
+export const CONFIRMED = "confirmed";
 export const YES = "yes";
 export const CONFIRM = "confirm";
