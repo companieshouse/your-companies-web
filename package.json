@@ -35,6 +35,7 @@
   "dependencies": {
     "@braintree/sanitize-url": "^7.0.0",
     "@companieshouse/api-sdk-node": "^2.0.71",
+    "@companieshouse/private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.12-beta.1",
     "@companieshouse/node-session-handler": "^4.1.9",
     "@companieshouse/structured-logging-node": "^2.0.1",
     "@companieshouse/web-security-node": "^2.0.5",
