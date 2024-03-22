@@ -72,7 +72,7 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
         return Promise.reject(sdkResponse);
     }
 
-    if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
+    if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`);
         return Promise.reject(sdkResponse);
     }
