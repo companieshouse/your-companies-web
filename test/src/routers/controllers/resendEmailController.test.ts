@@ -5,7 +5,6 @@ import * as constants from "../../../../src/constants";
 import * as associationsService from "../../../../src/services/associationsService";
 import { Session } from "@companieshouse/node-session-handler";
 jest.mock("../../../../src/lib/Logger");
-jest.mock("../../../../src/services/userCompanyAssociationService");
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
 
@@ -17,39 +16,45 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
 });
 const mockIsEmailAuthorised = jest.spyOn(associationsService, "isEmailAuthorised");
 const session: Session = new Session();
+const request = mockRequest();
+request.session = session;
+const response = mockResponse();
 
 describe("resendEmailController", () => {
 
-    it("should call redirect to resent email success page when email is valid and is associated", async () => {
+    beforeEach(() => {
         jest.clearAllMocks();
+    });
+
+    it("should call redirect to resent email success page when email is valid and is associated", async () => {
+        // Given
         mockIsEmailAuthorised.mockResolvedValueOnce(true);
-        const request = mockRequest();
-        const response = mockResponse();
         request.params[constants.USER_EMAIL] = "bob1@bob.com";
-        request.session = session;
-        request.session.setExtraData("companyNumber", "1234567");
+        session.setExtraData("companyNumber", "1234567");
+        // When
         await resendEmailController(request, response);
+        // Then
         expect(response.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/1234567/authorisation-email-resent");
     });
+
     it("should reject invalid emails", async () => {
-        jest.clearAllMocks();
-        const request = mockRequest();
-        const response = mockResponse();
+        // Given
         request.params[constants.USER_EMAIL] = "bob2";
-        request.session = session;
-        request.session.setExtraData("companyNumber", "1234567");
+        session.setExtraData("companyNumber", "1234567");
+        // When
         await resendEmailController(request, response);
+        // Then
         expect(response.status).toHaveBeenCalledWith(404);
     });
+
     it("should reject emails not already in association list", async () => {
-        jest.clearAllMocks();
-        const request = mockRequest();
-        const response = mockResponse();
+        // Given
         request.params[constants.USER_EMAIL] = "bob@bob3.com";
-        request.session = session;
-        request.session.setExtraData("companyNumber", "1234567");
+        session.setExtraData("companyNumber", "1234567");
         mockIsEmailAuthorised.mockResolvedValueOnce(false);
+        // When
         await resendEmailController(request, response);
+        // Then
         expect(response.status).toHaveBeenCalledWith(404);
     });
 });

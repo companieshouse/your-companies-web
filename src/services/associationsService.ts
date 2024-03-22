@@ -63,9 +63,9 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
     return Promise.resolve(sdkResponse.resource as Associations);
 };
 
-export const createAssociation = async (req: Request, companyNumber: string, invitedUserId?: string): Promise<string> => {
+export const createAssociation = async (req: Request, companyNumber: string, inviteeEmailAddress?: string): Promise<string> => {
     const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, invitedUserId);
+    const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, inviteeEmailAddress);
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);

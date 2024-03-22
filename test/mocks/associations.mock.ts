@@ -1,7 +1,5 @@
 import { Associations, AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
 
-jest.mock("../../src/services/userCompanyAssociationService");
-
 export const userAssociations: Associations = {
     items: [
         {

@@ -8,7 +8,6 @@ import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 import * as en from "../../../../src/locales/en/translation/add-presenter.json";
 import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
 jest.mock("../../../../src/services/companyProfileService");
-jest.mock("../../../../src/services/userCompanyAssociationService");
 
 const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
 const mockIsEmailAuthorised: jest.SpyInstance = jest.spyOn(associationsService, "isEmailAuthorised");
