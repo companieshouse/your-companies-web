@@ -7,7 +7,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import * as constants from "../../../constants";
 import { validateEmailString } from "../../../lib/validation/generic";
 import { isEmailAuthorised, isEmailInvited } from "../../../services/userCompanyAssociationService";
-import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class AddPresenterHandler extends GenericHandler {
 
@@ -17,15 +17,16 @@ export class AddPresenterHandler extends GenericHandler {
         );
         const { companyName, companyNumber } = company;
         this.viewData = await this.getViewData(req, company);
-
+        this.viewData.authPersonEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
         if (method === constants.POST) {
             const email = req.body.email.trim();
             await this.validateEmail(email, companyNumber, companyName);
             if (!this.viewData.errors) {
-                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
+                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + companyNumber, email);
+            } else {
+                this.viewData.authPersonEmail = email;
             }
         }
-
         return Promise.resolve(this.viewData);
     }
 
