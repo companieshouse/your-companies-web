@@ -11,14 +11,17 @@ import { redirectPage } from "../../lib/utils/referrerUtils";
 
 export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const referrer :string|undefined = req.get("Referrer");
-    const handler = new AddCompanyHandler();
-    const viewData = await handler.execute(req, res, GET);
-    if (redirectPage(referrer, "http://chs.local/your-companies/", "http://chs.local/your-companies/confirm-company-details/")) {
-        console.log("Hello world");
+
+    if (redirectPage(referrer, LANDING_URL, ADD_COMPANY_PAGE, YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL)) {
+        res.redirect(LANDING_URL);
+    } else {
+        const handler = new AddCompanyHandler();
+        const viewData = await handler.execute(req, res, GET);
+
+        res.render(ADD_COMPANY_PAGE, {
+            ...viewData
+        });
     }
-    res.render(ADD_COMPANY_PAGE, {
-        ...viewData
-    });
 };
 
 export const addCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {

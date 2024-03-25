@@ -8,8 +8,9 @@ import supertest from "supertest";
 import { StatusCodes } from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
 import * as associationService from "../../../../src/services/userCompanyAssociationService";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
+import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER, LANDING_URL } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
 import * as cy from "../../../../src/locales/cy/translation/add-company.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
@@ -36,9 +37,13 @@ it("should check session and auth before returning the add company page", async 
 
 describe("GET /your-companies/add-company", () => {
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should return status 200", async () => {
         await router.get("/your-companies/add-company").expect(200);
@@ -63,6 +68,19 @@ describe("GET /your-companies/add-company", () => {
         expect(response.text).toContain(cy.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
     });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get("/your-companies/add-company").expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get("/your-companies/add-company");
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
 });
 
 describe("POST /your-companies/add-company", () => {
