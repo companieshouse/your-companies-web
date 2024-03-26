@@ -1,6 +1,6 @@
 local_resource(
     name = 'dev:your-companies-web',
-    cmd = 'npm install && npm run build',
+    cmd = 'npm run build',
     deps = ['src']
 )
 
