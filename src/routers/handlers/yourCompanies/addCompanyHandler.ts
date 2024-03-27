@@ -5,8 +5,8 @@ import * as constants from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
-import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
-import { isCompanyAssociatedWithUser } from "../../../services/userCompanyAssociationService";
+import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { isCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewData } from "../../../types/util-types";
 
@@ -63,8 +63,7 @@ export class AddCompanyHandler extends GenericHandler {
     private async handleActiveCompany (req: Request, companyProfile: CompanyProfile) {
         setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
-        const userEmailAddress = getLoggedInUserEmail(req.session);
-        const isAssociated: string = await isCompanyAssociatedWithUser(companyProfile.companyNumber, userEmailAddress);
+        const isAssociated: string = await isCompanyAssociatedWithUser(req, companyProfile.companyNumber);
         if (isAssociated === constants.COMPNANY_ASSOCIATED_WITH_USER) {
             this.viewData.errors = {
                 companyNumber: {

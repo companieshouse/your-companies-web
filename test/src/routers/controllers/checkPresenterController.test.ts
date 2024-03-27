@@ -2,7 +2,7 @@ import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { getCompanyProfile } from "../../../../src/services/companyProfileService";
-import { addUserEmailAssociation } from "../../../../src/services/userCompanyAssociationService";
+import * as associationsService from "../../../../src/services/associationsService";
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
@@ -11,7 +11,6 @@ import * as en from "../../../../src/locales/en/translation/add-presenter-check-
 import * as cy from "../../../../src/locales/cy/translation/add-presenter-check-details.json";
 
 jest.mock("../../../../src/services/companyProfileService");
-jest.mock("../../../../src/services/userCompanyAssociationService");
 const session: Session = new Session();
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
@@ -20,7 +19,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 
 const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
-const mockAddUserEmailAssociation = addUserEmailAssociation as jest.Mock;
+const mockCreateAssociation = jest.spyOn(associationsService, "createAssociation");
 
 const router = supertest(app);
 const url = "/your-companies/add-presenter-check-details/12345678";
@@ -67,15 +66,16 @@ describe(`POST ${url}`, () => {
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
-    it("should call addUserEmailAssociation with correct data", async () => {
-        const companyNumber = "NI038379";
+
+    it("should redirect to the manage authorised person added success page", async () => {
+        // Given
         const email = "bruce@bruce.com";
         session.data.extra_data.authorisedPersonEmail = email;
-        await router.post(url);
-        expect(mockAddUserEmailAssociation).toHaveBeenCalledWith(email, companyNumber);
-    });
-    it("should redirect to the manage authorised person added success page", async () => {
+        const associationId = "012345678";
+        mockCreateAssociation.mockResolvedValue(associationId);
+        // When
         const response = await router.post(url);
+        // Then
         expect(response.status).toEqual(302);
         expect(response.header.location).toContain(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
             `:${constants.COMPANY_NUMBER}`, "NI038379"

@@ -2,11 +2,9 @@ import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { getLoggedInUserEmail } from "../../../lib/utils/sessionUtils";
-import { Association, AssociationStatus, Associations } from "../../../types/associations";
-import { getUserAssociations } from "../../../services/userCompanyAssociationService";
+import { Association, Associations, AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { getUserAssociations } from "../../../services/associationsService";
 import { AnyRecord, ViewData } from "../../../types/util-types";
-import { getUserRecord } from "../../../services/userService";
 
 export class CompanyInvitationsHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
@@ -15,11 +13,9 @@ export class CompanyInvitationsHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const userEmailAddress = getLoggedInUserEmail(req.session);
-        const userAssociations: Associations = await getUserAssociations(userEmailAddress);
-        const awaitingApproval = userAssociations.items?.filter(item => item.status === AssociationStatus.AWAITING_APPROVAL);
+        const userAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
-        const rowsData = await this.getRowsData(awaitingApproval, translations);
+        const rowsData = await this.getRowsData(userAssociations.items, translations);
 
         return {
             backLinkHref: constants.LANDING_URL,
@@ -34,14 +30,13 @@ export class CompanyInvitationsHandler extends GenericHandler {
             for (const association of userAssociations) {
                 if (association.invitations?.length) {
                     for (const invite of association.invitations) {
-                        const user = await getUserRecord(invite.invitedBy);
                         const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
                         const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
                         const companyNameQueryParam = `?${constants.COMPANY_NAME}=${association.companyName.replace(/ /g, "+")}`;
                         rows.push([
                             { text: association.companyName },
                             { text: association.companyNumber },
-                            { text: user?.email as string },
+                            { text: invite.invitedBy },
                             {
                                 html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
                             },

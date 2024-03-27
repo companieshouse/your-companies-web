@@ -7,7 +7,7 @@ import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet } from "./controllers/yourCompaniesController";
 import { addPresenterControllerGet, addPresenterControllerPost } from "./controllers/addPresenterController";
-import { checkPresenterController } from "./controllers/checkPresenterController";
+import { checkPresenterControllerGet, checkPresenterControllerPost } from "./controllers/checkPresenterController";
 import { resendEmailController } from "./controllers/resendEmailController";
 import { cancelPersonControllerGet, cancelPersonControllerPost } from "./controllers/cancelPersonController";
 import { companyInvitationsControllerGet } from "./controllers/companyInvitationsController";
@@ -45,8 +45,8 @@ router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedControllerGet as Req
 router.get(constants.ADD_PRESENTER_URL, addPresenterControllerGet as RequestHandler);
 router.post(constants.ADD_PRESENTER_URL, addPresenterControllerPost as RequestHandler);
 
-router.get(constants.CHECK_PRESENTER_URL, checkPresenterController as RequestHandler);
-router.post(constants.CHECK_PRESENTER_URL, checkPresenterController as RequestHandler);
+router.get(constants.CHECK_PRESENTER_URL, checkPresenterControllerGet);
+router.post(constants.CHECK_PRESENTER_URL, checkPresenterControllerPost);
 
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL, resendEmailController as RequestHandler);
 

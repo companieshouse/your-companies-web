@@ -7,7 +7,7 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { StatusCodes } from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
-import * as associationService from "../../../../src/services/userCompanyAssociationService";
+import * as associationService from "../../../../src/services/associationsService";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
 import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/add-company.json";

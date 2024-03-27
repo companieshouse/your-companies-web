@@ -1,7 +1,7 @@
 import { GenericHandler } from "../genericHandler";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as constants from "../../../constants";
-import { formatForDisplay, buildAddress } from "../../../services/confirmCompanyService";
+import { formatForDisplay, buildAddress } from "../../../lib/utils/confirmCompanyUtils";
 import * as i18next from "i18next";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 

@@ -1,11 +1,13 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import { Session } from "@companieshouse/node-session-handler";
+import * as associationsService from "../../../../src/services/associationsService";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import { validDisolvedCompanyProfile, validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as en from "../../../../src/locales/en/translation/confirm-company-details.json";
 import * as cy from "../../../../src/locales/cy/translation/confirm-company-details.json";
+import * as constants from "../../../../src/constants";
 
 const router = supertest(app);
 const url = "/your-companies/confirm-company-details";
@@ -172,28 +174,40 @@ describe(`GET ${url}`, () => {
 });
 
 describe(`POST ${url}`, () => {
+    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "isCompanyAssociatedWithUser");
+    getCompanyAssociationsSpy.mockReturnValue(constants.COMPNANY_ASSOCIATED_WITH_USER);
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it("should check session and auth", async () => {
+        // Given
         session.data.extra_data.companyProfile = validActiveCompanyProfile;
+        // When
         await router.post(url);
+        // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
     it("redirects to create company association controller with company number param in url", async () => {
+        // Given
+        getCompanyAssociationsSpy.mockReturnValue(constants.COMPNANY_NOT_ASSOCIATED_WITH_USER);
         session.data.extra_data.companyProfile = validActiveCompanyProfile;
+        // When
         const resp = await router.post(url);
+        // Then
         expect(resp.status).toEqual(302);
         expect(resp.header.location).toEqual("/your-companies/company/12345678/create-company-association");
     });
 
     it("should not continue if company is not active", async () => {
+        // Given
         session.data.extra_data.companyProfile = validDisolvedCompanyProfile;
+        // When
         const response = await router.post(url);
+        // Then
         expect(response.status).toEqual(302);
         expect(response.header.location).toContain("/your-companies/add-company");
     });

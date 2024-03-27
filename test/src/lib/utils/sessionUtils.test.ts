@@ -1,6 +1,6 @@
 import { Session } from "@companieshouse/node-session-handler";
 import { getSessionRequestWithPermission, userMail } from "../../../mocks/session.mock";
-import { deleteExtraData, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { deleteExtraData, getAccessToken, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
@@ -79,6 +79,19 @@ describe("Session Utils", () => {
             deleteExtraData(session, key);
             // Then
             expect(session.data.extra_data[key]).toEqual(undefined);
+        });
+    });
+
+    describe("getAccessToken", () => {
+        it("should return access token from session if exist", () => {
+            // Given
+            const accessToken = "access token";
+            const session: Session = new Session();
+            (session.data.signin_info as any) = { access_token: { access_token: accessToken } };
+            // When
+            const result = getAccessToken(session);
+            // Then
+            expect(result).toEqual(accessToken);
         });
     });
 });

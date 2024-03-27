@@ -1,7 +1,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import { companyAssociations } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
-import * as userCompanyAssociationService from "../../../../src/services/userCompanyAssociationService";
+import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
@@ -27,14 +27,14 @@ const companyNumber = "NI038379";
 
 describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     const url = `/your-companies/manage-authorised-people/${companyNumber}`;
-    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
+    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {
-        getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -42,7 +42,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
 
     it("should return status 200", async () => {
         // Given
-        getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
         // When
         const response = await router.get(url);
         // Then
@@ -51,9 +51,9 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
 
     it("should return expected English content if language version set to English", async () => {
         // Given
-        getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
         // When
-        const response = await router.get(`${url}?lang=en`);
+        const response = await router.get(`${url}`);
         // Then
         expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
         expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
@@ -75,7 +75,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
 
     it("should return expected Welsh content if language version set to Welsh", async () => {
         // Given
-        getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
         // When
         const response = await router.get(`${url}?lang=cy`);
         // Then

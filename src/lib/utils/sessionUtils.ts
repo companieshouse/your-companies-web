@@ -24,3 +24,7 @@ export const getExtraData = (session: Session | undefined, key: string): any => 
 export const deleteExtraData = (session: Session | undefined, key: string): any => {
     return session?.deleteExtraData(key);
 };
+
+export const getAccessToken = (session: Session | undefined): string => {
+    return session?.data.signin_info?.access_token?.access_token as string;
+};

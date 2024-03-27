@@ -1,27 +1,21 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import { associationsWithInvitations, userAssociations, userAssociationsWithEmptyInvitations } from "../../../mocks/associations.mock";
-import { userRecords } from "../../../mocks/userService.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations.json";
-import { getUserAssociations } from "../../../../src/services/userCompanyAssociationService";
-import { getUserRecord } from "../../../../src/services/userService";
+import * as associationsService from "../../../../src/services/associationsService";
 import { Associations } from "../../../../src/types/associations";
-jest.mock("../../../../src/services/userCompanyAssociationService");
-jest.mock("../../../../src/services/userService");
-
-const mockGetUserAssociations = getUserAssociations as jest.Mock;
-const mockGetUserRecord = getUserRecord as jest.Mock;
+import { AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations";
+const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
 
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        mockGetUserAssociations.mockResolvedValue(associationsWithInvitations);
-        mockGetUserRecord.mockResolvedValue(userRecords[3]);
+        userAssociationsSpy.mockReturnValue(associationsWithInvitations);
     });
 
     it("should check session, company and user auth before returning the page", async () => {
@@ -62,6 +56,9 @@ describe(`GET ${url}`, () => {
 
     it("should return only expected company number, name and email address of a person who sent the invitation", async () => {
         // Given
+        const associations = { ...associationsWithInvitations };
+        associations.items = associationsWithInvitations.items.filter(association => association.status === AssociationStatus.AWAITING_APPROVAL);
+        userAssociationsSpy.mockReturnValue(associations);
         const expectedEmail = "another.email@acme.com";
         const expectedCompanyNumber = "08449801";
         const expectedCompanyName = "BROWN AND SALTER LIMITED";
@@ -83,7 +80,7 @@ describe(`GET ${url}`, () => {
 
     it("should return an empty table if no invitation awaiting approval exists", async () => {
         // Given
-        mockGetUserAssociations.mockResolvedValue(userAssociations);
+        userAssociationsSpy.mockResolvedValue(userAssociations);
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
@@ -107,7 +104,7 @@ describe(`GET ${url}`, () => {
 
     it("should return an empty table if no invitation provided", async () => {
         // Given
-        mockGetUserAssociations.mockResolvedValue({} as Associations);
+        userAssociationsSpy.mockResolvedValue({} as Associations);
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
@@ -131,7 +128,7 @@ describe(`GET ${url}`, () => {
 
     it("should return an empty table if invitation empty", async () => {
         // Given
-        mockGetUserAssociations.mockResolvedValue(userAssociationsWithEmptyInvitations);
+        userAssociationsSpy.mockResolvedValue(userAssociationsWithEmptyInvitations);
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";

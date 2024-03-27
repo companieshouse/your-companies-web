@@ -1,21 +1,15 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { Session } from "@companieshouse/node-session-handler";
-import { NextFunction, Request, Response } from "express";
 import * as en from "../../../../src/locales/en/translation/company-invitations-decline.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations-decline.json";
+import { updateAssociationStatus } from "../../../../src/services/associationsService";
+jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
-const session: Session = new Session();
 const associationId = "123456";
 const companyName = "Doughnuts Limited";
 const url = `/your-companies/company-invitations-decline/${associationId}?companyName=${companyName}`;
-
-mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
-    req.session = session;
-    next();
-});
 
 describe("GET /your-companies/companies-invitations-decline/:associationId", () => {
 
@@ -39,6 +33,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         // When
         const response = await router.get(`${url}${langVersion}`);
         // Then
+        expect(updateAssociationStatus).toHaveBeenCalled();
         expect(response.text).toContain(en.invitation_declined);
         expect(response.text).toContain(`${en.you_have_declined_to_be_digitally_authorised}${companyName}`);
         expect(response.text).toContain(en.what_happens_now_youve_declined);
@@ -52,6 +47,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         // When
         const response = await router.get(`${url}${langVersion}`);
         // Then
+        expect(updateAssociationStatus).toHaveBeenCalled();
         expect(response.text).toContain(cy.invitation_declined);
         expect(response.text).toContain(`${cy.you_have_declined_to_be_digitally_authorised}${companyName}`);
         expect(response.text).toContain(cy.what_happens_now_youve_declined);

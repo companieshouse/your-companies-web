@@ -7,3 +7,4 @@
 !package-lock.json
 !tsconfig.json
 !docker_start.sh
+!node_modules

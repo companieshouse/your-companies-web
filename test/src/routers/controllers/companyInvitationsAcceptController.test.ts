@@ -5,6 +5,8 @@ import * as en from "../../../../src/locales/en/translation/company-invitations-
 import * as cy from "../../../../src/locales/cy/translation/company-invitations-accept.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import { updateAssociationStatus } from "../../../../src/services/associationsService";
+jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations-accept/:associationId";
@@ -36,6 +38,7 @@ describe(`GET ${url}`, () => {
         // When
         const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
         // Then
+        expect(updateAssociationStatus).toHaveBeenCalled();
         expect(result.text).toContain(enCommon.success);
         expect(result.text).toContain(expectedBannerText);
         expect(result.text).toContain(en.what_happens_now);
@@ -55,6 +58,7 @@ describe(`GET ${url}`, () => {
         // When
         const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
         // Then
+        expect(updateAssociationStatus).toHaveBeenCalled();
         expect(result.text).toContain(cyCommon.success);
         expect(result.text).toContain(expectedBannerText);
         expect(result.text).toContain(cy.what_happens_now);

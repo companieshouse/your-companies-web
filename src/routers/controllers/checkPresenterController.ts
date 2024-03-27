@@ -1,38 +1,22 @@
-import { Request, Response } from "express";
-import { getTranslationsForView } from "../../lib/utils/translations";
+import { Request, RequestHandler, Response } from "express";
 import * as constants from "../../constants";
-import { getCompanyProfile } from "../../services/companyProfileService";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
-import { addUserEmailAssociation } from "../../services/userCompanyAssociationService";
-import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
-import { AuthorisedPerson } from "../../types/associations";
+import { CheckPresenterHandler } from "../handlers/yourCompanies/checkPresenterHandler";
 
-export const checkPresenterController = async (req: Request, res: Response): Promise<void> => {
-    const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER]);
-    const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+export const checkPresenterControllerGet: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+    const handler = new CheckPresenterHandler();
+    const viewData = await handler.execute(req, constants.GET);
+    res.render(constants.CHECK_PRESENTER_PAGE, viewData);
+};
 
-    if (req.method === constants.POST) {
-        if (emailAddress) {
-            await addUserEmailAssociation(emailAddress, company.companyNumber);
-            const authorisedPerson: AuthorisedPerson = {
-                authorisedPersonEmailAddress: emailAddress,
-                authorisedPersonCompanyName: company.companyName
-            };
-            setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
-        }
-        return res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(
+export const checkPresenterControllerPost: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+    const handler = new CheckPresenterHandler();
+    const viewData = await handler.execute(req, constants.POST);
+    if (viewData.errors && Object.keys(viewData.errors).length > 0) {
+        res.render(constants.CHECK_PRESENTER_PAGE, viewData);
+    } else {
+        res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(
             `:${constants.COMPANY_NUMBER}`,
-            company.companyNumber
+            viewData.companyNumber as string
         ));
     }
-
-    const viewData = {
-        lang: getTranslationsForView(req.t, constants.CHECK_PRESENTER_PAGE),
-        companyName: company.companyName,
-        companyNumber: company.companyNumber,
-        emailAddress,
-        backLinkHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, company.companyNumber)
-    };
-    res.render(constants.CHECK_PRESENTER_PAGE, viewData);
 };

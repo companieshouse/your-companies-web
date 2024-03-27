@@ -1,7 +1,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import { companyAssociations } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
-import * as userCompanyAssociationService from "../../../../src/services/userCompanyAssociationService";
+import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { AuthorisedPerson } from "../../../../src/types/associations";
@@ -26,7 +26,7 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
 describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-person-added", () => {
     const companyNumber = "NI038379";
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-added`;
-    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
+    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
     beforeEach(() => {

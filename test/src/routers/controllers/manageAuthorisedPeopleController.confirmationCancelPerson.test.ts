@@ -1,7 +1,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import { companyAssociations } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
-import * as userCompanyAssociationService from "../../../../src/services/userCompanyAssociationService";
+import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { Cancellation } from "../../../../src/types/cancellation";
@@ -30,8 +30,8 @@ const companyNumber = "NI038379";
 
 describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-cancel-person", () => {
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-cancel-person`;
-    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
-    const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "removeUserFromCompanyAssociations");
+    const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
+    const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
     beforeEach(() => {
@@ -54,7 +54,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
         expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
-        getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
+        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
         sessionUtilsSpy.mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
