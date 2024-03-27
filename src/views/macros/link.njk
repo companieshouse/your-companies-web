@@ -9,7 +9,7 @@ This macro creates a hyperlink
                 to replace the query parameters in href
 #}
 
-{% macro link(text, ariaLabelText, href, urlParams, queryParams) %}
+{% macro link(text, ariaLabelText, href, visuallyHiddenText, urlParams, queryParams) %}
     {% if urlParams %}
         {% for key, value in urlParams %}
             {% set href = href | replace(":" + key, value) %}
@@ -26,5 +26,14 @@ This macro creates a hyperlink
             {% endif %}
         {% endfor %}
     {% endif %}
-    <a href="{{href}}" class="govuk-link govuk-link--no-visited-state" aria-label="{{ariaLabelText}}">{{text}}</a>
+
+    <a href="{{href}}" class="govuk-link govuk-link--no-visited-state"
+    {% if ariaLabelText %}
+     aria-label="{{ariaLabelText}}"
+     {% endif %}
+     >{{text}}
+     {% if visuallyHiddenText %}
+     <span class="govuk-visually-hidden">{{visuallyHiddenText}}</span>
+     {% endif %}
+     </a>
 {% endmacro %}

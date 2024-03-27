@@ -26,7 +26,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const sortedAndFilteredItems = sortAndSearch(confirmedUserAssociations?.items, search);
         const paginatedList: Associations = {
             items: [],
-            totalResults: confirmedUserAssociations?.totalResults
+            totalResults: confirmedUserAssociations?.totalResults || 0
         };
 
         // this is the number of associations being displayed on each page
@@ -73,7 +73,9 @@ export class YourCompaniesHandler extends GenericHandler {
 
     private getViewData (confirmedUserAssociations: Associations, awaitingApprovalUserAssociations: Associations, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
-            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL
+            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
+            numberOfInvitations: awaitingApprovalUserAssociations?.totalResults || 0,
+            viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL
         };
 
         if (confirmedUserAssociations?.items?.length > 0) {
@@ -92,8 +94,6 @@ export class YourCompaniesHandler extends GenericHandler {
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
             viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
-            viewData.numberOfInvitations = awaitingApprovalUserAssociations.totalResults;
-            viewData.viewInvitationsPageUrl = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
         }
 
         return { ...viewData, lang: lang };

@@ -161,10 +161,12 @@ export const sortAndSearch = (
 
     // filter / search
     if (search && search.length) {
+        const strWithoutSpaces = search.replace(/\s/g, "");
         items = items.filter((item) => {
             return (
                 item.companyName.includes(search.toUpperCase()) ||
-                item.companyNumber.includes(search.toUpperCase())
+                item.companyNumber.includes(search.toUpperCase()) ||
+                item.companyNumber.includes(strWithoutSpaces.toUpperCase())
             );
         });
     }
@@ -213,9 +215,15 @@ export const getTotalAssociations = (arrayLength: number | undefined): number =>
 export const setLangForPagination = (pagination: PaginationData | undefined, lang: AnyRecord): void => {
     if (pagination?.next && lang?.next) {
         pagination.next.text = lang.next.toString();
+        pagination.next.attributes = {
+            "aria-label": lang.next_page
+        };
     }
     if (pagination?.previous && lang?.previous) {
         pagination.previous.text = lang.previous.toString();
+        pagination.previous.attributes = {
+            "aria-label": lang.previous_page
+        };
     }
 };
 

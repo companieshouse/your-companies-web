@@ -11,7 +11,7 @@
   "company_name": "[CY] Company name",
   "company_number": "[CY] Company number",
   "people_digitally_authorised_to_file_online": "[CY] People digitally authorised to file online",
-  "view_and_manage": "[CY] View and manage",
+  "view_and_manage": "[CY] View and manage ",
   "table_of_companies_you_are_digitally_autorised_to_file_for": "[CY] Table of companies you are digitally authorised to file for",
   "link_to_view_and_manage": "[CY] Link to view and manage people digitally authorised to file online page",
   "youve_been_invited_to_be_digitally_authorised_start": "[CY] You’ve been invited to be digitally authorised to file online for ",
@@ -24,5 +24,7 @@
   "match_found_for": "[CY] match found for",
   "no_results_found":"[CY] No results found for",
   "next": "[CY] Next",
-  "previous": "[CY] Previous"
+  "previous": "[CY] Previous",
+  "next_page": "[CY] Next page",
+  "previous_page": "[CY] Previous page"
 }

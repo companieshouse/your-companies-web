@@ -14,8 +14,12 @@
     {% set params = {
         companyNumber: company_number.text
     } %}
-    {% set viewAndManageLinkAriaLabelText = lang.link_to_view_and_manage %}
-    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageLinkAriaLabelText, viewAndManageUrl, params) %}
+    {% set viewAndManageLinkAriaLabelText = "" %}
+    
+    {% set company_name = elem | first %}
+    {% set visuallyHiddenText = company_name.text %}
+
+    {% set view_and_manage_link = link(lang.view_and_manage, viewAndManageLinkAriaLabelText, viewAndManageUrl, visuallyHiddenText, params) %}
     {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}
@@ -35,7 +39,7 @@
                             {{lang.enter_company_num}}
                         </div>
                         <input class="govuk-input govuk-input--width-10" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
-                        <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
+                        <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-left-2 govuk-!-margin-right-2" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
                             {{lang.search}}
                         </button>
                     </div>
@@ -54,6 +58,7 @@
 
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
+        {% if numOfMatches > 0 %}
         {{ govukTable({
                     caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
                     captionClasses: "govuk-table__caption--m govuk-visually-hidden",
@@ -72,6 +77,7 @@
                     rows: rowsData
                 })
             }}
+            {% endif %}
 
         {% if pagination and pagination.items | length %}
             {{ govukPagination(pagination) }}

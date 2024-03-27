@@ -1,3 +1,5 @@
+import { AnyRecord } from "./util-types";
+
 export interface PageItem {
     number?: number;
     href?: string;
@@ -6,6 +8,8 @@ export interface PageItem {
   }
 
 export interface PaginationPreviousNext {
+    attributes?:AnyRecord;
+    html?: string;
     text?: string;
     href: string;
   }
