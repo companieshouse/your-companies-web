@@ -164,7 +164,6 @@ export const sortAndSearch = (
         const strWithoutSpaces = search.replace(/\s/g, "");
         items = items.filter((item) => {
             return (
-                item.companyName.includes(search.toUpperCase()) ||
                 item.companyNumber.includes(search.toUpperCase()) ||
                 item.companyNumber.includes(strWithoutSpaces.toUpperCase())
             );
