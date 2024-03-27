@@ -20,10 +20,9 @@ export class AddCompanyHandler extends GenericHandler {
             this.viewData.lang = getTranslationsForView(req.t, constants.ADD_COMPANY_PAGE);
             // save the proposed unvalidated company number for displaying in the input field
             if (req.body.companyNumber) {
-                setExtraData(req.session, "proposedCompanyNumber", req.body.companyNumber);
+                setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, req.body.companyNumber);
             }
-            this.viewData.proposedCompanyNumber = getExtraData(req.session, "proposedCompanyNumber");
-            console.log("just got company number, it is ", this.viewData.proposedCompanyNumber);
+            this.viewData.proposedCompanyNumber = getExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
 
             if (method === constants.POST) {
                 await this.handlePost(req);

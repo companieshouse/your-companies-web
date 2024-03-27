@@ -10,7 +10,7 @@ export const createCompanyAssociationControllerGet = async (req: Request, res: R
     const submissionResponse = await createCompanyAssociation(session);
 
     if (submissionResponse.httpStatusCode === 201) {
-        setExtraData(req.session, "proposedCompanyNumber", undefined);
+        setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, undefined);
         const nextPageUrl = constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL;
         return res.redirect(nextPageUrl);
     } else {
