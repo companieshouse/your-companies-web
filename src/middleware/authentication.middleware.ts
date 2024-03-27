@@ -8,10 +8,6 @@ const WHITELISTED_URLS: string[] = [
 ];
 
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
-    logger.debug("incoming request from : " + req.originalUrl);
-    WHITELISTED_URLS.forEach((url) => logger.debug("whitelist urls is " + url));
-    logger.debug("isWhiteListed is :" + isWhitelistedUrl(req.originalUrl).toString());
-
     if (isWhitelistedUrl(req.originalUrl)) {
         logger.debug("whitelist endpoint called, skipping authentication.");
         return next();

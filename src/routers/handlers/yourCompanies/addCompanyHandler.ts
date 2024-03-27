@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
-import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
+import { getLoggedInUserEmail, setExtraData, getExtraData } from "../../../lib/utils/sessionUtils";
 import { isCompanyAssociatedWithUser } from "../../../services/userCompanyAssociationService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewData } from "../../../types/util-types";
@@ -18,6 +18,13 @@ export class AddCompanyHandler extends GenericHandler {
         try {
             this.viewData = this.getViewData();
             this.viewData.lang = getTranslationsForView(req.t, constants.ADD_COMPANY_PAGE);
+            // save the proposed unvalidated company number for displaying in the input field
+            if (req.body.companyNumber) {
+                setExtraData(req.session, "proposedCompanyNumber", req.body.companyNumber);
+            }
+            this.viewData.proposedCompanyNumber = getExtraData(req.session, "proposedCompanyNumber");
+            console.log("just got company number, it is ", this.viewData.proposedCompanyNumber);
+
             if (method === constants.POST) {
                 await this.handlePost(req);
             }

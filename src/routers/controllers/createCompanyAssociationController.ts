@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { createCompanyAssociation } from "../../services/companyAssociationService";
+import { setExtraData } from "../../lib/utils/sessionUtils";
 
 export const createCompanyAssociationControllerGet = async (req: Request, res: Response): Promise<void> => {
 
@@ -9,6 +10,7 @@ export const createCompanyAssociationControllerGet = async (req: Request, res: R
     const submissionResponse = await createCompanyAssociation(session);
 
     if (submissionResponse.httpStatusCode === 201) {
+        setExtraData(req.session, "proposedCompanyNumber", undefined);
         const nextPageUrl = constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL;
         return res.redirect(nextPageUrl);
     } else {

@@ -10,7 +10,7 @@ import { AuthorisedPerson } from "../../types/associations";
 
 export const checkPresenterController = async (req: Request, res: Response): Promise<void> => {
     const company: CompanyProfile = await getCompanyProfile(req.params[constants.COMPANY_NUMBER]);
-    const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + company.companyName);
+    const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + company.companyNumber.toUpperCase());
 
     if (req.method === constants.POST) {
         if (emailAddress) {
@@ -22,7 +22,7 @@ export const checkPresenterController = async (req: Request, res: Response): Pro
             // save the details of the successfully authorised person
             setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
             // remove the to be authorised person email
-            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + company.companyNumber, undefined);
+            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + company.companyNumber.toUpperCase(), undefined);
         }
         return res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(
             `:${constants.COMPANY_NUMBER}`,

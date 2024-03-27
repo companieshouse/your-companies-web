@@ -17,7 +17,7 @@ export class AddPresenterHandler extends GenericHandler {
         );
         const { companyName, companyNumber } = company;
         this.viewData = await this.getViewData(req, company);
-        this.viewData.authPersonEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+        this.viewData.authPersonEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + companyNumber.toUpperCase());
         if (method === constants.POST) {
             const email = req.body.email.trim();
             await this.validateEmail(email, companyNumber, companyName);
