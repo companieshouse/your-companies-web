@@ -1,4 +1,4 @@
-export const redirectPage = (referrer: string|undefined, hrefA:string, hrefB: string, hrefC:string):boolean => {
+export const redirectPage = (referrer: string|undefined, hrefA:string, hrefB: string, hrefC = "Not Applicable"):boolean => {
 
     if (referrer?.endsWith("/")) {
         referrer = referrer.substring(0, referrer.length - 1);

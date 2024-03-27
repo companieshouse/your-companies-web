@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
 import {
     ADD_COMPANY_PAGE,
+    ADD_COMPANY_URL,
     GET,
     LANDING_URL,
     POST,
@@ -12,7 +13,7 @@ import { redirectPage } from "../../lib/utils/referrerUtils";
 export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const referrer :string|undefined = req.get("Referrer");
 
-    if (redirectPage(referrer, LANDING_URL, ADD_COMPANY_PAGE, YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL)) {
+    if (redirectPage(referrer, LANDING_URL, ADD_COMPANY_URL, YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL)) {
         res.redirect(LANDING_URL);
     } else {
         const handler = new AddCompanyHandler();

@@ -6,12 +6,20 @@ import { getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils
 import { isCompanyAssociatedWithUser } from "../../services/userCompanyAssociationService";
 import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
+import { redirectPage } from "../../lib/utils/referrerUtils";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
+    const referrer :string|undefined = req.get("Referrer");
+
     const session: Session = req.session as Session;
     const companyProfile = session.data.extra_data.companyProfile;
-    const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
-    res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
+
+    if (redirectPage(referrer, constants.ADD_COMPANY_URL, constants.CONFIRM_COMPANY_DETAILS_URL, constants.COMPANY_ADDED_SUCCESS_URL)) {
+        res.redirect(constants.LANDING_URL);
+    } else {
+        const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
+        res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
+    }
 };
 
 export const confirmCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {

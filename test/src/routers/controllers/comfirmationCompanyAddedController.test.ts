@@ -3,10 +3,12 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/confirmation-company-added.json";
 import * as cy from "../../../../src/locales/cy/translation/confirmation-company-added.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import { LANDING_URL } from "../../../../src/constants";
 
 const router = supertest(app);
 const url = `/your-companies/confirmation-company-added`;
@@ -21,9 +23,15 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 
 describe(`GET ${url}`, () => {
+
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
+
     it("should check session, auth and company authorisation before returning the your-companies page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
@@ -60,5 +68,17 @@ describe(`GET ${url}`, () => {
     it("should return expected Welsh content when welsh is selected", async () => {
         const response = await router.get(`${url}?lang=cy`);
         expect(response.text).toContain(cyCommon.success);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get("/your-companies/confirmation-company-added").expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get("/your-companies/confirmation-company-added");
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

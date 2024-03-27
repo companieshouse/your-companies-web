@@ -8,6 +8,7 @@ import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import * as en from "../../../../src/locales/en/translation/cancel-person.json";
 import * as cy from "../../../../src/locales/cy/translation/cancel-person.json";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -35,9 +36,13 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
 
 describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", () => {
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the /your-companies/company/:companyNumber/cancel-person/:userEmail page", async () => {
         await router.get(url);
