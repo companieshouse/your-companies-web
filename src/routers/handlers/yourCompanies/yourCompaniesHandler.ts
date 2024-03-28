@@ -7,6 +7,8 @@ import { AssociationStatus, Associations } from "../../../types/associations";
 import { getUserAssociations } from "../../../services/userCompanyAssociationService";
 import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
+import { sortAndSearch, paginatedSection, paginationElement, getAssociationsPerPage, getTotalAssociations, setLangForPagination, getSearchQuery } from "../../../lib/helper/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -15,16 +17,65 @@ export class YourCompaniesHandler extends GenericHandler {
         // ...process request here and return data for the view
         const userEmailAddress = getLoggedInUserEmail(req.session);
         const confirmedUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.CONFIRMED);
+
+        const search = req.query.search as string;
+        const page = req.query.page as string;
+
+        let pageNumber = isNaN(Number(page)) ? 1 : Number(page);
+
+        const sortedAndFilteredItems = sortAndSearch(confirmedUserAssociations?.items, search);
+        const paginatedList: Associations = {
+            items: [],
+            totalResults: confirmedUserAssociations?.totalResults || 0
+        };
+
+        // this is the number of associations being displayed on each page
+        const associationsPerPage = getAssociationsPerPage(confirmedUserAssociations?.itemsPerPage);
+        const resultCount = getTotalAssociations(sortedAndFilteredItems?.length);
+
+        // validate the page number
+        pageNumber = validatePageNumber(pageNumber, resultCount, associationsPerPage) ? pageNumber : 1;
+
+        // this is the segment of 15 or so paginated associations displayed on the page
+        paginatedList.items = paginatedSection(sortedAndFilteredItems, pageNumber, associationsPerPage) || [];
+
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.AWAITING_APPROVAL);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
-        this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);
+
+        this.viewData = this.getViewData(paginatedList, awaitingApprovalUserAssociations, lang);
+        this.viewData.search = search;
+
+        // displaySearchForm toggles diplay for search input form
+        if ((sortedAndFilteredItems && sortedAndFilteredItems?.length > associationsPerPage) || !!search?.length) {
+            this.viewData.displaySearchForm = true;
+        }
+
+        // toggles display for number of matches found
+        this.viewData.showNumOfMatches = !!search?.length;
+        this.viewData.numOfMatches = sortedAndFilteredItems?.length;
+
+        if (search?.length) {
+            this.viewData.userHasCompanies = constants.TRUE;
+        }
+
+        if (sortedAndFilteredItems?.length) {
+            const searchQuery = getSearchQuery(search);
+            const pagination = paginationElement(pageNumber, sortedAndFilteredItems?.length, searchQuery, associationsPerPage);
+
+            setLangForPagination(pagination, lang);
+
+            this.viewData.pagination = pagination;
+        }
+
         return Promise.resolve(this.viewData);
     }
 
     private getViewData (confirmedUserAssociations: Associations, awaitingApprovalUserAssociations: Associations, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
-            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL
+            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
+            numberOfInvitations: awaitingApprovalUserAssociations?.totalResults || 0,
+            viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL
         };
 
         if (confirmedUserAssociations?.items?.length > 0) {
@@ -43,9 +94,8 @@ export class YourCompaniesHandler extends GenericHandler {
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
             viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
-            viewData.numberOfInvitations = awaitingApprovalUserAssociations.totalResults;
-            viewData.viewInvitationsPageUrl = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
         }
+
         return { ...viewData, lang: lang };
     }
 }
