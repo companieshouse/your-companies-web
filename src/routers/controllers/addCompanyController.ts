@@ -1,25 +1,21 @@
 import { Request, Response } from "express";
 import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
-import {
-    ADD_COMPANY_PAGE,
-    ADD_COMPANY_URL,
-    GET,
-    LANDING_URL,
-    POST,
-    YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL
-} from "../../constants";
+import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
+import { getExtraData } from "../../lib/utils/sessionUtils";
 
 export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const referrer :string|undefined = req.get("Referrer");
 
-    if (redirectPage(referrer, LANDING_URL, ADD_COMPANY_URL, YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL)) {
-        res.redirect(LANDING_URL);
+    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
+    if (redirectPage(referrer, constants.LANDING_URL, constants.ADD_COMPANY_URL, pageIndicator, constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL)) {
+        res.redirect(constants.LANDING_URL);
     } else {
         const handler = new AddCompanyHandler();
-        const viewData = await handler.execute(req, res, GET);
+        const viewData = await handler.execute(req, res, constants.GET);
 
-        res.render(ADD_COMPANY_PAGE, {
+        res.render(constants.ADD_COMPANY_PAGE, {
             ...viewData
         });
     }
@@ -27,12 +23,12 @@ export const addCompanyControllerGet = async (req: Request, res: Response): Prom
 
 export const addCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
-    const viewData = await handler.execute(req, res, POST);
+    const viewData = await handler.execute(req, res, constants.POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
-        res.render(ADD_COMPANY_PAGE, {
+        res.render(constants.ADD_COMPANY_PAGE, {
             ...viewData
         });
     } else {
-        res.redirect(YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
+        res.redirect(constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
     }
 };

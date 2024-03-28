@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { AssociationStatus, Associations } from "../../../types/associations";
 import { getUserAssociations } from "../../../services/userCompanyAssociationService";
-import { getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 
 export class YourCompaniesHandler extends GenericHandler {
@@ -17,6 +17,11 @@ export class YourCompaniesHandler extends GenericHandler {
         const confirmedUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.CONFIRMED);
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(userEmailAddress, AssociationStatus.AWAITING_APPROVAL);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
+
+        if (getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR)) {
+            deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+        }
+
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);
         return Promise.resolve(this.viewData);

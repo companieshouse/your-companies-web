@@ -4,8 +4,9 @@ import app from "../../../../src/app";
 import * as userCompanyAssociationService from "../../../../src/services/userCompanyAssociationService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { Cancellation } from "../../../../src/types/cancellation";
-import { USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
+import { LANDING_URL, USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
@@ -34,9 +35,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "removeUserFromCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
@@ -115,5 +120,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get(url).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

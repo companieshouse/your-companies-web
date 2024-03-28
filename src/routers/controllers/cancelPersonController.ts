@@ -8,8 +8,10 @@ export const cancelPersonControllerGet = async (req: Request, res: Response): Pr
     const referrer :string|undefined = req.get("Referrer");
     const hrefA = getExtraData(req.session, constants.REFERER_URL);
 
-    if (redirectPage(referrer, hrefA, constants.CANCEL_PERSON_URL)) {
-        res.redirect(hrefA);
+    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
+    if (redirectPage(referrer, hrefA, constants.CANCEL_PERSON_URL, pageIndicator)) {
+        res.redirect(constants.LANDING_URL);
     } else {
         const handler = new CancelPersonHandler();
         const viewData = await handler.execute(req, res, constants.GET);

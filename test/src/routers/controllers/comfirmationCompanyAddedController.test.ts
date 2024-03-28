@@ -72,13 +72,13 @@ describe(`GET ${url}`, () => {
 
     it("should return status 302 on page redirect", async () => {
         redirectPageSpy.mockReturnValue(true);
-        await router.get("/your-companies/confirmation-company-added").expect(302);
+        await router.get(url).expect(302);
     });
 
     it("should return correct response message including desired url path", async () => {
         const urlPath = LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
-        const response = await router.get("/your-companies/confirmation-company-added");
+        const response = await router.get(url);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

@@ -15,6 +15,7 @@ export const USER_ASSOCIATIONS = "userAssociations";
 export const ASSOCIATIONS_ID = "associationId";
 export const REMOVE_PERSON = "removePerson";
 export const USER_NAME = "userName";
+export const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
