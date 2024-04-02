@@ -4,9 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "layouts/default.njk" %}
-
 {% set title = lang.are_you_sure_you_want_to_cancel_start + userEmail + lang.are_you_sure_you_want_to_cancel_end + lang.title_end %}
-
 {% block back_link %}
 
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
@@ -14,6 +12,17 @@
     </div>
 
 {% endblock %}
+
+    {% set message = null %}
+
+    {% for key, value in errors %}
+        {% if key == "cancelPerson" %}
+            {% set message = {
+                text: lang[value.text]
+            } %}
+            {% set title =  lang.title_error + title %}
+        {% endif %}
+    {% endfor %}
 
 {% block main_content %}
 
@@ -23,16 +32,6 @@
         {{ lang.are_you_sure_you_want_to_cancel_start + userEmail + lang.are_you_sure_you_want_to_cancel_end }}
     </h1>
     {% endset %}
-
-    {% set message = null %}
-
-    {% for key, value in errors %}
-        {% if key == "cancelPerson" %}
-            {% set message = {
-                text: lang[value.text]
-            } %}
-        {% endif %}
-    {% endfor %}
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

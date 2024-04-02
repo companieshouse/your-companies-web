@@ -15,5 +15,6 @@
     "success":"[CY] Success",
     "important": "[CY] Important",
     "back_to_your_companies": "[CY] Back to your companies",
-    "warning": "[CY] Warning"
+    "warning": "[CY] Warning",
+    "title_error": "[CY] Error: "
 }

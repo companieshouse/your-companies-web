@@ -4,7 +4,7 @@
     "you_can_change_who": "[CY] You can change who is digitally authorised to file at any time.",
     "email_address": "[CY] Email address",
     "well_send_them_an_email": "[CY] We'll send them an email that contains a link.",
-    "title": "[CY] What is the email address of the person you want to add? - Find and update company information - GOV.UK",
+    "title_add_presenter ": "[CY] What is the email address of the person you want to add? - Find and update company information - GOV.UK",
     "errors_email_required": "[CY] Enter the authorised person’s email address",
     "errors_email_invalid": "[CY] Enter an email address in the correct format, like name@example.com",
     "errors_email_already_authorised": "[CY] This person is already authorised to file for ",
