@@ -7,10 +7,11 @@ import { getExtraData } from "../../lib/utils/sessionUtils";
 export const cancelPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
     const referrer :string|undefined = req.get("Referrer");
     const hrefA = getExtraData(req.session, constants.REFERER_URL);
+    const userEmail = req.params[constants.USER_EMAIL];
 
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    if (redirectPage(referrer, hrefA, constants.CANCEL_PERSON_URL, pageIndicator)) {
+    if (redirectPage(referrer, hrefA, constants.CANCEL_PERSON_URL.replace(":userEmail", userEmail), pageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         const handler = new CancelPersonHandler();

@@ -5,8 +5,10 @@ import { getCompanyProfile } from "../../../../src/services/companyProfileServic
 import { isEmailAuthorised } from "../../../../src/services/userCompanyAssociationService";
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/add-presenter.json";
 import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
+import { LANDING_URL } from "../../../../src/constants";
 jest.mock("../../../../src/services/companyProfileService");
 jest.mock("../../../../src/services/userCompanyAssociationService");
 
@@ -19,10 +21,16 @@ const urlwithCompNum = "/your-companies/add-presenter/:companyNumber";
 const url = getUrlWithCompanyNumber(urlwithCompNum, companyNumber);
 
 describe(`GET ${url}`, () => {
+
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
         mockGetCompanyProfile.mockResolvedValueOnce(validActiveCompanyProfile);
     });
+
+    redirectPageSpy.mockReturnValue(false);
+
     it("should check session, company and user auth before returning the page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
@@ -43,6 +51,18 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.tell_us_the_email);
         expect(response.text).toContain(cy.you_can_change_who);
         expect(response.text).toContain(cy.email_address);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get(url).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });
 

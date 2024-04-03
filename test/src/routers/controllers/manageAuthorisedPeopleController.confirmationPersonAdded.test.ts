@@ -5,6 +5,7 @@ import * as userCompanyAssociationService from "../../../../src/services/userCom
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { AuthorisedPerson } from "../../../../src/types/associations";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 
@@ -29,9 +30,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(userCompanyAssociationService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     const authorisedPerson: AuthorisedPerson = {
         authorisedPersonEmailAddress: "bob@bob.com",

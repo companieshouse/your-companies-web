@@ -1,11 +1,25 @@
 import { Request, Response } from "express";
-import { COMPANY_INVITATIONS_ACCEPT_PAGE } from "../../constants";
+import * as constants from "../../constants";
 import { CompanyInvitationsAcceptHandler } from "../handlers/yourCompanies/companyInvitationsAcceptHandler";
+import { redirectPage } from "../../lib/utils/referrerUtils";
+import { getExtraData } from "../../lib/utils/sessionUtils";
 
 export const companyInvitationsAcceptControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const handler = new CompanyInvitationsAcceptHandler();
-    const viewData = await handler.execute(req);
-    res.render(COMPANY_INVITATIONS_ACCEPT_PAGE, {
-        ...viewData
-    });
+
+    const referrer :string|undefined = req.get("Referrer");
+    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    const associationId = req.params[constants.ASSOCIATIONS_ID] as string;
+    const companyName = req.query[constants.COMPANY_NAME] as string;
+    const hrefB = `${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${companyName.replace(/ /g, "+")}`;
+
+    if (redirectPage(referrer, constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL, hrefB, pageIndicator)) {
+        res.redirect(constants.LANDING_URL);
+    } else {
+
+        const handler = new CompanyInvitationsAcceptHandler();
+        const viewData = await handler.execute(req);
+        res.render(constants.COMPANY_INVITATIONS_ACCEPT_PAGE, {
+            ...viewData
+        });
+    }
 };

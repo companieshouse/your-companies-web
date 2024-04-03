@@ -14,6 +14,10 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
     if (req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL) && redirectPage(referrer, hrefA, constants.CONFIRMATION_CANCEL_PERSON_URL, pageIndicator)) {
         res.redirect(constants.LANDING_URL);
 
+    } else if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) && redirectPage(referrer, hrefA, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
+        res.redirect(constants.LANDING_URL);
+    } else if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED) && redirectPage(referrer, hrefA, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
+        res.redirect(constants.LANDING_URL);
     } else {
 
         const handler = new ManageAuthorisedPeopleHandler();
