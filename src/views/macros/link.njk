@@ -10,21 +10,57 @@ This macro creates a hyperlink
 #}
 
 {% macro link(text, ariaLabelText, href, urlParams, queryParams) %}
+    {% set href = prepareHref(href, urlParams, queryParams) %}
+
+    <a href="{{href}}" aria-label="{{ariaLabelText}}">{{text}}</a>
+{% endmacro %}
+
+{# 
+This macro creates a hyperlink with a visually hidden text
+@param text - (string, required) is the text to enclose in <a></a> tags
+@param visuallyHiddenText - (string, required) is the visually hidden text for screen readers
+@param href - (string, required) is the URL that the hyperlink points to
+@param urlParams - ({ [key: string]: string }, optional) contains key/value pairs
+                to replace the route parameters in href
+@param queryParams - ({ [key: string]: string }, optional) contains key/value pairs
+                to replace the query parameters in href
+#}
+
+{% macro linkWithHiddenText(text, visuallyHiddenText, href, urlParams, queryParams) %}
+    {% set href = prepareHref(href, urlParams, queryParams) %}
+
+    <a href="{{href}}" class="govuk-link govuk-link--no-visited-state">
+        {{text}}
+        <span class="govuk-visually-hidden">{{visuallyHiddenText}}</span>
+    </a>
+{% endmacro %}
+
+{% macro prepareHref(href, urlParams, queryParams) %}
     {% if urlParams %}
-        {% for key, value in urlParams %}
-            {% set href = href | replace(":" + key, value) %}
-        {% endfor %}
+        {% set href = addUrlParams(href, urlParams) %}
     {% endif %}
     {% if queryParams %}
-        {% for key, value in queryParams %}
-            {% if loop.first %}
-                {% set href = href + "?" + key + "=" + value | replace(" ", "+") %}
-            {% endif %}
-
-            {% if not loop.first %}
-                {% set href = href + "&" + key + "=" + value | replace(" ", "+") %}
-            {% endif %}
-        {% endfor %}
+        {% set href = addQueryParams(href, queryParams) %}
     {% endif %}
-    <a href="{{href}}" aria-label="{{ariaLabelText}}">{{text}}</a>
+    {{href}}
+{% endmacro %}
+
+{% macro addUrlParams(href, urlParams) %}
+    {% for key, value in urlParams %}
+        {% set href = href | replace(":" + key, value) %}
+    {% endfor %}
+    {{href}}
+{% endmacro %}
+
+{% macro addQueryParams(href, queryParams) %}
+    {% for key, value in queryParams %}
+        {% if loop.first %}
+            {% set href = href + "?" + key + "=" + value | replace(" ", "+") %}
+        {% endif %}
+
+        {% if not loop.first %}
+            {% set href = href + "&" + key + "=" + value | replace(" ", "+") %}
+        {% endif %}
+    {% endfor %}
+    {{href}}
 {% endmacro %}

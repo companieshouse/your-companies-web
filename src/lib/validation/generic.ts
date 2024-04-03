@@ -36,3 +36,29 @@ export function validateEmailString (emailString: string): boolean {
         return false;
     }
 }
+
+export function validateSearchString (str: string): boolean {
+    const searchSchema = z.string()
+        .trim().min(1);
+    try {
+        searchSchema.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export function validatePageNumber (pageNum: number, arrayLength: number, perPage: number): boolean {
+    let maxNumOfPages = 1;
+    if (arrayLength) {
+        maxNumOfPages = Math.ceil(arrayLength / perPage);
+    }
+    const pageNoSchema = z.number().min(1).max(maxNumOfPages);
+
+    try {
+        pageNoSchema.parse(pageNum);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

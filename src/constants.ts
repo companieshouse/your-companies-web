@@ -129,3 +129,9 @@ export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "confirmed";
 export const YES = "yes";
 export const CONFIRM = "confirm";
+/**
+ * This is the default number of associations per page that API uses if nothing is provided.
+ * It is used by the pagination component and it will normally be max number
+ * of associations being displayed at any one time on the your-companies page
+ */
+export const ITEMS_PER_PAGE = 15;
