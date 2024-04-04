@@ -38,7 +38,7 @@ export function validateEmailString (emailString: string): boolean {
     }
 }
 
-export function validateSearchString (str: string): boolean {
+export function validateCompanyNumberSearchString (str: string): boolean {
     const searchSchema = z.string()
         .trim().regex(constants.COMPANY_NUMBER_SEARCH_VALIDATION_REGEX);
     try {

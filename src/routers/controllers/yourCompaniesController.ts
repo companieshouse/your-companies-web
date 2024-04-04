@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { YourCompaniesHandler } from "../handlers/yourCompanies/yourCompaniesHandler";
 import * as constants from "../../constants";
-import { validateSearchString } from "../../lib/validation/generic";
+import { validateCompanyNumberSearchString } from "../../lib/validation/generic";
 import { sanitizeUrl } from "@braintree/sanitize-url";
 
 export const yourCompaniesControllerGet = async (req: Request, res: Response): Promise<void> => {
@@ -13,7 +13,7 @@ export const yourCompaniesControllerGet = async (req: Request, res: Response): P
 };
 
 export const yourCompaniesControllerPost = async (req: Request, res: Response): Promise<void> => {
-    if (!validateSearchString(req.body.search)) {
+    if (!validateCompanyNumberSearchString(req.body.search)) {
         res.redirect(constants.LANDING_URL);
     } else {
         const search = req.body.search.trim();
