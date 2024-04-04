@@ -70,7 +70,7 @@ describe(`POST ${url}`, () => {
     it("should call addUserEmailAssociation with correct data", async () => {
         const companyNumber = "NI038379";
         const email = "bruce@bruce.com";
-        session.data.extra_data["authorisedPersonEmail" + companyNumber] = email;
+        session.data.extra_data.authorisedPersonEmail = email;
         await router.post(url);
         expect(mockAddUserEmailAssociation).toHaveBeenCalledWith(email, companyNumber);
     });

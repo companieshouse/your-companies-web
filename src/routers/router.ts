@@ -14,7 +14,9 @@ import { companyInvitationsControllerGet } from "./controllers/companyInvitation
 import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvitationsAcceptController";
 import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPost } from "./controllers/removeAuthorisedPersonController";
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
+import { beforeAddPresenterControllerGet } from "./controllers/beforeAddPresenterController";
 import { healthCheckController } from "./controllers/healthCheckController";
+import { clearFormValues } from "../middleware/clear.form.middleware";
 
 const router: Router = Router();
 
@@ -28,7 +30,7 @@ router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, man
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 
-router.get(constants.ADD_COMPANY_URL, addCompanyControllerGet as RequestHandler);
+router.get(constants.ADD_COMPANY_URL, clearFormValues, addCompanyControllerGet as RequestHandler);
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandler);
 router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerPost as RequestHandler);
@@ -42,6 +44,7 @@ router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost 
 router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, createCompanyAssociationControllerGet as RequestHandler);
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedControllerGet as RequestHandler);
 
+router.get(constants.BEFORE_ADD_PRESENTER_URL, beforeAddPresenterControllerGet);
 router.get(constants.ADD_PRESENTER_URL, addPresenterControllerGet as RequestHandler);
 router.post(constants.ADD_PRESENTER_URL, addPresenterControllerPost as RequestHandler);
 

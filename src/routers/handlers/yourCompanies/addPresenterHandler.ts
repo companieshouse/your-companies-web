@@ -17,15 +17,35 @@ export class AddPresenterHandler extends GenericHandler {
         );
         const { companyName, companyNumber } = company;
         this.viewData = await this.getViewData(req, company);
-        this.viewData.authPersonEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + companyNumber.toUpperCase());
+
         if (method === constants.POST) {
             const email = req.body.email.trim();
             await this.validateEmail(email, companyNumber, companyName);
             if (!this.viewData.errors) {
-                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL + companyNumber, email);
+                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
+                setExtraData(req.session, "proposedEmail", undefined);
             } else {
+                // update the dispay
                 this.viewData.authPersonEmail = email;
+                // save the proposed invalid company email
+                setExtraData(req.session, "proposedEmail", email);
+                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
             }
+            // the method is GET
+        } else {
+            // retrieve the saved email inputs
+            const invalidProposedEmail = getExtraData(req.session, "proposedEmail");
+            const validatedEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+            // display any errors with the current input
+            if (typeof invalidProposedEmail === "string") {
+                console.log("the proposed invalid input was a string");
+                await this.validateEmail(invalidProposedEmail, companyNumber, companyName);
+                this.viewData.authPersonEmail = invalidProposedEmail;
+            } else if (typeof validatedEmail === "string") {
+                console.log("there was no proposed email but there was a valid email");
+                this.viewData.authPersonEmail = validatedEmail;
+            }
+
         }
         return Promise.resolve(this.viewData);
     }
