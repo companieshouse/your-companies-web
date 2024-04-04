@@ -5,6 +5,7 @@
 import errorManifest from "../utils/error_manifests/errorManifest";
 import { z } from "zod";
 import { ErrorSignature } from "../../types/errorSignature";
+import * as constants from "../../constants";
 
 export class GenericValidator {
 
@@ -39,7 +40,7 @@ export function validateEmailString (emailString: string): boolean {
 
 export function validateSearchString (str: string): boolean {
     const searchSchema = z.string()
-        .trim().min(1);
+        .trim().regex(constants.COMPANY_NUMBER_SEARCH_VALIDATION_REGEX);
     try {
         searchSchema.parse(str);
         return true;

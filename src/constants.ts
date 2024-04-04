@@ -135,3 +135,8 @@ export const CONFIRM = "confirm";
  * of associations being displayed at any one time on the your-companies page
  */
 export const ITEMS_PER_PAGE = 15;
+/**
+ * The company number contains 6 to 10 characters, consisting only of uppercase letters and numbers.
+ * At least one character must be entered for the search. The regex is /^[0-9A-Z]{1,10}$/
+ */
+export const COMPANY_NUMBER_SEARCH_VALIDATION_REGEX = /^[0-9A-Z]{1,10}$/;
