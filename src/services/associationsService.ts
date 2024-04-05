@@ -32,9 +32,9 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
     return Promise.resolve(sdkResponse.resource as Associations);
 };
 
-export const isCompanyAssociatedWithUser = async (req: Request, companyNumber: string): Promise<string> => {
-    const confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED]);
-    const isAssociated: boolean = confirmedUserAssociations.items.some((item) => item.companyNumber === companyNumber);
+export const isCompanyAssociatedWithUser = async (req: Request, companyNumber: string, userEmail: string): Promise<string> => {
+    const companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, userEmail);
+    const isAssociated: boolean = companyAssociations.totalResults > 0 && companyAssociations.items.some((item) => item.status === AssociationStatus.CONFIRMED);
 
     return Promise.resolve(isAssociated ? constants.COMPNANY_ASSOCIATED_WITH_USER : constants.COMPNANY_NOT_ASSOCIATED_WITH_USER);
 };
@@ -112,10 +112,10 @@ export const removeUserFromCompanyAssociations = async (req: Request, associatio
 
 export const isEmailAuthorised = async (req: Request, email: string, companyNumber: string): Promise<boolean> => {
     const associations: Associations = await getCompanyAssociations(req, companyNumber, email);
-    return associations.items.some(item => item.userEmail === email && item.status.includes(AssociationStatus.CONFIRMED));
+    return associations.items.some(item => item.userEmail === email && item.status === AssociationStatus.CONFIRMED);
 };
 
 export const isEmailInvited = async (req: Request, email: string, companyNumber: string): Promise<boolean> => {
     const associations: Associations = await getCompanyAssociations(req, companyNumber, email);
-    return associations.items.some(item => item.userEmail === email && item.status.includes(AssociationStatus.AWAITING_APPROVAL));
+    return associations.items.some(item => item.userEmail === email && item.status === AssociationStatus.AWAITING_APPROVAL);
 };
