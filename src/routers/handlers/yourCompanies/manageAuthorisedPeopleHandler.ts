@@ -3,9 +3,9 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { Associations } from "../../../types/associations";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
-import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/userCompanyAssociationService";
+import { Associations } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
@@ -21,19 +21,23 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
+        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
 
         if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
             deleteExtraData(req.session, constants.REMOVE_PERSON);
-            await this.handleCancellation(cancellation);
+            await this.handleCancellation(req, cancellation, companyAssociations);
         } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
             deleteExtraData(req.session, constants.CANCEL_PERSON);
-            await this.handleRemoval(removal);
+            await this.handleRemoval(req, removal, companyAssociations);
         }
 
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
-        const companyAssociations: Associations = await getCompanyAssociations(companyNumber, cancellation || removal);
+        if (cancellation || removal) {
+            companyAssociations = await getCompanyAssociations(req, companyNumber);
+        }
+
         this.viewData.companyAssociations = companyAssociations;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
@@ -53,18 +57,24 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
-    private async handleCancellation (cancellation: Cancellation) {
+    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: Associations) {
         if (cancellation.cancelPerson === constants.YES) {
-            const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(cancellation.userEmail, cancellation.companyNumber)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
+            const associationId = companyAssociations.items.find(
+                association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
+            )?.id as string;
+            const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(req, associationId)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
             if (isUserRemovedFromCompanyAssociations) {
                 this.viewData.cancelledPerson = cancellation.userEmail;
             }
         }
     }
 
-    private async handleRemoval (removal: Removal) {
+    private async handleRemoval (req: Request, removal: Removal, companyAssociations: Associations) {
         if (removal.removePerson === constants.CONFIRM) {
-            const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(removal.userEmail, removal.companyNumber)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
+            const associationId = companyAssociations.items.find(
+                association => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
+            )?.id as string;
+            const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(req, associationId)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
             if (isUserRemovedFromCompanyAssociations) {
                 this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
                 this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";

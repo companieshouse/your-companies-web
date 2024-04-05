@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
-import { isEmailAuthorised } from "../../services/userCompanyAssociationService";
+import { isEmailAuthorised } from "../../services/associationsService";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { sendAuthorisationEmail } from "../../services/emailNotificationService";
 import logger from "../../lib/Logger";
@@ -12,7 +12,7 @@ export const resendEmailController = async (req: Request, res: Response): Promis
     const validEmail = validateEmailString(email);
     let emailOnList = false;
     if (validEmail) {
-        emailOnList = await isEmailAuthorised(email, companyNumber);
+        emailOnList = await isEmailAuthorised(req, email, companyNumber);
     }
     if (!validEmail || !emailOnList) {
         logger.info(

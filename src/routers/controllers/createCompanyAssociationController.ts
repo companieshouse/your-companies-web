@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
-import { Session } from "@companieshouse/node-session-handler";
-import { createCompanyAssociation } from "../../services/companyAssociationService";
+import { createAssociation } from "../../services/associationsService";
+import { getExtraData } from "../../lib/utils/sessionUtils";
 
 export const createCompanyAssociationControllerGet = async (req: Request, res: Response): Promise<void> => {
 
-    const session = req.session as Session;
-    const submissionResponse = await createCompanyAssociation(session);
+    const companyNumber = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
+    const associationId = await createAssociation(req, companyNumber);
 
-    if (submissionResponse.httpStatusCode === 201) {
+    if (associationId) {
         const nextPageUrl = constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL;
         return res.redirect(nextPageUrl);
     } else {

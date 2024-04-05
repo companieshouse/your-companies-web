@@ -3,7 +3,7 @@ import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmC
 import * as constants from "../../constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
-import { isCompanyAssociatedWithUser } from "../../services/userCompanyAssociationService";
+import { isCompanyAssociatedWithUser } from "../../services/associationsService";
 import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
 
@@ -20,7 +20,7 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
     const userEmailAddress = getLoggedInUserEmail(req.session);
     const companyNotActive = company.companyStatus.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE;
 
-    const isAlreadyAssociated = await isCompanyAssociatedWithUser(company.companyNumber, userEmailAddress);
+    const isAlreadyAssociated = await isCompanyAssociatedWithUser(req, company.companyNumber, userEmailAddress);
     const associationExists = isAlreadyAssociated === constants.COMPNANY_ASSOCIATED_WITH_USER;
 
     let nextPageUrl = "";
