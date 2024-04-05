@@ -1,4 +1,6 @@
-import { buildPaginationElement } from "../../../../src/lib/helpers/buildPaginationHelper";
+import { buildPaginationElement, getAssociationsPerPage, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
+import * as constants from "../../../../src/constants";
+import { PaginationData } from "../../../../src/types/pagination";
 
 const prefix = "prefix";
 const ellipsis = "...";
@@ -171,5 +173,64 @@ describe("Pagination element test suite", () => {
         const numOfPages = 22;
         validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
     });
+});
 
+describe("getAssociationsPerPage", () => {
+    it("should return the provided number", () => {
+        // Given
+        const associationsPerPage = 11;
+        // When
+        const result = getAssociationsPerPage(associationsPerPage);
+        // Then
+        expect(result).toEqual(associationsPerPage);
+    });
+
+    it("should return the predefined number if not provided", () => {
+        // Given
+        const associationsPerPage = undefined;
+        // When
+        const result = getAssociationsPerPage(associationsPerPage);
+        // Then
+        expect(result).toEqual(constants.ITEMS_PER_PAGE);
+    });
+});
+
+describe("setLangForPagination", () => {
+    it("should set pagination texts with the provided texts", () => {
+        // Given
+        const pagination = {
+            previous: {
+                href: "/"
+            },
+            next: {
+                href: "/"
+            },
+            items: []
+        } as PaginationData;
+        const translations = {
+            next: "Next",
+            next_page: "Next page",
+            previous: "Previous",
+            previous_page: "Previous page"
+        };
+        // When
+        setLangForPagination(pagination, translations);
+        // Then
+        expect(pagination.next?.text).toEqual(translations.next);
+        expect(pagination.next?.attributes?.["aria-label"]).toEqual(translations.next_page);
+        expect(pagination.previous?.text).toEqual(translations.previous);
+        expect(pagination.previous?.attributes?.["aria-label"]).toEqual(translations.previous_page);
+    });
+
+    it("should not throw an error if pagination data not provided", () => {
+        const pagination = undefined;
+        const translations = {
+            next: "Next",
+            next_page: "Next page",
+            previous: "Previous",
+            previous_page: "Previous page"
+        };
+
+        expect(() => setLangForPagination(pagination, translations)).not.toThrow();
+    });
 });
