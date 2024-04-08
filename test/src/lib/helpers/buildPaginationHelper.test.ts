@@ -1,4 +1,4 @@
-import { buildPaginationElement, getAssociationsPerPage, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
+import { buildPaginationElement, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
 import * as constants from "../../../../src/constants";
 import { PaginationData } from "../../../../src/types/pagination";
 
@@ -172,26 +172,6 @@ describe("Pagination element test suite", () => {
     ])("22 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 22;
         validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
-    });
-});
-
-describe("getAssociationsPerPage", () => {
-    it("should return the provided number", () => {
-        // Given
-        const associationsPerPage = 11;
-        // When
-        const result = getAssociationsPerPage(associationsPerPage);
-        // Then
-        expect(result).toEqual(associationsPerPage);
-    });
-
-    it("should return the predefined number if not provided", () => {
-        // Given
-        const associationsPerPage = undefined;
-        // When
-        const result = getAssociationsPerPage(associationsPerPage);
-        // Then
-        expect(result).toEqual(constants.ITEMS_PER_PAGE);
     });
 });
 

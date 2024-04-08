@@ -8,11 +8,9 @@ import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserAssociations } from "../../../services/associationsService";
 import { Associations, AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
 import {
-    paginationElement,
-    getAssociationsPerPage,
-    getTotalAssociations,
     setLangForPagination,
-    getSearchQuery
+    getSearchQuery,
+    buildPaginationElement
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
 
@@ -24,16 +22,12 @@ export class YourCompaniesHandler extends GenericHandler {
         const search = req.query.search as string;
         const page = req.query.page as string;
 
-        let pageNumber = isNaN(Number(page)) ? 1 : Number(page);
+        let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
 
         const confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
 
-        // this is the number of associations being displayed on each page
-        const associationsPerPage = getAssociationsPerPage(confirmedUserAssociations.itemsPerPage);
-        const resultCount = getTotalAssociations(confirmedUserAssociations.totalResults);
-
         // validate the page number
-        pageNumber = validatePageNumber(pageNumber, resultCount, associationsPerPage) ? pageNumber : 1;
+        pageNumber = validatePageNumber(pageNumber, confirmedUserAssociations.totalPages) ? pageNumber : 1;
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
@@ -55,7 +49,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
         if (confirmedUserAssociations.totalResults > 0) {
             const searchQuery = getSearchQuery(search);
-            const pagination = paginationElement(pageNumber, confirmedUserAssociations.totalResults, searchQuery, associationsPerPage);
+            const pagination = buildPaginationElement(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery);
 
             setLangForPagination(pagination, lang);
 

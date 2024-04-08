@@ -1,4 +1,3 @@
-import { ITEMS_PER_PAGE, LANDING_URL } from "../../constants";
 import { PageItem, PaginationData } from "../../types/pagination";
 import { AnyRecord } from "../../types/util-types";
 
@@ -137,30 +136,6 @@ const createPageItem = (
         number: pageNumber,
         href: `${prefix}?page=${pageNumber}${searchQuery}`
     };
-};
-
-export const paginationElement = (
-    page: number,
-    arrayLength: number,
-    search: string,
-    itemsPerPage: number
-): PaginationData | undefined => {
-    // Create pagination element to navigate pages
-    const numOfPages = Math.ceil(arrayLength / itemsPerPage);
-    return buildPaginationElement(
-        page, // current page
-        numOfPages,
-        LANDING_URL,
-        search
-    );
-};
-
-export const getAssociationsPerPage = (apiValue: number | undefined): number => {
-    return apiValue || ITEMS_PER_PAGE;
-};
-
-export const getTotalAssociations = (arrayLength: number | undefined): number => {
-    return arrayLength || 0;
 };
 
 export const setLangForPagination = (pagination: PaginationData | undefined, lang: AnyRecord): void => {

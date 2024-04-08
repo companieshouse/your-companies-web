@@ -49,10 +49,9 @@ describe("validatePageNumber", () => {
     it("should return true if page number within allowed range.", () => {
         // Given
         const pageNumber = 2;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeTruthy();
     });
@@ -60,10 +59,9 @@ describe("validatePageNumber", () => {
     it("should return true if page number equals to lower bound of the allowed range.", () => {
         // Given
         const pageNumber = 1;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeTruthy();
     });
@@ -71,10 +69,9 @@ describe("validatePageNumber", () => {
     it("should return true if page number equals to upper bound of the allowed range.", () => {
         // Given
         const pageNumber = 8;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeTruthy();
     });
@@ -82,10 +79,9 @@ describe("validatePageNumber", () => {
     it("should return false if page number outside allowed range.", () => {
         // Given
         const pageNumber = 123;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeFalsy();
     });
@@ -93,10 +89,9 @@ describe("validatePageNumber", () => {
     it("should return false if page number is negative.", () => {
         // Given
         const pageNumber = -5;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeFalsy();
     });
@@ -104,10 +99,9 @@ describe("validatePageNumber", () => {
     it("should return false if page number the first lower than the lower bound of the allowed range.", () => {
         // Given
         const pageNumber = 0;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeFalsy();
     });
@@ -115,10 +109,9 @@ describe("validatePageNumber", () => {
     it("should return false if page number is the first greater than the upper bound of the allowed range.", () => {
         // Given
         const pageNumber = 9;
-        const arrayLength = 15;
-        const elementsPerPage = 2;
+        const maxNumOfPages = 8;
         // When
-        const result = validatePageNumber(pageNumber, arrayLength, elementsPerPage);
+        const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeFalsy();
     });

@@ -49,11 +49,7 @@ export function validateCompanyNumberSearchString (str: string): boolean {
     }
 }
 
-export function validatePageNumber (pageNum: number, arrayLength: number, perPage: number): boolean {
-    let maxNumOfPages = 1;
-    if (arrayLength) {
-        maxNumOfPages = Math.ceil(arrayLength / perPage);
-    }
+export function validatePageNumber (pageNum: number, maxNumOfPages: number): boolean {
     const pageNoSchema = z.number().min(1).max(maxNumOfPages);
 
     try {
