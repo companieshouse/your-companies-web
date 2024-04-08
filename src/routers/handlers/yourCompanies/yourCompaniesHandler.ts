@@ -23,7 +23,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
     private getViewData (confirmedUserAssociations: Associations, awaitingApprovalUserAssociations: Associations, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
-            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL
+            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + "?cf=true"
         };
 
         if (confirmedUserAssociations?.items?.length > 0) {

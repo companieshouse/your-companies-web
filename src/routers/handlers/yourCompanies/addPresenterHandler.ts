@@ -5,9 +5,9 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as constants from "../../../constants";
-import { validateEmailString } from "../../../lib/validation/generic";
+import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
 import { isEmailAuthorised, isEmailInvited } from "../../../services/associationsService";
-import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class AddPresenterHandler extends GenericHandler {
 
@@ -17,12 +17,38 @@ export class AddPresenterHandler extends GenericHandler {
         );
         const { companyName, companyNumber } = company;
         this.viewData = await this.getViewData(req, company);
+        const clearForm = req.query.cf as string;
+        if (validateClearForm(clearForm)) {
+            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
+            setExtraData(req.session, "proposedEmail", undefined);
+        }
 
         if (method === constants.POST) {
             const email = req.body.email.trim();
             await this.validateEmail(req, email, companyNumber, companyName);
             if (!this.viewData.errors) {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
+                setExtraData(req.session, "proposedEmail", undefined);
+            } else {
+                // update the dispay
+                this.viewData.authPersonEmail = email;
+                // save the proposed invalid company email
+                setExtraData(req.session, "proposedEmail", email);
+                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
+            }
+            // the method is GET
+        } else {
+            // retrieve the saved email inputs
+            const invalidProposedEmail = getExtraData(req.session, "proposedEmail");
+            const validatedEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+            // display any errors with the current input
+            if (typeof invalidProposedEmail === "string") {
+                console.log("the proposed invalid input was a string");
+                await this.validateEmail(req, invalidProposedEmail, companyNumber, companyName);
+                this.viewData.authPersonEmail = invalidProposedEmail;
+            } else if (typeof validatedEmail === "string") {
+                console.log("there was no proposed email but there was a valid email");
+                this.viewData.authPersonEmail = validatedEmail;
             }
         }
 

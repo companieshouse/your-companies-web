@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { createAssociation } from "../../services/associationsService";
-import { getExtraData } from "../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 
 export const createCompanyAssociationControllerGet = async (req: Request, res: Response): Promise<void> => {
 
@@ -9,6 +9,8 @@ export const createCompanyAssociationControllerGet = async (req: Request, res: R
     const associationId = await createAssociation(req, companyNumber);
 
     if (associationId) {
+        // remove any proposed unvalidated company number
+        setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, undefined);
         const nextPageUrl = constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL;
         return res.redirect(nextPageUrl);
     } else {

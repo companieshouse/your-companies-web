@@ -22,7 +22,10 @@ export class CheckPresenterHandler extends GenericHandler {
                 authorisedPersonEmailAddress: emailAddress,
                 authorisedPersonCompanyName: company.companyName
             };
+            // save the details of the successfully authorised person
             setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
+            // remove the to be authorised person email
+            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
         }
         return Promise.resolve(this.viewData);
     }
@@ -36,7 +39,8 @@ export class CheckPresenterHandler extends GenericHandler {
             companyName: company.companyName,
             companyNumber: company.companyNumber,
             emailAddress,
-            backLinkHref: url
+            backLinkHref: url,
+            backLinkWithClearForm: url + "?cf=true"
         };
     }
 }
