@@ -59,3 +59,15 @@ export function validatePageNumber (pageNum: number, maxNumOfPages: number): boo
         return false;
     }
 }
+
+export function validateClearForm (clearForm: string): boolean {
+
+    const clearFormSchema = z.literal("true");
+
+    try {
+        clearFormSchema.parse(clearForm);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
