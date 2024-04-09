@@ -7,6 +7,9 @@ import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 import * as en from "../../../../src/locales/en/translation/add-presenter.json";
 import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
+import { NextFunction, Request, Response } from "express";
+import { Session } from "@companieshouse/node-session-handler";
+
 jest.mock("../../../../src/services/companyProfileService");
 
 const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
@@ -17,7 +20,23 @@ const router = supertest(app);
 const companyNumber = "12345678";
 const urlwithCompNum = "/your-companies/add-presenter/:companyNumber";
 const url = getUrlWithCompanyNumber(urlwithCompNum, companyNumber);
+const session: Session = new Session();
 
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
+});
+
+jest.mock("../../../../src/lib/utils/sessionUtils", () => {
+    const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
+
+    return {
+        __esModule: true,
+        ...originalModule,
+        setExtraData: jest.fn((session, key, value) => session.setExtraData(key, value)),
+        getExtraData: jest.fn((session, key) => session.getExtraData(key))
+    };
+});
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -46,6 +65,25 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.tell_us_the_email);
         expect(response.text).toContain(cy.you_can_change_who);
         expect(response.text).toContain(cy.email_address);
+    });
+
+    it("should validate and display invalid input and error if input stored in session", async () => {
+        const expectedInput = "bad email";
+        session.setExtraData("proposedEmail", expectedInput);
+
+        const response = await router.get(`${url}`);
+
+        expect(response.text).toContain(expectedInput);
+        expect(response.text).toContain("Enter an email address in the correct format");
+    });
+    it("should not display input cf is true", async () => {
+        const expectedInput = "bad email";
+        session.setExtraData("proposedEmail", expectedInput);
+
+        const response = await router.get(`${url}?lang=en&cf=true`);
+
+        expect(response.text).not.toContain(expectedInput);
+        expect(response.text).not.toContain("Enter an email address in the correct format");
     });
 });
 

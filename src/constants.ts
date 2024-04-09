@@ -16,6 +16,7 @@ export const ASSOCIATIONS_ID = "associationId";
 export const REMOVE_PERSON = "removePerson";
 export const USER_NAME = "userName";
 export const PROPOSED_COMPANY_NUM = "proposedCompanyNumber";
+export const PROPOSED_EMAIL = "proposedEmail";
 
 // query params
 export const CLEAR_FORM = "cf";
