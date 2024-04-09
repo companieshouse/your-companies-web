@@ -20,7 +20,7 @@ export class AddPresenterHandler extends GenericHandler {
         const clearForm = req.query.cf as string;
         if (validateClearForm(clearForm)) {
             setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
-            setExtraData(req.session, "proposedEmail", undefined);
+            setExtraData(req.session, constants.PROPOSED_EMAIL, undefined);
         }
 
         if (method === constants.POST) {
@@ -28,18 +28,18 @@ export class AddPresenterHandler extends GenericHandler {
             await this.validateEmail(req, email, companyNumber, companyName);
             if (!this.viewData.errors) {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
-                setExtraData(req.session, "proposedEmail", undefined);
+                setExtraData(req.session, constants.PROPOSED_EMAIL, undefined);
             } else {
                 // update the dispay input
                 this.viewData.authPersonEmail = email;
                 // save the proposed invalid company email
-                setExtraData(req.session, "proposedEmail", email);
+                setExtraData(req.session, constants.PROPOSED_EMAIL, email);
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
             }
             // the method is GET
         } else {
             // retrieve the saved email inputs
-            const invalidProposedEmail = getExtraData(req.session, "proposedEmail");
+            const invalidProposedEmail = getExtraData(req.session, constants.PROPOSED_EMAIL);
             const validatedEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
             // display any errors with the current input
             if (typeof invalidProposedEmail === "string") {
