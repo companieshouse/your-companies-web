@@ -1,7 +1,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "macros/link.njk" import linkWithHiddenText %}
 
 {% set rowsData = [] %}
@@ -20,6 +20,14 @@
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}
 
+{% set message = null %}
+
+{% for key, value in errors %}
+    {% if key == "search" %}
+        {% set message = lang[value.text] %}
+    {% endif %}
+{% endfor %}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
@@ -34,12 +42,19 @@
                     <div id="event-name-hint" class="govuk-hint">
                         {{lang.enter_company_num}}
                     </div>
+                    {% if message %}
+                        {{ govukErrorMessage({
+                            text: message
+                        })
+                    }}
+                    {% endif %}
                     <input class="govuk-input govuk-input--width-10 govuk-!-margin-bottom-2 govuk-!-margin-top-2" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
                     <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-top-2" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
                         {{lang.search}}
                     </button>
                 </div>
             </form>
+
         {% endif %}
 
         {% if showNumOfMatches %}

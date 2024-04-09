@@ -1,9 +1,9 @@
-import { Request, text } from "express";
+import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserAssociations } from "../../../services/associationsService";
 import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
@@ -45,6 +45,8 @@ export class YourCompaniesHandler extends GenericHandler {
                     text: errorMassage
                 }
             };
+
+            deleteExtraData(req.session, constants.ERROR_MESSAGE_KEY);
         }
 
         if (confirmedUserAssociations.totalPages > 1 || !!search?.length) {
