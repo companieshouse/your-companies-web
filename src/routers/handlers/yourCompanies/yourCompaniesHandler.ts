@@ -1,9 +1,9 @@
-import { Request } from "express";
+import { Request, text } from "express";
 import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserAssociations } from "../../../services/associationsService";
 import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
@@ -24,6 +24,8 @@ export class YourCompaniesHandler extends GenericHandler {
 
         let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
 
+        const errorMassage = getExtraData(req.session, constants.ERROR_MESSAGE_KEY);
+
         let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
 
         // validate the page number
@@ -37,6 +39,13 @@ export class YourCompaniesHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);
         this.viewData.search = search;
+        if (errorMassage) {
+            this.viewData.errors = {
+                search: {
+                    text: errorMassage
+                }
+            };
+        }
 
         if (confirmedUserAssociations.totalPages > 1 || !!search?.length) {
             this.viewData.displaySearchForm = true;
