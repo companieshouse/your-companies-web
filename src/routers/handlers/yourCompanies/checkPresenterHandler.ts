@@ -40,7 +40,7 @@ export class CheckPresenterHandler extends GenericHandler {
             companyNumber: company.companyNumber,
             emailAddress,
             backLinkHref: url,
-            backLinkWithClearForm: url + "?cf=true"
+            backLinkWithClearForm: url + constants.CLEAR_FORM_TRUE
         };
     }
 }

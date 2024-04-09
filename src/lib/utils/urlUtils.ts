@@ -6,12 +6,11 @@ export const getUrlWithCompanyNumber = (url: string, companyNumber: string): str
 
 export const addLangToUrl = (url: string, lang: string | undefined): string => {
     let sanitizedUrl = sanitizeUrl(url);
-
-    if (lang === undefined || lang === "") {
-        return sanitizedUrl;
-    }
     if (sanitizedUrl.includes("cf=true")) {
         sanitizedUrl = sanitizedUrl.replace("cf=true", "cf=false");
+    }
+    if (lang === undefined || lang === "") {
+        return sanitizedUrl;
     }
 
     if (sanitizedUrl.includes("lang=cy")) {

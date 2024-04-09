@@ -30,7 +30,7 @@ export class AddPresenterHandler extends GenericHandler {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
                 setExtraData(req.session, "proposedEmail", undefined);
             } else {
-                // update the dispay
+                // update the dispay input
                 this.viewData.authPersonEmail = email;
                 // save the proposed invalid company email
                 setExtraData(req.session, "proposedEmail", email);
@@ -43,11 +43,9 @@ export class AddPresenterHandler extends GenericHandler {
             const validatedEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
             // display any errors with the current input
             if (typeof invalidProposedEmail === "string") {
-                console.log("the proposed invalid input was a string");
                 await this.validateEmail(req, invalidProposedEmail, companyNumber, companyName);
                 this.viewData.authPersonEmail = invalidProposedEmail;
             } else if (typeof validatedEmail === "string") {
-                console.log("there was no proposed email but there was a valid email");
                 this.viewData.authPersonEmail = validatedEmail;
             }
         }

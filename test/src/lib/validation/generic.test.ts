@@ -1,4 +1,4 @@
-import { validateCompanyNumberSearchString, validateEmailString, validatePageNumber } from "../../../../src/lib/validation/generic";
+import { validateCompanyNumberSearchString, validateEmailString, validatePageNumber, validateClearForm } from "../../../../src/lib/validation/generic";
 
 describe("Should validate emails", () => {
     it.each([
@@ -114,5 +114,16 @@ describe("validatePageNumber", () => {
         const result = validatePageNumber(pageNumber, maxNumOfPages);
         // Then
         expect(result).toBeFalsy();
+    });
+});
+
+describe("Should validate clear form query param", () => {
+    it.each([
+        { string: "true", expected: true },
+        { string: "false", expected: false },
+        { string: "truex", expected: false },
+        { string: "undefined", expected: false }
+    ])("should return $expected for $email", ({ string, expected }) => {
+        expect(validateClearForm(string)).toEqual(expected);
     });
 });
