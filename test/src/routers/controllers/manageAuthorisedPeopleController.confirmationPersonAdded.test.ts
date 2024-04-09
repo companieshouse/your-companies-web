@@ -8,6 +8,7 @@ import { AuthorisedPerson } from "../../../../src/types/associations";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
+import { LANDING_URL } from "../../../../src/constants";
 
 const router = supertest(app);
 
@@ -84,5 +85,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text.includes(en.authorised_person_success_heading)).toBe(false);
         expect(response.text.includes("Acme Ltd")).toBe(false);
         expect(response.text.includes("bob@bob.com")).toBe(false);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get(url).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

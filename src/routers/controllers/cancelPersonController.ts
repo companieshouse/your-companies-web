@@ -2,20 +2,40 @@ import { Request, Response } from "express";
 import { CancelPersonHandler } from "../handlers/yourCompanies/cancelPersonHandler";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import { getExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 
 export const cancelPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
     const referrer :string|undefined = req.get("Referrer");
     const hrefA = getExtraData(req.session, constants.REFERER_URL);
     const userEmail = req.params[constants.USER_EMAIL];
-
+    const companyNumber = req.params[constants.COMPANY_NUMBER];
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    let checkedReferrer;
+    let newPageIndicator;
 
-    if (redirectPage(referrer, hrefA, constants.CANCEL_PERSON_URL.replace(":userEmail", userEmail), pageIndicator)) {
+    const cancelPageUrl = (constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(":companyNumber", companyNumber)).replace(":userEmail", userEmail);
+
+    setExtraData(req.session, constants.CANCEL_URL_EXTRA, cancelPageUrl);
+
+    if (referrer?.includes("confirmation-person-removed") || referrer?.includes("confirmation-cancel-person") || referrer?.includes("confirmation-person-added")) {
+        checkedReferrer = hrefA;
+    } else {
+        checkedReferrer = referrer;
+    }
+
+    if (checkedReferrer?.includes("manage-authorised-people") && pageIndicator === true) {
+        newPageIndicator = false;
+    } else {
+        newPageIndicator = pageIndicator;
+    }
+
+    if (redirectPage(checkedReferrer, hrefA, constants.CANCEL_PERSON_URL.replace(":userEmail", userEmail), newPageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         const handler = new CancelPersonHandler();
         const viewData = await handler.execute(req, res, constants.GET);
+        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
         res.render(constants.CANCEL_PERSON_PAGE, {
             ...viewData
         });

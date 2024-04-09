@@ -18,6 +18,8 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response): 
     if (redirectPage(referrer, constants.ADD_COMPANY_URL, constants.CONFIRM_COMPANY_DETAILS_URL, pageIndicator, constants.COMPANY_ADDED_SUCCESS_URL)) {
         res.redirect(constants.LANDING_URL);
     } else {
+        const confirmCompanyDetailsIndicator = true;
+        setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, confirmCompanyDetailsIndicator);
         const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
         res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
     }

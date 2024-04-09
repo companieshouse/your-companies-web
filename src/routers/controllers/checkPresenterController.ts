@@ -12,10 +12,11 @@ import { redirectPage } from "../../lib/utils/referrerUtils";
 export const checkPresenterController = async (req: Request, res: Response): Promise<void> => {
     const referrer :string|undefined = req.get("Referrer");
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
-
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    if (redirectPage(referrer, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber), constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber), pageIndicator, constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL)) {
+    if (redirectPage(referrer, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber),
+        constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber), pageIndicator,
+        constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(":companyNumber", companyNumber))) {
         res.redirect(constants.LANDING_URL);
     } else {
 

@@ -9,6 +9,7 @@ import * as cy from "../../../../src/locales/cy/translation/remove-authorised-pe
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
+import { setExtraData } from "../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
 const userEmail = "test@test.com";
@@ -167,6 +168,74 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(cy.i_confirm_that_i_have_read);
         expect(response.text).toContain(cy.remove_authorisation);
         expect(response.text).toContain(cyCommon.cancel);
+    });
+
+    it("should keep referrer url the same and not redirect if referrer is without confirmation ending", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(urlWithEmail).expect(200);
+
+    });
+
+    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-removed'", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/confirmation-person-removed" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(urlWithEmail).expect(200);
+
+    });
+
+    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-added'", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/confirmation-person-added" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(urlWithEmail).expect(200);
+
+    });
+
+    it("should change referrer url and not redirect if referrer ends with 'confirmation-cancel-person'", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/confirmation-cancel-person" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(urlWithEmail).expect(200);
+
     });
 
     it("should return status 302 on page redirect for authentication-code-remove/:userEmail page", async () => {

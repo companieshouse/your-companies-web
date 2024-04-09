@@ -10,13 +10,23 @@ import * as commpanyProfileService from "../../../../src/services/companyProfile
 import * as associationService from "../../../../src/services/userCompanyAssociationService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER, LANDING_URL } from "../../../../src/constants";
+import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
 import * as cy from "../../../../src/locales/cy/translation/add-company.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import { Session } from "@companieshouse/node-session-handler";
+import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { NextFunction, Request, Response } from "express";
 
 const router = supertest(app);
+
+const session = new Session();
+
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
+});
 
 jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
@@ -25,7 +35,9 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     return {
         __esModule: true,
         ...originalModule,
-        getLoggedInUserEmail: jest.fn(() => "test@test.com")
+        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
+        setExtraData: jest.fn((session, key, value) => session.setExtraData(key, value)),
+        getExtraData: jest.fn((session, key) => session.getExtraData(key))
     };
 });
 
@@ -69,16 +81,20 @@ describe("GET /your-companies/add-company", () => {
         expect(response.text).toContain(cyCommon.continue);
     });
 
-    it("should return status 302 on page redirect", async () => {
-        redirectPageSpy.mockReturnValue(true);
-        await router.get("/your-companies/add-company").expect(302);
-    });
+    it("should delete the page indicator in extraData on page load", async () => {
+        // Given
+        const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
+        const value = true;
+        setExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR, value);
+        const data = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
 
-    it("should return correct response message including desired url path", async () => {
-        const urlPath = LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        const response = await router.get("/your-companies/add-company");
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+        // When
+        await router.get("/your-companies/add-company");
+        const resultData = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
+
+        // Then
+        expect(data).toBeTruthy();
+        expect(resultData).toBeUndefined();
     });
 
 });

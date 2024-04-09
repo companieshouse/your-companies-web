@@ -160,18 +160,4 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedNotContainCompanyName2);
     });
 
-    it("should return status 302 on page redirect", async () => {
-        redirectPageSpy.mockReturnValue(true);
-        await router.get(url).expect(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
-    });
 });

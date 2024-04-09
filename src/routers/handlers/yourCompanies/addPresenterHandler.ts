@@ -7,7 +7,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import * as constants from "../../../constants";
 import { validateEmailString } from "../../../lib/validation/generic";
 import { isEmailAuthorised, isEmailInvited } from "../../../services/userCompanyAssociationService";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class AddPresenterHandler extends GenericHandler {
 
@@ -17,10 +17,6 @@ export class AddPresenterHandler extends GenericHandler {
         );
         const { companyName, companyNumber } = company;
         this.viewData = await this.getViewData(req, company);
-
-        if (getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR)) {
-            deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        }
 
         if (method === constants.POST) {
             const email = req.body.email.trim();

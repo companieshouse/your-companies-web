@@ -9,8 +9,18 @@ import * as en from "../../../../src/locales/en/translation/your-companies.json"
 import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
 import * as commonEn from "../../../../src/locales/en/translation/common.json";
 import * as commonCy from "../../../../src/locales/cy/translation/common.json";
+import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { Session } from "@companieshouse/node-session-handler";
+import { NextFunction, Request, Response } from "express";
 
 const router = supertest(app);
+
+const session = new Session();
+
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
+});
 
 jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
@@ -19,7 +29,9 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     return {
         __esModule: true,
         ...originalModule,
-        getLoggedInUserEmail: jest.fn(() => "test@test.com")
+        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
+        setExtraData: jest.fn((session, key, value) => session.setExtraData(key, value)),
+        getExtraData: jest.fn((session, key) => session.getExtraData(key))
     };
 });
 
@@ -163,5 +175,37 @@ describe("GET /your-companies", () => {
         expect(response.text).toContain(expectedTextStart);
         expect(response.text).toContain(expectedTextEnd);
         expect(response.text).toContain(cy.view_invitations);
+    });
+
+    it("should delete the manage authorised people page indicator in extraData on page load", async () => {
+        // Given
+        const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
+        const value = true;
+        setExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR, value);
+        const data = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
+        // When
+        await router.get("/your-companies");
+        const resultData = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
+        // Then
+        expect(data).toBeTruthy();
+        expect(resultData).toBeUndefined();
+    });
+
+    it("should delete the confirm company details page indicator in extraData on page load", async () => {
+        // Given
+        const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
+        const value = true;
+        setExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR, value);
+        const data = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
+
+        // When
+        await router.get("/your-companies");
+        const resultData = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
+
+        // Then
+        expect(data).toBeTruthy();
+        expect(resultData).toBeUndefined();
     });
 });
