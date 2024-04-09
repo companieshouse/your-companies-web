@@ -17,6 +17,10 @@ export const REMOVE_PERSON = "removePerson";
 export const USER_NAME = "userName";
 export const PROPOSED_COMPANY_NUM = "proposedCompanyNumber";
 
+// query params
+export const CLEAR_FORM = "cf";
+export const CLEAR_FORM_TRUE = "?cf=true";
+
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
 

@@ -9,13 +9,21 @@ import { StatusCodes } from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
 import * as associationService from "../../../../src/services/associationsService";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER } from "../../../../src/constants";
+import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER, PROPOSED_COMPANY_NUM } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
 import * as cy from "../../../../src/locales/cy/translation/add-company.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import { Session } from "@companieshouse/node-session-handler";
+import { NextFunction, Request, Response } from "express";
 
 const router = supertest(app);
+const session: Session = new Session();
+
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
+});
 
 jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
@@ -24,7 +32,9 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     return {
         __esModule: true,
         ...originalModule,
-        getLoggedInUserEmail: jest.fn(() => "test@test.com")
+        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
+        setExtraData: jest.fn((session, key, value) => session.setExtraData(key, value)),
+        getExtraData: jest.fn((session, key) => session.getExtraData(key))
     };
 });
 
@@ -62,6 +72,25 @@ describe("GET /your-companies/add-company", () => {
         expect(response.text).toContain(cy.you_can_find_this_by_searching);
         expect(response.text).toContain(cy.how_do_i_find_the_company_number);
         expect(response.text).toContain(cyCommon.continue);
+    });
+
+    it("should validate and display invalid input and error if input stored in session", async () => {
+        const expectedInput = "bad num";
+        session.setExtraData(PROPOSED_COMPANY_NUM, expectedInput);
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockRejectedValue({
+            httpStatusCode: StatusCodes.BAD_REQUEST
+        } as Resource<CompanyProfile>);
+        const response = await router.get("/your-companies/add-company");
+        expect(response.text).toContain(expectedInput);
+        expect(response.text).toContain("Enter a company number that is 8 characters long");
+    });
+    it("should not display input when cf=true is passed in url", async () => {
+        const expectedInput = "bad num";
+        session.setExtraData(PROPOSED_COMPANY_NUM, expectedInput);
+        const response = await router.get("/your-companies/add-company?cf=true");
+        expect(response.text).not.toContain(expectedInput);
+        expect(response.text).not.toContain("Enter a company number that is 8 characters long");
     });
 });
 

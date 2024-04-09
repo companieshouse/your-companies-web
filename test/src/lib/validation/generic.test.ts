@@ -1,4 +1,4 @@
-import { validateEmailString } from "../../../../src/lib/validation/generic";
+import { validateEmailString, validateClearForm } from "../../../../src/lib/validation/generic";
 
 describe("Should validate emails", () => {
     it.each([
@@ -13,5 +13,16 @@ describe("Should validate emails", () => {
         { email: "bob@e@xample.com", expected: false }
     ])("should return $expected for $email", ({ email, expected }) => {
         expect(validateEmailString(email)).toEqual(expected);
+    });
+});
+
+describe("Should validate clear form query param", () => {
+    it.each([
+        { string: "true", expected: true },
+        { string: "false", expected: false },
+        { string: "truex", expected: false },
+        { string: "undefined", expected: false }
+    ])("should return $expected for $email", ({ string, expected }) => {
+        expect(validateClearForm(string)).toEqual(expected);
     });
 });

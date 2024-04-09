@@ -19,38 +19,33 @@ export class AddCompanyHandler extends GenericHandler {
         try {
             this.viewData = this.getViewData();
             this.viewData.lang = getTranslationsForView(req.t, constants.ADD_COMPANY_PAGE);
-            const clearForm = req.query.cf as string;
+
+            // we delete the form values when the journey begins again (cf param in url is true)
+            const clearForm = req.query[constants.CLEAR_FORM] as string;
             if (validateClearForm(clearForm)) {
                 setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, undefined);
                 setExtraData(req.session, constants.COMPANY_PROFILE, undefined);
             }
             if (method === constants.POST) {
-                //  await this.handlePost(req);
-                // save the proposed unvalidated company number for displaying in the input field
-                if (typeof req.body.companyNumber === "string") {
-                    console.log("saving", req.body.companyNumber);
-                    setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, req.body.companyNumber);
+                const { companyNumber } = req.body;
+                if (typeof companyNumber === "string") {
+                    setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, companyNumber);
                     setExtraData(req.session, constants.COMPANY_PROFILE, undefined);
-                    this.viewData.proposedCompanyNumber = req.body.companyNumber;
-                } else {
-                    console.log("IMPORTANT: THE DATE WAS NOT SAVED");
                 }
-                const payload = Object.assign({}, req.body);
-                console.log("about to handle post ...");
-                this.viewData.proposedCompanyNumber = payload.companyNumber;
-                await this.validateCompanyNumber(req, payload.companyNumber);
+                // proposed company number is the value for the form input displayed in the view
+                this.viewData.proposedCompanyNumber = companyNumber;
+                await this.validateCompanyNumber(req, companyNumber);
             } else {
+                // GET request validation
                 const invalidCompanyNumber = getExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
                 const savedProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
                 // display any errors with the current input
                 if (typeof invalidCompanyNumber === "string") {
-                    console.log("the proposed invalid company num was a string -", invalidCompanyNumber);
                     this.viewData.proposedCompanyNumber = invalidCompanyNumber;
                     await this.validateCompanyNumber(req, invalidCompanyNumber);
                 } else if (typeof savedProfile?.companyNumber === "string") {
-                    console.log("there was no proposed num but there was a valid profile");
                     this.viewData.proposedCompanyNumber = savedProfile.companyNumber;
-                    await this.validateCompanyNumber(req, savedProfile?.companyNumber);
+                    await this.validateCompanyNumber(req, savedProfile.companyNumber);
                 }
             }
         } catch (err: any) {
@@ -71,9 +66,8 @@ export class AddCompanyHandler extends GenericHandler {
     }
 
     private async validateCompanyNumber (req: Request, companyNumber:string) {
-        // const payload = Object.assign({}, req.body);
+
         if (!companyNumber) {
-            console.log("there was no company number");
             this.viewData.errors = {
                 companyNumber: {
                     text: constants.ENTER_A_COMPANY_NUMBER
