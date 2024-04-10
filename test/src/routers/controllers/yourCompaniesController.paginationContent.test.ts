@@ -150,7 +150,7 @@ describe("Post /your-companies", () => {
         expect(response.text).toContain(redirectMessage);
     });
 
-    it("should redirect without search query param and return error message key when search string is empty", async () => {
+    it("should redirect without search query param when search string is empty", async () => {
         // Give
         const redirectMessage = "Found. Redirecting to /your-companies";
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
@@ -160,7 +160,7 @@ describe("Post /your-companies", () => {
         // Then
         expect(response.status).toBe(302);
         expect(response.text).toContain(redirectMessage);
-        expect(errorMassageKey).toContain(constants.ENTER_A_COMPANY_NUMBER_OR_PART);
+        expect(errorMassageKey).toBeUndefined();
     });
 
     it("should redirect without search query param and return error message key when search string has wrong format", async () => {
