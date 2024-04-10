@@ -6,11 +6,11 @@ import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
 import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
 
-export const getUserAssociations = async (req: Request, status: AssociationStatus[]): Promise<Associations> => {
+export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
 
     logger.info(`Looking for associations with status ${JSON.stringify(status)}`);
-    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.searchAssociations(status);
+    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.searchAssociations(status, pageIndex, undefined, companyNumber);
 
     if (!sdkResponse) {
         logger.error(`Associations API for status ${JSON.stringify(status)}`);

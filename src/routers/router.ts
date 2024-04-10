@@ -5,7 +5,7 @@ import { companyAddedControllerGet } from "./controllers/companyAddedController"
 import * as constants from "../constants";
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
 import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
-import { yourCompaniesControllerGet } from "./controllers/yourCompaniesController";
+import { yourCompaniesControllerGet, yourCompaniesControllerPost } from "./controllers/yourCompaniesController";
 import { addPresenterControllerGet, addPresenterControllerPost } from "./controllers/addPresenterController";
 import { checkPresenterControllerGet, checkPresenterControllerPost } from "./controllers/checkPresenterController";
 import { resendEmailController } from "./controllers/resendEmailController";
@@ -21,6 +21,7 @@ const router: Router = Router();
 router.get(constants.HEALTHCHECK, healthCheckController);
 
 router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
+router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as RequestHandler);
 
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
