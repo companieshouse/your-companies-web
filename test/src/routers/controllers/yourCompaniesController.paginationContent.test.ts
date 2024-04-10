@@ -2,13 +2,23 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
+import { NextFunction, Request, Response } from "express";
 import { getUserAssociations } from "../../../../src/services/associationsService";
 import { emptyAssociations, oneConfirmedAssociation, twentyConfirmedAssociations } from "../../../mocks/associations.mock";
 import * as en from "../../../../src/locales/en/translation/your-companies.json";
 import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
+import * as constants from "../../../../src/constants";
+import { Session } from "@companieshouse/node-session-handler";
+import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
+
+const session: Session = new Session();
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
+});
 
 const mockGetUserAssociations = getUserAssociations as jest.Mock;
 
@@ -91,6 +101,28 @@ describe("GET /your-companies", () => {
         expect(response.text).toContain(en.search);
         expect(response.text).toContain(en.no_results_found);
     });
+
+    it("shoud display English error message and default table of associations if error message key sent from post and language set to English", async () => {
+        // Give
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        // When
+        setExtraData(session, constants.ERROR_MESSAGE_KEY, constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE);
+        const response = await router.get("/your-companies?lang=en");
+        // Then
+        expect(response.text).toContain(en.company_number_must_only_include);
+        expect(response.text).toContain(en.next);
+    });
+
+    it("shoud display Welsh error message and default table of associations if error message key sent from post and language set to Welsh", async () => {
+        // Give
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        // When
+        setExtraData(session, constants.ERROR_MESSAGE_KEY, constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE);
+        const response = await router.get("/your-companies?lang=cy");
+        // Then
+        expect(response.text).toContain(cy.company_number_must_only_include);
+        expect(response.text).toContain(cy.next);
+    });
 });
 
 describe("Post /your-companies", () => {
@@ -118,14 +150,29 @@ describe("Post /your-companies", () => {
         expect(response.text).toContain(redirectMessage);
     });
 
-    it("should redirect without search query pararm when search string is empty", async () => {
+    it("should redirect without search query param and return error message key when search string is empty", async () => {
         // Give
         const redirectMessage = "Found. Redirecting to /your-companies";
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
         // When
         const response = await router.post("/your-companies").send({ search: "" });
+        const errorMassageKey = getExtraData(session, constants.ERROR_MESSAGE_KEY);
         // Then
         expect(response.status).toBe(302);
         expect(response.text).toContain(redirectMessage);
+        expect(errorMassageKey).toContain(constants.ENTER_A_COMPANY_NUMBER_OR_PART);
+    });
+
+    it("should redirect without search query param and return error message key when search string has wrong format", async () => {
+        // Give
+        const redirectMessage = "Found. Redirecting to /your-companies";
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        // When
+        const response = await router.post("/your-companies").send({ search: "abc$%" });
+        const errorMassageKey = getExtraData(session, constants.ERROR_MESSAGE_KEY);
+        // Then
+        expect(response.status).toBe(302);
+        expect(response.text).toContain(redirectMessage);
+        expect(errorMassageKey).toContain(constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE);
     });
 });
