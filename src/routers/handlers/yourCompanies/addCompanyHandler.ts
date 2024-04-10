@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
-import { getLoggedInUserEmail, setExtraData, getExtraData } from "../../../lib/utils/sessionUtils";
+import { getLoggedInUserEmail, setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { isCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewData } from "../../../types/util-types";
@@ -23,14 +23,14 @@ export class AddCompanyHandler extends GenericHandler {
             // we delete the form values when the journey begins again (cf param in url is true)
             const clearForm = req.query[constants.CLEAR_FORM] as string;
             if (validateClearForm(clearForm)) {
-                setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, undefined);
-                setExtraData(req.session, constants.COMPANY_PROFILE, undefined);
+                deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
+                deleteExtraData(req.session, constants.COMPANY_PROFILE);
             }
             if (method === constants.POST) {
                 const { companyNumber } = req.body;
                 if (typeof companyNumber === "string") {
                     setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, companyNumber);
-                    setExtraData(req.session, constants.COMPANY_PROFILE, undefined);
+                    deleteExtraData(req.session, constants.COMPANY_PROFILE);
                 }
                 // proposed company number is the value for the form input displayed in the view
                 this.viewData.proposedCompanyNumber = companyNumber;
@@ -90,7 +90,7 @@ export class AddCompanyHandler extends GenericHandler {
     private async handleActiveCompany (req: Request, companyProfile: CompanyProfile) {
         setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
-        setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, undefined);
+        deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
 
         const userEmailAddress = getLoggedInUserEmail(req.session);
         const isAssociated: string = await isCompanyAssociatedWithUser(req, companyProfile.companyNumber, userEmailAddress);
