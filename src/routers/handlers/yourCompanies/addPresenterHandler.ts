@@ -7,7 +7,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
 import { isEmailAuthorised, isEmailInvited } from "../../../services/associationsService";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 
 export class AddPresenterHandler extends GenericHandler {
 
@@ -19,8 +19,8 @@ export class AddPresenterHandler extends GenericHandler {
         this.viewData = await this.getViewData(req, company);
         const clearForm = req.query.cf as string;
         if (validateClearForm(clearForm)) {
-            setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
-            setExtraData(req.session, constants.PROPOSED_EMAIL, undefined);
+            deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+            deleteExtraData(req.session, constants.PROPOSED_EMAIL);
         }
 
         if (method === constants.POST) {
@@ -28,13 +28,13 @@ export class AddPresenterHandler extends GenericHandler {
             await this.validateEmail(req, email, companyNumber, companyName);
             if (!this.viewData.errors) {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
-                setExtraData(req.session, constants.PROPOSED_EMAIL, undefined);
+                deleteExtraData(req.session, constants.PROPOSED_EMAIL);
             } else {
                 // update the dispay input
                 this.viewData.authPersonEmail = email;
                 // save the proposed invalid company email
                 setExtraData(req.session, constants.PROPOSED_EMAIL, email);
-                setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, undefined);
+                deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
             }
             // the method is GET
         } else {
