@@ -60,7 +60,7 @@ describe("GET /your-companies", () => {
     it("should return expected Welsh content if no companies added and language version set to Welsh", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValue(null);
+        userAssociationsSpy.mockReturnValue(emptyAssociations);
         // When
         const response = await router.get("/your-companies?lang=cy");
         // Then
