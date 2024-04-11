@@ -6,6 +6,9 @@ import * as cy from "../../../../src/locales/cy/translation/company-invitations-
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { updateAssociationStatus } from "../../../../src/services/associationsService";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
+import { LANDING_URL } from "../../../../src/constants";
+
 jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
@@ -16,9 +19,13 @@ const companyNameQueryParam = `companyName=${companyName}`;
 
 describe(`GET ${url}`, () => {
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session, company and user auth before returning the page", async () => {
         await router.get(url);
@@ -68,5 +75,24 @@ describe(`GET ${url}`, () => {
         expect(result.text).toContain(cy.bullet_list[2]);
         expect(result.text).toContain(cy.weve_sent_an_email_to_the_company);
         expect(result.text).toContain(cy.view_your_companies);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        // Given
+        const lang = "&lang=cy";
+        const queryString = `?${lang}&${companyNameQueryParam}`;
+        redirectPageSpy.mockReturnValue(true);
+        // Then
+        await router.get(`${url.replace(":associationId", associationId)}${queryString}`).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        // Given
+        const lang = "&lang=cy";
+        const queryString = `?${lang}&${companyNameQueryParam}`;
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

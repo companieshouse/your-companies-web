@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { setExtraData } from "../../../lib/utils/sessionUtils";
+import { setExtraData, deleteExtraData, getExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserAssociations } from "../../../services/associationsService";
 import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
@@ -39,6 +39,15 @@ export class YourCompaniesHandler extends GenericHandler {
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
+
+        if (getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR)) {
+            deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+        }
+
+        if (getExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR)) {
+            deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+        }
+
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);
         this.viewData.search = search;

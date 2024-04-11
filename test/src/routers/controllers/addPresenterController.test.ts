@@ -2,9 +2,11 @@ import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/add-presenter.json";
 import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
 import * as constants from "../../../../src/constants";
+import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
@@ -17,26 +19,34 @@ const url = getUrlWithCompanyNumber(urlwithCompNum, companyNumber);
 const session: Session = new Session();
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.headers = { referrer: "testUrl.com/confirmation-person-removed" };
     req.session = session;
     next();
 });
 
+jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
 
     return {
         __esModule: true,
         ...originalModule,
+        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
         setExtraData: jest.fn((session, key, value) => session.setExtraData(key, value)),
         getExtraData: jest.fn((session, key) => session.getExtraData(key))
     };
 });
 describe(`GET ${url}`, () => {
+
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
         session.setExtraData(constants.COMPANY_NUMBER, "12345678");
         session.setExtraData(constants.COMPANY_NAME, "Test Company");
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session, company and user auth before returning the page", async () => {
         await router.get(url);
@@ -80,6 +90,102 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedInput);
         expect(response.text).not.toContain("Enter an email address in the correct format");
     });
+    it("should keep referrer url the same and not redirect if referrer is without confirmation ending", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(url).expect(200);
+
+    });
+
+    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-removed'", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/confirmation-person-removed" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(url).expect(200);
+
+    });
+
+    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-added'", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/confirmation-person-added" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(url).expect(200);
+
+    });
+
+    it("should change referrer url and not redirect if referrer ends with 'confirmation-cancel-person'", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/confirmation-cancel-person" };
+            req.session = session;
+            next();
+        });
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
+
+        // When Then
+        await router.get(url).expect(200);
+
+    });
+
+    it("should delete the manage authorised people page indicator in extraData on page load", async () => {
+        // Given
+        const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
+        const value = true;
+        setExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR, value);
+        const data = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
+        // When
+        await router.get(url);
+        const resultData = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+
+        // Then
+        expect(data).toBeTruthy();
+        expect(resultData).toBeUndefined();
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get(url).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = constants.LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
 });
 
 describe(`POST ${url}`, () => {

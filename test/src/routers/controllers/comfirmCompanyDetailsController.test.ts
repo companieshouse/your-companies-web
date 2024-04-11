@@ -4,6 +4,8 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
+import * as constants from "../../../../src/constants";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/confirm-company-details.json";
 import * as cy from "../../../../src/locales/cy/translation/confirm-company-details.json";
 
@@ -57,9 +59,15 @@ const badFormatCompanyProfile = {
 };
 
 describe(`GET ${url}`, () => {
+
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
+
     it("should check session and auth before returning the your-companies page", async () => {
         session.data.extra_data.companyProfile = validActiveCompanyProfile;
         await router.get(url);
@@ -169,6 +177,19 @@ describe(`GET ${url}`, () => {
         const response = await router.get(`${url}?lang=cy`);
         expect(response.text).toContain(expected);
     });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get("/your-companies/confirm-company-details").expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = constants.LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get("/your-companies/confirm-company-details");
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
 });
 
 describe(`POST ${url}`, () => {
