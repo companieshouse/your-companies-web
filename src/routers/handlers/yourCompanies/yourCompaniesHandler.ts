@@ -26,7 +26,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
         const errorMassage = getExtraData(req.session, constants.ERROR_MESSAGE_KEY);
 
-        let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
+        let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
 
         // validate the page number
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {

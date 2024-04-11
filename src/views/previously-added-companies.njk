@@ -2,6 +2,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "macros/link.njk" import linkWithHiddenText %}
 
 {% set rowsData = [] %}
@@ -33,9 +34,11 @@
         {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
 
         {% if displaySearchForm %}
+            {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
+            {% set inputClasses = "govuk-input govuk-input--error govuk-input--width-10 govuk-!-margin-top-2" if message else "govuk-input govuk-input--width-10 govuk-!-margin-top-2" %}
 
             <form method="post">
-                <div class="govuk-form-group">
+                <div class="{{formClasses}}">
                     <label class="govuk-label govuk-label--m" for="search">
                         {{lang.search_for_a_company}}
                     </label>
@@ -48,8 +51,8 @@
                         })
                     }}
                     {% endif %}
-                    <input class="govuk-input govuk-input--width-10 govuk-!-margin-bottom-2 govuk-!-margin-top-2" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
-                    <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-top-2" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
+                    <input class="{{inputClasses}}" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
+                    <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-top-2 govuk-!-margin-bottom-0" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
                         {{lang.search}}
                     </button>
                 </div>

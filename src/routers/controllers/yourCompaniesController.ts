@@ -17,10 +17,8 @@ export const yourCompaniesControllerPost = async (req: Request, res: Response): 
     const search = req.body.search.replace(/ /g, "");
     if (req.body.search && !validateCompanyNumberSearchString(search)) {
         setExtraData(req.session, constants.ERROR_MESSAGE_KEY, constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE);
-        res.redirect(constants.LANDING_URL);
-    } else {
-        const url = `${constants.LANDING_URL}?search=${search}`;
-        const sanitizedUrl = sanitizeUrl(url);
-        res.redirect(sanitizedUrl);
     }
+    const url = `${constants.LANDING_URL}?search=${search}`;
+    const sanitizedUrl = sanitizeUrl(url);
+    res.redirect(sanitizedUrl);
 };
