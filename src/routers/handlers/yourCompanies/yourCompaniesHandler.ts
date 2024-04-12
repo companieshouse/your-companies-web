@@ -6,7 +6,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserAssociations } from "../../../services/associationsService";
-import { Associations, AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import {
     setLangForPagination,
     getSearchQuery,

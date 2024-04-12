@@ -1,10 +1,10 @@
 import { Request } from "express";
-import { createPrivateApiClient } from "@companieshouse/private-api-sdk-node";
-import PrivateApiClient from "@companieshouse/private-api-sdk-node/dist/client";
+import { createPrivateApiClient } from "private-api-sdk-node";
+import PrivateApiClient from "private-api-sdk-node/dist/client";
 import { createOauthPrivateApiClient } from "../../../src/services/apiClientService";
 import { IHttpClient } from "@companieshouse/api-sdk-node";
 import { Session } from "@companieshouse/node-session-handler";
-jest.mock("@companieshouse/private-api-sdk-node");
+jest.mock("private-api-sdk-node");
 
 describe("createOauthPrivateApiClient", () => {
     it("should return private API client", () => {

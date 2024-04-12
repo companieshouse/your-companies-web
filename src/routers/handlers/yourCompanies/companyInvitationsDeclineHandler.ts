@@ -4,7 +4,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
 import { ViewData } from "../../../types/util-types";
 import { updateAssociationStatus } from "../../../services/associationsService";
-import { AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 
 export class CompanyInvitationsDeclineHandler extends GenericHandler {
 
