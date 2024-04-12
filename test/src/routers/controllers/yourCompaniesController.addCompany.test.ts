@@ -5,17 +5,19 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import app from "../../../../src/app";
 import supertest from "supertest";
+import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
 import * as associationService from "../../../../src/services/associationsService";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
-import { COMPNANY_ASSOCIATED_WITH_USER, COMPNANY_NOT_ASSOCIATED_WITH_USER, PROPOSED_COMPANY_NUM } from "../../../../src/constants";
+import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
 import * as cy from "../../../../src/locales/cy/translation/add-company.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { Session } from "@companieshouse/node-session-handler";
-import { NextFunction, Request, Response } from "express";
+
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -104,8 +106,20 @@ describe("POST /your-companies/add-company", () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
-        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isCompanyAssociatedWithUser");
-        associationSpy.mockReturnValue(COMPNANY_NOT_ASSOCIATED_WITH_USER);
+        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isOrWasCompanyAssociatedWithUser");
+        associationSpy.mockReturnValue(AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER);
+        // When
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
+        // Then
+        expect(response.statusCode).toEqual(StatusCodes.MOVED_TEMPORARILY);
+    });
+
+    it("should return status 302 if company number is correct and the company is active and not already associated with the user but was associated in the past", async () => {
+        // Given
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
+        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isOrWasCompanyAssociatedWithUser");
+        associationSpy.mockReturnValue(AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER);
         // When
         const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
         // Then
@@ -150,8 +164,9 @@ describe("POST /your-companies/add-company", () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
-        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isCompanyAssociatedWithUser");
-        associationSpy.mockReturnValue(COMPNANY_ASSOCIATED_WITH_USER);
+        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isOrWasCompanyAssociatedWithUser");
+        const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "12345678" };
+        associationSpy.mockReturnValue(associationStateResponse);
         // When
         const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
         // Then
@@ -169,8 +184,9 @@ describe("POST /your-companies/add-company", () => {
         // Given
         const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
         companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
-        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isCompanyAssociatedWithUser");
-        associationSpy.mockReturnValue(COMPNANY_ASSOCIATED_WITH_USER);
+        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isOrWasCompanyAssociatedWithUser");
+        const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "12345678" };
+        associationSpy.mockReturnValue(associationStateResponse);
         // When
         const response = await router.post("/your-companies/add-company?lang=cy").send({ companyNumber: "12345678" });
         // Then

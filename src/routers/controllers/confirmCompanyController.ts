@@ -3,9 +3,10 @@ import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmC
 import * as constants from "../../constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
-import { isCompanyAssociatedWithUser } from "../../services/associationsService";
+import { isOrWasCompanyAssociatedWithUser } from "../../services/associationsService";
 import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
+import { AssociationState, AssociationStateResponse } from "../../types/associations";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const session: Session = req.session as Session;
@@ -20,8 +21,8 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
     const userEmailAddress = getLoggedInUserEmail(req.session);
     const companyNotActive = company.companyStatus.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE;
 
-    const isAlreadyAssociated = await isCompanyAssociatedWithUser(req, company.companyNumber, userEmailAddress);
-    const associationExists = isAlreadyAssociated === constants.COMPNANY_ASSOCIATED_WITH_USER;
+    const isAlreadyAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, company.companyNumber, userEmailAddress);
+    const associationExists = isAlreadyAssociated.state === AssociationState.COMPNANY_ASSOCIATED_WITH_USER;
 
     let nextPageUrl = "";
 

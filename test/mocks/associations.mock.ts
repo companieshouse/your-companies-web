@@ -86,6 +86,39 @@ export const demoUserPolishBreweryAssociation: Associations = {
     totalPages: 1
 } as Associations;
 
+export const demoUserScottishBreweryAssociation: Associations = {
+    items: [
+        {
+            etag: "ABC",
+            id: "1122334455",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "AB012345",
+            companyName: "THE SCOTTISH BREWERY",
+            status: AssociationStatus.REMOVED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "2023-03-05T11:41:09.568+00:00 UTC",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations: [],
+            links: {
+                self: "/12345"
+            }
+        }
+    ],
+    links: {
+        self: "http://localhost:8080/associations",
+        next: "http://localhost:8080/associations?page_index=2&itesm_per_page=15"
+    },
+    itemsPerPage: 15,
+    pageNumber: 0,
+    totalResults: 1,
+    totalPages: 1
+} as Associations;
+
 export const userAssociationsWithEmptyInvitations: Associations = {
     items: [
         {

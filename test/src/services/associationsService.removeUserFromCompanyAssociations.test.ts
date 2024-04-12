@@ -7,7 +7,7 @@ const updateAssociationStatusSpy = jest.spyOn(associationsService, "updateAssoci
 updateAssociationStatusSpy.mockImplementation(jest.fn());
 
 describe("associationsService", () => {
-    describe("isCompanyAssociatedWithUser", () => {
+    describe("isOrWasCompanyAssociatedWithUser", () => {
 
         beforeEach(() => {
             jest.clearAllMocks();
