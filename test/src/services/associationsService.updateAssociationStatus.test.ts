@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createOauthPrivateApiClient } from "../../../src/services/apiClientService";
 import { updateAssociationStatus } from "../../../src/services/associationsService";
-import { AssociationStatus, Errors } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus, Errors } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
 jest.mock("../../../src/services/apiClientService");

@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createOauthPrivateApiClient } from "../../../src/services/apiClientService";
 import { getUserAssociations } from "../../../src/services/associationsService";
-import { Associations, AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { userAssociations } from "../../mocks/associations.mock";
 import { Request } from "express";

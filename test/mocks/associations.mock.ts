@@ -1,4 +1,4 @@
-import { Associations, AssociationStatus } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 
 export const userAssociations: Associations = {
     items: [
