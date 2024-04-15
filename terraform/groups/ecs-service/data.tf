@@ -36,7 +36,7 @@ data "aws_lb" "identity_lb" {
   name = "${var.environment}-chs-chgovuk"
 }
 
-data "aws_lb_listener" "service_lb_listener" {
+data "aws_lb_listener" "identity_lb_listener" {
   load_balancer_arn = data.aws_lb.identity_lb.arn
   port = 443
 }
