@@ -1,0 +1,6 @@
+app_name: your-companies-web
+group: web
+
+weight: 100
+routes:
+  1: ^/your-companies/*
