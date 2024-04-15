@@ -4,7 +4,7 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
-import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "@companieshouse/private-api-sdk-node/dist/services/associations/types";
+import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 
 export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
