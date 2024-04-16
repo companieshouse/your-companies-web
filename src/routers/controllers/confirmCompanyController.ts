@@ -8,13 +8,18 @@ import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
+    console.time("confirmCompanyControllerGet");
     const session: Session = req.session as Session;
     const companyProfile = session.data.extra_data.companyProfile;
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
+    console.timeEnd("confirmCompanyControllerGet");
+
 };
 
 export const confirmCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
+    console.time("confirmCompanyControllerPost");
+
     const session: Session = req.session as Session;
     const company = session.data.extra_data.companyProfile;
     const userEmailAddress = getLoggedInUserEmail(req.session);
@@ -35,6 +40,8 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
         setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
         nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
     }
+    console.timeEnd("confirmCompanyControllerPost");
+
     return res.redirect(nextPageUrl);
 
 };

@@ -6,8 +6,11 @@ export const healthCheckController: RequestHandler = (
     req: Request,
     res: Response
 ) => {
+    console.time("healthCheckController");
     logger.debug(`GET healthcheck`);
     res
         .status(StatusCodes.OK)
         .send(ReasonPhrases.OK);
+    console.timeEnd("healthCheckController");
+
 };

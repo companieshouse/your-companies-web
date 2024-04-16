@@ -3,9 +3,13 @@ import * as constants from "../../constants";
 import { CompanyInvitationsDeclineHandler } from "../handlers/yourCompanies/companyInvitationsDeclineHandler";
 
 export const companyInvitationsDeclineControllerGet = async (req: Request, res: Response): Promise<void> => {
+    console.time("companyInvitationsDeclineControllerGet");
+
     const handler = new CompanyInvitationsDeclineHandler();
     const viewData = await handler.execute(req);
     res.render(constants.COMPANY_INVITATIONS_DECLINE_PAGE, {
         ...viewData
     });
+    console.timeEnd("companyInvitationsDeclineControllerGet");
+
 };

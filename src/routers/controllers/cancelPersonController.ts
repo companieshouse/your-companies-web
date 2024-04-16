@@ -8,14 +8,20 @@ import {
 } from "../../constants";
 
 export const cancelPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
+    console.time("cancelPersonControllerGet");
+
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, GET);
     res.render(CANCEL_PERSON_PAGE, {
         ...viewData
     });
+    console.timeEnd("cancelPersonControllerGet");
+
 };
 
 export const cancelPersonControllerPost = async (req: Request, res: Response): Promise<void> => {
+    console.time("cancelPersonControllerPost");
+
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
@@ -25,4 +31,6 @@ export const cancelPersonControllerPost = async (req: Request, res: Response): P
     } else {
         res.redirect(`${viewData.backLinkHref}${CONFIRMATION_CANCEL_PERSON_URL}`);
     }
+    console.timeEnd("cancelPersonControllerPost");
+
 };

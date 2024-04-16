@@ -10,10 +10,13 @@ import { CHS_API_KEY } from "../constants";
  * @param companyNumber the company number to look up
  */
 export const getCompanyProfile = async (companyNumber: string): Promise<CompanyProfile> => {
+    console.time("getCompanyProfile");
+
     const apiClient = createApiClient(CHS_API_KEY);
 
     logger.info(`Looking for company profile with company number ${companyNumber}`);
     const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber);
+    console.timeEnd("getCompanyProfile");
 
     if (!sdkResponse) {
         logger.error(`Company profile API for company number ${companyNumber}`);

@@ -7,10 +7,12 @@ import * as constants from "../constants";
 import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 
 export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
+    console.time("getUserAssociations");
     const apiClient = createOauthPrivateApiClient(req);
 
     logger.info(`Looking for associations with status ${JSON.stringify(status)}`);
     const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.searchAssociations(status, pageIndex, undefined, companyNumber);
+    console.timeEnd("getUserAssociations");
 
     if (!sdkResponse) {
         logger.error(`Associations API for status ${JSON.stringify(status)}`);
@@ -33,15 +35,22 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
 };
 
 export const isCompanyAssociatedWithUser = async (req: Request, companyNumber: string, userEmail: string): Promise<string> => {
+    console.time("isCompanyAssociatedWithUser");
+
     const companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, userEmail);
     const isAssociated: boolean = companyAssociations.totalResults > 0 && companyAssociations.items.some((item) => item.status === AssociationStatus.CONFIRMED);
+    console.timeEnd("isCompanyAssociatedWithUser");
 
     return Promise.resolve(isAssociated ? constants.COMPNANY_ASSOCIATED_WITH_USER : constants.COMPNANY_NOT_ASSOCIATED_WITH_USER);
 };
 
 export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string): Promise<Associations> => {
+    console.time("getCompanyAssociations");
+
     const apiClient = createOauthPrivateApiClient(req);
     const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, undefined, undefined, undefined, userEmail);
+
+    console.timeEnd("getCompanyAssociations");
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);
@@ -64,8 +73,11 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
 };
 
 export const createAssociation = async (req: Request, companyNumber: string, inviteeEmailAddress?: string): Promise<string> => {
+    console.time("createAssociation");
+
     const apiClient = createOauthPrivateApiClient(req);
     const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, inviteeEmailAddress);
+    console.timeEnd("createAssociation");
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);
@@ -89,8 +101,11 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
 };
 
 export const updateAssociationStatus = async (req: Request, associationId: string, status: AssociationStatus): Promise<void> => {
+    console.time("updateAssociationStatus");
+
     const apiClient = createOauthPrivateApiClient(req);
     const sdkResponse: Resource<undefined | Errors> = await apiClient.associationsService.updateAssociationStatus(associationId, status);
+    console.timeEnd("updateAssociationStatus");
 
     if (!sdkResponse) {
         logger.error(`Associations API for an association with id ${associationId}`);
@@ -106,12 +121,20 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
 };
 
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {
+    console.time("removeUserFromCompanyAssociations");
+
     updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
+    console.timeEnd("removeUserFromCompanyAssociations");
+
     return Promise.resolve(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };
 
 export const isEmailAuthorised = async (req: Request, email: string, companyNumber: string): Promise<boolean> => {
+    console.time("isEmailAuthorised");
+
     const associations: Associations = await getCompanyAssociations(req, companyNumber, email);
+    console.timeEnd("isEmailAuthorised");
+
     return associations.items.some(item => item.userEmail === email && item.status === AssociationStatus.CONFIRMED);
 };
 

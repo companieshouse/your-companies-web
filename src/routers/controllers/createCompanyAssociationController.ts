@@ -4,9 +4,10 @@ import { createAssociation } from "../../services/associationsService";
 import { getExtraData } from "../../lib/utils/sessionUtils";
 
 export const createCompanyAssociationControllerGet = async (req: Request, res: Response): Promise<void> => {
-
+    console.time("createCompanyAssociationControllerGet");
     const companyNumber = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
     const associationId = await createAssociation(req, companyNumber);
+    console.timeEnd("createCompanyAssociationControllerGet");
 
     if (associationId) {
         const nextPageUrl = constants.YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL;

@@ -14,6 +14,7 @@ import { companyAuthenticationMiddleware } from "./middleware/company.authentica
 import { addLangToUrl } from "./lib/utils/urlUtils";
 
 const app = express();
+console.time("app.ts");
 
 app.set("views", [
     path.join(__dirname, "views"),
@@ -92,5 +93,6 @@ process.on("unhandledRejection", (err: any) => {
     logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
     process.exit(1);
 });
+console.timeEnd("app.ts");
 
 export default app;

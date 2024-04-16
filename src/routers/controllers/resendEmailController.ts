@@ -7,6 +7,8 @@ import logger from "../../lib/Logger";
 import { validateEmailString } from "../../lib/validation/generic";
 
 export const resendEmailController = async (req: Request, res: Response): Promise<void> => {
+    console.time("resendEmailController");
+
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const email = req.params[constants.USER_EMAIL];
     const validEmail = validateEmailString(email);
@@ -18,6 +20,8 @@ export const resendEmailController = async (req: Request, res: Response): Promis
         logger.info(
             `Email ${email} invalid or not on the authorisation list for company ${companyNumber}`
         );
+        console.timeEnd("resendEmailController");
+
     } else {
         const emailSendResponse = await sendAuthorisationEmail(
             email,
@@ -33,6 +37,9 @@ export const resendEmailController = async (req: Request, res: Response): Promis
                 )
             );
         }
+        console.timeEnd("resendEmailController");
+
     }
+
     return res.status(404).render(constants.ERROR_400_TEMPLATE);
 };
