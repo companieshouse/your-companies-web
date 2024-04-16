@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { setExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getUserAssociations } from "../../../services/associationsService";
 import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
@@ -12,7 +12,7 @@ import {
     getSearchQuery,
     buildPaginationElement
 } from "../../../lib/helpers/buildPaginationHelper";
-import { validatePageNumber } from "../../../lib/validation/generic";
+import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -24,7 +24,10 @@ export class YourCompaniesHandler extends GenericHandler {
 
         let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
 
-        const errorMassage = getExtraData(req.session, constants.ERROR_MESSAGE_KEY);
+        let errorMassage;
+        if (search && !validateCompanyNumberSearchString(search)) {
+            errorMassage = constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE;
+        }
 
         let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
 
@@ -45,8 +48,6 @@ export class YourCompaniesHandler extends GenericHandler {
                     text: errorMassage
                 }
             };
-
-            deleteExtraData(req.session, constants.ERROR_MESSAGE_KEY);
         }
 
         if (confirmedUserAssociations.totalPages > 1 || !!search?.length) {
@@ -54,7 +55,7 @@ export class YourCompaniesHandler extends GenericHandler {
         }
 
         // toggles display for number of matches found
-        this.viewData.showNumOfMatches = !!search?.length;
+        this.viewData.showNumOfMatches = !!search?.length && !this.viewData.errors;
         this.viewData.numOfMatches = confirmedUserAssociations.totalResults;
 
         if (search?.length) {
