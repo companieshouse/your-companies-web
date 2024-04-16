@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
 import { createAssociation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "types/associations";
@@ -22,7 +22,10 @@ export class CheckPresenterHandler extends GenericHandler {
                 authorisedPersonEmailAddress: emailAddress,
                 authorisedPersonCompanyName: company.companyName
             };
+            // save the details of the successfully authorised person
             setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
+            // remove the to be authorised person email
+            deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
         }
         return Promise.resolve(this.viewData);
     }
@@ -36,7 +39,8 @@ export class CheckPresenterHandler extends GenericHandler {
             companyName: company.companyName,
             companyNumber: company.companyNumber,
             emailAddress,
-            backLinkHref: url
+            backLinkHref: url,
+            backLinkWithClearForm: url + constants.CLEAR_FORM_TRUE
         };
     }
 }

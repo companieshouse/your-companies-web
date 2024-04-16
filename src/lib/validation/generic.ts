@@ -38,6 +38,18 @@ export function validateEmailString (emailString: string): boolean {
     }
 }
 
+export function validateClearForm (clearForm:string): boolean {
+
+    const clearFormSchema = z.literal("true");
+
+    try {
+        clearFormSchema.parse(clearForm);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 export function validateCompanyNumberSearchString (str: string): boolean {
     const searchSchema = z.string()
         .trim().regex(constants.COMPANY_NUMBER_SEARCH_VALIDATION_REGEX);

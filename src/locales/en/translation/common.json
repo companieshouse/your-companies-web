@@ -15,5 +15,6 @@
     "success": "Success",
     "important": "Important",
     "back_to_your_companies": "Back to your companies",
-    "warning": "Warning"
+    "warning": "Warning",
+    "title_error": "Error: "
 }

@@ -61,7 +61,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
     private getViewData (confirmedUserAssociations: Associations, awaitingApprovalUserAssociations: Associations, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
-            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
+            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
             numberOfInvitations: awaitingApprovalUserAssociations.totalResults,
             viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL
         };

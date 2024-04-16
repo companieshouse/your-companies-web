@@ -64,4 +64,14 @@ describe("addLangToUrl", () => {
         // Then
         expect(result).toEqual(expectedUrl);
     });
+    it("should change cf from true to false if included", () => {
+        // Given
+        const url = "http://www.website.com/your-companies?cf=true";
+        const lang = undefined;
+        // When
+        const result = addLangToUrl(url, lang);
+        // Then
+        const expectedUrl = "http://www.website.com/your-companies?cf=false";
+        expect(result).toEqual(expectedUrl);
+    });
 });
