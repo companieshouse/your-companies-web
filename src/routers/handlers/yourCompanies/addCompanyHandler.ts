@@ -102,9 +102,7 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             };
         } else {
-            if (isAssociated.state === AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER) {
-                setExtraData(req.session, constants.ASSOCIATION_STATE_RESPONSE, isAssociated);
-            }
+            setExtraData(req.session, constants.ASSOCIATION_STATE_RESPONSE, isAssociated);
             setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         }
     }
