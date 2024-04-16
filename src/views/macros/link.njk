@@ -12,7 +12,7 @@ This macro creates a hyperlink
 {% macro link(text, ariaLabelText, href, urlParams, queryParams) %}
     {% set href = prepareHref(href, urlParams, queryParams) %}
 
-    <a href="{{href}}" aria-label="{{ariaLabelText}}">{{text}}</a>
+    <a href="{{href | replace(r/\s/g, "")}}" aria-label="{{ariaLabelText}}">{{text}}</a>
 {% endmacro %}
 
 {# 
@@ -29,7 +29,7 @@ This macro creates a hyperlink with a visually hidden text
 {% macro linkWithHiddenText(text, visuallyHiddenText, href, urlParams, queryParams) %}
     {% set href = prepareHref(href, urlParams, queryParams) %}
 
-    <a href="{{href}}" class="govuk-link govuk-link--no-visited-state">
+    <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state">
         {{text}}
         <span class="govuk-visually-hidden">{{visuallyHiddenText}}</span>
     </a>
