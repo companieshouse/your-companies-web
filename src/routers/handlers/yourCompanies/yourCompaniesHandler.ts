@@ -24,10 +24,13 @@ export class YourCompaniesHandler extends GenericHandler {
 
         let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
 
-        const confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
+        let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
 
         // validate the page number
-        pageNumber = validatePageNumber(pageNumber, confirmedUserAssociations.totalPages) ? pageNumber : 1;
+        if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
+            pageNumber = 1;
+            confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
+        }
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);

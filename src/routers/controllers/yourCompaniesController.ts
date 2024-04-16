@@ -13,10 +13,10 @@ export const yourCompaniesControllerGet = async (req: Request, res: Response): P
 };
 
 export const yourCompaniesControllerPost = async (req: Request, res: Response): Promise<void> => {
-    if (!validateCompanyNumberSearchString(req.body.search)) {
+    const search = req.body.search.replace(/ /g, "");
+    if (!validateCompanyNumberSearchString(search)) {
         res.redirect(constants.LANDING_URL);
     } else {
-        const search = req.body.search.trim();
         const url = `${constants.LANDING_URL}?search=${search}`;
         const sanitizedUrl = sanitizeUrl(url);
         res.redirect(sanitizedUrl);
