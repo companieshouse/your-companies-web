@@ -5,7 +5,7 @@
         "[CY] file for the company online",
         "[CY] digital authorise other people to file online for the company"
     ],
-    "title": "[CY] Your companies - Find and update company information - GOV.UK",
+    "title_your_companies": "[CY] Your companies - Find and update company information - GOV.UK",
     "you_have_not_added_any_companies": "[CY] You have not added any companies to your account",
     "your_companies": "[CY] Your companies",
     "company_name": "[CY] Company name",
@@ -18,7 +18,7 @@
     "youve_been_invited_to_be_digitally_authorised_end": " [CY] companies.",
     "view_invitations": "[CY] View invitations",
     "search_for_a_company": "[CY] Search for a company",
-    "enter_company_num": "[CY] Enter the company number",
+    "enter_company_num": "[CY] Enter the company number, or part of a company number.",
     "search": "[CY] Search",
     "matches_found_for": "[CY] matches found for",
     "match_found_for": "[CY] match found for",
@@ -27,5 +27,7 @@
     "next": "[CY] Next",
     "previous": "[CY] Previous",
     "next_page": "[CY] Next page",
-    "previous_page": "[CY] Previous page"
+    "previous_page": "[CY] Previous page",
+    "company_number_must_only_include": "[CY] Company number must only include numbers and capital letters",
+    "enter_a_company_number_or_part": "[CY] Enter a company number, or part of a company number"
 }

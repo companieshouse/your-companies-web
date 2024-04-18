@@ -5,7 +5,7 @@
         "file for the company online",
         "digital authorise other people to file online for the company"
     ],
-    "title": "Your companies - Find and update company information - GOV.UK",
+    "title_your_companies": "Your companies - Find and update company information - GOV.UK",
     "you_have_not_added_any_companies": "You have not added any companies to your account",
     "your_companies": "Your companies",
     "company_name": "Company name",
@@ -18,7 +18,7 @@
     "youve_been_invited_to_be_digitally_authorised_end": " companies.",
     "view_invitations": "View invitations",
     "search_for_a_company": "Search for a company",
-    "enter_company_num": "Enter the company number",
+    "enter_company_num": "Enter the company number, or part of a company number.",
     "search": "Search",
     "matches_found_for": "matches found for",
     "match_found_for": "match found for",
@@ -27,5 +27,7 @@
     "next": "Next",
     "previous": "Previous",
     "next_page": "Next page",
-    "previous_page": "Previous page"
+    "previous_page": "Previous page",
+    "company_number_must_only_include": "Company number must only include numbers and capital letters",
+    "enter_a_company_number_or_part": "Enter a company number, or part of a company number"
 }

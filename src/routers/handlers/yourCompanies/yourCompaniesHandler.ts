@@ -12,7 +12,7 @@ import {
     getSearchQuery,
     buildPaginationElement
 } from "../../../lib/helpers/buildPaginationHelper";
-import { validatePageNumber } from "../../../lib/validation/generic";
+import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -24,12 +24,17 @@ export class YourCompaniesHandler extends GenericHandler {
 
         let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
 
-        let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
+        let errorMassage;
+        if (search && !validateCompanyNumberSearchString(search)) {
+            errorMassage = constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE;
+        }
+
+        let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
 
         // validate the page number
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
-            confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
+            confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
         }
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
@@ -37,13 +42,20 @@ export class YourCompaniesHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);
         this.viewData.search = search;
+        if (errorMassage) {
+            this.viewData.errors = {
+                search: {
+                    text: errorMassage
+                }
+            };
+        }
 
         if (confirmedUserAssociations.totalPages > 1 || !!search?.length) {
             this.viewData.displaySearchForm = true;
         }
 
         // toggles display for number of matches found
-        this.viewData.showNumOfMatches = !!search?.length;
+        this.viewData.showNumOfMatches = !!search?.length && !this.viewData.errors;
         this.viewData.numOfMatches = confirmedUserAssociations.totalResults;
 
         if (search?.length) {

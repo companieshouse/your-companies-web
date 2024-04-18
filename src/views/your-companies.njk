@@ -1,7 +1,12 @@
 {% extends "layouts/default.njk" %}
+{% set title = lang.title_your_companies %}
+{% for key, value in errors %}
+    {% if key == "search" %}
+        {% set title = lang.title_error + lang.title_your_companies %}
+    {% endif %}
+{% endfor %}
 
 {% block main_content %}
-
     {% if numberOfInvitations > 0 %}
         {% include "user-invitations-banner.njk" %}
     {% endif %}

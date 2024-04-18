@@ -1,5 +1,4 @@
 import { buildPaginationElement, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
-import * as constants from "../../../../src/constants";
 import { PaginationData } from "../../../../src/types/pagination";
 
 const prefix = "prefix";

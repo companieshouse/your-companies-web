@@ -9,11 +9,9 @@ import mockAuthenticationMiddleware from "../../mocks/authentication.middleware.
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import request from "supertest";
 import { COMPANY_AUTH_PROTECTED_BASE, LANDING_URL } from "../../../src/constants";
-import logger from "../../../src/lib/Logger";
 
 // get handle on mocked function and create mock function to be returned from calling companyAuthMiddleware
 const mockCompanyAuthMiddleware = authMiddleware as jest.Mock;
-const mockLoggerErrorRequest = logger.errorRequest as jest.Mock;
 
 // when the mocked companyAuthMiddleware is called, make it return a mocked function so we can verify it gets called
 const mockAuthReturnedFunction = jest.fn();

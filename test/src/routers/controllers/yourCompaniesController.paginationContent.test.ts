@@ -91,6 +91,26 @@ describe("GET /your-companies", () => {
         expect(response.text).toContain(en.search);
         expect(response.text).toContain(en.no_results_found);
     });
+
+    it("shoud display English error message and default table of associations if search value not following company number format and language set to English", async () => {
+        // Give
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        // When
+        const response = await router.get("/your-companies?lang=en&search=kskksksk");
+        // Then
+        expect(response.text).toContain(en.company_number_must_only_include);
+        expect(response.text).toContain(en.next);
+    });
+
+    it("shoud display Welsh error message and default table of associations if search value not following company number format and language set to Welsh", async () => {
+        // Give
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        // When
+        const response = await router.get("/your-companies?lang=cy&search=kskksksk");
+        // Then
+        expect(response.text).toContain(cy.company_number_must_only_include);
+        expect(response.text).toContain(cy.next);
+    });
 });
 
 describe("Post /your-companies", () => {
@@ -118,12 +138,23 @@ describe("Post /your-companies", () => {
         expect(response.text).toContain(redirectMessage);
     });
 
-    it("should redirect without search query pararm when search string is empty", async () => {
+    it("should redirect without search query param when search string is empty", async () => {
         // Give
         const redirectMessage = "Found. Redirecting to /your-companies";
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
         // When
         const response = await router.post("/your-companies").send({ search: "" });
+        // Then
+        expect(response.status).toBe(302);
+        expect(response.text).toContain(redirectMessage);
+    });
+
+    it("should redirect without search query param and return error message key when search string has wrong format", async () => {
+        // Give
+        const redirectMessage = "Found. Redirecting to /your-companies";
+        mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        // When
+        const response = await router.post("/your-companies").send({ search: "abc$%" });
         // Then
         expect(response.status).toBe(302);
         expect(response.text).toContain(redirectMessage);
