@@ -34,7 +34,7 @@ export class YourCompaniesHandler extends GenericHandler {
         // validate the page number
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
-            confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], search, pageNumber - 1);
+            confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
         }
 
         const awaitingApprovalUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
