@@ -26,7 +26,6 @@
 {% for key, value in errors %}
     {% if key == "search" %}
         {% set message = lang[value.text] %}
-        {% set title = lang.title_error + lang.title %}
     {% endif %}
 {% endfor %}
 
