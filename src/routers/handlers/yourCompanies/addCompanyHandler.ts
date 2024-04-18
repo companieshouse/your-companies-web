@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
-import { getLoggedInUserEmail, setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
+import { setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewData } from "../../../types/util-types";
@@ -93,8 +93,7 @@ export class AddCompanyHandler extends GenericHandler {
         setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
         deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
 
-        const userEmailAddress = getLoggedInUserEmail(req.session);
-        const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyProfile.companyNumber, userEmailAddress);
+        const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyProfile.companyNumber);
         if (isAssociated.state === AssociationState.COMPNANY_ASSOCIATED_WITH_USER) {
             this.viewData.errors = {
                 companyNumber: {

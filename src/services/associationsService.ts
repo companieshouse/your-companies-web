@@ -33,13 +33,25 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
     return Promise.resolve(sdkResponse.resource as Associations);
 };
 
-export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumber: string, userEmail: string): Promise<AssociationStateResponse> => {
-    const companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, userEmail, true);
+export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumber: string): Promise<AssociationStateResponse> => {
+    const statuses: AssociationStatus[] = [AssociationStatus.AWAITING_APPROVAL, AssociationStatus.CONFIRMED, AssociationStatus.REMOVED];
+    const userAssociations: Associations = await getUserAssociations(req, statuses, companyNumber);
     let isOrWasAssociated: AssociationState;
     let associationId;
-    if (companyAssociations.totalResults > 0) {
-        isOrWasAssociated = companyAssociations.items[0].status === AssociationStatus.CONFIRMED ? AssociationState.COMPNANY_ASSOCIATED_WITH_USER : AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER;
-        associationId = companyAssociations.items[0].id;
+    if (userAssociations.totalResults > 0) {
+        const associationStatus: AssociationStatus = userAssociations.items[0].status;
+        switch (associationStatus) {
+        case AssociationStatus.CONFIRMED:
+            isOrWasAssociated = AssociationState.COMPNANY_ASSOCIATED_WITH_USER;
+            break;
+        case AssociationStatus.AWAITING_APPROVAL:
+            isOrWasAssociated = AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER;
+            break;
+        case AssociationStatus.REMOVED:
+            isOrWasAssociated = AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER;
+            break;
+        }
+        associationId = userAssociations.items[0].id;
     } else {
         isOrWasAssociated = AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER;
     }

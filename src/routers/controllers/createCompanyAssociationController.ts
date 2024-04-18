@@ -9,9 +9,9 @@ export const createCompanyAssociationControllerGet = async (req: Request, res: R
 
     const confirmedCompanyForAssocation = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
     const associationStateResponse: AssociationStateResponse = getExtraData(req.session, constants.ASSOCIATION_STATE_RESPONSE);
-    const wasCompanyAssociated: boolean = associationStateResponse.state === AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER;
 
-    if (wasCompanyAssociated) {
+    if (associationStateResponse.state === AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER ||
+        associationStateResponse.state === AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER) {
         await updateAssociationStatus(req, associationStateResponse.associationId as string, AssociationStatus.CONFIRMED);
     } else {
         await createAssociation(req, confirmedCompanyForAssocation.companyNumber);

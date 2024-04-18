@@ -1,41 +1,26 @@
 import { Request, Response } from "express";
 import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmCorrectCompanyHandler";
 import * as constants from "../../constants";
-import { Session } from "@companieshouse/node-session-handler";
-import { getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
-import { isOrWasCompanyAssociatedWithUser } from "../../services/associationsService";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
-import { AssociationState, AssociationStateResponse } from "../../types/associations";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const session: Session = req.session as Session;
-    const companyProfile = session.data.extra_data.companyProfile;
+    const companyProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };
 
 export const confirmCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
-    const session: Session = req.session as Session;
-    const company = session.data.extra_data.companyProfile;
-    const userEmailAddress = getLoggedInUserEmail(req.session);
-    const companyNotActive = company.companyStatus.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE;
+    const company = getExtraData(req.session, constants.COMPANY_PROFILE);
 
-    const isAlreadyAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, company.companyNumber, userEmailAddress);
-    const associationExists = isAlreadyAssociated.state === AssociationState.COMPNANY_ASSOCIATED_WITH_USER;
+    const confirmedCompanyForAssocation: CompanyNameAndNumber = {
+        companyNumber: company.companyNumber,
+        companyName: company.companyName
+    };
+    setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
+    const nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
 
-    let nextPageUrl = "";
-
-    if (companyNotActive || associationExists) {
-        nextPageUrl = constants.YOUR_COMPANIES_ADD_COMPANY_URL;
-    } else {
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = {
-            companyNumber: company.companyNumber,
-            companyName: company.companyName
-        };
-        setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
-        nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
-    }
     return res.redirect(nextPageUrl);
 
 };
