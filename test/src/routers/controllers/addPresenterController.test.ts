@@ -1,18 +1,16 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { getCompanyProfile } from "../../../../src/services/companyProfileService";
 import * as associationsService from "../../../../src/services/associationsService";
-import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 import * as en from "../../../../src/locales/en/translation/add-presenter.json";
 import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
+import * as constants from "../../../../src/constants";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 jest.mock("../../../../src/services/companyProfileService");
 
-const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
 const mockIsEmailAuthorised: jest.SpyInstance = jest.spyOn(associationsService, "isEmailAuthorised");
 const mockIsEmailInvited: jest.SpyInstance = jest.spyOn(associationsService, "isEmailInvited");
 
@@ -40,7 +38,8 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        mockGetCompanyProfile.mockResolvedValueOnce(validActiveCompanyProfile);
+        session.setExtraData(constants.COMPANY_NUMBER, "12345678");
+        session.setExtraData(constants.COMPANY_NAME, "Test Company");
     });
 
     it("should check session, company and user auth before returning the page", async () => {
@@ -91,7 +90,8 @@ describe(`POST ${url}`, () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        mockGetCompanyProfile.mockResolvedValueOnce(validActiveCompanyProfile);
+        session.setExtraData(constants.COMPANY_NUMBER, "12345678");
+        session.setExtraData(constants.COMPANY_NAME, "Test Company");
     });
 
     it("should check session, company and user auth before routing to controller", async () => {
@@ -114,6 +114,13 @@ describe(`POST ${url}`, () => {
         mockIsEmailAuthorised.mockResolvedValueOnce(true);
         const response = await router.post(url).send({ email: "bob@bob.com" });
         expect(response.text).toContain(en.errors_email_already_authorised);
+    });
+
+    it("should display current page with error message if email already has invitation for the company", async () => {
+        mockIsEmailAuthorised.mockResolvedValueOnce(false);
+        mockIsEmailInvited.mockResolvedValueOnce(true);
+        const response = await router.post(url).send({ email: "bob@bob.com" });
+        expect(response.text).toContain(en.errors_person_already_invited);
     });
 
     it("should redirect to the check presenter page", async () => {
