@@ -2,8 +2,6 @@ import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { ViewData } from "../../../types/util-types";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getCompanyProfile } from "../../../services/companyProfileService";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
 import { isEmailAuthorised, isEmailInvited } from "../../../services/associationsService";
@@ -12,11 +10,9 @@ import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/
 export class AddPresenterHandler extends GenericHandler {
 
     async execute (req: Request, method: string): Promise<ViewData> {
-        const company: CompanyProfile = await getCompanyProfile(
-            req.params[constants.COMPANY_NUMBER]
-        );
-        const { companyName, companyNumber } = company;
-        this.viewData = await this.getViewData(req, company);
+        const companyName = getExtraData(req.session, constants.COMPANY_NAME);
+        const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
+        this.viewData = await this.getViewData(req, companyNumber, companyName);
         const clearForm = req.query.cf as string;
         if (validateClearForm(clearForm)) {
             deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
@@ -53,8 +49,7 @@ export class AddPresenterHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private async getViewData (req: Request, company: CompanyProfile): Promise<ViewData> {
-        const { companyName, companyNumber } = company;
+    private async getViewData (req: Request, companyNumber: string, companyName: string): Promise<ViewData> {
         const translations = getTranslationsForView(req.t, constants.ADD_PRESENTER_PAGE);
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
 
