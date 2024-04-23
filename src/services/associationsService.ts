@@ -5,6 +5,7 @@ import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
 import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationState, AssociationStateResponse } from "../types/associations";
 
 export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
@@ -32,16 +33,35 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
     return Promise.resolve(sdkResponse.resource as Associations);
 };
 
-export const isCompanyAssociatedWithUser = async (req: Request, companyNumber: string, userEmail: string): Promise<string> => {
-    const companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, userEmail);
-    const isAssociated: boolean = companyAssociations.totalResults > 0 && companyAssociations.items.some((item) => item.status === AssociationStatus.CONFIRMED);
+export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumber: string): Promise<AssociationStateResponse> => {
+    const statuses: AssociationStatus[] = [AssociationStatus.AWAITING_APPROVAL, AssociationStatus.CONFIRMED, AssociationStatus.REMOVED];
+    const userAssociations: Associations = await getUserAssociations(req, statuses, companyNumber);
+    let isOrWasAssociated: AssociationState;
+    let associationId;
+    if (userAssociations.totalResults > 0) {
+        const associationStatus: AssociationStatus = userAssociations.items[0].status;
+        switch (associationStatus) {
+        case AssociationStatus.CONFIRMED:
+            isOrWasAssociated = AssociationState.COMPNANY_ASSOCIATED_WITH_USER;
+            break;
+        case AssociationStatus.AWAITING_APPROVAL:
+            isOrWasAssociated = AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER;
+            break;
+        case AssociationStatus.REMOVED:
+            isOrWasAssociated = AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER;
+            break;
+        }
+        associationId = userAssociations.items[0].id;
+    } else {
+        isOrWasAssociated = AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER;
+    }
 
-    return Promise.resolve(isAssociated ? constants.COMPNANY_ASSOCIATED_WITH_USER : constants.COMPNANY_NOT_ASSOCIATED_WITH_USER);
+    return Promise.resolve({ state: isOrWasAssociated, associationId });
 };
 
-export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string): Promise<Associations> => {
+export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, undefined, undefined, undefined, userEmail);
+    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, undefined, undefined, userEmail);
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);
@@ -88,7 +108,7 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
     return Promise.resolve(associationId);
 };
 
-export const updateAssociationStatus = async (req: Request, associationId: string, status: AssociationStatus): Promise<void> => {
+export const updateAssociationStatus = async (req: Request, associationId: string, status: AssociationStatus): Promise<string> => {
     const apiClient = createOauthPrivateApiClient(req);
     const sdkResponse: Resource<undefined | Errors> = await apiClient.associationsService.updateAssociationStatus(associationId, status);
 
@@ -103,6 +123,8 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     }
 
     logger.debug(`The status of an association with id ${associationId} changed`);
+
+    return Promise.resolve(associationId);
 };
 
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {

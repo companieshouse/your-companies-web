@@ -5,11 +5,13 @@ import * as constants from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { StatusCodes } from "http-status-codes";
-import { getLoggedInUserEmail, setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
-import { isCompanyAssociatedWithUser } from "../../../services/associationsService";
+import { setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
+import { isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewData } from "../../../types/util-types";
 import { validateClearForm } from "../../../lib/validation/generic";
+
+import { AssociationState, AssociationStateResponse } from "../../../types/associations";
 
 export class AddCompanyHandler extends GenericHandler {
 
@@ -65,7 +67,7 @@ export class AddCompanyHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private async validateCompanyNumber (req: Request, companyNumber:string) {
+    private async validateCompanyNumber (req: Request, companyNumber: string) {
 
         if (!companyNumber) {
             this.viewData.errors = {
@@ -88,19 +90,18 @@ export class AddCompanyHandler extends GenericHandler {
     }
 
     private async handleActiveCompany (req: Request, companyProfile: CompanyProfile) {
-        setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
         deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
 
-        const userEmailAddress = getLoggedInUserEmail(req.session);
-        const isAssociated: string = await isCompanyAssociatedWithUser(req, companyProfile.companyNumber, userEmailAddress);
-        if (isAssociated === constants.COMPNANY_ASSOCIATED_WITH_USER) {
+        const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyProfile.companyNumber);
+        if (isAssociated.state === AssociationState.COMPNANY_ASSOCIATED_WITH_USER) {
             this.viewData.errors = {
                 companyNumber: {
                     text: constants.THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
                 }
             };
         } else {
+            setExtraData(req.session, constants.ASSOCIATION_STATE_RESPONSE, isAssociated);
             setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         }
     }

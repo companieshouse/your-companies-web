@@ -17,6 +17,7 @@ export const REMOVE_PERSON = "removePerson";
 export const USER_NAME = "userName";
 export const PROPOSED_COMPANY_NUM = "proposedCompanyNumber";
 export const PROPOSED_EMAIL = "proposedEmail";
+export const ASSOCIATION_STATE_RESPONSE = "associationStateResponse";
 
 // query params
 export const CLEAR_FORM = "cf";
@@ -113,8 +114,6 @@ export const POST = "POST";
 export const COMPANY_STATUS_ACTIVE = "active";
 
 // Associations
-export const COMPNANY_ASSOCIATED_WITH_USER = "company associated with user";
-export const COMPNANY_NOT_ASSOCIATED_WITH_USER = "company not associated with user";
 export const USER_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user removed from company associations";
 export const USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user not removed from company associations";
 

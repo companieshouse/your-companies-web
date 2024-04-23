@@ -5,8 +5,7 @@ import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations.json";
 import * as associationsService from "../../../../src/services/associationsService";
-import { Associations } from "../../../../src/types/associations";
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus, Associations } from "private-api-sdk-node/dist/services/associations/types";
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations";
