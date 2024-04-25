@@ -29,11 +29,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
         const rows: ({ text: string } | { html: string })[][] = [];
         if (userAssociations?.length) {
             for (const association of userAssociations) {
-                // { "invited_by": "6666", "invited_at": "2024-04-08T17:27:19.539917" }
                 if (association.invitations?.length) {
-                    // for (const invite of association.invitations) {
-                    // const newestInvite = association.invitations.reduce((a, b) =>
-                    //     new Date(a.invitedAt) > new Date(b.invitedAt) ? b : a);
                     const newestInvite = getNewestInvite(association.invitations);
                     const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
                     const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
@@ -41,7 +37,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
                     rows.push([
                         { text: association.companyName },
                         { text: association.companyNumber },
-                        { text: newestInvite?.invitedBy },
+                        { text: newestInvite.invitedBy },
                         {
                             html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
                         },
@@ -49,7 +45,6 @@ export class CompanyInvitationsHandler extends GenericHandler {
                             html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${association.companyName}`, translations.decline as string)
                         }
                     ]);
-                    //   } // end for (const invite of association.invitations
                 }
             }
         }
