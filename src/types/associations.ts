@@ -1,6 +1,6 @@
 export interface Invitation {
     invitedBy: string;
-    invitedAy: string;
+    invitedAt: string;
 }
 
 export type AuthorisedPerson = {
