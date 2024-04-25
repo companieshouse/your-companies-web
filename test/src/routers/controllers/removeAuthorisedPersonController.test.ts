@@ -1,7 +1,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { COMPANY_NAME, REFERER_URL, LANDING_URL } from "../../../../src/constants";
+import * as constants from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import * as en from "../../../../src/locales/en/translation/remove-authorised-person.json";
@@ -62,7 +62,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         // Given
         const langVersion = "?lang=en";
         const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(COMPANY_NAME, expectedCompanyName);
+        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
 
         // When
         const response = await router.get(`${urlWithEmail}${langVersion}`);
@@ -88,7 +88,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         // Given
         const langVersion = "?lang=cy";
         const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(COMPANY_NAME, expectedCompanyName);
+        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
 
         // When
         const response = await router.get(`${urlWithEmail}${langVersion}`);
@@ -124,7 +124,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         // Given
         const langVersion = "&lang=en";
         const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(COMPANY_NAME, expectedCompanyName);
+        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
 
         // When
         const response = await router.get(`${urlWithName}${langVersion}`);
@@ -149,7 +149,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         // Given
         const langVersion = "&lang=cy";
         const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(COMPANY_NAME, expectedCompanyName);
+        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
 
         // When
         const response = await router.get(`${urlWithName}${langVersion}`);
@@ -170,7 +170,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(cyCommon.cancel);
     });
 
-    it("should keep referrer url the same and not redirect if referrer is without confirmation ending", async () => {
+    it("should not redirect, and return status 200 if referrer is without confirmation ending", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -180,14 +180,14 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         });
 
         const hrefAValue = "testUrl.com";
-        setExtraData(session, REFERER_URL, hrefAValue);
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
         await router.get(urlWithEmail).expect(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-removed'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-person-removed", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -197,14 +197,14 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         });
 
         const hrefAValue = "testUrl.com";
-        setExtraData(session, REFERER_URL, hrefAValue);
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
         await router.get(urlWithEmail).expect(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-added'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-person-added", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -214,14 +214,14 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         });
 
         const hrefAValue = "testUrl.com";
-        setExtraData(session, REFERER_URL, hrefAValue);
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
         await router.get(urlWithEmail).expect(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-cancel-person'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-cancel-person", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -231,10 +231,30 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         });
 
         const hrefAValue = "testUrl.com";
-        setExtraData(session, REFERER_URL, hrefAValue);
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
         await router.get(urlWithEmail).expect(200);
+
+    });
+
+    it("should not redirect, and return status 200 if referrer contains manage-authorised-people", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/manage-authorised-people" };
+            req.session = session;
+            next();
+        });
+        const pageIndicator = true;
+        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
+
+        // When Then
+        const response = await router.get(urlWithEmail);
+        expect(response.status).toEqual(200);
 
     });
 
@@ -244,7 +264,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
     });
 
     it("should return correct response message including desired url path for authentication-code-remove/:userEmail page", async () => {
-        const urlPath = LANDING_URL;
+        const urlPath = constants.LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
         const response = await router.get(urlWithEmail);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
@@ -256,7 +276,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
     });
 
     it("should return correct response message including desired url path for authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        const urlPath = LANDING_URL;
+        const urlPath = constants.LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
         const response = await router.get(urlWithEmail);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
@@ -268,8 +288,8 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail WITH AND W
 
     beforeEach(() => {
         jest.clearAllMocks();
-        session.setExtraData(REFERER_URL, "/");
-        session.setExtraData(COMPANY_NAME, "General Ltd");
+        session.setExtraData(constants.REFERER_URL, "/");
+        session.setExtraData(constants.COMPANY_NAME, "General Ltd");
     });
 
     it("should check session and auth before returning the /your-companies/remove-authenticated-person/:userEmail page", async () => {

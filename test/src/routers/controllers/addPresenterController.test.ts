@@ -90,7 +90,8 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedInput);
         expect(response.text).not.toContain("Enter an email address in the correct format");
     });
-    it("should keep referrer url the same and not redirect if referrer is without confirmation ending", async () => {
+
+    it("should not redirect, and return status 200 if referrer is without confirmation ending", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -103,11 +104,12 @@ describe(`GET ${url}`, () => {
         setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
-        await router.get(url).expect(200);
+        const response = await router.get(url);
+        expect(response.status).toEqual(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-removed'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-person-removed", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -120,11 +122,12 @@ describe(`GET ${url}`, () => {
         setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
-        await router.get(url).expect(200);
+        const response = await router.get(url);
+        expect(response.status).toEqual(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-added'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-person-added", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -137,11 +140,12 @@ describe(`GET ${url}`, () => {
         setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
-        await router.get(url).expect(200);
+        const response = await router.get(url);
+        expect(response.status).toEqual(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-cancel-person'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-cancel-person", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -154,7 +158,8 @@ describe(`GET ${url}`, () => {
         setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
-        await router.get(url).expect(200);
+        const response = await router.get(url);
+        expect(response.status).toEqual(200);
 
     });
 

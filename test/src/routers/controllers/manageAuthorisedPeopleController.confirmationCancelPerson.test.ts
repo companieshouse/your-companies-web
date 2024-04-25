@@ -124,7 +124,8 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
 
     it("should return status 302 on page redirect", async () => {
         redirectPageSpy.mockReturnValue(true);
-        await router.get(url).expect(302);
+        const response = await router.get(url);
+        expect(response.status).toEqual(302);
     });
 
     it("should return correct response message including desired url path", async () => {

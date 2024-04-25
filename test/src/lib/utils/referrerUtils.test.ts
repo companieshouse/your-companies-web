@@ -72,7 +72,7 @@ describe("redirectPage", () => {
         expect(result).toEqual(false);
     });
 
-    it("should return true if none of the parameter urls equal the referrer url", () => {
+    it("should return true if none of the parameter urls equal the referrer url and page indicator equals false", () => {
         // Given
         const referrer = "testUrl.com";
         // When
@@ -81,7 +81,17 @@ describe("redirectPage", () => {
         expect(result).toEqual(true);
     });
 
-    it("should return true if the referrer parameter equals 'undefined'", () => {
+    it("should return false if none of the parameter urls equal the referrer url but page indicator equals true", () => {
+        // Given
+        const referrer = "testUrl.com";
+        const indicator = true;
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return true if the referrer parameter is undefined", () => {
         // Given
         const referrer = undefined;
         // When

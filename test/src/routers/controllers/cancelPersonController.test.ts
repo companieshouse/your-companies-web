@@ -89,7 +89,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
         expect(response.text).toContain(cyCommon.no);
     });
 
-    it("should keep referrer url the same and not redirect if referrer is without confirmation ending", async () => {
+    it("should not redirect, and return status 200 if referrer is without confirmation ending", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -106,7 +106,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-removed'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-person-removed", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -119,11 +119,12 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
         setExtraData(session, constants.REFERER_URL, hrefAValue);
 
         // When Then
-        await router.get(url).expect(200);
+        const response = await router.get(url);
+        expect(response.status).toEqual(200);
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-person-added'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-person-added", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -140,7 +141,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
 
     });
 
-    it("should change referrer url and not redirect if referrer ends with 'confirmation-cancel-person'", async () => {
+    it("should not redirect, and return status 200 if referrer contains confirmation-cancel-person", async () => {
 
         // Given
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
@@ -157,9 +158,30 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
 
     });
 
+    it("should not redirect, and return status 200 if referrer contains manage-authorised-people", async () => {
+
+        // Given
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: "testUrl.com/manage-authorised-people" };
+            req.session = session;
+            next();
+        });
+        const pageIndicator = true;
+        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
+
+        const hrefAValue = "testUrl.com";
+        setExtraData(session, constants.REFERER_URL, hrefAValue);
+
+        // When Then
+        const response = await router.get(url);
+        expect(response.status).toEqual(200);
+
+    });
+
     it("should return status 302 on page redirect", async () => {
         redirectPageSpy.mockReturnValue(true);
-        await router.get(url).expect(302);
+        const response = await router.get(url);
+        expect(response.status).toEqual(302);
     });
 
     it("should return correct response message including desired url path", async () => {
