@@ -1,5 +1,5 @@
 import { getNewestInvite } from "../../../../src/lib/helpers/invitationHelper";
-import { Invitation } from "../../../../src/types/associations";
+import { Invitation } from "private-api-sdk-node/dist/services/associations/types";
 
 describe("getNewestInvite", () => {
     it("should return the most recent invitation", () => {
