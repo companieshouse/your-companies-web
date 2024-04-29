@@ -1,9 +1,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { getCompanyProfile } from "../../../../src/services/companyProfileService";
 import * as associationsService from "../../../../src/services/associationsService";
-import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
@@ -18,7 +16,6 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     return next();
 });
 
-const mockGetCompanyProfile = getCompanyProfile as jest.Mock;
 const mockCreateAssociation = jest.spyOn(associationsService, "createAssociation");
 
 const router = supertest(app);
@@ -27,7 +24,8 @@ const url = "/your-companies/add-presenter-check-details/12345678";
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        mockGetCompanyProfile.mockResolvedValueOnce(validActiveCompanyProfile);
+        session.setExtraData(constants.COMPANY_NUMBER, "NI038379");
+        session.setExtraData(constants.COMPANY_NAME, "Test Company");
     });
     it("should check session, company and user auth before returning the page", async () => {
         await router.get(url);
@@ -58,7 +56,8 @@ describe(`POST ${url}`, () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        mockGetCompanyProfile.mockResolvedValueOnce({ ...validActiveCompanyProfile, companyNumber: "NI038379" });
+        session.setExtraData(constants.COMPANY_NUMBER, "NI038379");
+        session.setExtraData(constants.COMPANY_NAME, "Test Company");
     });
 
     it("should check session, company and user auth before routing to controller", async () => {
