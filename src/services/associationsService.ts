@@ -1,4 +1,4 @@
-import { Request } from "express";
+import e, { Request } from "express";
 import { createOauthPrivateApiClient } from "./apiClientService";
 import { Resource } from "@companieshouse/api-sdk-node";
 import logger from "../lib/Logger";
@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
 import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 import { AssociationState, AssociationStateResponse } from "../types/associations";
+import createError from "http-errors";
 
 export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
@@ -118,8 +119,9 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-        logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
+        logger.error(errorMessage);
+        return Promise.reject(createError(sdkResponse.httpStatusCode, errorMessage));
     }
 
     logger.debug(`The status of an association with id ${associationId} changed`);
