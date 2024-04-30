@@ -10,7 +10,7 @@
 {% extends "layouts/default.njk" %}
 
 {% set company_association = companyAssociations.items | first %}
-{% set title = company_association.companyName + " (" + company_association.companyNumber + ")" + lang.title_manage_authorised_people %}
+{% set title = company_association.companyName + " (" + company_association.companyNumber + ") " + lang.title_manage_authorised_people %}
 
 {% block back_link %}
 
@@ -123,7 +123,7 @@
         {% if association.status === confirmed %}
             {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set removeLinkVisuallyHiddenText = lang.link_to_remove_user_from_digitaly_authorised_start + association.userEmail + lang.link_to_remove_user_from_digitaly_authorised_end + association.companyName %}
+            {% set removeLinkVisuallyHiddenText = lang.remove + " " + association.userEmail %}
             {% set query_params = {
                 userName: association.displayName
             }
@@ -141,10 +141,10 @@
             {% endset %}
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set cancelLinkVisuallyHiddenText = lang.link_to_cancel_authorisation_for + association.userEmail %}
+            {% set cancelLinkVisuallyHiddenText = lang.cancel + " " + association.userEmail %}
             {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
-            {% set resendEmailLinkVisuallyHiddenText = lang.link_to_resend_email_with_authorisation_request_for + association.userEmail %}
+            {% set resendEmailLinkVisuallyHiddenText = lang.resend_to + " " + association.userEmail %}
             {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
