@@ -57,6 +57,6 @@ router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineC
 
 router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptControllerGet as RequestHandler);
 
-router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet as RequestHandler);
+router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet);
 
 export default router;
