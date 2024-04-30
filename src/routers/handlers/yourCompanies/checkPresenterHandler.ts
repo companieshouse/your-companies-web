@@ -16,15 +16,19 @@ export class CheckPresenterHandler extends GenericHandler {
         const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
         this.viewData = await this.getViewData(req, companyNumber, companyName, emailAddress);
         if (method === constants.POST) {
-            await createAssociation(req, companyNumber, emailAddress);
-            const authorisedPerson: AuthorisedPerson = {
-                authorisedPersonEmailAddress: emailAddress,
-                authorisedPersonCompanyName: companyName
-            };
-            // save the details of the successfully authorised person
-            setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
-            // remove the to be authorised person email
-            deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+            try {
+                await createAssociation(req, companyNumber, emailAddress);
+                const authorisedPerson: AuthorisedPerson = {
+                    authorisedPersonEmailAddress: emailAddress,
+                    authorisedPersonCompanyName: companyName
+                };
+                // save the details of the successfully authorised person
+                setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
+                // remove the to be authorised person email
+                deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
+            } catch (error) {
+                this.viewData.associationAlreadyExist = true;
+            }
         }
         return Promise.resolve(this.viewData);
     }

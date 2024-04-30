@@ -12,7 +12,11 @@ export const checkPresenterControllerPost: RequestHandler = async (req: Request,
     const handler = new CheckPresenterHandler();
     const viewData = await handler.execute(req, constants.POST);
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
-        res.render(constants.CHECK_PRESENTER_PAGE, viewData);
+        if (viewData.associationAlreadyExist) {
+            res.status(400).render(constants.ERROR_400_TEMPLATE);
+        } else {
+            res.render(constants.CHECK_PRESENTER_PAGE, viewData);
+        }
     } else {
         res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(
             `:${constants.COMPANY_NUMBER}`,
