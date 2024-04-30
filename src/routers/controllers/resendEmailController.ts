@@ -34,5 +34,5 @@ export const resendEmailController = async (req: Request, res: Response): Promis
             );
         }
     }
-    return res.status(404).render(constants.ERROR_400_TEMPLATE);
+    return res.status(404).render(constants.ERROR_404_TEMPLATE);
 };
