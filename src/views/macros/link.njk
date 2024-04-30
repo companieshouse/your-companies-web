@@ -1,21 +1,4 @@
 {# 
-This macro creates a hyperlink
-@param text - (string, required) is the text to enclose in <a></a> tags
-@param ariaLabelText - (string, required) is the aria-label text for screen readers
-@param href - (string, required) is the URL that the hyperlink points to
-@param urlParams - ({ [key: string]: string }, optional) contains key/value pairs
-                to replace the route parameters in href
-@param queryParams - ({ [key: string]: string }, optional) contains key/value pairs
-                to replace the query parameters in href
-#}
-
-{% macro link(text, ariaLabelText, href, urlParams, queryParams) %}
-    {% set href = prepareHref(href, urlParams, queryParams) %}
-
-    <a href="{{href | replace(r/\s/g, "")}}" aria-label="{{ariaLabelText}}">{{text}}</a>
-{% endmacro %}
-
-{# 
 This macro creates a hyperlink with a visually hidden text
 @param text - (string, required) is the text to enclose in <a></a> tags
 @param visuallyHiddenText - (string, required) is the visually hidden text for screen readers
@@ -26,7 +9,7 @@ This macro creates a hyperlink with a visually hidden text
                 to replace the query parameters in href
 #}
 
-{% macro linkWithHiddenText(text, visuallyHiddenText, href, urlParams, queryParams) %}
+{% macro link(text, visuallyHiddenText, href, urlParams, queryParams) %}
     {% set href = prepareHref(href, urlParams, queryParams) %}
 
     <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state">

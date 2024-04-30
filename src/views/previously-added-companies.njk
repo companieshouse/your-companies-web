@@ -3,7 +3,7 @@
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "macros/link.njk" import linkWithHiddenText %}
+{% from "macros/link.njk" import link %}
 
 {% set rowsData = [] %}
 {% for elem in associationData %}
@@ -16,7 +16,7 @@
     } %}
     {% set company_name = elem | first %}
     {% set visuallyHiddenText = company_name.text %}
-    {% set view_and_manage_link = linkWithHiddenText(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, params) %}
+    {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, params) %}
     {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}

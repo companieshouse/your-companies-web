@@ -9,6 +9,9 @@
 
 {% extends "layouts/default.njk" %}
 
+{% set company_association = companyAssociations.items | first %}
+{% set title = company_association.companyName + " (" + company_association.companyNumber + ") " + lang.title_manage_authorised_people %}
+
 {% block back_link %}
 
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
@@ -18,8 +21,6 @@
 {% endblock %}
 
 {% block main_content %}
-
-    {% set company_association = companyAssociations.items | first %}
 
     {% if cancelledPerson or removedPerson %}
         {% set heading_text = lang.digital_authorisation_cancelled if cancelledPerson else 
@@ -122,13 +123,13 @@
         {% if association.status === confirmed %}
             {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set removeLinkAriaLabelText = lang.link_to_remove_user_from_digitaly_authorised_start + association.userEmail + lang.link_to_remove_user_from_digitaly_authorised_end + association.companyName %}
+            {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set query_params = {
                 userName: association.displayName
             }
             if association.displayName and association.displayName !== "Not provided" else 
                 undefined %}
-            {% set removeLink = link(lang.remove, removeLinkAriaLabelText, removeUrl, {
+            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }, query_params) %}
@@ -140,11 +141,11 @@
             {% endset %}
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set cancelLinkAriaLabelText = lang.link_to_cancel_authorisation_for + association.userEmail %}
-            {% set cancelLink = link(lang.cancel, cancelLinkAriaLabelText, cancelUrl, {userEmail: association.userEmail})%}
+            {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
+            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
-            {% set resendEmailLinkAriaLabelText = lang.link_to_resend_email_with_authorisation_request_for + association.userEmail %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkAriaLabelText, resendEmailUrl, {userEmail: association.userEmail})%}
+            {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}
