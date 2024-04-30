@@ -15,7 +15,7 @@
   "confirmed": "Confirmed",
   "awaiting_confirmation": "Awaiting \nconfirmation",
   "link_to_remove_user_from_digitaly_authorised_end": " from people digitally authorised to file online for ",
-  "resend_to": "Resend to ",
+  "to": " to ",
   "digital_authorisation_cancelled": "Digital authorisation cancelled",
   "you_have_successfully_cancelled_digital_authorisation_start": "You have successfully cancelled digital authorisation for ",
   "you_have_successfully_cancelled_digital_authorisation_end": " to file online for ",

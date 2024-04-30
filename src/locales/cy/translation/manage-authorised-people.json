@@ -15,7 +15,7 @@
   "confirmed": "[CY] Confirmed",
   "awaiting_confirmation": "[CY] Awaiting \nconfirmation",
   "link_to_remove_user_from_digitaly_authorised_end": " [CY] from people digitally authorised to file online for ",
-  "resend_to": "[CY] Resend to ",
+  "to": "[CY] to ",
   "digital_authorisation_cancelled": "[CY] Digital authorisation cancelled",
   "you_have_successfully_cancelled_digital_authorisation_start": "[CY] You have successfully cancelled digital authorisation for ",
   "you_have_successfully_cancelled_digital_authorisation_end": "[CY] to file online for ",

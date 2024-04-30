@@ -123,7 +123,7 @@
         {% if association.status === confirmed %}
             {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set removeLinkVisuallyHiddenText = lang.remove + " " + association.userEmail %}
+            {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set query_params = {
                 userName: association.displayName
             }
@@ -141,10 +141,10 @@
             {% endset %}
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
-            {% set cancelLinkVisuallyHiddenText = lang.cancel + " " + association.userEmail %}
+            {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
-            {% set resendEmailLinkVisuallyHiddenText = lang.resend_to + " " + association.userEmail %}
+            {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
             {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
