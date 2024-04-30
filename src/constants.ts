@@ -99,10 +99,8 @@ export const THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT = "this_company
 export const ENTER_A_COMPANY_NUMBER = "enter_a_company_number";
 export const ERRORS_EMAIL_REQUIRED = "errors_email_required";
 export const ERRORS_EMAIL_INVALID = "errors_email_invalid";
-export const ERRORS_EMAIL_ALREADY_AUTHORISED = "errors_email_already_authorised";
 export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you_want_to_cancel_authorisation";
 export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_that_you_have_read";
-export const ERRORS_PERSON_ALREADY_INVITED = "errors_person_already_invited";
 export const COMPANY_NUMBER_MUST_ONLY_INCLUDE = "company_number_must_only_include";
 export const ENTER_A_COMPANY_NUMBER_OR_PART = "enter_a_company_number_or_part";
 

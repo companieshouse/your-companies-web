@@ -136,8 +136,3 @@ export const isEmailAuthorised = async (req: Request, email: string, companyNumb
     const associations: Associations = await getCompanyAssociations(req, companyNumber, email);
     return associations.items.some(item => item.userEmail === email && item.status === AssociationStatus.CONFIRMED);
 };
-
-export const isEmailInvited = async (req: Request, email: string, companyNumber: string): Promise<boolean> => {
-    const associations: Associations = await getCompanyAssociations(req, companyNumber, email);
-    return associations.items.some(item => item.userEmail === email && item.status === AssociationStatus.AWAITING_APPROVAL);
-};

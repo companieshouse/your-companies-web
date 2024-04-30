@@ -1,7 +1,6 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as associationsService from "../../../../src/services/associationsService";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 import * as en from "../../../../src/locales/en/translation/add-presenter.json";
 import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
@@ -10,9 +9,6 @@ import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 jest.mock("../../../../src/services/companyProfileService");
-
-const mockIsEmailAuthorised: jest.SpyInstance = jest.spyOn(associationsService, "isEmailAuthorised");
-const mockIsEmailInvited: jest.SpyInstance = jest.spyOn(associationsService, "isEmailInvited");
 
 const router = supertest(app);
 const companyNumber = "12345678";
@@ -110,22 +106,7 @@ describe(`POST ${url}`, () => {
         expect(response.text).toContain(en.errors_email_invalid);
     });
 
-    it("should display current page with error message if email is associated with company", async () => {
-        mockIsEmailAuthorised.mockResolvedValueOnce(true);
-        const response = await router.post(url).send({ email: "bob@bob.com" });
-        expect(response.text).toContain(en.errors_email_already_authorised);
-    });
-
-    it("should display current page with error message if email already has invitation for the company", async () => {
-        mockIsEmailAuthorised.mockResolvedValueOnce(false);
-        mockIsEmailInvited.mockResolvedValueOnce(true);
-        const response = await router.post(url).send({ email: "bob@bob.com" });
-        expect(response.text).toContain(en.errors_person_already_invited);
-    });
-
     it("should redirect to the check presenter page", async () => {
-        mockIsEmailAuthorised.mockResolvedValueOnce(false);
-        mockIsEmailInvited.mockResolvedValueOnce(false);
         const response = await router.post(url).send({ email: "bob@bob.com" });
         expect(response.status).toEqual(302);
         expect(response.header.location).toEqual("/your-companies/add-presenter-check-details/12345678");

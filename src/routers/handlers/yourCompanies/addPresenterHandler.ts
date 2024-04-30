@@ -4,7 +4,6 @@ import { ViewData } from "../../../types/util-types";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
-import { isEmailAuthorised, isEmailInvited } from "../../../services/associationsService";
 import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 
 export class AddPresenterHandler extends GenericHandler {
@@ -21,7 +20,7 @@ export class AddPresenterHandler extends GenericHandler {
 
         if (method === constants.POST) {
             const email = req.body.email.trim();
-            await this.validateEmail(req, email, companyNumber, companyName);
+            await this.validateEmail(req, email);
             if (!this.viewData.errors) {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
                 deleteExtraData(req.session, constants.PROPOSED_EMAIL);
@@ -39,7 +38,7 @@ export class AddPresenterHandler extends GenericHandler {
             const validatedEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
             // display any errors with the current input
             if (typeof invalidProposedEmail === "string") {
-                await this.validateEmail(req, invalidProposedEmail, companyNumber, companyName);
+                await this.validateEmail(req, invalidProposedEmail);
                 this.viewData.authPersonEmail = invalidProposedEmail;
             } else if (typeof validatedEmail === "string") {
                 this.viewData.authPersonEmail = validatedEmail;
@@ -61,17 +60,11 @@ export class AddPresenterHandler extends GenericHandler {
         };
     }
 
-    private async validateEmail (req: Request, email: string, companyNumber: string, companyName: string) {
+    private async validateEmail (req: Request, email: string) {
         if (!email) {
             this.setError(constants.ERRORS_EMAIL_REQUIRED);
         } else if (!validateEmailString(email)) {
             this.setError(constants.ERRORS_EMAIL_INVALID);
-        } else if (await isEmailAuthorised(req, email, companyNumber)) {
-            this.viewData.lang[constants.ERRORS_EMAIL_ALREADY_AUTHORISED] += companyName;
-            this.setError(constants.ERRORS_EMAIL_ALREADY_AUTHORISED);
-        } else if (await isEmailInvited(req, email, companyNumber)) {
-            this.viewData.lang[constants.ERRORS_PERSON_ALREADY_INVITED] += companyName;
-            this.setError(constants.ERRORS_PERSON_ALREADY_INVITED);
         }
     }
 

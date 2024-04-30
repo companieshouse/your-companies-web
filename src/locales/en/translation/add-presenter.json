@@ -6,7 +6,5 @@
     "well_send_them_an_email": "We'll send them an email that contains a link.",
     "title_add_presenter": "What is the email address of the person you want to add? - Find and update company information - GOV.UK",
     "errors_email_required": "Enter the authorised person’s email address",
-    "errors_email_invalid": "Enter an email address in the correct format, like name@example.com",
-    "errors_email_already_authorised": "This person is already authorised to file for ",
-    "errors_person_already_invited": "This person has already been invited to be authorised to file for "
+    "errors_email_invalid": "Enter an email address in the correct format, like name@example.com"
 }
