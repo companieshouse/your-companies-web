@@ -9,6 +9,9 @@
 
 {% extends "layouts/default.njk" %}
 
+{% set company_association = companyAssociations.items | first %}
+{% set title = company_association.companyName + " (" + company_association.companyNumber + ")" + lang.title_manage_authorised_people %}
+
 {% block back_link %}
 
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
@@ -18,8 +21,6 @@
 {% endblock %}
 
 {% block main_content %}
-
-    {% set company_association = companyAssociations.items | first %}
 
     {% if cancelledPerson or removedPerson %}
         {% set heading_text = lang.digital_authorisation_cancelled if cancelledPerson else 
