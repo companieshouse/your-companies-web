@@ -1,29 +1,22 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
-import { isEmailAuthorised } from "../../services/associationsService";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
-import { sendAuthorisationEmail } from "../../services/emailNotificationService";
 import logger from "../../lib/Logger";
 import { validateEmailString } from "../../lib/validation/generic";
+import { createAssociation } from "../../services/associationsService";
 
 export const resendEmailController = async (req: Request, res: Response): Promise<void> => {
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const email = req.params[constants.USER_EMAIL];
     const validEmail = validateEmailString(email);
-    let emailOnList = false;
-    if (validEmail) {
-        emailOnList = await isEmailAuthorised(req, email, companyNumber);
-    }
-    if (!validEmail || !emailOnList) {
+
+    if (!validEmail) {
         logger.info(
             `Email ${email} invalid or not on the authorisation list for company ${companyNumber}`
         );
     } else {
-        const emailSendResponse = await sendAuthorisationEmail(
-            email,
-            companyNumber
-        );
-        if (emailSendResponse.httpStatusCode === 201) {
+        const emailSendResponse: string = await createAssociation(req, companyNumber, email);
+        if (emailSendResponse) {
             setExtraData(req.session, constants.RESENT_SUCCESS_EMAIL, email);
 
             return res.redirect(
@@ -34,5 +27,5 @@ export const resendEmailController = async (req: Request, res: Response): Promis
             );
         }
     }
-    return res.status(404).render(constants.ERROR_404_TEMPLATE);
+    return res.status(400).render(constants.ERROR_400_TEMPLATE);
 };
