@@ -15,7 +15,7 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
     let checkedReferrer;
     let newPageIndicator;
 
-    if (referrer?.includes("confirmation-person-removed") || referrer?.includes("confirmation-cancel-person") || referrer?.includes("confirmation-person-added")) {
+    if (referrer && (referrer.includes("confirmation-person-removed") || referrer.includes("confirmation-cancel-person") || referrer.includes("confirmation-person-added"))) {
         checkedReferrer = hrefA;
     } else {
         checkedReferrer = referrer;

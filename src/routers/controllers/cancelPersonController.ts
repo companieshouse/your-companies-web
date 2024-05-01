@@ -16,7 +16,7 @@ export const cancelPersonControllerGet = async (req: Request, res: Response): Pr
 
     setExtraData(req.session, constants.CANCEL_URL_EXTRA, cancelPageUrl);
 
-    if (referrer?.includes("confirmation-person-removed") || referrer?.includes("confirmation-cancel-person") || referrer?.includes("confirmation-person-added")) {
+    if (referrer && (referrer.includes("confirmation-person-removed") || referrer.includes("confirmation-cancel-person") || referrer.includes("confirmation-person-added"))) {
         checkedReferrer = hrefA;
     } else {
         checkedReferrer = referrer;
