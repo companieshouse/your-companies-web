@@ -5,7 +5,7 @@ import { redirectPage } from "../../lib/utils/referrerUtils";
 import { getExtraData } from "../../lib/utils/sessionUtils";
 
 export const checkPresenterControllerGet: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-    const referrer :string|undefined = req.get("Referrer");
+    const referrer: string | undefined = req.get("Referrer");
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 

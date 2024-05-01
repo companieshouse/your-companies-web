@@ -5,7 +5,7 @@ import { redirectPage } from "../../lib/utils/referrerUtils";
 import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 
 export const cancelPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const referrer :string|undefined = req.get("Referrer");
+    const referrer: string | undefined = req.get("Referrer");
     const hrefA = getExtraData(req.session, constants.REFERER_URL);
     const userEmail = req.params[constants.USER_EMAIL];
     const companyNumber = req.params[constants.COMPANY_NUMBER];

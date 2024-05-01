@@ -5,7 +5,7 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/ses
 import { redirectPage } from "../../lib/utils/referrerUtils";
 
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const referrer :string|undefined = req.get("Referrer");
+    const referrer: string | undefined = req.get("Referrer");
     const companyNumber = req.params[constants.COMPANY_NUMBER];
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     const cancelPageUrl = getExtraData(req.session, constants.CANCEL_URL_EXTRA);
@@ -17,11 +17,11 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
             constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(":companyNumber", companyNumber), pageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) &&
-    redirectPage(referrer, removePageUrl, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
+        redirectPage(referrer, removePageUrl, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
         deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
     } else if (req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL) &&
-    redirectPage(referrer, cancelPageUrl, constants.CONFIRMATION_CANCEL_PERSON_URL, pageIndicator)) {
+        redirectPage(referrer, cancelPageUrl, constants.CONFIRMATION_CANCEL_PERSON_URL, pageIndicator)) {
         deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
     } else {

@@ -5,7 +5,7 @@ import { getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 
 export const companyInvitationsDeclineControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const referrer :string|undefined = req.get("Referrer");
+    const referrer: string | undefined = req.get("Referrer");
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     const associationId = req.params[constants.ASSOCIATIONS_ID];
     const companyName = req.query[constants.COMPANY_NAME] as string;
