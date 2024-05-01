@@ -4,17 +4,15 @@ export const redirectPage = (referrer: string|undefined, hrefA:string, hrefB: st
         referrer = referrer.substring(0, referrer.length - 1);
     }
 
-    if (referrer === undefined) {
-        return true;
-    } else if (referrer?.endsWith(hrefA) ||
-    referrer?.includes(hrefA + "?") ||
-    referrer?.includes(hrefA + "&") ||
-    referrer?.endsWith(hrefB) ||
-    referrer?.includes(hrefB + "?") ||
-    referrer?.includes(hrefB + "&") ||
-    (hrefC !== undefined && (referrer?.endsWith(hrefC) ||
-    referrer?.includes(hrefC + "?") ||
-    referrer?.includes(hrefC + "&"))) || pageIndicator === true) {
+    if (referrer && (referrer.endsWith(hrefA) ||
+    referrer.includes(hrefA + "?") ||
+    referrer.includes(hrefA + "&") ||
+    referrer.endsWith(hrefB) ||
+    referrer.includes(hrefB + "?") ||
+    referrer.includes(hrefB + "&") ||
+    (hrefC !== undefined && (referrer.endsWith(hrefC) ||
+    referrer.includes(hrefC + "?") ||
+    referrer.includes(hrefC + "&"))) || pageIndicator === true)) {
         return false;
     } else {
         return true;
