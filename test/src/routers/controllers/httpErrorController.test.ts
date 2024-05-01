@@ -30,7 +30,7 @@ describe("httpErrorHandler", () => {
         jest.clearAllMocks();
     });
 
-    it("should detect unauthorised errors, then call render and logger.errorRequest", async () => {
+    it("should detect a http-error Error, call logger.errorRequest and render an error template", async () => {
         // Given
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
@@ -46,5 +46,17 @@ describe("httpErrorHandler", () => {
             expect.stringContaining(`A 401 UnauthorizedError`)
         );
     });
-
+    it("should ignore errors that are not from http-errors modules, and pass then to next", async () => {
+        // Given
+        request.originalUrl = "/originalUrl";
+        request.method = "POST";
+        const error = new Error();
+        // When
+        httpErrorHandler(error, request, response, mockNext);
+        // Then
+        expect(response.render).not.toHaveBeenCalled();
+        expect(logger.errorRequest).not.toHaveBeenCalled();
+        expect(mockNext).toHaveBeenCalledTimes(1);
+        expect(mockNext).toHaveBeenCalledWith(error);
+    });
 });

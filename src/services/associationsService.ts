@@ -1,4 +1,4 @@
-import e, { Request } from "express";
+import { Request } from "express";
 import { createOauthPrivateApiClient } from "./apiClientService";
 import { Resource } from "@companieshouse/api-sdk-node";
 import logger from "../lib/Logger";
