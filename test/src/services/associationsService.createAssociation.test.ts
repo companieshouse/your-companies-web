@@ -4,6 +4,8 @@ import { createAssociation } from "../../../src/services/associationsService";
 import { Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
+import createError from "http-errors";
+
 jest.mock("../../../src/services/apiClientService");
 
 const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
@@ -75,19 +77,22 @@ describe("associationsService", () => {
             mockCreateAssociation.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<Errors>);
+            const expectedError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to create association for a company with company number ${companyNumber}`);
 
             await expect(createAssociation(reqest, companyNumber))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.BAD_REQUEST });
+                .rejects.toEqual(expectedError);
         });
 
         it("should throw an error if status code other than 201 for invited person", async () => {
             const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
+            const expectedError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to create association for a company with company number ${companyNumber}`);
+
             mockCreateAssociation.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<Errors>);
 
             await expect(createAssociation(reqest, companyNumber, inviteeEmailAddress))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.BAD_REQUEST });
+                .rejects.toEqual(expectedError);
         });
 
         it("Should throw an error if no response resource returned from SDK", async () => {

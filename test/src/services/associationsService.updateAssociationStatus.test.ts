@@ -4,7 +4,8 @@ import { updateAssociationStatus } from "../../../src/services/associationsServi
 import { AssociationStatus, Errors } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
-import CreateHttpError from "http-errors";
+import createError from "http-errors";
+
 jest.mock("../../../src/services/apiClientService");
 
 const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
@@ -47,9 +48,10 @@ describe("associationsService", () => {
                 .rejects.toBe(undefined);
         });
 
-        it("should throw an error if status code other than 200", async () => {
+        it("should throw an http error if status code other than 200", async () => {
             const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
-            const badRequestError = CreateHttpError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association with id ${associationId}`);
+            const badRequestError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association with id ${associationId}`);
+
             mockUpdateAssociationStatus.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<Errors>);

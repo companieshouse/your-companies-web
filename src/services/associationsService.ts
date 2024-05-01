@@ -86,16 +86,21 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
 
 export const createAssociation = async (req: Request, companyNumber: string, inviteeEmailAddress?: string): Promise<string> => {
     const apiClient = createOauthPrivateApiClient(req);
+    console.log("1...");
     const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, inviteeEmailAddress);
+    console.log("2...");
 
     if (!sdkResponse) {
-        logger.error(`Associations API for a company with company number ${companyNumber}`);
+        logger.error(`Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`);
         return Promise.reject(sdkResponse);
     }
+    console.log("3...");
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
-        logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`);
-        return Promise.reject(sdkResponse);
+        console.log("4...");
+
+        const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
+        return Promise.reject(createError(sdkResponse.httpStatusCode, errorMessage));
     }
 
     if (!sdkResponse.resource) {
@@ -114,13 +119,12 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     const sdkResponse: Resource<undefined | Errors> = await apiClient.associationsService.updateAssociationStatus(associationId, status);
 
     if (!sdkResponse) {
-        logger.error(`Associations API for an association with id ${associationId}`);
+        logger.error(`Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`);
         return Promise.reject(sdkResponse);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
-        logger.error(errorMessage);
         return Promise.reject(createError(sdkResponse.httpStatusCode, errorMessage));
     }
 
