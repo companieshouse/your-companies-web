@@ -86,19 +86,14 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
 
 export const createAssociation = async (req: Request, companyNumber: string, inviteeEmailAddress?: string): Promise<string> => {
     const apiClient = createOauthPrivateApiClient(req);
-    console.log("1...");
     const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, inviteeEmailAddress);
-    console.log("2...");
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`);
         return Promise.reject(sdkResponse);
     }
-    console.log("3...");
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
-        console.log("4...");
-
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
         return Promise.reject(createError(sdkResponse.httpStatusCode, errorMessage));
     }
