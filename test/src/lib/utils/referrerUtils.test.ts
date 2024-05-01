@@ -8,7 +8,7 @@ describe("redirectPage", () => {
     const indicator = false;
     const referrer = "referrer.com";
 
-    it("should return false if '/' has been removed from the end of url and urls are equal", () => {
+    it("should return false if both urls are equal after function executes", () => {
         // Given
         const urlWithSlash = "testUrl.com/";
         const urlWithoutSlash = "testUrl.com";
@@ -18,54 +18,93 @@ describe("redirectPage", () => {
         expect(result).toEqual(false);
     });
 
-    it("should return false when referrer equals one of the other url parameters", () => {
+    it("should return false when the referrer equals hrefA parameter", () => {
         // Given
-        const referrerOne = "hrefA.com";
-        const referrerTwo = "hrefB.com";
-        const referrerThree = "hrefC.com";
+        const referrer = "hrefA.com";
+        const hrefA = "hrefA.com";
         // When
-        const resultOne = redirectPage(referrerOne, hrefA, hrefB, indicator, hrefC);
-        const resultTwo = redirectPage(referrerTwo, hrefA, hrefB, indicator, hrefC);
-        const resultThree = redirectPage(referrerThree, hrefA, hrefB, indicator, hrefC);
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
         // Then
-        expect(resultOne).toEqual(false);
-        expect(resultTwo).toEqual(false);
-        expect(resultThree).toEqual(false);
+        expect(result).toEqual(false);
     });
 
-    it("should return false when parameter urls contain a query parameter", () => {
+    it("should return false when the referrer equals hrefB parameter", () => {
         // Given
-        const referrerOne = "hrefA.com?language";
-        const referrerTwo = "hrefB.com?language";
-        const referrerThree = "hrefC.com?language";
+        const referrer = "hrefB.com";
+        const hrefB = "hrefB.com";
         // When
-        const resultOne = redirectPage(referrerOne, hrefA, hrefB, indicator, hrefC);
-        const resultTwo = redirectPage(referrerTwo, hrefA, hrefB, indicator, hrefC);
-        const resultThree = redirectPage(referrerThree, hrefA, hrefB, indicator, hrefC);
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
         // Then
-        expect(resultOne).toEqual(false);
-        expect(resultTwo).toEqual(false);
-        expect(resultThree).toEqual(false);
+        expect(result).toEqual(false);
     });
 
-    it("should return false when parameter urls contain an query parameter with an ampersand (&)", () => {
+    it("should return false when the referrer equals hrefC parameter", () => {
         // Given
-        const referrerOne = "hrefA.com?query&language";
-        const referrerTwo = "hrefB.com?query&language";
-        const referrerThree = "hrefC.com?query&language";
+        const referrer = "hrefC.com";
+        const hrefC = "hrefC.com";
         // When
-        const resultOne = redirectPage(referrerOne, hrefA, hrefB, indicator, hrefC);
-        const resultTwo = redirectPage(referrerTwo, hrefA, hrefB, indicator, hrefC);
-        const resultThree = redirectPage(referrerThree, hrefA, hrefB, indicator, hrefC);
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
         // Then
-        expect(resultOne).toEqual(false);
-        expect(resultTwo).toEqual(false);
-        expect(resultThree).toEqual(false);
+        expect(result).toEqual(false);
     });
 
-    it("should return false when the page indicator is true", () => {
+    it("should return false when the page indicator is true and none of the url parameters equal the referrer url", () => {
         // Given
         const indicator = true;
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return false when referrer url equals hrefA but with a query parameter", () => {
+        // Given
+        const referrer = "hrefA.com?language";
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return false when referrer url equals hrefB but with a query parameter", () => {
+        // Given
+        const referrer = "hrefB.com?language";
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return false when referrer url equals hrefC but with a query parameter", () => {
+        // Given
+        const referrer = "hrefC.com?language";
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return false when referrer url equals hrefA but with an ampersand (&)", () => {
+        // Given
+        const referrer = "hrefA.com&language";
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return false when referrer url equals hrefB but with an ampersand (&)", () => {
+        // Given
+        const referrer = "hrefB.com&language";
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
+
+    it("should return false when referrer url equals hrefC but with an ampersand (&)", () => {
+        // Given
+        const referrer = "hrefC.com&language";
         // When
         const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
         // Then
@@ -79,16 +118,6 @@ describe("redirectPage", () => {
         const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
         // Then
         expect(result).toEqual(true);
-    });
-
-    it("should return false if none of the parameter urls equal the referrer url but page indicator equals true", () => {
-        // Given
-        const referrer = "testUrl.com";
-        const indicator = true;
-        // When
-        const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
-        // Then
-        expect(result).toEqual(false);
     });
 
     it("should return true if the referrer parameter is undefined", () => {
