@@ -134,8 +134,3 @@ export const removeUserFromCompanyAssociations = async (req: Request, associatio
     updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
     return Promise.resolve(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 };
-
-export const isEmailAuthorised = async (req: Request, email: string, companyNumber: string): Promise<boolean> => {
-    const associations: Associations = await getCompanyAssociations(req, companyNumber, email);
-    return associations.items.some(item => item.userEmail === email && item.status === AssociationStatus.CONFIRMED);
-};
