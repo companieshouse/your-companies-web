@@ -7,7 +7,6 @@ import { StatusCodes } from "http-status-codes";
 import { NextFunction } from "express";
 import logger from "../../../../src/lib/Logger";
 
-const mockNext: NextFunction = jest.fn();
 logger.errorRequest = jest.fn();
 
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
@@ -23,6 +22,7 @@ const session: Session = new Session();
 const request = mockRequest();
 request.session = session;
 const response = mockResponse();
+const mockNext: NextFunction = jest.fn();
 
 describe("httpErrorHandler", () => {
 

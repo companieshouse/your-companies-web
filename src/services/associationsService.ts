@@ -95,7 +95,8 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
-        return Promise.reject(createError(sdkResponse.httpStatusCode, errorMessage));
+        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
     }
 
     if (!sdkResponse.resource) {
@@ -120,7 +121,8 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
-        return Promise.reject(createError(sdkResponse.httpStatusCode, errorMessage));
+        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
     }
 
     logger.debug(`The status of an association with id ${associationId} changed`);

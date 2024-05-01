@@ -50,7 +50,7 @@ describe("associationsService", () => {
 
         it("should throw an http error if status code other than 200", async () => {
             const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
-            const badRequestError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association with id ${associationId}`);
+            const badRequestError = createError(HTTP_STATUS_CODE, `"No error list returned" Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association with id ${associationId}`);
 
             mockUpdateAssociationStatus.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE

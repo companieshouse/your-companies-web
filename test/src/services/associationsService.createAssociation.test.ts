@@ -77,7 +77,7 @@ describe("associationsService", () => {
             mockCreateAssociation.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<Errors>);
-            const expectedError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to create association for a company with company number ${companyNumber}`);
+            const expectedError = createError(HTTP_STATUS_CODE, `"No error list returned" Http status code ${HTTP_STATUS_CODE} - Failed to create association for a company with company number ${companyNumber}`);
 
             await expect(createAssociation(reqest, companyNumber))
                 .rejects.toEqual(expectedError);
@@ -85,7 +85,7 @@ describe("associationsService", () => {
 
         it("should throw an error if status code other than 201 for invited person", async () => {
             const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
-            const expectedError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to create association for a company with company number ${companyNumber}`);
+            const expectedError = createError(HTTP_STATUS_CODE, `"No error list returned" Http status code ${HTTP_STATUS_CODE} - Failed to create association for a company with company number ${companyNumber}`);
 
             mockCreateAssociation.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
