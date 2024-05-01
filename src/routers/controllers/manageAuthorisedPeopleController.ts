@@ -15,21 +15,15 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
         redirectPage(referrer,
             constants.YOUR_COMPANIES_CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber),
             constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(":companyNumber", companyNumber), pageIndicator)) {
-
         res.redirect(constants.LANDING_URL);
-
     } else if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) &&
     redirectPage(referrer, removePageUrl, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
-
         deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
-
     } else if (req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL) &&
     redirectPage(referrer, cancelPageUrl, constants.CONFIRMATION_CANCEL_PERSON_URL, pageIndicator)) {
-
         deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
-
     } else {
         const handler = new ManageAuthorisedPeopleHandler();
         const viewData = await handler.execute(req);
