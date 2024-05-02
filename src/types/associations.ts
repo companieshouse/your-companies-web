@@ -1,8 +1,3 @@
-export interface Invitation {
-    invitedBy: string;
-    invitedAy: string;
-}
-
 export type AuthorisedPerson = {
     authorisedPersonCompanyName: string,
     authorisedPersonEmailAddress: string,

@@ -5,6 +5,7 @@ import * as constants from "../../../constants";
 import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getUserAssociations } from "../../../services/associationsService";
 import { AnyRecord, ViewData } from "../../../types/util-types";
+import { getNewestInvite } from "../../../lib/helpers/invitationHelper";
 
 export class CompanyInvitationsHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
@@ -29,22 +30,21 @@ export class CompanyInvitationsHandler extends GenericHandler {
         if (userAssociations?.length) {
             for (const association of userAssociations) {
                 if (association.invitations?.length) {
-                    for (const invite of association.invitations) {
-                        const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
-                        const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
-                        const companyNameQueryParam = `?${constants.COMPANY_NAME}=${association.companyName.replace(/ /g, "+")}`;
-                        rows.push([
-                            { text: association.companyName },
-                            { text: association.companyNumber },
-                            { text: invite.invitedBy },
-                            {
-                                html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
-                            },
-                            {
-                                html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${association.companyName}`, translations.decline as string)
-                            }
-                        ]);
-                    }
+                    const newestInvite = getNewestInvite(association.invitations);
+                    const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
+                    const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, association.id);
+                    const companyNameQueryParam = `?${constants.COMPANY_NAME}=${association.companyName.replace(/ /g, "+")}`;
+                    rows.push([
+                        { text: association.companyName },
+                        { text: association.companyNumber },
+                        { text: newestInvite.invitedBy },
+                        {
+                            html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${association.companyName}`, translations.accept as string)
+                        },
+                        {
+                            html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${association.companyName}`, translations.decline as string)
+                        }
+                    ]);
                 }
             }
         }
