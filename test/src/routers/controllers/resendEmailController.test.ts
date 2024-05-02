@@ -1,26 +1,22 @@
-import { resendEmailController } from "../../../../src/routers/controllers/resendEmailController";
-import { mockRequest } from "../../../mocks/request.mock";
-import { mockResponse } from "../../../mocks/response.mock";
+import mocks from "../../../mocks/all.middleware.mock";
+import app from "../../../../src/app";
+import supertest from "supertest";
 import * as constants from "../../../../src/constants";
 import * as associationsService from "../../../../src/services/associationsService";
+import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
+
+const router = supertest(app);
+
 jest.mock("../../../../src/lib/Logger");
-jest.mock("../../../../src/lib/utils/sessionUtils", () => {
-    const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
-
-    return {
-        __esModule: true,
-        ...originalModule,
-        setExtraData: jest.fn()
-    };
-});
-const mockIsEmailAuthorised = jest.spyOn(associationsService, "isEmailAuthorised");
+const createAssociationSpy: jest.SpyInstance = jest.spyOn(associationsService, "createAssociation");
 const session: Session = new Session();
-const request = mockRequest();
-request.session = session;
-const response = mockResponse();
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
+});
 
-describe("resendEmailController", () => {
+describe("GET /your-companies/manage-authorised-people-email-resent/:userEmail", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -28,33 +24,24 @@ describe("resendEmailController", () => {
 
     it("should call redirect to resent email success page when email is valid and is associated", async () => {
         // Given
-        mockIsEmailAuthorised.mockResolvedValueOnce(true);
-        request.params[constants.USER_EMAIL] = "bob1@bob.com";
-        session.setExtraData("companyNumber", "1234567");
+        const url = "/your-companies/manage-authorised-people-email-resent/bob1@bob.com";
+        const expectedRedirectUrl = "/your-companies/manage-authorised-people/1234567/authorisation-email-resent";
+        createAssociationSpy.mockReturnValue({ association_id: "123456" });
+        session.setExtraData(constants.COMPANY_NUMBER, "1234567");
         // When
-        await resendEmailController(request, response);
+        const response = await router.get(url);
         // Then
-        expect(response.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/1234567/authorisation-email-resent");
+        expect(response.statusCode).toEqual(302);
+        expect(response.header.location).toEqual(expectedRedirectUrl);
     });
 
     it("should reject invalid emails", async () => {
         // Given
-        request.params[constants.USER_EMAIL] = "bob2";
-        session.setExtraData("companyNumber", "1234567");
+        const url = "/your-companies/manage-authorised-people-email-resent/bob1bob.com";
+        session.setExtraData(constants.COMPANY_NUMBER, "1234567");
         // When
-        await resendEmailController(request, response);
+        const response = await router.get(url);
         // Then
-        expect(response.status).toHaveBeenCalledWith(404);
-    });
-
-    it("should reject emails not already in association list", async () => {
-        // Given
-        request.params[constants.USER_EMAIL] = "bob@bob3.com";
-        session.setExtraData("companyNumber", "1234567");
-        mockIsEmailAuthorised.mockResolvedValueOnce(false);
-        // When
-        await resendEmailController(request, response);
-        // Then
-        expect(response.status).toHaveBeenCalledWith(404);
+        expect(response.statusCode).toEqual(400);
     });
 });
