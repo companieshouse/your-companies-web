@@ -16,6 +16,15 @@ import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPo
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
 import { healthCheckController } from "./controllers/healthCheckController";
 import { personNotAddedControllerGet } from "./controllers/personNotAdded";
+import { addPresenterNavigation } from "../middleware/navigation/addPresenter.middleware";
+import { cancelPersonNavigation } from "../middleware/navigation/cancelPerson.middleware";
+import { checkPresenterNavigation } from "../middleware/navigation/checkPresenter.middleware";
+import { companyAddedNavigation } from "../middleware/navigation/companyAdded.middleware";
+import { companyInvitationsAcceptNavigation } from "../middleware/navigation/companyInvitationsAccept.middleware";
+import { companyInvitationsDeclineNavigation } from "../middleware/navigation/companyInvitationsDecline.middleware";
+import { confirmCompanyNavigation } from "../middleware/navigation/confirmCompany.middleware";
+import { manageAuthorisedPeopleNavigation } from "../middleware/navigation/manageAuthorisedPeople.middleware";
+import { removeAuthorisedPersonNavigation } from "../middleware/navigation/removeAuthorisedPerson.middleware";
 
 const router: Router = Router();
 
@@ -24,38 +33,38 @@ router.get(constants.HEALTHCHECK, healthCheckController);
 router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
 router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as RequestHandler);
 
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 
 router.get(constants.ADD_COMPANY_URL, addCompanyControllerGet as RequestHandler);
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandler);
-router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerGet as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonNavigation, removeAuthorisedPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerPost as RequestHandler);
 
-router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonControllerGet as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonControllerPost as RequestHandler);
 
-router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerGet as RequestHandler);
+router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyNavigation, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
 router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, createCompanyAssociationControllerGet as RequestHandler);
-router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedControllerGet as RequestHandler);
+router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedNavigation, companyAddedControllerGet as RequestHandler);
 
-router.get(constants.ADD_PRESENTER_URL, addPresenterControllerGet as RequestHandler);
+router.get(constants.ADD_PRESENTER_URL, addPresenterNavigation, addPresenterControllerGet as RequestHandler);
 router.post(constants.ADD_PRESENTER_URL, addPresenterControllerPost as RequestHandler);
 
-router.get(constants.CHECK_PRESENTER_URL, checkPresenterControllerGet);
+router.get(constants.CHECK_PRESENTER_URL, checkPresenterNavigation, checkPresenterControllerGet);
 router.post(constants.CHECK_PRESENTER_URL, checkPresenterControllerPost);
 
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL, resendEmailController as RequestHandler);
 
 router.get(constants.COMPANY_INVITATIONS_URL, companyInvitationsControllerGet as RequestHandler);
-router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineControllerGet as RequestHandler);
+router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineNavigation, companyInvitationsDeclineControllerGet as RequestHandler);
 
-router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptControllerGet as RequestHandler);
+router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptNavigation, companyInvitationsAcceptControllerGet as RequestHandler);
 
 router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet);
 

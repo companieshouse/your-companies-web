@@ -1,16 +1,13 @@
 import { Request, Response } from "express";
 import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
 import * as constants from "../../constants";
-import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData } from "../../lib/utils/sessionUtils";
 
 export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, constants.GET);
 
-    if (getExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR)) {
-        deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
-    }
-
+    deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
     res.render(constants.ADD_COMPANY_PAGE, {
         ...viewData
     });
