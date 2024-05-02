@@ -12,6 +12,7 @@ import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
 import { companyAuthenticationMiddleware } from "./middleware/company.authentication";
 import { addLangToUrl } from "./lib/utils/urlUtils";
+import { httpErrorHandler } from "./routers/controllers/httpErrorController";
 
 const app = express();
 
@@ -73,6 +74,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Channel all requests through router dispatch
 routerDispatch(app);
+
+// http-error error handler
+app.use(httpErrorHandler);
 
 // Unhandled errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

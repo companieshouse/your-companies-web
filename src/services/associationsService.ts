@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
 import { Associations, AssociationStatus, Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 import { AssociationState, AssociationStateResponse } from "../types/associations";
+import createError from "http-errors";
 
 export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
@@ -88,13 +89,14 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
     const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, inviteeEmailAddress);
 
     if (!sdkResponse) {
-        logger.error(`Associations API for a company with company number ${companyNumber}`);
+        logger.error(`Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`);
         return Promise.reject(sdkResponse);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
-        logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
+        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
     }
 
     if (!sdkResponse.resource) {
@@ -113,13 +115,14 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     const sdkResponse: Resource<undefined | Errors> = await apiClient.associationsService.updateAssociationStatus(associationId, status);
 
     if (!sdkResponse) {
-        logger.error(`Associations API for an association with id ${associationId}`);
+        logger.error(`Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`);
         return Promise.reject(sdkResponse);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-        logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
+        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
     }
 
     logger.debug(`The status of an association with id ${associationId} changed`);
