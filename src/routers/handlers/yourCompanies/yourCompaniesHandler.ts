@@ -101,6 +101,7 @@ export class YourCompaniesHandler extends GenericHandler {
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
             viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
+            viewData.cancelSearchHref = constants.LANDING_URL;
         }
 
         return { ...viewData, lang: lang };
