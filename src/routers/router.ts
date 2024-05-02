@@ -15,6 +15,7 @@ import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvi
 import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPost } from "./controllers/removeAuthorisedPersonController";
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
 import { healthCheckController } from "./controllers/healthCheckController";
+import { personNotAddedControllerGet } from "./controllers/personNotAdded";
 
 const router: Router = Router();
 
@@ -55,5 +56,7 @@ router.get(constants.COMPANY_INVITATIONS_URL, companyInvitationsControllerGet as
 router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineControllerGet as RequestHandler);
 
 router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptControllerGet as RequestHandler);
+
+router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet);
 
 export default router;

@@ -25,6 +25,7 @@ export const CLEAR_FORM_TRUE = "?cf=true";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
+export const ERROR_404_TEMPLATE = "partials/error_404";
 
 // English and Welsh translation
 export const COMMON = "common";
@@ -61,6 +62,8 @@ export const CREATE_COMPANY_ASSOCIATION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/c
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/manage-authorised-people/:${COMPANY_NUMBER}`;
 export const AUTHORISED_PERSON_ADDED_URL = `/manage-authorised-people/:${COMPANY_NUMBER}/confirmation-person-added`;
 export const YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}/confirmation-person-added`;
+export const PERSON_NOT_ADDED_URL = `/person-not-added/:${COMPANY_NUMBER}`;
+export const YOUR_COMPANIES_AUTHORISED_PERSON_NOT_ADDED_URL = `${LANDING_URL}${PERSON_NOT_ADDED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
 export const YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL = `${LANDING_URL}${ADD_NEW_AUTHORISED_PERSON_URL}`;
