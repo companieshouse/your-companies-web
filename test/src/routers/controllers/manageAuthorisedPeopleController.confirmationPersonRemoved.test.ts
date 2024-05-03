@@ -1,5 +1,5 @@
 import mocks from "../../../mocks/all.middleware.mock";
-import { companyAssociations } from "../../../mocks/associations.mock";
+import { companyAssociations, validInvitation } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
 import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
@@ -7,6 +7,7 @@ import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { CONFIRM, USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, LANDING_URL } from "../../../../src/constants";
 import { Removal } from "../../../../src/types/removal";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
+import * as invitationHelper from "../../../../src/lib/helpers/invitationHelper";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
@@ -34,7 +35,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 
     beforeEach(() => {

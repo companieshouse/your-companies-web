@@ -1,4 +1,4 @@
-import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { Associations, AssociationStatus, Invitation } from "private-api-sdk-node/dist/services/associations/types";
 
 export const userAssociations: Associations = {
     items: [
@@ -273,6 +273,11 @@ export const userAssociationsWithNumberOfInvitations: Associations = {
     totalPages: 4
 } as Associations;
 
+export const validInvitation: Invitation = {
+    invitedAt: new Date().toString(),
+    invitedBy: "j.smith@test.com"
+};
+
 export const companyAssociations: Associations = {
     items: [
         {
@@ -290,7 +295,9 @@ export const companyAssociations: Associations = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            invitations: [],
+            invitations: [
+                validInvitation
+            ],
             links: {
                 self: "/12345"
             }
@@ -330,7 +337,9 @@ export const companyAssociations: Associations = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            invitations: [],
+            invitations: [
+                validInvitation
+            ],
             links: {
                 self: "/12345"
             }
