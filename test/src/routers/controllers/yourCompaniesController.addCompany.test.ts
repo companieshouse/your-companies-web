@@ -11,13 +11,14 @@ import * as commpanyProfileService from "../../../../src/services/companyProfile
 import * as associationService from "../../../../src/services/associationsService";
 import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
 import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
 import * as cy from "../../../../src/locales/cy/translation/add-company.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { Session } from "@companieshouse/node-session-handler";
-
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
+import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -48,9 +49,13 @@ it("should check session and auth before returning the add company page", async 
 
 describe("GET /your-companies/add-company", () => {
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should return status 200", async () => {
         await router.get("/your-companies/add-company").expect(200);
@@ -94,6 +99,22 @@ describe("GET /your-companies/add-company", () => {
         expect(response.text).not.toContain(expectedInput);
         expect(response.text).not.toContain("Enter a company number that is 8 characters long");
     });
+    it("should delete the page indicator in extraData on page load", async () => {
+        // Given
+        const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
+        const value = true;
+        setExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR, value);
+        const data = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
+
+        // When
+        await router.get("/your-companies/add-company");
+        const resultData = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
+
+        // Then
+        expect(data).toBeTruthy();
+        expect(resultData).toBeUndefined();
+    });
+
 });
 
 describe("POST /your-companies/add-company", () => {

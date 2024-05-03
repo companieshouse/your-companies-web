@@ -5,11 +5,14 @@ import * as associationsService from "../../../../src/services/associationsServi
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { Cancellation } from "../../../../src/types/cancellation";
-import { USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, YES } from "../../../../src/constants";
+import * as constants from "../../../../src/constants";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import { NextFunction, Request, Response } from "express";
+import { Session } from "@companieshouse/node-session-handler";
 
 const router = supertest(app);
 
@@ -20,10 +23,15 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     return {
         __esModule: true,
         ...originalModule,
-        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
-        setExtraData: jest.fn(),
-        deleteExtraData: jest.fn()
+        getLoggedInUserEmail: jest.fn(() => "test@test.com")
     };
+});
+
+const session: Session = new Session();
+
+mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+    req.session = session;
+    next();
 });
 
 const companyNumber = "NI038379";
@@ -32,11 +40,14 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-cancel-person`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
@@ -48,7 +59,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     it("should return expected English content if person cancelled and language version set to English", async () => {
         // Given
         const cancellation: Cancellation = {
-            cancelPerson: YES,
+            cancelPerson: constants.YES,
             userEmail: companyAssociations.items[0].userEmail,
             companyNumber: companyAssociations.items[0].companyNumber
         };
@@ -56,7 +67,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
         sessionUtilsSpy.mockReturnValue(cancellation);
-        removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+        removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
         const response = await router.get(`${url}?lang=en`);
         // Then
@@ -84,7 +95,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     it("should return expected Welsh content if person cancelled and language version set to Welsh", async () => {
         // Given
         const cancellation: Cancellation = {
-            cancelPerson: YES,
+            cancelPerson: constants.YES,
             userEmail: companyAssociations.items[0].userEmail,
             companyNumber: companyAssociations.items[0].companyNumber
         };
@@ -92,7 +103,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
         sessionUtilsSpy.mockReturnValue(cancellation);
-        removeUserFromCompanyAssociationsSpy.mockReturnValue(USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+        removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
         const response = await router.get(`${url}?lang=cy`);
         // Then
@@ -115,5 +126,25 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        // Given
+        redirectPageSpy.mockReturnValue(true);
+        sessionUtils.setExtraData(session, constants.CANCEL_URL_EXTRA, "test.com");
+        // When
+        const response = await router.get(url);
+        // Then
+        const cancelUrlExtraData = session.getExtraData(constants.CANCEL_URL_EXTRA);
+        expect(cancelUrlExtraData).toBeUndefined();
+        expect(response.status).toEqual(302);
+
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = constants.LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

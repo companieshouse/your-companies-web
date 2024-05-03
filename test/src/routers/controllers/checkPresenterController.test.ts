@@ -3,6 +3,7 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import * as associationsService from "../../../../src/services/associationsService";
 import * as constants from "../../../../src/constants";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import * as en from "../../../../src/locales/en/translation/add-presenter-check-details.json";
@@ -20,6 +21,9 @@ const mockCreateAssociation = jest.spyOn(associationsService, "createAssociation
 
 const router = supertest(app);
 const url = "/your-companies/add-presenter-check-details/12345678";
+
+const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+redirectPageSpy.mockReturnValue(false);
 
 describe(`GET ${url}`, () => {
     beforeEach(() => {
@@ -50,14 +54,27 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.confirm_and_send_email);
         expect(response.text).toContain(cy.change);
     });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get(url).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = constants.LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
 });
 
 describe(`POST ${url}`, () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        session.setExtraData(constants.COMPANY_NUMBER, "NI038379");
+        session.setExtraData(constants.COMPANY_NUMBER, "12345678");
         session.setExtraData(constants.COMPANY_NAME, "Test Company");
+        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session, company and user auth before routing to controller", async () => {
@@ -70,14 +87,14 @@ describe(`POST ${url}`, () => {
         // Given
         const email = "bruce@bruce.com";
         session.data.extra_data.authorisedPersonEmail = email;
-        const associationId = "012345678";
+        const associationId = "12345678";
         mockCreateAssociation.mockResolvedValue(associationId);
         // When
         const response = await router.post(url);
         // Then
         expect(response.status).toEqual(302);
         expect(response.header.location).toContain(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
-            `:${constants.COMPANY_NUMBER}`, "NI038379"
+            `:${constants.COMPANY_NUMBER}`, "12345678"
         ));
     });
 });

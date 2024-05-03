@@ -4,6 +4,9 @@ import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations-decline.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations-decline.json";
 import { updateAssociationStatus } from "../../../../src/services/associationsService";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
+import { LANDING_URL } from "../../../../src/constants";
+
 jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
@@ -13,9 +16,13 @@ const url = `/your-companies/company-invitations-decline/${associationId}?compan
 
 describe("GET /your-companies/companies-invitations-decline/:associationId", () => {
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the /your-companies/companies-invitations-decline/:associationId page", async () => {
         await router.get(url);
@@ -53,5 +60,17 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         expect(response.text).toContain(cy.what_happens_now_youve_declined);
         expect(response.text).toContain(cy.weve_sent_an_email);
         expect(response.text).toContain(cy.view_your_companies);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        await router.get(url).expect(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

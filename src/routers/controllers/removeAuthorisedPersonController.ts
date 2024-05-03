@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { RemoveAuthorisedPersonHandler } from "../handlers/yourCompanies/removeAuthorisedPersonHandler";
 import * as constants from "../../constants";
+import { deleteExtraData } from "../../lib/utils/sessionUtils";
 
 export const removeAuthorisedPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveAuthorisedPersonHandler();
     const viewData = await handler.execute(req, constants.GET);
+    deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, {
         ...viewData
     });

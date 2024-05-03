@@ -7,6 +7,8 @@ import { CompanyNameAndNumber } from "../../types/util-types";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const companyProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
+    const confirmCompanyDetailsIndicator = true;
+    setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, confirmCompanyDetailsIndicator);
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };

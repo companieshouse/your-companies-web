@@ -22,6 +22,10 @@ export const ASSOCIATION_STATE_RESPONSE = "associationStateResponse";
 // query params
 export const CLEAR_FORM = "cf";
 export const CLEAR_FORM_TRUE = "?cf=true";
+export const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
+export const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
+export const CANCEL_URL_EXTRA = "cancelPersonUrlExtraData";
+export const REMOVE_URL_EXTRA = "removePersonUrlExtraData";
 
 // Paths to Nunjucks template files
 export const ERROR_400_TEMPLATE = "partials/error_400";
@@ -91,6 +95,7 @@ export const YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL = LANDING_URL + COMPA
 export const COMPANY_INVITATIONS_DECLINE_URL = `/${COMPANY_INVITATIONS_DECLINE_PAGE}/:${ASSOCIATIONS_ID}`;
 export const YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL = LANDING_URL + COMPANY_INVITATIONS_DECLINE_URL;
 export const CONFIRMATION_PERSON_REMOVED_URL = "/confirmation-person-removed";
+export const CONFIRMATION_PERSON_ADDED = "/confirmation-person-added";
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_REMOVED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL}`;
 export const HEALTHCHECK = "/healthcheck";
