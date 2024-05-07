@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
+import logger from "../../lib/Logger";
 
 export const manageAuthorisedPeopleNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -9,6 +10,8 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     const cancelPageUrl = getExtraData(req.session, constants.CANCEL_URL_EXTRA);
     const removePageUrl = getExtraData(req.session, constants.REMOVE_URL_EXTRA);
+
+    logger.debug(`manageAuthorisedPeopleNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
     if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED) &&
         redirectPage(referrer,

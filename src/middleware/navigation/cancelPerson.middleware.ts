@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import logger from "../../lib/Logger";
 
 export const cancelPersonNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -26,7 +27,7 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
     } else {
         newPageIndicator = pageIndicator;
     }
-
+    logger.debug(`cancelPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
     if (redirectPage(checkedReferrer, hrefA, constants.CANCEL_PERSON_URL.replace(":userEmail", userEmail), newPageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
