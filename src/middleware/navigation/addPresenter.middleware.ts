@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
+import logger from "../../lib/Logger";
 
 export const addPresenterNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -24,6 +25,7 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
     } else {
         checkedReferrer = referrer;
     }
+    logger.debug(`addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
     if (redirectPage(checkedReferrer, hrefA, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber), newPageIndicator, constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber))) {
         res.redirect(constants.LANDING_URL);
