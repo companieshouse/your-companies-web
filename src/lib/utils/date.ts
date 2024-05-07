@@ -24,3 +24,16 @@ export const toReadableFormat = (dateToConvert: string, lang = "en"): string => 
     }
     return convertedDate;
 };
+
+export const isOlderThan = (dateToVerify: string, numberOfDays: number): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const date = new Date(cleanDateString(dateToVerify));
+    date.setHours(0, 0, 0, 0);
+    const daysInMilliseconds = numberOfDays * 24 * 60 * 60 * 1000;
+    return date.getTime() + daysInMilliseconds <= today.getTime();
+};
+
+const cleanDateString = (dateString: string): string => {
+    return dateString.includes("UTC") ? (dateString.replace("UTC", "")).trim() : dateString;
+};

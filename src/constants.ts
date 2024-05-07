@@ -153,3 +153,4 @@ export const ITEMS_PER_PAGE = 15;
  * At least one character must be entered for the search. The regex is /^[0-9A-Z]{1,10}$/
  */
 export const COMPANY_NUMBER_SEARCH_VALIDATION_REGEX = /^[0-9A-Z]{1,10}$/;
+export const NUMBER_OF_DAYS_INVITATION_IS_VALID = 7;

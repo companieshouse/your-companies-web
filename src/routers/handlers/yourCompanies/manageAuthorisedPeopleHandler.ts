@@ -4,12 +4,13 @@ import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
-import { Associations } from "private-api-sdk-node/dist/services/associations/types";
+import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
+import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -38,6 +39,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber);
         }
 
+        const confirmedAssociations: Association[] = companyAssociations.items.filter(
+            association => association.status === AssociationStatus.CONFIRMED);
+        companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
         this.viewData.companyAssociations = companyAssociations;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
