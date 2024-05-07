@@ -154,3 +154,4 @@ export const ITEMS_PER_PAGE = 15;
  */
 export const COMPANY_NUMBER_SEARCH_VALIDATION_REGEX = /^[0-9A-Z]{1,10}$/;
 export const NUMBER_OF_DAYS_INVITATION_IS_VALID = 7;
+export const INVITATIONS_PER_PAGE = 1000;

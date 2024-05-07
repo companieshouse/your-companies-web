@@ -14,7 +14,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const userAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
+        const userAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
         const rowsData = await this.getRowsData(userAssociations.items, translations);
 
