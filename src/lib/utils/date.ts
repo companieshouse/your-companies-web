@@ -35,9 +35,5 @@ export const isOlderThan = (dateToVerify: string, numberOfDays: number): boolean
 };
 
 const cleanDateString = (dateString: string): string => {
-    let cleanedDateString = dateString;
-    if (dateString.includes("UTC")) {
-        cleanedDateString = (dateString.replace("UTC", "")).trim();
-    }
-    return cleanedDateString;
+    return dateString.includes("UTC") ? (dateString.replace("UTC", "")).trim() : dateString;
 };
