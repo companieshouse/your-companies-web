@@ -8,10 +8,9 @@ export const getNewestInvite = (invitations: Invitation[]): Invitation => {
 };
 
 export const getAssociationsWithValidInvitation = (associations: Association[]): Association[] => {
-    const associationsWithValidInvitation: Association[] = associations.filter(
+    return associations.filter(
         association => association.status === AssociationStatus.AWAITING_APPROVAL &&
             isValidInvitation(association.invitations));
-    return associationsWithValidInvitation;
 };
 
 const isValidInvitation = (invitations: Invitation[]): boolean => {
