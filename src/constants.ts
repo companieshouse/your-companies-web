@@ -18,6 +18,7 @@ export const USER_NAME = "userName";
 export const PROPOSED_COMPANY_NUM = "proposedCompanyNumber";
 export const PROPOSED_EMAIL = "proposedEmail";
 export const ASSOCIATION_STATE_RESPONSE = "associationStateResponse";
+export const ASSOCIATION_STATE_CHANGED_FOR = "associationStateChagedFor";
 
 // query params
 export const CLEAR_FORM = "cf";
