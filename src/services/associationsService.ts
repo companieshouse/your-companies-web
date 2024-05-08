@@ -8,11 +8,11 @@ import { Associations, AssociationStatus, Errors, NewAssociationResponse } from 
 import { AssociationState, AssociationStateResponse } from "../types/associations";
 import createError from "http-errors";
 
-export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number): Promise<Associations> => {
+export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number, itemsPerPage?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
 
     logger.info(`Looking for associations with status ${JSON.stringify(status)}`);
-    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.searchAssociations(status, pageIndex, undefined, companyNumber);
+    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.searchAssociations(status, pageIndex, itemsPerPage, companyNumber);
 
     if (!sdkResponse) {
         logger.error(`Associations API for status ${JSON.stringify(status)}`);
