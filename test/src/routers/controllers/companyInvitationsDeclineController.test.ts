@@ -5,7 +5,8 @@ import * as en from "../../../../src/locales/en/translation/company-invitations-
 import * as cy from "../../../../src/locales/cy/translation/company-invitations-decline.json";
 import { updateAssociationStatus } from "../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import { LANDING_URL } from "../../../../src/constants";
+import * as constants from "../../../../src/constants";
+import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 
 jest.mock("../../../../src/services/associationsService");
 
@@ -17,6 +18,7 @@ const url = `/your-companies/company-invitations-decline/${associationId}?compan
 describe("GET /your-companies/companies-invitations-decline/:associationId", () => {
 
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+    const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -31,12 +33,14 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
     });
 
     it("should return status 200", async () => {
+        getExtraDataSpy.mockReturnValue("");
         await router.get(url).expect(200);
     });
 
     it("should return expected English content if language version set to English", async () => {
         // Given
         const langVersion = "&lang=en";
+        getExtraDataSpy.mockReturnValue("");
         // When
         const response = await router.get(`${url}${langVersion}`);
         // Then
@@ -51,6 +55,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
     it("should return expected Welsh content if language version set to Welsh", async () => {
         // Given
         const langVersion = "&lang=cy";
+        getExtraDataSpy.mockReturnValue("");
         // When
         const response = await router.get(`${url}${langVersion}`);
         // Then
@@ -64,13 +69,28 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
 
     it("should return status 302 on page redirect", async () => {
         redirectPageSpy.mockReturnValue(true);
+        getExtraDataSpy.mockReturnValue("");
         await router.get(url).expect(302);
     });
 
     it("should return correct response message including desired url path", async () => {
-        const urlPath = LANDING_URL;
+        const urlPath = constants.LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
+        getExtraDataSpy.mockReturnValue("");
         const response = await router.get(url);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
+    it("should redirect back to people digitally authorised page if association already declined", async () => {
+        // Given
+        const langVersion = "&lang=cy";
+        redirectPageSpy.mockReturnValue(false);
+        getExtraDataSpy.mockReturnValue(constants.TRUE);
+        const urlPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
+        // When
+        const result = await router.get(`${url}${langVersion}`);
+        // Then
+        expect(result.statusCode).toEqual(302);
+        expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

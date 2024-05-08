@@ -7,7 +7,8 @@ import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { updateAssociationStatus } from "../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import { LANDING_URL } from "../../../../src/constants";
+import * as constants from "../../../../src/constants";
+import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 
 jest.mock("../../../../src/services/associationsService");
 
@@ -20,6 +21,7 @@ const companyNameQueryParam = `companyName=${companyName}`;
 describe(`GET ${url}`, () => {
 
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+    const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -42,6 +44,7 @@ describe(`GET ${url}`, () => {
         const lang = "&lang=en";
         const queryString = `?${lang}&${companyNameQueryParam}`;
         const expectedBannerText = `${en.you_have_accepted}${companyName}.`;
+        getExtraDataSpy.mockReturnValue("");
         // When
         const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
         // Then
@@ -62,6 +65,7 @@ describe(`GET ${url}`, () => {
         const lang = "&lang=cy";
         const queryString = `?${lang}&${companyNameQueryParam}`;
         const expectedBannerText = `${cy.you_have_accepted}${companyName}.`;
+        getExtraDataSpy.mockReturnValue("");
         // When
         const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
         // Then
@@ -82,17 +86,37 @@ describe(`GET ${url}`, () => {
         const lang = "&lang=cy";
         const queryString = `?${lang}&${companyNameQueryParam}`;
         redirectPageSpy.mockReturnValue(true);
+        getExtraDataSpy.mockReturnValue("");
+        // When
+        const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
         // Then
-        await router.get(`${url.replace(":associationId", associationId)}${queryString}`).expect(302);
+        expect(result.statusCode).toEqual(302);
     });
 
     it("should return correct response message including desired url path", async () => {
         // Given
         const lang = "&lang=cy";
         const queryString = `?${lang}&${companyNameQueryParam}`;
-        const urlPath = LANDING_URL;
+        const urlPath = constants.LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
-        const response = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+        getExtraDataSpy.mockReturnValue("");
+        // When
+        const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
+        // Then
+        expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
+    it("should redirect back to people digitally authorised page if association already accepted", async () => {
+        // Given
+        const lang = "&lang=cy";
+        const queryString = `?${lang}&${companyNameQueryParam}`;
+        redirectPageSpy.mockReturnValue(false);
+        getExtraDataSpy.mockReturnValue(constants.TRUE);
+        const urlPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
+        // When
+        const result = await router.get(`${url.replace(":associationId", associationId)}${queryString}`);
+        // Then
+        expect(result.statusCode).toEqual(302);
+        expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });
