@@ -5,13 +5,19 @@ import * as constants from "../../../constants";
 import { ViewData } from "../../../types/util-types";
 import { updateAssociationStatus } from "../../../services/associationsService";
 import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class CompanyInvitationsAcceptHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
         const associationId = req.params[constants.ASSOCIATIONS_ID];
-        await updateAssociationStatus(req, associationId, AssociationStatus.CONFIRMED);
-
-        this.viewData = this.getViewData(req);
+        const associationStateChanged = getExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId) === constants.TRUE;
+        if (!associationStateChanged) {
+            await updateAssociationStatus(req, associationId, AssociationStatus.CONFIRMED);
+            setExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, constants.TRUE);
+            this.viewData = this.getViewData(req);
+        } else {
+            this.viewData = { associationStateChanged: constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, lang: {} };
+        }
 
         return Promise.resolve(this.viewData);
     }
