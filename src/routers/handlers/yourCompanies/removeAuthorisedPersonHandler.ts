@@ -2,7 +2,7 @@ import { Request } from "express";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Removal } from "../../../types/removal";
 import { ViewData } from "../../../types/util-types";
 
@@ -10,11 +10,19 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     async execute (req: Request, method: string): Promise<ViewData> {
         this.viewData = this.getViewData(req);
+        const error = getExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
+        if (error) {
+            this.viewData.errors = error;
+        }
+
         if (method === constants.POST) {
             const payload = Object.assign({}, req.body);
             if (!payload.confirmRemoval) {
                 this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
+                setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);
             } else {
+                deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
+                this.viewData.errors = undefined;
                 const removal: Removal = {
                     removePerson: payload.confirmRemoval,
                     userEmail: req.params[constants.USER_EMAIL],
