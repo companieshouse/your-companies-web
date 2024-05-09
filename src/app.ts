@@ -45,6 +45,9 @@ njk.addGlobal("chsUrl", process.env.CHS_URL);
 njk.addGlobal("chsMonitorGuiUrl", process.env.CHS_MONITOR_GUI_URL);
 njk.addGlobal("notProvided", constants.NOT_PROVIDED);
 njk.addGlobal("confirmed", constants.CONFIRMED);
+njk.addGlobal("matomoUrl", process.env.MATOMO_URL);
+njk.addGlobal("matomoSiteId", process.env.MATOMO_SITE_ID);
+njk.addGlobal("matomoChsDomain", process.env.MATOMO_CHS_DOMAIN);
 
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
