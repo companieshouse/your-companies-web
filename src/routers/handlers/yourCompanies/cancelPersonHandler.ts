@@ -2,13 +2,17 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../genericHandler";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { ViewData } from "../../../types/util-types";
 
 export class CancelPersonHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<ViewData> {
         this.viewData = this.getViewData(req);
+        const error = getExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
+        if (error) {
+            this.viewData.errors = error;
+        }
         if (method === constants.POST) {
             const payload = Object.assign({}, req.body);
             if (!payload.cancelPerson) {
@@ -17,7 +21,10 @@ export class CancelPersonHandler extends GenericHandler {
                         text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION
                     }
                 };
+                setExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION, this.viewData.errors);
             } else {
+                deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
+                this.viewData.errors = undefined;
                 const cancellation: Cancellation = {
                     cancelPerson: payload.cancelPerson,
                     userEmail: req.params[constants.USER_EMAIL],
