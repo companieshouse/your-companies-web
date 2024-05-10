@@ -9,6 +9,7 @@ import { ViewData } from "../../../types/util-types";
 export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     async execute (req: Request, method: string): Promise<ViewData> {
+        deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         this.viewData = this.getViewData(req);
         const error = getExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         if (error) {

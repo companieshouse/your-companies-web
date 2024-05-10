@@ -8,6 +8,7 @@ import { ViewData } from "../../../types/util-types";
 
 export class CancelPersonHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<ViewData> {
+        deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         this.viewData = this.getViewData(req);
         const error = getExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         if (error) {
