@@ -135,8 +135,8 @@ export const removeUserFromCompanyAssociations = async (req: Request, associatio
         await updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
         return Promise.resolve(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
     } else {
-        const errorMessage = `Error on removal/cancellation: associtionId not provided}`;
+        const errorMessage = "Error on removal/cancellation: associtionId not provided";
         logger.error(errorMessage);
-        return Promise.reject(createError(errorMessage));
+        return Promise.reject(createError(400, errorMessage));
     }
 };
