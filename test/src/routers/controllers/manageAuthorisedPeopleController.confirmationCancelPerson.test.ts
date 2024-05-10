@@ -13,6 +13,7 @@ import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
+import { when } from "jest-when";
 
 const router = supertest(app);
 
@@ -23,7 +24,8 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     return {
         __esModule: true,
         ...originalModule,
-        getLoggedInUserEmail: jest.fn(() => "test@test.com")
+        getLoggedInUserEmail: jest.fn(() => "test@test.com"),
+        getExtraData: jest.fn()
     };
 });
 
@@ -41,7 +43,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-    const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -66,7 +67,45 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
         expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
-        sessionUtilsSpy.mockReturnValue(cancellation);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
+        removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+        // When
+        const response = await router.get(`${url}?lang=en`);
+        // Then
+        expect(response.text).toContain(enCommon.success);
+        expect(response.text).toContain(en.digital_authorisation_cancelled);
+        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_start);
+        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_end);
+        expect(response.text).toContain(en.weve_sent_an_email_to_the_company);
+        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
+        expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
+        expect(response.text).toContain(en.anyone_with_access_to_the_current_authentication);
+        expect(response.text).toContain(en.add_new_authorised_person);
+        expect(response.text).toContain(en.details_of_authorised_people);
+        expect(response.text).toContain(en.email_address);
+        expect(response.text).toContain(en.name);
+        expect(response.text).toContain(en.status);
+        expect(response.text).toContain(en.remove);
+        expect(response.text).toContain(en.go_back_to_your_companies);
+        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+    });
+
+    it("should return expected English content if person already cancelled and language version set to English", async () => {
+        // Given
+        const cancellation: Cancellation = {
+            cancelPerson: constants.YES,
+            userEmail: companyAssociations.items[0].userEmail,
+            companyNumber: companyAssociations.items[0].companyNumber
+        };
+        const expectedCompanyAssociations = Object.assign({}, companyAssociations);
+        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
         const response = await router.get(`${url}?lang=en`);
@@ -102,7 +141,45 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
         expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
-        sessionUtilsSpy.mockReturnValue(cancellation);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
+        removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+        // When
+        const response = await router.get(`${url}?lang=cy`);
+        // Then
+        expect(response.text).toContain(cyCommon.success);
+        expect(response.text).toContain(cy.digital_authorisation_cancelled);
+        expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_start);
+        expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_end);
+        expect(response.text).toContain(cy.weve_sent_an_email_to_the_company);
+        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
+        expect(response.text).toContain(cy.people_digitally_authorised_to_file_online);
+        expect(response.text).toContain(cy.anyone_with_access_to_the_current_authentication);
+        expect(response.text).toContain(cy.add_new_authorised_person);
+        expect(response.text).toContain(cy.details_of_authorised_people);
+        expect(response.text).toContain(cy.email_address);
+        expect(response.text).toContain(cy.name);
+        expect(response.text).toContain(cy.status);
+        expect(response.text).toContain(cy.remove);
+        expect(response.text).toContain(cy.go_back_to_your_companies);
+        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+    });
+
+    it("should return expected Welsh content if person cancelled and language version set to Welsh", async () => {
+        // Given
+        const cancellation: Cancellation = {
+            cancelPerson: constants.YES,
+            userEmail: companyAssociations.items[0].userEmail,
+            companyNumber: companyAssociations.items[0].companyNumber
+        };
+        const expectedCompanyAssociations = Object.assign({}, companyAssociations);
+        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
+        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
         // When
         const response = await router.get(`${url}?lang=cy`);
