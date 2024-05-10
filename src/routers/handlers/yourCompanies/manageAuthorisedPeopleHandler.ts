@@ -24,12 +24,16 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
         let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
 
-        if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
-            deleteExtraData(req.session, constants.REMOVE_PERSON);
-            await this.handleCancellation(req, cancellation, companyAssociations);
-        } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-            deleteExtraData(req.session, constants.CANCEL_PERSON);
-            await this.handleRemoval(req, removal, companyAssociations);
+        try {
+            if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
+                deleteExtraData(req.session, constants.REMOVE_PERSON);
+                await this.handleCancellation(req, cancellation, companyAssociations);
+            } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
+                deleteExtraData(req.session, constants.CANCEL_PERSON);
+                await this.handleRemoval(req, removal, companyAssociations);
+            }
+        } catch (error) {
+            logger.error(`Error on removal/cancellation: ${JSON.stringify(error)}`);
         }
 
         this.handleConfirmationPersonAdded(req);
@@ -66,7 +70,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
             )?.id as string;
-            if (!this.isUserRemovedFromCompanyAssociations(req)) {
+            if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
                 this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
             this.viewData.cancelledPerson = cancellation.userEmail;
@@ -78,7 +82,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
             )?.id as string;
-            if (!this.isUserRemovedFromCompanyAssociations(req)) {
+            if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
                 this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
             this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
