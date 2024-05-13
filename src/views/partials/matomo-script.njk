@@ -28,4 +28,13 @@
 <noscript>
     <p><img src="{{piwikUrl}}/matomo.php?idsite={{piwikSiteId}}&amp;rec=1" style="border:0;" alt=""/></p>
 </noscript>
+<script>
+    function trackEvent(elementId, eventCategory, eventAction, eventName) {
+        document
+            .getElementById(elementId)
+            .addEventListener("click", () => {
+                _paq.push(["trackEvent", eventCategory, eventAction, eventName]);
+            });
+    }
+</script>
 <!-- End Matomo Code -->
