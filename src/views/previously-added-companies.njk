@@ -31,7 +31,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
+        {{ govukButton({
+                text: lang.add_a_company,
+                href: buttonHref,
+                attributes: {
+                    id: "add-a-company",
+                    "data-event-id": "add-a-company-button"
+                }
+            })
+        }}
 
         {% if displaySearchForm %}
             {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
@@ -105,3 +113,7 @@
 
     </div>
 </div>
+
+<script>
+    trackEvent("add-a-company", "Your Companies Web Events", "Button Click", "Add a Company Button");
+</script>
