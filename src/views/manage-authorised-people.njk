@@ -107,7 +107,10 @@
                     text: lang.anyone_with_access_to_the_current_authentication
                 })
             }}
-            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref}) }}
+            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, attributes: {
+                id: "add-new-authorised-person",
+                "data-event-id": "add-new-authorised-person-button"
+            } }) }}
         </div>
     </div>
 
@@ -188,5 +191,13 @@
             }}
         </div>
     </div>
+
+    <script>
+        document
+            .getElementById("add-new-authorised-person")
+            .addEventListener("click", () => {
+                _paq.push(["trackEvent", "your-companies-web events", "Button Click", "add-new-authorised-person-button"]);
+            });
+    </script>
 
 {% endblock %}
