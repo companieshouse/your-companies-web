@@ -161,6 +161,7 @@ export const MATOMO_DECLINE_INVITATION_LINK_ID = "decline-authorised-user-invita
 export const MATOMO_ACCEPT_INVITATION_LINK = "Accept Authorised User Invitation Link";
 export const MATOMO_DECLINE_INVITATION_LINK = "Decline Authorised User Invitation Link";
 export const MATOMO_ADD_COMPANY_GOAL_ID = 8;
+export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = 9;
 
 // various
 export const NOT_PROVIDED = "Not provided";
