@@ -147,6 +147,10 @@ export const MATOMO_CONTINUE_BUTTON = "Continue Button";
 export const MATOMO_CONFIRM_AND_CONTINUE_BUTTON = "Confirm and Continue Button";
 export const MATOMO_CHOOSE_DIFFERENT_COMPANY_LINK = "Choose a Different Company Link";
 export const MATOMO_VIEW_YOUR_COMPANIES_LINK = "View Your Companies Link";
+export const MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON = "Add a New Authorised Person Button";
+export const REMOVE_AUTHORISED_USER = "Remove Authorised User";
+export const CANCEL_AUTHORISED_USER = "Cancel Authorised User";
+export const RESEND_AUTHORISED_USER_EMAIL = "Resend Authorised User Email";
 
 // various
 export const NOT_PROVIDED = "Not provided";
