@@ -13,8 +13,8 @@
 
             {{ govukButton({text: lang.add_a_company, href: buttonHref,
                     attributes: {
-                        id: "add-a-company",
-                        "data-event-id": "add-a-company-button"
+                        id: "add-a-company-button",
+                        "data-event-id": "add-a-company-button-event"
                     }
                 })
             }}
@@ -23,5 +23,5 @@
 </div>
 
 <script>
-    trackEvent("add-a-company", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
+    trackEvent("add-a-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
 </script>
