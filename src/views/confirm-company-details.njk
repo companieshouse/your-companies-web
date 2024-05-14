@@ -2,9 +2,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% extends "layouts/default.njk" %}
 
-    {% block back_link %}
+{% block back_link %}
     {% include "partials/back_link.njk" %}
-    {% endblock %} 
+{% endblock %}
 
 {% block main_content %}
 
@@ -13,74 +13,81 @@
             {{ lang.confirm_this_is_the_correct_company }}
         </h1>
 
-{{ govukSummaryList({
-  rows: [
-    {
-      key: {
-        text: lang.company_name
-      },
-      value: {
-        text: companyName
-      }
-    },
-    {
-      key: {
-        text: lang.company_number
-      },
-      value: {
-        text: companyNumber
-      }
-    },
-    {
-      key: {
-        text: lang.status
-      },
-      value: {
-        text: lang["company-status-" + companyStatus]
-      }
-    },
-    {
-      key: {
-        text: lang.incorporation_date 
-      },
-      value: {
-        html: dateOfCreation
-      }
-    },
-    {
-      key: {
-        text: lang.company_type
-      },
-      value: {
-        text: lang["company-type-" + type]
-      }
-    },
-    {
-      key: {
-        text: lang.registered_office_address
-      },
-      value: {
-        html: registeredOfficeAddress
-      }
-    }
-  ]
-}) }}
+        {{ govukSummaryList({
+                rows: [
+                    {
+                        key: {
+                            text: lang.company_name
+                        },
+                        value: {
+                            text: companyName
+                        }
+                    },
+                    {
+                        key: {
+                            text: lang.company_number
+                        },
+                        value: {
+                            text: companyNumber
+                        }
+                    },
+                    {
+                        key: {
+                            text: lang.status
+                        },
+                        value: {
+                            text: lang["company-status-" + companyStatus]
+                        }
+                    },
+                    {
+                        key: {
+                            text: lang.incorporation_date 
+                        },
+                        value: {
+                            html: dateOfCreation
+                        }
+                    },
+                    {
+                        key: {
+                            text: lang.company_type
+                        },
+                        value: {
+                            text: lang["company-type-" + type]
+                        }
+                    },
+                    {
+                        key: {
+                            text: lang.registered_office_address
+                        },
+                        value: {
+                            html: registeredOfficeAddress
+                        }
+                    }
+                ]
+            })
+        }}
 
-    <form method="post">
-        <div class="govuk-button-group">
+        <form method="post">
+            <div class="govuk-button-group">
 
-          {{ govukButton({
-            text: lang.confirm_and_continue,
-            attributes: {
-              "id": "submit"
-            }
-          }) }}
+                {{ govukButton({
+                        text: lang.confirm_and_continue,
+                        attributes: {
+                        id: "submit",
+                        "data-event-id": "submit-button-event"
+                        }
+                    })
+                }}
 
-        </div>
-    </form>
+            </div>
+        </form>
 
         <p class="govuk-body">
-            <a href={{backLinkWithClearForm}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>
+            <a href={{backLinkWithClearForm}} class="govuk-link govuk-link--no-visited-state" onclick="_paq.push(['trackEvent', '{{title}}', '{{matomoLinkClick}}', '{{matomoChooseDifferentCompanyLink}}']);">{{ lang.choose_a_different_company }}</a>
         </p>
     </div>
+
+    <script>
+        trackEvent("submit", "{{title}}", "{{matomoButtonClick}}", "{{matomoConfirmAndContinueButton}}");
+    </script>
 {% endblock %}
