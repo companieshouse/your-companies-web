@@ -129,7 +129,7 @@
             }
             if association.displayName and association.displayName !== "Not provided" else 
                 undefined %}
-            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, {
+            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, [], {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }, query_params) %}
@@ -142,10 +142,10 @@
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
-            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, {userEmail: association.userEmail})%}
+            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, [], {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
             {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, {userEmail: association.userEmail})%}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, [], {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}

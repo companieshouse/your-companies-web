@@ -138,6 +138,12 @@ export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 // Booleans
 export const TRUE = "true";
 
+// Matomo
+export const MATOMO_LINK_CLICK = "Link Click";
+export const MATOMO_BUTTON_CLICK = "Button Click";
+export const MATOMO_ADD_COMPANY_BUTTON = "Add a Company Button";
+export const MATOMO_VIEW_AND_MANAGE_LINK = "View and Manage Link";
+
 // various
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "confirmed";
