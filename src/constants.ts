@@ -143,6 +143,7 @@ export const MATOMO_LINK_CLICK = "Link Click";
 export const MATOMO_BUTTON_CLICK = "Button Click";
 export const MATOMO_ADD_COMPANY_BUTTON = "Add a Company Button";
 export const MATOMO_VIEW_AND_MANAGE_LINK = "View and Manage Link";
+export const MATOMO_CONTINUE_BUTTON = "Continue Button";
 
 // various
 export const NOT_PROVIDED = "Not provided";
