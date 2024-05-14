@@ -131,6 +131,12 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
 };
 
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {
-    updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
-    return Promise.resolve(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+    if (associationId) {
+        await updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
+        return Promise.resolve(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+    } else {
+        const errorMessage = "Error on removal/cancellation: associtionId not provided";
+        logger.error(errorMessage);
+        return Promise.reject(createError(400, errorMessage));
+    }
 };
