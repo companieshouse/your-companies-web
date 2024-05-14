@@ -1,0 +1,23 @@
+<script src="//{{ cdnHost }}/javascripts/app/piwik-enable.js"></script>
+<script type="application/javascript">
+    window.SERVICE_NAME = 'Your Companies web'
+    window.PIWIK_URL = '{{ piwikUrl }}'
+    window.PIWIK_SITE_ID = '{{ piwikSiteId }}'
+    console.log('piwwik url ', piwikUrl)
+    console.log('piwwik service name ', window.SERVICE_NAME)
+    console.log('piwwik site id ', piwikSiteId)
+</script>
+<div id="templateName" data-id='{{templateName}}' hidden></div>
+<script src="//{{ cdnHost }}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js">
+</script>
+<script src="//{{ cdnHost }}/javascripts/app/cookie-consent/matomo-only-cookie-consent.js">
+</script>
+<script>
+console.log("matomo has been added")
+</script>
+
+<noscript>
+    <p>
+        <img src="{{piwikUrl}}/piwik.php?idsite={{piwikSiteId}}" style="border:0;" alt="" />
+    </p>
+</noscript>

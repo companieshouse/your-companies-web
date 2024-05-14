@@ -95,7 +95,11 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     }
 
     private handleConfirmationPersonAdded (req: Request) {
+        console.log("the user session is ");
+        console.table(req.session);
         const authorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
+        console.log("authorised person is ", authorisedPerson);
+
         if (authorisedPerson && req.originalUrl.includes("/confirmation-person-added")) {
             this.viewData.authorisedPersonSuccess = true;
             this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;

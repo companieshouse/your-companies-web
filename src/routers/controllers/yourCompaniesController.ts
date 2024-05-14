@@ -7,7 +7,8 @@ export const yourCompaniesControllerGet = async (req: Request, res: Response): P
     const handler = new YourCompaniesHandler();
     const viewData = await handler.execute(req);
     res.render(constants.YOUR_COMPANIES_PAGE, {
-        ...viewData
+        ...viewData,
+        templateName: "your-companies-home-page-template"
     });
 };
 

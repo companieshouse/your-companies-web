@@ -11,7 +11,16 @@
                 {% endfor %}
             </ul>
 
-            {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
+            {{ govukButton({
+                text: lang.add_a_company,
+                href: buttonHref,
+                attributes: {
+                "data-event-id": "your-companies-add-a-company-BTN"
+                }
+            }) }}
+
+
+
         </div>
     </div>
 </div>

@@ -12,12 +12,12 @@ This macro creates a hyperlink with a visually hidden text
 {% macro link(text, visuallyHiddenText, href, urlParams, queryParams) %}
     {% set href = prepareHref(href, urlParams, queryParams) %}
 
-    <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state">
+    <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state" data-event-id="your-companies-view-and-manage-company-link" >
         {{text}}
         <span class="govuk-visually-hidden">{{visuallyHiddenText}}</span>
     </a>
 {% endmacro %}
-
+i
 {% macro prepareHref(href, urlParams, queryParams) %}
     {% if urlParams %}
         {% set href = addUrlParams(href, urlParams) %}
