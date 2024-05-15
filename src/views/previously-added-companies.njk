@@ -5,6 +5,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "macros/link.njk" import link %}
 
+{% set matomoParams = [title, matomoLinkClick, matomoViewAndManageLink] %}
 {% set rowsData = [] %}
 {% for elem in associationData %}
     {% set rowElem = [] %}
@@ -16,7 +17,7 @@
     } %}
     {% set company_name = elem | first %}
     {% set visuallyHiddenText = company_name.text %}
-    {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, params) %}
+    {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, matomoParams, params) %}
     {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}
@@ -31,7 +32,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        {{ govukButton({text: lang.add_a_company, href: buttonHref}) }}
+        {{ govukButton({
+                text: lang.add_a_company,
+                href: buttonHref,
+                attributes: {
+                    id: "add-a-company-button",
+                    "data-event-id": "add-a-company-button-event"
+                }
+            })
+        }}
 
         {% if displaySearchForm %}
             {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
@@ -105,3 +114,7 @@
 
     </div>
 </div>
+
+<script>
+    trackEvent("add-a-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
+</script>
