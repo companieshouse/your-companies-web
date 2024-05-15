@@ -19,12 +19,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
     if (err instanceof HttpError) {
 
-        logger.errorRequest(req, `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request
-        was made to ${req.originalUrl}. Re-routing to the error template page. ` +
-            `Error name: ${err.name}, ` +
-            `Error status: ${err.status}, ` +
-            `Error message:  + ${err.message}, ` +
-            `Stack: " + ${err.stack}`
+        logger.errorRequest(req, `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request was made to ${req.originalUrl}. Re-routing to the error template page. Error name: ${err.name}, Error status: ${err.status}, Error message:  + ${err.message}, Stack: " + ${err.stack}`
         );
 
         const statusCode: number = err.statusCode || 500;
