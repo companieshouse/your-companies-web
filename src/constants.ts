@@ -151,6 +151,9 @@ export const MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON = "Add a New Authorised Per
 export const MATOMO_REMOVE_AUTHORISED_USER_LINK = "Remove Authorised User Link";
 export const MATOMO_CANCEL_AUTHORISED_USER_LINK = "Cancel Authorised User Link";
 export const MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK = "Resend Authorised User Email Link";
+export const MATOMO_SEARCH_FOR_A_COMPANY_BUTTON = "Search for a Company Button";
+export const MATOMO_CANCEL_SEARCH_LINK = "Cancel search link";
+export const MATOMO_NO_RESULTS_FROM_SEARCH = "No results - company number search";
 
 // various
 export const NOT_PROVIDED = "Not provided";

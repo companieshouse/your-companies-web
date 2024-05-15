@@ -61,11 +61,9 @@
                     }}
                     {% endif %}
                     <input class="{{inputClasses}}" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
-                    <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-left-2 govuk-!-margin-right-2" role="button" data-module="govuk-button" aria-label="{{lang.search}}">
-                        {{lang.search}}
+                    <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-left-2 govuk-!-margin-right-2" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
                     </button>
-                    <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19" href="{{cancelSearchHref}}">{{lang.cancel_search}}</a>
-                </div>
+                    <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19" href="{{cancelSearchHref}}" id="your-companies-cancel-search-link" data-event-id="your-companies-cancel-search-link">{{lang.cancel_search}}</a></div>
             </form>
 
         {% endif %}
@@ -75,6 +73,12 @@
                 <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{search}}'</h2>
 
                 <p class="govuk-body">{{lang.no_results_that_match}}</p>
+                <script>
+                    function trackNoResultsFound() {
+                     _paq.push(["trackEvent", "{{title}}", "No results found from search custom event", "{{matomoNoResultsFromSearch}}"]);
+                    }
+                    trackNoResultsFound()
+                </script>
 
             {% elif numOfMatches == 1 %}
                 <h2 class="govuk-heading-s">{{numOfMatches}}
@@ -117,4 +121,6 @@
 
 <script>
     trackEvent("add-a-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
+    trackEvent("your-companies-search-for-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoSearchForACompanyLink}}");
+    trackEvent("your-companies-cancel-search-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoCancelSearchLink}}");
 </script>
