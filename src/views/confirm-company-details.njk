@@ -83,11 +83,11 @@
         </form>
 
         <p class="govuk-body">
-            <a href={{backLinkWithClearForm}} class="govuk-link govuk-link--no-visited-state" onclick="_paq.push(['trackEvent', '{{title}}', '{{matomoLinkClick}}', '{{matomoChooseDifferentCompanyLink}}']);">{{ lang.choose_a_different_company }}</a>
+            <a href={{backLinkWithClearForm}} class="govuk-link govuk-link--no-visited-state" onclick="_paq.push(['trackEvent', '{{lang.title}}', '{{matomoLinkClick}}', '{{matomoChooseDifferentCompanyLink}}']);">{{ lang.choose_a_different_company }}</a>
         </p>
     </div>
 
     <script>
-        trackEvent("submit", "{{title}}", "{{matomoButtonClick}}", "{{matomoConfirmAndContinueButton}}");
+        trackEvent("submit", "{{lang.title}}", "{{matomoButtonClick}}", "{{matomoConfirmAndContinueButton}}");
     </script>
 {% endblock %}
