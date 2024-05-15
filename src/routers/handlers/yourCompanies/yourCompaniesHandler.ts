@@ -83,7 +83,11 @@ export class YourCompaniesHandler extends GenericHandler {
             buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
             numberOfInvitations: awaitingApprovalUserAssociations.totalResults,
             viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL,
-            cancelSearchHref: constants.LANDING_URL
+            cancelSearchHref: constants.LANDING_URL,
+            matomoLinkClick: constants.MATOMO_LINK_CLICK,
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoAddCompanyButton: constants.MATOMO_ADD_COMPANY_BUTTON,
+            matomoViewAndManageLink: constants.MATOMO_VIEW_AND_MANAGE_LINK
         };
 
         if (confirmedUserAssociations.totalResults > 0) {

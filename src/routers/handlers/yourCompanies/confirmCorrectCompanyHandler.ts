@@ -28,7 +28,11 @@ export class ConfirmCorrectCompanyHandler extends GenericHandler {
             backLinkHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
             backLinkWithClearForm: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
             feedbackSource: constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
-            lang: translations
+            lang: translations,
+            matomoLinkClick: constants.MATOMO_LINK_CLICK,
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoConfirmAndContinueButton: constants.MATOMO_CONFIRM_AND_CONTINUE_BUTTON,
+            matomoChooseDifferentCompanyLink: constants.MATOMO_CHOOSE_DIFFERENT_COMPANY_LINK
         };
     }
 }
