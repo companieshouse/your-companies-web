@@ -44,7 +44,11 @@ export class CancelPersonHandler extends GenericHandler {
             backLinkHref: getExtraData(req.session, constants.REFERER_URL),
             companyName: getExtraData(req.session, constants.COMPANY_NAME),
             userEmail: req.params[constants.USER_EMAIL],
-            buttonHref: req.originalUrl
+            buttonHref: req.originalUrl,
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoLinkClick: constants.MATOMO_LINK_CLICK,
+            matomoContinueButton: constants.MATOMO_CONTINUE_BUTTON,
+            matomoCancelLink: constants.MATOMO_CANCEL_LINK
         };
     }
 }
