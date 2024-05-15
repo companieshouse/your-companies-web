@@ -107,7 +107,10 @@
                     text: lang.anyone_with_access_to_the_current_authentication
                 })
             }}
-            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref}) }}
+            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, attributes: {
+                id: "add-new-authorised-person-button",
+                "data-event-id": "add-new-authorised-person-button-event"
+            } }) }}
         </div>
     </div>
 
@@ -129,7 +132,8 @@
             }
             if association.displayName and association.displayName !== "Not provided" else 
                 undefined %}
-            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, [], {
+            {% set matomoParamsRemove = [title, matomoLinkClick, matomoRemoveAuthorisedUserLink] %}
+            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, matomoParamsRemove, {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }, query_params) %}
@@ -142,10 +146,12 @@
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
-            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, [], {userEmail: association.userEmail})%}
+            {% set matomoParamsCancel = [title, matomoLinkClick, matomoCancelAuthorisedUserLink] %}
+            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, matomoParamsCancel, {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
             {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, [], {userEmail: association.userEmail})%}
+            {% set matomoParamsResendEmail = [title, matomoLinkClick, matomoResendAuthorisedUserEmailLink] %}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, matomoParamsResendEmail , {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}
@@ -188,5 +194,9 @@
             }}
         </div>
     </div>
+
+    <script>
+        trackEvent("add-new-authorised-person-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddNewAuthorisedPersonButton}}");
+    </script>
 
 {% endblock %}
