@@ -15,16 +15,16 @@
     </div>
 {% endblock %}
 
-    {% set message = null %}
+{% set message = null %}
 
-    {% for key, value in errors %}
-        {% if key == "confirmRemoval" %}
-            {% set message = {
-                text: lang[value.text]
-            } %}
-            {% set title = lang.title_error + title %}
-        {% endif %}
-    {% endfor %}
+{% for key, value in errors %}
+    {% if key == "confirmRemoval" %}
+        {% set message = {
+            text: lang[value.text]
+        } %}
+        {% set title = lang.title_error + title %}
+    {% endif %}
+{% endfor %}
 
 {% block main_content %}
 
@@ -71,16 +71,23 @@
                 <div class="govuk-button-group">
 
                     {{ govukButton({
-                        text: lang.remove_authorisation,
-                        classes: "govuk-button--warning"
-                    }) }}
+                            text: lang.remove_authorisation,
+                            classes: "govuk-button--warning",
+                            attributes: {
+                                id: "remove-authorisation-button",
+                                "data-event-id": "remove-authorisation-button-event"
+                            }
+                        })
+                    }}
 
-                    <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
+                    <a class="govuk-link" href="{{ cancelLinkHref }}" id="cancel-link">{{ lang.cancel }}</a>
 
                 </div>
-
             </form>
-
         </div>
     </div>
+    <script>
+        trackEvent("remove-authorisation-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoRemoveAuthorisationButton}}");
+        trackEvent("cancel-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoCancelLink}}");
+    </script>
 {% endblock %}

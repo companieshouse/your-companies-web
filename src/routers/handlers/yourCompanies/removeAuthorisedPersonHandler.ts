@@ -45,7 +45,11 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             backLinkHref: getExtraData(req.session, constants.REFERER_URL),
             companyName: getExtraData(req.session, constants.COMPANY_NAME),
             userEmail: req.params[constants.USER_EMAIL],
-            userName: req.query[constants.USER_NAME]
+            userName: req.query[constants.USER_NAME],
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoLinkClick: constants.MATOMO_LINK_CLICK,
+            matomoRemoveAuthorisationButton: constants.MATOMO_REMOVE_AUTHORISATION_BUTTON,
+            matomoCancelLink: constants.MATOMO_CANCEL_LINK
         };
     }
 
