@@ -49,7 +49,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
             matomoLinkClick: constants.MATOMO_LINK_CLICK,
             matomoRemoveAuthorisationButton: constants.MATOMO_REMOVE_AUTHORISATION_BUTTON,
-            matomoCancelLink: constants.MATOMO_CANCEL_LINK
+            matomoCancelButton: constants.MATOMO_CANCEL_BUTTON
         };
     }
 
