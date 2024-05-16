@@ -93,6 +93,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             }
             this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
             this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
+            this.viewData.matomoChangeTheAuthenticationCodeLink = constants.MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK;
+            this.viewData.matomoLinkClick = constants.MATOMO_LINK_CLICK;
         }
     }
 
