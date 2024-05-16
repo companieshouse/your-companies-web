@@ -56,7 +56,9 @@ export class AddPresenterHandler extends GenericHandler {
             lang: translations,
             companyName,
             companyNumber,
-            backLinkHref: href
+            backLinkHref: href,
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoContinueButton: constants.MATOMO_CONTINUE_BUTTON
         };
     }
 

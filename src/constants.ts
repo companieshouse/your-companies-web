@@ -151,6 +151,8 @@ export const MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON = "Add a New Authorised Per
 export const MATOMO_REMOVE_AUTHORISED_USER_LINK = "Remove Authorised User Link";
 export const MATOMO_CANCEL_AUTHORISED_USER_LINK = "Cancel Authorised User Link";
 export const MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK = "Resend Authorised User Email Link";
+export const MATOMO_CONFIRM_AND_SEND_EMAIL_BUTTON = "Confirm and Send Email Button";
+export const MATOMO_CHANGE_LINK = "Change Link";
 
 // various
 export const NOT_PROVIDED = "Not provided";
