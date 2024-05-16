@@ -5,6 +5,10 @@ export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB:
     if (referrer?.endsWith("/")) {
         referrer = referrer.substring(0, referrer.length - 1);
     }
+    if (pageIndicator) {
+        logger.debug(`pageIndicator is true, redirectPage returning false`);
+        return false;
+    }
 
     if (referrer && (referrer.endsWith(hrefA) ||
         referrer.includes(hrefA + "?") ||
@@ -14,18 +18,12 @@ export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB:
         referrer.includes(hrefB + "&") ||
         (hrefC !== undefined && (referrer.endsWith(hrefC) ||
             referrer.includes(hrefC + "?") ||
-            referrer.includes(hrefC + "&"))) || pageIndicator === true)) {
+            referrer.includes(hrefC + "&"))))) {
 
-        logger.debug(`redirectPage is returning FALSE`);
+        logger.debug(`redirectPage is returning false`);
         return false;
     } else {
-        logger.debug(`redirectPage is returning TRUE, 
-        referrer is ${referrer},
-        hrefA: ${hrefA},
-        hrefB: ${hrefB},
-        pageIndicator ${pageIndicator},
-        hrefC ${hrefC}
-        `);
+        logger.debug(`redirectPage is returning true, referrer is ${referrer}, hrefA: ${hrefA}, hrefB: ${hrefB}, pageIndicator ${pageIndicator}, hrefC ${hrefC}`);
         return true;
     }
 
