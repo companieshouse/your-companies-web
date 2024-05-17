@@ -87,7 +87,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(en.name);
         expect(response.text).toContain(en.status);
         expect(response.text).toContain(en.remove);
-        expect(response.text).toContain(en.go_back_to_your_companies);
+        expect(response.text).toContain(enCommon.go_back_to_your_companies);
         expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
@@ -124,7 +124,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(en.name);
         expect(response.text).toContain(en.status);
         expect(response.text).toContain(en.remove);
-        expect(response.text).toContain(en.go_back_to_your_companies);
+        expect(response.text).toContain(enCommon.go_back_to_your_companies);
         expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
@@ -161,7 +161,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(cy.name);
         expect(response.text).toContain(cy.status);
         expect(response.text).toContain(cy.remove);
-        expect(response.text).toContain(cy.go_back_to_your_companies);
+        expect(response.text).toContain(cyCommon.go_back_to_your_companies);
         expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
@@ -198,7 +198,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text).toContain(cy.name);
         expect(response.text).toContain(cy.status);
         expect(response.text).toContain(cy.remove);
-        expect(response.text).toContain(cy.go_back_to_your_companies);
+        expect(response.text).toContain(cyCommon.go_back_to_your_companies);
         expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
