@@ -62,6 +62,21 @@
         window.addEventListener('focus', () => {
             location.reload();
         });
+
+        let text = "{{ids}}";
+        let idArray = text.split(",");
+
+        for (let i in idArray){
+
+            let subVar = idArray[i]
+
+            if(i%2 === 0){
+                trackEvent(subVar, "{{lang.h1}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
+            } else {
+                trackEvent(subVar, "{{lang.h1}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
+            }
+        }
+
     </script>
 
 {% endblock %}

@@ -156,6 +156,10 @@ export const MATOMO_CHANGE_LINK = "Change Link";
 export const MATOMO_REMOVE_AUTHORISATION_BUTTON = "Remove Authorisation Button";
 export const MATOMO_CANCEL_LINK = "Cancel Link";
 export const MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK = "Change the Authentication Code Link";
+export const MATOMO_ACCEPT_INVITATION_LINK_ID = "accept-authorised-user-invitation-link";
+export const MATOMO_DECLINE_INVITATION_LINK_ID = "decline-authorised-user-invitation-link";
+export const MATOMO_ACCEPT_INVITATION_LINK = "Accept Authorised User Invitation Link";
+export const MATOMO_DECLINE_INVITATION_LINK = "Decline Authorised User Invitation Link";
 
 // various
 export const NOT_PROVIDED = "Not provided";
