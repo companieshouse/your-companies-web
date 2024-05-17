@@ -13,16 +13,16 @@
 
 {% endblock %}
 
-    {% set message = null %}
+{% set message = null %}
 
-    {% for key, value in errors %}
-        {% if key == "cancelPerson" %}
-            {% set message = {
-                text: lang[value.text]
-            } %}
-         {% set title =  lang.title_error + title %}
-        {% endif %}
-    {% endfor %}
+{% for key, value in errors %}
+    {% if key == "cancelPerson" %}
+        {% set message = {
+            text: lang[value.text]
+        } %}
+        {% set title = lang.title_error + title %}
+    {% endif %}
+{% endfor %}
 
 {% block main_content %}
 
@@ -61,14 +61,37 @@
 
                 {% set button_attributes = {
                     role: "button",
-                    "aria-label": lang.continue_button_to_proceed_to_the_next_page
+                    "aria-label": lang.continue_button_to_proceed_to_the_next_page,
+                    id: "continue-button",
+                    "data-event-id": "continue-button-event"
                 } %}
                 <div class="govuk-button-group">
                     {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
 
-                    <a class="govuk-link" href="{{backLinkHref}}" aria-label="{{lang.link_to_cancel_the_authorisation_cancellation_process}}">{{lang.cancel}}</a>
+                    <a id="cancel-link" class="govuk-link" href="{{backLinkHref}}" aria-label="{{lang.link_to_cancel_the_authorisation_cancellation_process}}">{{lang.cancel}}</a>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        let radios = document.getElementsByName('cancelPerson');
+        for (i = 0; i < radios.length; i++) {
+            radios[i].onclick = function () {
+                let matomoEventName = this
+                    .value
+                    .charAt(0)
+                    .toUpperCase() + this
+                    .value
+                    .slice(1) + " Option / " + "{{matomoContinueButton}}";
+                trackEvent("continue-button", "{{title}}", "{{matomoButtonClick}}", matomoEventName);
+            }
+        }
+
+        if (!document.querySelector("input[type='radio'][name='cancelPerson']:checked")) {
+            trackEvent("continue-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoContinueButton}}");
+        }
+
+        trackEvent("cancel-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoCancelLink}}");
+    </script>
 {% endblock %}
