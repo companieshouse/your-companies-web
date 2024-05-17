@@ -1,0 +1,27 @@
+{% extends "layouts/default.njk" %}
+
+{% block back_link %}
+    {% include "partials/back_link.njk" %}
+{% endblock %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+                {{lang.this_person_is_already_authorised}}
+            </h1>
+
+            <p class="govuk-body">
+                {{lang.the_person_with_the_email_address}}
+                {{emailAddress}}
+                {{lang.has_already_been_digitally_authorised}}
+            </p>
+
+            <p class="govuk-body">
+                <a class="govuk-link" href="{{landingPageUrl}}">{{lang.go_back_to_your_companies}}</a>
+            </p>
+
+        </div>
+    </div>
+{% endblock %}
