@@ -10,5 +10,6 @@
     "accept_an_invitation_from": "[CY] Accept an invitation from ",
     "decline_an_invitation": "[CY] Decline an invitation",
     "decline_an_invitation_from": "[CY] Decline an invitation from ",
-    "invitations_to_be_digitally_authorised": "[CY] Invitations to be digitally authorised for a company"
+    "invitations_to_be_digitally_authorised": "[CY] Invitations to be digitally authorised for a company",
+    "no_pending_invitations": "[CY] No pending invitations."
 }
