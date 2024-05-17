@@ -15,7 +15,7 @@ import { companyInvitationsAcceptControllerGet } from "./controllers/companyInvi
 import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPost } from "./controllers/removeAuthorisedPersonController";
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
 import { healthCheckController } from "./controllers/healthCheckController";
-import { personNotAddedControllerGet } from "./controllers/personNotAdded";
+import { presenterAlreadyAddedControllerGet } from "./controllers/presenterAlreadyAddedController";
 import { addPresenterNavigation } from "../middleware/navigation/addPresenter.middleware";
 import { cancelPersonNavigation } from "../middleware/navigation/cancelPerson.middleware";
 import { checkPresenterNavigation } from "../middleware/navigation/checkPresenter.middleware";
@@ -25,6 +25,7 @@ import { companyInvitationsDeclineNavigation } from "../middleware/navigation/co
 import { confirmCompanyNavigation } from "../middleware/navigation/confirmCompany.middleware";
 import { manageAuthorisedPeopleNavigation } from "../middleware/navigation/manageAuthorisedPeople.middleware";
 import { removeAuthorisedPersonNavigation } from "../middleware/navigation/removeAuthorisedPerson.middleware";
+import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
 
 const router: Router = Router();
 
@@ -66,6 +67,6 @@ router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineN
 
 router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptNavigation, companyInvitationsAcceptControllerGet as RequestHandler);
 
-router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet);
+router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedNavigation, presenterAlreadyAddedControllerGet);
 
 export default router;
