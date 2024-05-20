@@ -17,6 +17,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     async execute (req: Request): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
+        deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
+        deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
