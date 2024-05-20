@@ -63,18 +63,20 @@
             location.reload();
         });
 
-        let text = "{{ids}}";
-        let idArray = text.split(",");
+        let acceptIdText = "{{ acceptIds }}";
+        let declineIdText = "{{ declineIds }}";
 
-        for (let i in idArray){
+        let acceptIdArray = acceptIdText.split(",");
+        let declineIdArray = declineIdText.split(",");
 
-            let subVar = idArray[i]
+        for (let i in acceptIdArray){
+            let subVarI = acceptIdArray[i]
+            trackEvent(subVarI, "{{lang.h1}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
+        }
 
-            if(i%2 === 0){
-                trackEvent(subVar, "{{lang.h1}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
-            } else {
-                trackEvent(subVar, "{{lang.h1}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
-            }
+        for (let j in declineIdArray){
+            let subVarJ = declineIdArray[j]
+                trackEvent(subVarJ, "{{lang.h1}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
         }
 
     </script>

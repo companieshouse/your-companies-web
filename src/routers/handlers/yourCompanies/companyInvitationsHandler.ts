@@ -17,7 +17,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
     private async getViewData (req: Request): Promise<ViewData> {
         const userAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
-        const { rows, ids } = await this.getRowsData(userAssociations.items, translations);
+        const { rows, acceptIds, declineIds } = await this.getRowsData(userAssociations.items, translations);
 
         return {
             backLinkHref: constants.LANDING_URL,
@@ -25,13 +25,14 @@ export class CompanyInvitationsHandler extends GenericHandler {
             lang: translations,
             matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
             matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK,
-            matomoLinkClick: constants.MATOMO_LINK_CLICK,
-            ids: ids
+            acceptIds: acceptIds,
+            declineIds: declineIds
         };
     }
 
     private async getRowsData (userAssociations: Association[], translations: AnyRecord): Promise<Invitations> {
-        const ids = [];
+        const acceptIds = new Set<string>();
+        const declineIds = new Set<string>();
         const rows: ({ text: string } | { html: string })[][] = [];
         if (userAssociations?.length) {
             for (const association of userAssociations) {
@@ -43,8 +44,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
                     const acceptId = `${constants.MATOMO_ACCEPT_INVITATION_LINK_ID}-${association.companyNumber}-${newestInvite.invitedBy}`;
                     const declineId = `${constants.MATOMO_DECLINE_INVITATION_LINK_ID}-${association.companyNumber}-${newestInvite.invitedBy}`;
 
-                    ids.push(acceptId);
-                    ids.push(declineId);
+                    acceptIds.add(acceptId);
+                    declineIds.add(declineId);
 
                     rows.push([
                         { text: association.companyName },
@@ -60,7 +61,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
                 }
             }
         }
-        return { rows, ids };
+        return { rows, acceptIds: Array.from(acceptIds), declineIds: Array.from(declineIds) };
     }
 
     private getLink (path: string, ariaLabel: string, text: string, id: string): string {
