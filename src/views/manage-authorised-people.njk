@@ -197,8 +197,10 @@
 
     <script>
         trackEvent("add-new-authorised-person-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddNewAuthorisedPersonButton}}");
-        trackEvent("change-company-auth-code-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoChangeTheAuthenticationCodeLink}}");
         trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
+        if (document.getElementById("change-company-auth-code-link")) {
+            trackEvent("change-company-auth-code-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoChangeTheAuthenticationCodeLink}}");
+        }
     </script>
 
 {% endblock %}
