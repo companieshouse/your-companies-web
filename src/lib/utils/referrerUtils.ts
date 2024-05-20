@@ -1,5 +1,17 @@
 import logger from "../Logger";
 
+/**
+ *
+ * @param referrer - redirect url - the specific url prior to the url the user is currently on
+ * @param hrefA - expected previous page url - compared with redirect parameter to confirm if user has travelled from the page prior to the current page in the journey
+ * @param hrefB - expected current page url - compared with redirect parameter to account for whether user has changed language on current page, changing the url
+ * @param pageIndicator - for when the authentication system causes referrer paramater to be 'undefined'
+ *                      - if true, page is not redirected as user has travelled from a valid page
+ * @param hrefC - expected next page - compared with redirect parameter to account for whether a user has clicked 'back' to go to the previous page
+ *              - optional as not all pages have a page that follows them
+ * @returns
+ */
+
 export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB: string, pageIndicator: boolean, hrefC?: string): boolean => {
 
     if (referrer?.endsWith("/")) {
@@ -9,7 +21,6 @@ export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB:
         logger.debug(`pageIndicator is true, redirectPage returning false`);
         return false;
     }
-
     if (referrer && (referrer.endsWith(hrefA) ||
         referrer.includes(hrefA + "?") ||
         referrer.includes(hrefA + "&") ||
