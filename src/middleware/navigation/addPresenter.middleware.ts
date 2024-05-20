@@ -27,7 +27,7 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
     }
     logger.debug(`addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(checkedReferrer, hrefA, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber), newPageIndicator, constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber))) {
+    if (redirectPage(checkedReferrer, hrefA, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber), newPageIndicator, [constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber)])) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();

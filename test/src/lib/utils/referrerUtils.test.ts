@@ -4,7 +4,7 @@ describe("redirectPage", () => {
 
     const hrefA = "hrefA.com";
     const hrefB = "hrefB.com";
-    const hrefC = "hrefC.com";
+    const hrefC = ["hrefC.com"];
     const indicator = false;
     const referrer = "referrer.com";
 
@@ -41,7 +41,7 @@ describe("redirectPage", () => {
     it("should return false when the referrer equals hrefC parameter", () => {
         // Given
         const referrer = "hrefC.com";
-        const hrefC = "hrefC.com";
+        const hrefC = ["hrefC.com"];
         // When
         const result = redirectPage(referrer, hrefA, hrefB, indicator, hrefC);
         // Then

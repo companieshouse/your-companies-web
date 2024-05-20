@@ -10,7 +10,7 @@ export const confirmCompanyNavigation = async (req: Request, res: Response, next
 
     logger.debug(`confirmCompanyNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(referrer, constants.ADD_COMPANY_URL, constants.CONFIRM_COMPANY_DETAILS_URL, pageIndicator, constants.COMPANY_ADDED_SUCCESS_URL)) {
+    if (redirectPage(referrer, constants.ADD_COMPANY_URL, constants.CONFIRM_COMPANY_DETAILS_URL, pageIndicator, [constants.COMPANY_ADDED_SUCCESS_URL])) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
