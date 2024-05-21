@@ -12,7 +12,7 @@ import logger from "../Logger";
  *                      - if true, page is not redirected as user has travelled from a valid page
  * @param hrefC - expected next page - compared with referrer parameter to account for whether a user has clicked 'back' to go to the previous page
  *              - optional as not all pages have a page that follows them
- * @returns - if false, user is not redirected and desired page is rendered. If true, user is redirected to a page specified in middleware.
+ * @returns - returns true if referrer is undefined or not equal to the expected href parameters, false otherwise.
  */
 
 export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB: string, pageIndicator: boolean, hrefC?: string): boolean => {
