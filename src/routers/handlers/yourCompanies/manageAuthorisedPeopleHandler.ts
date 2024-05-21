@@ -67,7 +67,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             matomoAddNewAuthorisedPersonButton: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON,
             matomoRemoveAuthorisedUserLink: constants.MATOMO_REMOVE_AUTHORISED_USER_LINK,
             matomoCancelAuthorisedUserLink: constants.MATOMO_CANCEL_AUTHORISED_USER_LINK,
-            matomoResendAuthorisedUserEmailLink: constants.MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK
+            matomoResendAuthorisedUserEmailLink: constants.MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK,
+            matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID
         };
     }
 
