@@ -1,5 +1,22 @@
 <!-- Matomo -->
 <script>
+    function bindPiwikListener(applicationName, piwikUrl, siteId, analyticsEngine) {
+        var cookieArray = document
+            .cookie
+            .split(';');
+
+        for (var i = 0; i < cookieArray.length; i++) {
+            if (cookieArray[i].indexOf('ch_cookie_consent') !== -1) {
+                var cookieTuple = cookieArray[i].split('=');
+                var cookieJson = JSON.parse(atob(cookieTuple[1]));
+                if (cookieJson.userHasAllowedCookies === 'no') {
+                    return;
+                }
+            }
+        }
+    }
+</script>
+<script>
     var _paq = window._paq = window._paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push([
