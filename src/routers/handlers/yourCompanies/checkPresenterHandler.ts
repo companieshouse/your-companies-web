@@ -44,9 +44,7 @@ export class CheckPresenterHandler extends GenericHandler {
             emailAddress,
             backLinkHref: url,
             backLinkWithClearForm: url + constants.CLEAR_FORM_TRUE,
-            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
             matomoConfirmAndSendEmailButton: constants.MATOMO_CONFIRM_AND_SEND_EMAIL_BUTTON,
-            matomoLinkClick: constants.MATOMO_LINK_CLICK,
             matomoChangeLink: constants.MATOMO_CHANGE_LINK
         };
     }

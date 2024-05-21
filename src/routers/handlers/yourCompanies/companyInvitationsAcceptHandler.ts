@@ -28,7 +28,9 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         return {
             lang: translations,
             yourCompaniesUrl: constants.LANDING_URL,
-            companyName
+            companyName,
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoViewYourCompaniesLink: constants.MATOMO_VIEW_YOUR_COMPANIES_LINK
         };
     }
 }

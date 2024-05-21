@@ -62,6 +62,23 @@
         window.addEventListener('focus', () => {
             location.reload();
         });
+
+        let acceptIdText = "{{ acceptIds }}";
+        let declineIdText = "{{ declineIds }}";
+
+        let acceptIdArray = acceptIdText.split(",");
+        let declineIdArray = declineIdText.split(",");
+
+        for (let i in acceptIdArray){
+            let subVarI = acceptIdArray[i]
+            trackEvent(subVarI, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
+        }
+
+        for (let j in declineIdArray){
+            let subVarJ = declineIdArray[j]
+                trackEvent(subVarJ, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
+        }
+
     </script>
 
 {% endblock %}

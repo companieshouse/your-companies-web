@@ -28,13 +28,18 @@
 
             {{ govukButton({
                 text: lang.view_your_companies,
-                href: buttonLinkHref
+                href: buttonLinkHref, attributes: {
+                id: "view-your-companies-button",
+                "data-event-id": "view-your-companies-button-event"
+                    }
             }) }}
 
         </div>
     </div>
 
-    
+    <script>
+        trackEvent("view-your-companies-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoViewYourCompaniesLink}}");
+    </script>
 
 
 
