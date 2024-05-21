@@ -120,7 +120,18 @@
 </div>
 
 <script>
+    let matomoPageTitle = "{{title}}";
+    let updatedMatomoButtonClick = "{{matomoButtonClick}}";
+    let updatedMatomoLinkClick = "{{matomoLinkClick}}";
+    const NO_RESULTS_FOUND = "No results found: "
+
+        if ("{{numOfMatches}}" === "0"){
+            matomoPageTitle = NO_RESULTS_FOUND + "{{title}}";
+            updatedMatomoButtonClick = NO_RESULTS_FOUND + "{{matomoButtonClick}}";
+            updatedMatomoLinkClick = NO_RESULTS_FOUND + "{{matomoLinkClick}}";
+        }
+    
     trackEvent("add-a-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
-    trackEvent("your-companies-search-for-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoSearchForACompanyLink}}");
-    trackEvent("your-companies-cancel-search-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoCancelSearchLink}}");
+    trackEvent("your-companies-search-for-company-button", matomoPageTitle, updatedMatomoButtonClick, "{{matomoSearchForACompanyLink}}");
+    trackEvent("your-companies-cancel-search-link", matomoPageTitle, updatedMatomoLinkClick, "{{matomoCancelSearchLink}}");
 </script>
