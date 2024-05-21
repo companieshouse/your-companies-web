@@ -128,4 +128,14 @@ describe("redirectPage", () => {
         // Then
         expect(result).toEqual(true);
     });
+
+    it("should always return false when the page indicator is true", () => {
+        // Given
+        const referrer = undefined;
+        const trueIndicator = true;
+        // When
+        const result = redirectPage(referrer, hrefA, hrefB, trueIndicator, hrefC);
+        // Then
+        expect(result).toEqual(false);
+    });
 });

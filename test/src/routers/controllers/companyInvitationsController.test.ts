@@ -77,7 +77,7 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedNotContainCompanyName);
     });
 
-    it("should return an empty table if no invitation awaiting approval exists", async () => {
+    it("should return an expected text if no invitation awaiting approval exists and language set to English", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(userAssociations);
         const expectedNotContainEmail = "another.email@acme.com";
@@ -87,13 +87,14 @@ describe(`GET ${url}`, () => {
         const expectedNotContainCompanyName2 = "BRITISH AIRWAYS PLC";
 
         // When
-        const response = await router.get(url);
+        const response = await router.get(url + "?lang=en");
 
         // Then
         expect(response.text).toContain(en.h1);
-        expect(response.text).toContain(en.company_name);
-        expect(response.text).toContain(en.company_number);
-        expect(response.text).toContain(en.invited_by);
+        expect(response.text).toContain(en.no_pending_invitations);
+        expect(response.text).not.toContain(en.company_name);
+        expect(response.text).not.toContain(en.company_number);
+        expect(response.text).not.toContain(en.invited_by);
         expect(response.text).not.toContain(expectedNotContainEmail);
         expect(response.text).not.toContain(expectedNotContainCompanyNumber1);
         expect(response.text).not.toContain(expectedNotContainCompanyName1);
@@ -101,7 +102,32 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedNotContainCompanyName2);
     });
 
-    it("should return an empty table if no invitation provided", async () => {
+    it("should return an expected text if no invitation awaiting approval exists and language set to Welsh", async () => {
+        // Given
+        userAssociationsSpy.mockResolvedValue(userAssociations);
+        const expectedNotContainEmail = "another.email@acme.com";
+        const expectedNotContainCompanyNumber1 = "NI038379";
+        const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
+        const expectedNotContainCompanyNumber2 = "01777777";
+        const expectedNotContainCompanyName2 = "BRITISH AIRWAYS PLC";
+
+        // When
+        const response = await router.get(url + "?lang=cy");
+
+        // Then
+        expect(response.text).toContain(cy.h1);
+        expect(response.text).toContain(cy.no_pending_invitations);
+        expect(response.text).not.toContain(cy.company_name);
+        expect(response.text).not.toContain(cy.company_number);
+        expect(response.text).not.toContain(cy.invited_by);
+        expect(response.text).not.toContain(expectedNotContainEmail);
+        expect(response.text).not.toContain(expectedNotContainCompanyNumber1);
+        expect(response.text).not.toContain(expectedNotContainCompanyName1);
+        expect(response.text).not.toContain(expectedNotContainCompanyNumber2);
+        expect(response.text).not.toContain(expectedNotContainCompanyName2);
+    });
+
+    it("should return an expected text if no invitation provided", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue({} as Associations);
         const expectedNotContainEmail = "another.email@acme.com";
@@ -115,9 +141,10 @@ describe(`GET ${url}`, () => {
 
         // Then
         expect(response.text).toContain(en.h1);
-        expect(response.text).toContain(en.company_name);
-        expect(response.text).toContain(en.company_number);
-        expect(response.text).toContain(en.invited_by);
+        expect(response.text).toContain(en.no_pending_invitations);
+        expect(response.text).not.toContain(en.company_name);
+        expect(response.text).not.toContain(en.company_number);
+        expect(response.text).not.toContain(en.invited_by);
         expect(response.text).not.toContain(expectedNotContainEmail);
         expect(response.text).not.toContain(expectedNotContainCompanyNumber1);
         expect(response.text).not.toContain(expectedNotContainCompanyName1);
@@ -125,7 +152,7 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedNotContainCompanyName2);
     });
 
-    it("should return an empty table if invitation empty", async () => {
+    it("should return an expected text if invitation empty", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(userAssociationsWithEmptyInvitations);
         const expectedNotContainEmail = "another.email@acme.com";
@@ -139,9 +166,10 @@ describe(`GET ${url}`, () => {
 
         // Then
         expect(response.text).toContain(en.h1);
-        expect(response.text).toContain(en.company_name);
-        expect(response.text).toContain(en.company_number);
-        expect(response.text).toContain(en.invited_by);
+        expect(response.text).toContain(en.no_pending_invitations);
+        expect(response.text).not.toContain(en.company_name);
+        expect(response.text).not.toContain(en.company_number);
+        expect(response.text).not.toContain(en.invited_by);
         expect(response.text).not.toContain(expectedNotContainEmail);
         expect(response.text).not.toContain(expectedNotContainCompanyNumber1);
         expect(response.text).not.toContain(expectedNotContainCompanyName1);
