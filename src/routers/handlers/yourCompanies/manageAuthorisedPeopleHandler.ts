@@ -6,11 +6,12 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
 import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
 import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
+import { log } from "console";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -86,13 +87,26 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     private async handleRemoval (req: Request, removal: Removal, companyAssociations: Associations) {
         if (removal.removePerson === constants.CONFIRM) {
-            const associationId = companyAssociations.items.find(
+            const association = companyAssociations.items.find(
                 association => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
-            )?.id as string;
+            );
+            console.log("the association being removed is ");
+            console.table(association);
+            const associationId = association?.id;
+            // why is isUserRemovedFromCompanyAssociations getting session / constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS is true
             if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
                 this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
-            this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
+            // find out if removing theselves
+            const loggedInUserEmail = getLoggedInUserEmail(req.session);
+            console.log("loggin user is ", loggedInUserEmail);
+            console.log("association email is ", association?.userEmail);
+            if (association?.userEmail === loggedInUserEmail) {
+                this.viewData.removedThemselves = true;
+                //  this.viewData.removedPerson = false;
+            } else {
+                this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
+            }
             this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
             this.viewData.matomoChangeTheAuthenticationCodeLink = constants.MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK;
         }

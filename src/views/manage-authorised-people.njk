@@ -56,6 +56,22 @@
         </div>
     {% endif %}
 
+    {% if removedThemselves %}
+        {% set successHtml %}
+        <h3 class="govuk-notification-banner__heading">{{lang.you_are_no_longer_authorised}}{{company_association.companyName}}</h3>
+        {% endset %}
+        <div class="govuk-grid-column-two-thirds">
+            {{
+                govukNotificationBanner({
+                    html: successHtml,
+                    type: "success",
+                    titleText: lang.success
+                })
+            }}
+        </div>
+    {% endif %}
+
+
     {% if authorisedPersonSuccess %}
         {% set successHtml %}
         <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
