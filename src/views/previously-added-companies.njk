@@ -71,14 +71,7 @@
         {% if showNumOfMatches %}
             {% if numOfMatches == 0 %}
                 <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{search}}'</h2>
-
                 <p class="govuk-body">{{lang.no_results_that_match}}</p>
-                <script>
-                    function trackNoResultsFound() {
-                     _paq.push(["trackEvent", "{{title}}", "No results found from search custom event", "{{matomoNoResultsFromSearch}}"]);
-                    }
-                    trackNoResultsFound()
-                </script>
 
             {% elif numOfMatches == 1 %}
                 <h2 class="govuk-heading-s">{{numOfMatches}}

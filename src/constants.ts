@@ -153,7 +153,6 @@ export const MATOMO_CANCEL_AUTHORISED_USER_LINK = "Cancel Authorised User Link";
 export const MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK = "Resend Authorised User Email Link";
 export const MATOMO_SEARCH_FOR_A_COMPANY_BUTTON = "Search for a Company Button";
 export const MATOMO_CANCEL_SEARCH_LINK = "Cancel search link";
-export const MATOMO_NO_RESULTS_FROM_SEARCH = "No results - company number search";
 export const MATOMO_CONFIRM_AND_SEND_EMAIL_BUTTON = "Confirm and Send Email Button";
 export const MATOMO_CHANGE_LINK = "Change Link";
 export const MATOMO_REMOVE_AUTHORISATION_BUTTON = "Remove Authorisation Button";
