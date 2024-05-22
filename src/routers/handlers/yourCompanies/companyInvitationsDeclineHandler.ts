@@ -26,7 +26,9 @@ export class CompanyInvitationsDeclineHandler extends GenericHandler {
         return {
             companyName: req.query[constants.COMPANY_NAME] as string,
             buttonLinkHref: constants.LANDING_URL,
-            lang: lang
+            lang: lang,
+            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
+            matomoViewYourCompaniesLink: constants.MATOMO_VIEW_YOUR_COMPANIES_LINK
         };
     }
 }

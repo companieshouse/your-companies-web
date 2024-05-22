@@ -24,7 +24,6 @@ export class CompanyAddSuccessHandler extends GenericHandler {
     }
 
     private addMatomoTags () {
-        this.viewData.matomoLinkClick = constants.MATOMO_LINK_CLICK;
         this.viewData.matomoViewYourCompaniesLink = constants.MATOMO_VIEW_YOUR_COMPANIES_LINK;
     }
 }
