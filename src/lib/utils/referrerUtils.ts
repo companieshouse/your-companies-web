@@ -14,8 +14,7 @@ import logger from "../Logger";
  *              - optional as not all pages have a page that follows them
  * @returns true if referrer is undefined or not equal to the expected href parameters, false otherwise.
  */
-
-export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB: string, pageIndicator: boolean, hrefC?: string): boolean => {
+export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB: string, pageIndicator: boolean, hrefC?: string[]): boolean => {
 
     if (referrer?.endsWith("/")) {
         referrer = referrer.substring(0, referrer.length - 1);
@@ -30,15 +29,19 @@ export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB:
         referrer.endsWith(hrefB) ||
         referrer.includes(hrefB + "?") ||
         referrer.includes(hrefB + "&") ||
-        (hrefC !== undefined && (referrer.endsWith(hrefC) ||
+        (hrefC !== undefined && (checkMultipleHrefs(referrer, hrefC) ||
             referrer.includes(hrefC + "?") ||
             referrer.includes(hrefC + "&"))))) {
 
         logger.debug(`redirectPage is returning false`);
         return false;
     } else {
-        logger.debug(`redirectPage is returning true, referrer is ${referrer}, hrefA: ${hrefA}, hrefB: ${hrefB}, pageIndicator ${pageIndicator}, hrefC ${hrefC}`);
+        logger.debug(`redirectPage is returning true, referrer is ${referrer}, hrefA: ${hrefA}, hrefB: ${hrefB}, pageIndicator ${pageIndicator}, hrefC ${JSON.stringify(hrefC)}`);
         return true;
     }
 
+};
+
+const checkMultipleHrefs = (referrer: string, hrefs: string[]): boolean => {
+    return hrefs.some(href => referrer.endsWith(href));
 };

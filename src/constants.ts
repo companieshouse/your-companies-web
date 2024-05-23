@@ -50,6 +50,7 @@ export const COMPANY_INVITATIONS_PAGE = "company-invitations";
 export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
 export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
+export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 
 // Routing paths
 export const SEPARATOR = "/";
@@ -67,8 +68,8 @@ export const CREATE_COMPANY_ASSOCIATION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/c
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/manage-authorised-people/:${COMPANY_NUMBER}`;
 export const AUTHORISED_PERSON_ADDED_URL = `/manage-authorised-people/:${COMPANY_NUMBER}/confirmation-person-added`;
 export const YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}/confirmation-person-added`;
-export const PERSON_NOT_ADDED_URL = `/person-not-added/:${COMPANY_NUMBER}`;
-export const YOUR_COMPANIES_AUTHORISED_PERSON_NOT_ADDED_URL = `${LANDING_URL}${PERSON_NOT_ADDED_URL}`;
+export const PRESENTER_ALREADY_ADDED_URL = `/${PRESENTER_ALREADY_ADDED_PAGE}/:${COMPANY_NUMBER}`;
+export const YOUR_COMPANIES_AUTHORISED_PRESENTER_ALREADY_ADDED_URL = `${LANDING_URL}${PRESENTER_ALREADY_ADDED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
 export const YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL = `${LANDING_URL}${ADD_NEW_AUTHORISED_PERSON_URL}`;
