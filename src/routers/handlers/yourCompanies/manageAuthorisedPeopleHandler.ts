@@ -11,12 +11,17 @@ import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
 import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
+import { buildPaginationElement, setLangForPagination } from "../../../lib/helpers/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     async execute (req: Request): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
+        const page = req.query.page as string;
+        let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
+
         deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
@@ -24,7 +29,12 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
-        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
+        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+
+        if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
+            pageNumber = 1;
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        }
 
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
@@ -42,13 +52,21 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.handleResentSuccessEmail(req);
 
         if (cancellation || removal) {
-            companyAssociations = await getCompanyAssociations(req, companyNumber);
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
         const confirmedAssociations: Association[] = companyAssociations.items.filter(
             association => association.status === AssociationStatus.CONFIRMED);
         companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
         this.viewData.companyAssociations = companyAssociations;
+
+        if (companyAssociations.totalPages > 1) {
+            const urlPrefix = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
+            setLangForPagination(pagination, lang);
+            this.viewData.pagination = pagination;
+        }
+
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations.items[0].companyName);
