@@ -1,0 +1,47 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% extends "layouts/default.njk" %}
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            {% set html %}
+            <p class="govuk-notification-banner__heading">
+                {{lang.you_are_no_longer_authorised}} {{companyName}}.
+            </p>
+            {% endset %}
+
+            {{ govukNotificationBanner({
+                    html: html,
+                    type: "success",
+                    titleText: lang.success                
+            })  }}
+
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">
+                {{companyName + " (" + companyNumber + ")"}}
+                </span>
+                {{lang.what_happens_now}}
+            </h1>
+
+            <p class="govuk-body govuk-!-margin-bottom-4"> 
+            {{lang.weve_sent_an_email}}
+            </p>
+
+            {{ govukButton({
+                text: lang.go_to_your_companies, 
+                href: buttonHref,
+                role: "button",
+                classes: 'govuk-!-margin-top-3',
+                attributes: {
+                "aria-label": lang.button_aria_label
+                }
+            }) }}
+        </div>
+    </div>
+
+{% endblock %}

@@ -6,12 +6,11 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
 import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
-import { deleteExtraData, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
 import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
-import { log } from "console";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -24,25 +23,23 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
-        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
-        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
 
+        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
+        const companyName: string = companyAssociations.items[0].companyName;
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
                 await this.handleCancellation(req, cancellation, companyAssociations);
-            } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-                deleteExtraData(req.session, constants.CANCEL_PERSON);
-                await this.handleRemoval(req, removal, companyAssociations);
             }
         } catch (error) {
-            logger.error(`Error on removal/cancellation: ${JSON.stringify(error)}`);
+            logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
         }
 
+        this.handleRemoveConfirmation(req);
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
-        if (cancellation || removal) {
+        if (cancellation) {
             companyAssociations = await getCompanyAssociations(req, companyNumber);
         }
 
@@ -52,7 +49,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.companyAssociations = companyAssociations;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
-        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations.items[0].companyName);
+        setExtraData(req.session, constants.COMPANY_NAME, companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         return Promise.resolve(this.viewData);
     }
@@ -85,28 +82,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
-    private async handleRemoval (req: Request, removal: Removal, companyAssociations: Associations) {
-        if (removal.removePerson === constants.CONFIRM) {
-            const association = companyAssociations.items.find(
-                association => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
-            );
-            console.log("the association being removed is ");
-            console.table(association);
-            const associationId = association?.id;
-            // why is isUserRemovedFromCompanyAssociations getting session / constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS is true
-            if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
-                this.callRemoveUserFromCompanyAssociations(req, associationId);
-            }
-            // find out if removing theselves
-            const loggedInUserEmail = getLoggedInUserEmail(req.session);
-            console.log("loggin user is ", loggedInUserEmail);
-            console.log("association email is ", association?.userEmail);
-            if (association?.userEmail === loggedInUserEmail) {
-                this.viewData.removedThemselves = true;
-                //  this.viewData.removedPerson = false;
-            } else {
-                this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
-            }
+    private async handleRemoveConfirmation (req: Request) {
+        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
+        if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
+            this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
             this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
             this.viewData.matomoChangeTheAuthenticationCodeLink = constants.MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK;
         }

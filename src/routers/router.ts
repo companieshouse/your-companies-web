@@ -25,6 +25,8 @@ import { companyInvitationsDeclineNavigation } from "../middleware/navigation/co
 import { confirmCompanyNavigation } from "../middleware/navigation/confirmCompany.middleware";
 import { manageAuthorisedPeopleNavigation } from "../middleware/navigation/manageAuthorisedPeople.middleware";
 import { removeAuthorisedPersonNavigation } from "../middleware/navigation/removeAuthorisedPerson.middleware";
+import { removeAuthorisedPersonRequestController } from "./controllers/removeAuthorisedPersonRequestController";
+import { removedThemselvesConfirmationControllerGet } from "./controllers/removeThemselvesConfirmationController";
 
 const router: Router = Router();
 
@@ -43,6 +45,8 @@ router.get(constants.ADD_COMPANY_URL, addCompanyControllerGet as RequestHandler)
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandler);
 router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonNavigation, removeAuthorisedPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerPost as RequestHandler);
+router.get(constants.REMOVE_ASSOCIATION_URL, removeAuthorisedPersonRequestController);
+router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesConfirmationControllerGet);
 
 router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonControllerPost as RequestHandler);
@@ -65,6 +69,8 @@ router.get(constants.COMPANY_INVITATIONS_URL, companyInvitationsControllerGet as
 router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineNavigation, companyInvitationsDeclineControllerGet as RequestHandler);
 
 router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptNavigation, companyInvitationsAcceptControllerGet as RequestHandler);
+
+router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet);
 
 router.get(constants.PERSON_NOT_ADDED_URL, personNotAddedControllerGet);
 
