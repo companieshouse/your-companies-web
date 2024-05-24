@@ -68,7 +68,7 @@ $govuk-global-styles: true;
   padding: 0.5em 0.5em 0;
   margin: 0 auto 0;
   height: auto;
-  width: 960px;
+  width: auto;
   max-width: 960px;
   border-bottom: 10px solid #005ea5;
 }
@@ -103,8 +103,18 @@ $govuk-global-styles: true;
   #chs-customer-insights a.secondary-customer-insights {
     float: left;
     margin-top: 1em;
+    margin-right: 6em;
   }
 }
+
+@media (max-width: 400px) {
+  #chs-customer-insights a.secondary-customer-insights {
+    float: left;
+    margin-top: 1em;
+    margin-right: auto;
+  }
+}
+
 @media (max-width: 959px) and (min-width: 700px) {
   #chs-customer-insights {
     padding-bottom: 0.5em;
