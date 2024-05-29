@@ -6,6 +6,7 @@ import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 
 const router = supertest(app);
 
@@ -27,6 +28,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     const url = `/your-companies/manage-authorised-people/${companyNumber}/authorisation-email-resent`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -34,6 +36,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
 
     const resentSuccessEmail = "bob@bob.com";
     getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379/authorisation-email-resent page", async () => {
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
