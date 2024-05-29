@@ -33,9 +33,7 @@ describe("removeAuthorisedPersonRequestController", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-
     it("should redirect to managed authorised people success page", async () => {
-        // Given
         getExtraDataSpy.mockReturnValue({
             removePerson: constants.CONFIRM,
             userEmail: "john.smith@test.com",
@@ -46,14 +44,12 @@ describe("removeAuthorisedPersonRequestController", () => {
         request.params.companyNumber = "NI038379";
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 
-        // When
         await removeAuthorisedPersonRequestController(request, response);
-        // Then
+
         expect(response.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/NI038379/confirmation-person-removed");
     });
-
     it("should redirect to removing themselves success page when removing themselves", async () => {
-        // Given
+
         getExtraDataSpy.mockReturnValue({
             removePerson: constants.CONFIRM,
             userEmail: "mark.black@private.com",
@@ -65,13 +61,12 @@ describe("removeAuthorisedPersonRequestController", () => {
         requestWithCompanyParam.params.companyNumber = "NI038379";
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
 
-        // When
         await removeAuthorisedPersonRequestController(request, response);
-        // Then
+
         expect(response.redirect).toHaveBeenCalledWith("/your-companies/confirmation-person-removed-themselves");
     });
     it("should throw an error when validation fails", async () => {
-        // Given
+
         getExtraDataSpy.mockReturnValue({
             removePerson: constants.CONFIRM,
             userEmail: "bad@email.com",
