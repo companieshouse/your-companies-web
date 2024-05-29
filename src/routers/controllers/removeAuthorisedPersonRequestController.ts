@@ -3,31 +3,19 @@ import * as constants from "../../constants";
 import { getExtraData, getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
 import { Removal } from "../../types/removal";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../services/associationsService";
-import { Associations, Association } from "private-api-sdk-node/dist/services/associations/types";
+import { Associations } from "private-api-sdk-node/dist/services/associations/types";
 import logger from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import { CompanyNameAndNumber } from "../../types/util-types";
+import { validateRemoveAssociation } from "../../lib/validation/validateRemoveAssociation";
 
-const validateRemoveAssociation = (foundAssociation:Association|undefined, removal:Removal, companyNumber:string) => {
-    if (!foundAssociation) {
-        logger.info(`removal request invalid: association not found for this removal request`);
-        return false;
-    }
-    if (removal?.removePerson !== constants.CONFIRM) {
-        logger.info(`removal request invalid: removePerson status not confirmed`);
-        return false;
-    }
-    if (removal.companyNumber !== companyNumber) {
-        logger.info(`removal request invalid: company number url param did not match the company number in removal`);
-        return false;
-    }
-    return true;
-};
-
-const isRemovingThemselves = (session: Session, removalEmail:string) => {
-    return removalEmail === getLoggedInUserEmail(session);
-};
-
+/**
+ * This controller handles the removeUserFromCompanyAssociations (updateAssociationStatus) api call which
+ * updates the status for the association.
+ * If the user is removing themselves, it redirects them to the removing themselves success page, if removing
+ * another user it redirects to the manage authorised person page with a success message.
+ * If the request is invalid, the function throws an error
+ */
 export const removeAuthorisedPersonRequestController = async (req: Request, res: Response): Promise<void> => {
 
     const companyNumber: string = req.params[constants.COMPANY_NUMBER];
@@ -35,9 +23,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
 
     const companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
 
-    const associationToBeRemoved = companyAssociations.items.find(
-        assoc => assoc.userEmail === removal.userEmail
-    );
+    const associationToBeRemoved = companyAssociations.items.find(assoc => assoc.userEmail === removal.userEmail);
 
     if (!associationToBeRemoved || !validateRemoveAssociation(associationToBeRemoved, removal, companyNumber)) {
         throw new Error("validation for removal of assocation failed");
@@ -61,3 +47,5 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
         return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber));
     }
 };
+
+const isRemovingThemselves = (session: Session, removalEmail:string):boolean => removalEmail === getLoggedInUserEmail(session);
