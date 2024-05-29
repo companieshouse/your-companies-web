@@ -18,11 +18,7 @@
 {% endfor %}
 
 {% block back_link %}
-
-    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
-        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
-    </div>
-
+    {% include "partials/back_link.njk" %}
 {% endblock %}
 
 {% block main_content %}
@@ -66,6 +62,7 @@
 
     <script>
         trackEvent("continue-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoContinueButton}}");
+        trackEvent("back-link-to-previous-page", "{{title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
     </script>
 
 {% endblock %}
