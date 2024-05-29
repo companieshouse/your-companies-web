@@ -52,6 +52,7 @@ export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
 export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
 export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
+export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 
 // Routing paths
 export const SEPARATOR = "/";
@@ -69,8 +70,8 @@ export const CREATE_COMPANY_ASSOCIATION_PATH = `${COMPANY_AUTH_PROTECTED_BASE}/c
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/manage-authorised-people/:${COMPANY_NUMBER}`;
 export const AUTHORISED_PERSON_ADDED_URL = `/manage-authorised-people/:${COMPANY_NUMBER}/confirmation-person-added`;
 export const YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}/confirmation-person-added`;
-export const PERSON_NOT_ADDED_URL = `/person-not-added/:${COMPANY_NUMBER}`;
-export const YOUR_COMPANIES_AUTHORISED_PERSON_NOT_ADDED_URL = `${LANDING_URL}${PERSON_NOT_ADDED_URL}`;
+export const PRESENTER_ALREADY_ADDED_URL = `/${PRESENTER_ALREADY_ADDED_PAGE}/:${COMPANY_NUMBER}`;
+export const YOUR_COMPANIES_AUTHORISED_PRESENTER_ALREADY_ADDED_URL = `${LANDING_URL}${PRESENTER_ALREADY_ADDED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_URL}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = "/add-presenter";
 export const YOUR_COMPANIES_ADD_NEW_AUTHORISED_PERSON_URL = `${LANDING_URL}${ADD_NEW_AUTHORISED_PERSON_URL}`;
@@ -144,6 +145,8 @@ export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 
+export const SERVICE_NAME = "Your companies";
+
 // Booleans
 export const TRUE = "true";
 
@@ -160,6 +163,8 @@ export const MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON = "Add a New Authorised Per
 export const MATOMO_REMOVE_AUTHORISED_USER_LINK = "Remove Authorised User Link";
 export const MATOMO_CANCEL_AUTHORISED_USER_LINK = "Cancel Authorised User Link";
 export const MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK = "Resend Authorised User Email Link";
+export const MATOMO_SEARCH_FOR_A_COMPANY_BUTTON = "Search for a Company Button";
+export const MATOMO_CANCEL_SEARCH_LINK = "Cancel search link";
 export const MATOMO_CONFIRM_AND_SEND_EMAIL_BUTTON = "Confirm and Send Email Button";
 export const MATOMO_CHANGE_LINK = "Change Link";
 export const MATOMO_REMOVE_AUTHORISATION_BUTTON = "Remove Authorisation Button";

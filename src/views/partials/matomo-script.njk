@@ -1,20 +1,36 @@
 <!-- Matomo -->
 <script>
     var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push([
-        "setDocumentTitle", document.domain + "/" + document.title
-    ]);
-    _paq.push(["setCookieDomain", "{{piwikChsDomain}}"]);
-    _paq.push(["setDomains", ["{{piwikChsDomain}}"]]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function () {
-        var u = "{{piwikUrl}}/";
+
+    function bindPiwikListener(applicationName, piwikUrl, siteId, analyticsEngine) {
+        var cookieArray = document
+            .cookie
+            .split(';');
+
+        for (var i = 0; i < cookieArray.length; i++) {
+            if (cookieArray[i].indexOf('ch_cookie_consent') !== -1) {
+                var cookieTuple = cookieArray[i].split('=');
+                var cookieJson = JSON.parse(atob(cookieTuple[1]));
+                if (cookieJson.userHasAllowedCookies === 'no') {
+                    return;
+                }
+            }
+        }
+
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push([
+            "setDocumentTitle", document.domain + "/" + document.title
+        ]);
+        _paq.push(["setCookieDomain", "{{piwikChsDomain}}"]);
+        _paq.push(["setDomains", ["{{piwikChsDomain}}"]]);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+
+        var u = piwikUrl + "/";
         _paq.push([
             'setTrackerUrl', u + 'matomo.php'
         ]);
-        _paq.push(['setSiteId', '{{piwikSiteId}}']);
+        _paq.push(['setSiteId', siteId]);
         var d = document,
             g = d.createElement('script'),
             s = d.getElementsByTagName('script')[0];
@@ -23,7 +39,7 @@
         s
             .parentNode
             .insertBefore(g, s);
-    })();
+    }
 </script>
 <noscript>
     <p><img src="{{piwikUrl}}/matomo.php?idsite={{piwikSiteId}}&amp;rec=1" style="border:0;" alt=""/></p>

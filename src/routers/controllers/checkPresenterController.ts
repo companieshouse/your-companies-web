@@ -15,7 +15,7 @@ export const checkPresenterControllerPost: RequestHandler = async (req: Request,
         res.render(constants.CHECK_PRESENTER_PAGE, viewData);
     } else {
         if (viewData.associationAlreadyExist) {
-            res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_NOT_ADDED_URL.replace(
+            res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PRESENTER_ALREADY_ADDED_URL.replace(
                 `:${constants.COMPANY_NUMBER}`,
                 viewData.companyNumber as string
             ));

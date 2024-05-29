@@ -86,6 +86,8 @@ export class YourCompaniesHandler extends GenericHandler {
             cancelSearchHref: constants.LANDING_URL,
             matomoAddCompanyButton: constants.MATOMO_ADD_COMPANY_BUTTON,
             matomoViewAndManageLink: constants.MATOMO_VIEW_AND_MANAGE_LINK,
+            matomoSearchForACompanyLink: constants.MATOMO_SEARCH_FOR_A_COMPANY_BUTTON,
+            matomoCancelSearchLink: constants.MATOMO_CANCEL_SEARCH_LINK,
             matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
         };
 

@@ -35,7 +35,6 @@ describe(`GET ${url}`, () => {
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
-
     it("should return expected English content if no language selected", async () => {
         const response = await router.get(`${url}`);
         expect(response.text).toContain(enCommon.success);
