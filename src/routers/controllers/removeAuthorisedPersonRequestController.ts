@@ -44,7 +44,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
         return res.redirect(constants.YOUR_COMPANIES_REMOVED_THEMSELVES_URL);
     } else {
         logger.info(`Association id ${associationToBeRemoved.id} status updated`);
-        return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber));
+        return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, removal.companyNumber));
     }
 };
 
