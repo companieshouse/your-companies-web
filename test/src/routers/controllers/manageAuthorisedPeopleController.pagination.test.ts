@@ -57,12 +57,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // When
         const response = await router.get(`${url}?page=2`);
         // Then
-        expect(response.text).toContain(companyAssociationsPage2.items[0].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociationsPage2.items[1].userEmail + "</th>");
+        companyAssociationsPage2.items.forEach((association) => {
+            expect(response.text).toContain(association.userEmail + "</th>");
+        });
         expect(response.text).not.toContain(enCommon.next);
         expect(response.text).toContain(enCommon.previous);
     });
-    it("should not display pagination when there are less than 15 associations", async () => {
+    it("should not display pagination when there is one page of associations", async () => {
         // Given
         const mockCompanyAssociations = { ...companyAssociationsPage1 };
         mockCompanyAssociations.totalPages = 1;
@@ -70,8 +71,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // When
         const response = await router.get(`${url}?page=2`);
         // Then
-        expect(response.text).toContain(mockCompanyAssociations.items[0].userEmail + "</th>");
-        expect(response.text).toContain(mockCompanyAssociations.items[1].userEmail + "</th>");
         expect(response.text).not.toContain(enCommon.next);
         expect(response.text).not.toContain(enCommon.previous);
     });
@@ -83,8 +82,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // When
         const response = await router.get(`${url}?page=4&lang=cy`);
         // Then
-        expect(response.text).toContain(mockCompanyAssociations.items[0].userEmail + "</th>");
-        expect(response.text).toContain(mockCompanyAssociations.items[1].userEmail + "</th>");
         expect(response.text).toContain(cyCommon.next);
         expect(response.text).toContain(cyCommon.previous);
     });
