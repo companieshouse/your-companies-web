@@ -1,13 +1,8 @@
 import * as constants from "../../constants";
 import { Removal } from "../../types/removal";
-import { Association } from "private-api-sdk-node/dist/services/associations/types";
 import logger from "../../lib/Logger";
 
-export const validateRemoveAssociation = (foundAssociation:Association|undefined, removal:Removal, companyNumber:string):boolean => {
-    if (!foundAssociation) {
-        logger.info(`removal request invalid: association not found for this removal request`);
-        return false;
-    }
+export const validateRemoveAssociation = (removal:Removal, companyNumber:string):boolean => {
     if (!removal) {
         logger.info(`removal request invalid: removal object not found in session`);
         return false;

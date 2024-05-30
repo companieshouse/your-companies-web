@@ -25,7 +25,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
 
         let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
-        const companyName: string = companyAssociations.items[0].companyName;
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
@@ -49,7 +48,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.companyAssociations = companyAssociations;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
-        setExtraData(req.session, constants.COMPANY_NAME, companyName);
+        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         return Promise.resolve(this.viewData);
     }

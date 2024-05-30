@@ -25,7 +25,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
 
     const associationToBeRemoved = companyAssociations.items.find(assoc => assoc.userEmail === removal.userEmail);
 
-    if (!associationToBeRemoved || !validateRemoveAssociation(associationToBeRemoved, removal, companyNumber)) {
+    if (!associationToBeRemoved || !validateRemoveAssociation(removal, companyNumber)) {
         throw new Error("validation for removal of assocation failed");
     }
 
