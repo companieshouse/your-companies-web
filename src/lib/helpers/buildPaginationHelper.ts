@@ -156,3 +156,7 @@ export const setLangForPagination = (pagination: PaginationData | undefined, lan
 export const getSearchQuery = (searchString: string): string => {
     return searchString ? "&search=" + searchString : "";
 };
+
+export const stringToPositiveInteger = (page:string): number => {
+    return isNaN(Number(page)) || Number(page) < 1 ? 1 : Math.trunc(Number(page));
+};

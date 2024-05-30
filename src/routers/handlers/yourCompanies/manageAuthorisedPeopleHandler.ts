@@ -11,7 +11,7 @@ import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
 import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
-import { buildPaginationElement, setLangForPagination } from "../../../lib/helpers/buildPaginationHelper";
+import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
@@ -20,7 +20,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
         const page = req.query.page as string;
-        let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
+        let pageNumber = stringToPositiveInteger(page);
 
         deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);

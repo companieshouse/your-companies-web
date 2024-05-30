@@ -10,7 +10,8 @@ import { Associations, AssociationStatus } from "private-api-sdk-node/dist/servi
 import {
     setLangForPagination,
     getSearchQuery,
-    buildPaginationElement
+    buildPaginationElement,
+    stringToPositiveInteger
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 
@@ -22,7 +23,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const search = req.query.search as string;
         const page = req.query.page as string;
 
-        let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
+        let pageNumber = stringToPositiveInteger(page);
 
         let errorMassage;
         if (search && !validateCompanyNumberSearchString(search)) {
