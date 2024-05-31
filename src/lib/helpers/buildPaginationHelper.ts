@@ -158,5 +158,5 @@ export const getSearchQuery = (searchString: string): string => {
 };
 
 export const stringToPositiveInteger = (page:string): number => {
-    return isNaN(Number(page)) || Number(page) < 1 ? 1 : Math.trunc(Number(page));
+    return isNaN(parseInt(page)) || parseInt(page) < 1 ? 1 : parseInt(page);
 };
