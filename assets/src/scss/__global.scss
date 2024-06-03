@@ -30,14 +30,6 @@ $govuk-global-styles: true;
     white-space: pre !important;
 }
 
-#your-companies-cancel-search-link {
-    margin-left: 10px;
-}
-
-#search {
-    margin-right: 5px;
-}
-
 @media (max-width: 640px) {
     #search-input-group > * {
         display: flex;
