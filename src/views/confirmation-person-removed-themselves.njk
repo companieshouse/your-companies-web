@@ -21,10 +21,10 @@
                     titleText: lang.success                
             })  }}
 
-            <h1 class="govuk-heading-l">
-                <span class="govuk-caption-l">
+            <span class="govuk-caption-l">
                 {{companyName + " (" + companyNumber + ")"}}
-                </span>
+            </span>
+            <h1 class="govuk-heading-l">
                 {{lang.what_happens_now}}
             </h1>
 
@@ -36,10 +36,7 @@
                 text: lang.go_to_your_companies, 
                 href: buttonHref,
                 role: "button",
-                classes: 'govuk-!-margin-top-3',
-                attributes: {
-                "aria-label": lang.button_aria_label
-                }
+                classes: 'govuk-!-margin-top-3'
             }) }}
         </div>
     </div>
