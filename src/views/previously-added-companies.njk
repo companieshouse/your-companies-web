@@ -44,7 +44,7 @@
 
         {% if displaySearchForm %}
             {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
-            {% set inputClasses = "govuk-input govuk-input--error govuk-input--width-10" if message else "govuk-input govuk-input--width-10" %}
+            {% set inputClasses = "govuk-input govuk-input--error govuk-input--width-10 govuk-!-margin-right-1" if message else "govuk-input govuk-input--width-10 govuk-!-margin-right-1" %}
 
             <form method="post">
                 <div class="{{formClasses}}">
@@ -60,10 +60,13 @@
                         })
                     }}
                     {% endif %}
-                    <input class="{{inputClasses}}" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
-                    <button type="submit" class="govuk-button govuk-button--secondary govuk-!-margin-left-2 govuk-!-margin-right-2" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
-                    </button>
-                    <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19" href="{{cancelSearchHref}}" id="your-companies-cancel-search-link" data-event-id="your-companies-cancel-search-link">{{lang.cancel_search}}</a></div>
+                    <div id="search-input-group">
+                        <input class="{{inputClasses}}" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
+                        <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
+                        </button>
+                        <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="your-companies-cancel-search-link" data-event-id="your-companies-cancel-search-link">{{lang.cancel_search}}</a>
+                    </div>
+                </div>
             </form>
 
         {% endif %}
@@ -118,12 +121,12 @@
     let updatedMatomoLinkClick = "{{matomoLinkClick}}";
     const NO_RESULTS_FOUND = "No results found: "
 
-        if ("{{numOfMatches}}" === "0"){
-            matomoPageTitle = NO_RESULTS_FOUND + "{{title}}";
-            updatedMatomoButtonClick = NO_RESULTS_FOUND + "{{matomoButtonClick}}";
-            updatedMatomoLinkClick = NO_RESULTS_FOUND + "{{matomoLinkClick}}";
-        }
-    
+    if ("{{numOfMatches}}" === "0") {
+        matomoPageTitle = NO_RESULTS_FOUND + "{{title}}";
+        updatedMatomoButtonClick = NO_RESULTS_FOUND + "{{matomoButtonClick}}";
+        updatedMatomoLinkClick = NO_RESULTS_FOUND + "{{matomoLinkClick}}";
+    }
+
     trackEvent("add-a-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
     trackEvent("your-companies-search-for-company-button", matomoPageTitle, updatedMatomoButtonClick, "{{matomoSearchForACompanyLink}}");
     trackEvent("your-companies-cancel-search-link", matomoPageTitle, updatedMatomoLinkClick, "{{matomoCancelSearchLink}}");
