@@ -18,6 +18,6 @@ export const removeAuthorisedPersonControllerPost = async (req: Request, res: Re
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
         res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
     } else {
-        res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, viewData.companyNumber as string));
+        res.redirect(constants.YOUR_COMPANIES_REMOVE_ASSOCIATION.replace(`:${constants.COMPANY_NUMBER}`, viewData.companyNumber as string));
     }
 };
