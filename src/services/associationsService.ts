@@ -130,6 +130,54 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     return Promise.resolve(associationId);
 };
 
+export const getInvitations = async (req: Request, pageIndex?: number, itemsPerPage?: number): Promise<Associations> => {
+    const apiClient = createOauthPrivateApiClient(req);
+    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.getInvitations(pageIndex, itemsPerPage);
+
+    if (!sdkResponse) {
+        const errMsg = `No response from GET /associations/invitations`;
+        logger.error(errMsg);
+        return Promise.reject(new Error(errMsg));
+    }
+
+    if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
+        const errorMessage = `GET /associations/invitations: ${sdkResponse.httpStatusCode}`;
+        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+    }
+
+    logger.debug(`GET /associations/invitations: 200 OK`);
+
+    return Promise.resolve(sdkResponse.resource as Associations);
+};
+
+export const postInvitation = async (req: Request, companyNumber: string, inviteeEmailAddress: string): Promise<string> => {
+    const apiClient = createOauthPrivateApiClient(req);
+    const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.postInvitation(companyNumber, inviteeEmailAddress);
+
+    if (!sdkResponse) {
+        const errMsg = `No response from POST /associations/invitations`;
+        logger.error(errMsg);
+        return Promise.reject(new Error(errMsg));
+    }
+
+    if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
+        const errorMessage = `${sdkResponse.httpStatusCode} - POST /associations/invitations`;
+        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+    }
+
+    if (!sdkResponse.resource) {
+        const errMsg = `POST /associations/invitations: 201 status but no resource found`;
+        return Promise.reject(new Error(errMsg));
+    }
+
+    logger.debug(`POST /associations/invitations success - company number ${companyNumber}`);
+    const associationId: string = (sdkResponse.resource as NewAssociationResponse).associationId;
+
+    return Promise.resolve(associationId);
+};
+
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {
     if (associationId) {
         await updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);

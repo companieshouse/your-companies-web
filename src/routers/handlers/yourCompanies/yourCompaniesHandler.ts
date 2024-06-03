@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
-import { getUserAssociations } from "../../../services/associationsService";
+import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import {
     setLangForPagination,
@@ -37,7 +37,7 @@ export class YourCompaniesHandler extends GenericHandler {
             confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
         }
 
-        const awaitingApprovalUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL]);
+        const awaitingApprovalUserAssociations: Associations = await getInvitations(req);
         setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
 
         deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);

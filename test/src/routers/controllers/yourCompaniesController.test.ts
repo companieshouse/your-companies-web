@@ -55,6 +55,8 @@ describe("GET /your-companies", () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(emptyAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValue(emptyAssociations);
         // When
         const response = await router.get("/your-companies?lang=en");
         // Then
@@ -73,6 +75,8 @@ describe("GET /your-companies", () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(emptyAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValue(emptyAssociations);
         // When
         const response = await router.get("/your-companies?lang=cy");
         // Then
@@ -90,7 +94,9 @@ describe("GET /your-companies", () => {
     it("should return expected English content if companies are added and language version set to English", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValueOnce(userAssociations).mockReturnValueOnce(emptyAssociations);
+        userAssociationsSpy.mockReturnValueOnce(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValueOnce(emptyAssociations);
         const expectedTextStart = en.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
         const expectedTextEnd = en.youve_been_invited_to_be_digitally_authorised_end;
@@ -119,7 +125,9 @@ describe("GET /your-companies", () => {
     it("should return expected Welsh content if companies are added and language version set to Welsh", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValueOnce(userAssociations).mockReturnValueOnce(emptyAssociations);
+        userAssociationsSpy.mockReturnValueOnce(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValueOnce(emptyAssociations);
         const expectedTextStart = cy.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
         const expectedTextEnd = cy.youve_been_invited_to_be_digitally_authorised_end;
@@ -148,6 +156,8 @@ describe("GET /your-companies", () => {
     it("should display English version of a banner with information about number of invitations if language version set to English", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
         userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
         const expectedTextStart = en.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
@@ -164,7 +174,9 @@ describe("GET /your-companies", () => {
     it("should display Welsh version of a banner with information about number of invitations if language version set to Welsh", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
-        userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
+        userAssociationsSpy.mockReturnValueOnce(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
         const expectedTextStart = cy.youve_been_invited_to_be_digitally_authorised_start +
             userAssociationsWithNumberOfInvitations.totalResults;
         const expectedTextEnd = cy.youve_been_invited_to_be_digitally_authorised_end;
