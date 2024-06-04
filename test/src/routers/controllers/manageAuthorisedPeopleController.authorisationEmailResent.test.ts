@@ -7,6 +7,7 @@ import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
+import * as constants from "../../../../src/constants";
 
 const router = supertest(app);
 
@@ -74,5 +75,18 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
         const response = await router.get(`${url}?lang=en`);
         expect(response.text.includes(en.email_resent_success_success_msg1)).toBe(false);
         expect(response.text.includes("bob@bob.com")).toBe(false);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.status).toEqual(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = constants.LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });
