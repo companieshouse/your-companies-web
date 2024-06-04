@@ -19,9 +19,16 @@
             </p>
 
             <p class="govuk-body">
-                <a class="govuk-link" href="{{landingPageUrl}}">{{lang.go_back_to_your_companies}}</a>.
+                <a class="govuk-link" id="go-back-to-your-companies-link" href="{{landingPageUrl}}">{{lang.go_back_to_your_companies}}</a>.
             </p>
 
         </div>
     </div>
+
+    <script>
+        trackEvent("go-back-to-your-companies-link", "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoBackToYourCompaniesLink}}");
+        trackEvent("back-link-to-previous-page", "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
+    </script>
+
+
 {% endblock %}
