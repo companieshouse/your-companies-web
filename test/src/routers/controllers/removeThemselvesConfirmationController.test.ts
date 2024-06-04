@@ -7,6 +7,8 @@ import * as en from "../../../../src/locales/en/translation/confirmation-person-
 import * as cy from "../../../../src/locales/cy/translation/confirmation-person-removed-themselves.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
+import * as constants from "../../../../src/constants";
 
 const router = supertest(app);
 const companyNumber = "NI038379";
@@ -26,9 +28,13 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 
 describe(`GET ${url}`, () => {
 
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session, auth and company authorisation before returning the remove themselves page", async () => {
         await router.get(url);
@@ -48,5 +54,18 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cyCommon.success);
         expect(response.text).toContain(cy.go_to_your_companies);
         expect(response.text).toContain(cy.weve_sent_an_email);
+    });
+
+    it("should return status 302 on page redirect", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.status).toEqual(302);
+    });
+
+    it("should return correct response message including desired url path", async () => {
+        const urlPath = constants.LANDING_URL;
+        redirectPageSpy.mockReturnValue(true);
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });
