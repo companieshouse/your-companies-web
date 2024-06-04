@@ -176,6 +176,7 @@ export const MATOMO_ACCEPT_INVITATION_LINK = "Accept Authorised User Invitation 
 export const MATOMO_DECLINE_INVITATION_LINK = "Decline Authorised User Invitation Link";
 export const MATOMO_ADD_COMPANY_GOAL_ID = getEnvironmentValue("MATOMO_ADD_COMPANY_GOAL_ID");
 export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = getEnvironmentValue("MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID");
+export const MATOMO_BACK_LINK = "Back Link";
 
 // various
 export const NOT_PROVIDED = "Not provided";
