@@ -30,8 +30,7 @@ export const CANCEL_URL_EXTRA = "cancelPersonUrlExtraData";
 export const REMOVE_URL_EXTRA = "removePersonUrlExtraData";
 
 // Paths to Nunjucks template files
-export const ERROR_400_TEMPLATE = "partials/error_400";
-export const ERROR_404_TEMPLATE = "partials/error_404";
+export const SERVICE_UNAVAILABLE_TEMPLATE = "partials/service_unavailable";
 
 // English and Welsh translation
 export const COMMON = "common";

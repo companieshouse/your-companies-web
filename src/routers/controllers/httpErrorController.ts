@@ -23,7 +23,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         );
 
         const statusCode: number = err.statusCode || 500;
-        const template = "partials/error_500";
+        const template = "partials/service_unavailable.njk";
 
         res.status(statusCode).render(template);
     } else {
