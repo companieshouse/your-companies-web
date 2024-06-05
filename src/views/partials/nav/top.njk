@@ -1,15 +1,15 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <div class="js-toggle-nav" id="global-nav">
-            {% if userEmailAddress %}
-                <a href="#navigation" aria-label="{{lang.main_nav_bar_mobile_view}}" class="js-header-toggle menu">{{ userEmailAddress }}
-                    <span class="govuk-visually-hidden">{{lang.click_to_expand_or_collaps}}</span>
-                </a>
-            {% else %}
-                <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
-            {% endif %}
-
             <nav role="navigation" class="content" aria-label="{{lang.main_nav_bar}}">
+                {% if userEmailAddress %}
+                    <a href="#navigation" class="js-header-toggle menu">{{ userEmailAddress }}
+                        <span class="govuk-visually-hidden">{{lang.click_to_expand_or_collaps}}</span>
+                    </a>
+                {% else %}
+                    <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
+                {% endif %}
+
                 <ul id="navigation">
                     <li id="signed-in-user" class="user">
                         {{ userEmailAddress }}:
