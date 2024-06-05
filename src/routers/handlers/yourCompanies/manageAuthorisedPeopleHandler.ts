@@ -28,7 +28,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
-        // const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
         let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
 
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
@@ -36,7 +35,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        // let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
