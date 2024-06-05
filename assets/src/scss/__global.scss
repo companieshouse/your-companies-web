@@ -30,6 +30,32 @@ $govuk-global-styles: true;
     white-space: pre !important;
 }
 
+@media (max-width: 640px) {
+    #search-input-group > * {
+        display: flex;
+        justify-content: center;
+    }
+
+    #your-companies-cancel-search-link {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+    
+    #search {
+        max-width: unset;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .mobile-view-max-width-unset {
+        max-width: unset;
+    }
+
+    .mobile-view-margin-top-20px {
+        margin-top: 20px;
+    }
+}
+
 /* styling from https://github.com/companieshouse/find-update-company-info-prototype/blob/main/app/assets/sass/custom.scss */
 
 .grid-row:after, fieldset:after, .form-section:after, .form-group:after, .form-block:after, .notice:after, #content:after, .panel:after, #global-nav .inner:after, .navigation-list:after, .pager ul:after, ol.breadcrumb:after, ul.pager:after, .section-tabs:after {

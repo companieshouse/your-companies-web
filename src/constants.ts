@@ -19,6 +19,7 @@ export const PROPOSED_COMPANY_NUM = "proposedCompanyNumber";
 export const PROPOSED_EMAIL = "proposedEmail";
 export const ASSOCIATION_STATE_RESPONSE = "associationStateResponse";
 export const ASSOCIATION_STATE_CHANGED_FOR = "associationStateChagedFor";
+export const REMOVED_THEMSELVES_FROM_COMPANY = "removedThemselvesFromCompany";
 
 // query params
 export const CLEAR_FORM = "cf";
@@ -50,6 +51,7 @@ export const COMPANY_INVITATIONS_PAGE = "company-invitations";
 export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
 export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
+export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 
 // Routing paths
@@ -100,6 +102,13 @@ export const CONFIRMATION_PERSON_REMOVED_URL = "/confirmation-person-removed";
 export const CONFIRMATION_PERSON_ADDED = "/confirmation-person-added";
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_REMOVED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL}`;
+
+export const REMOVED_THEMSELVES_URL = SEPARATOR + REMOVED_THEMSELVES;
+export const YOUR_COMPANIES_REMOVED_THEMSELVES_URL = LANDING_URL + REMOVED_THEMSELVES_URL;
+
+export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
+export const YOUR_COMPANIES_REMOVE_ASSOCIATION = LANDING_URL + REMOVE_ASSOCIATION_URL;
+
 export const HEALTHCHECK = "/healthcheck";
 
 // Error message keys
@@ -167,6 +176,8 @@ export const MATOMO_ACCEPT_INVITATION_LINK = "Accept Authorised User Invitation 
 export const MATOMO_DECLINE_INVITATION_LINK = "Decline Authorised User Invitation Link";
 export const MATOMO_ADD_COMPANY_GOAL_ID = getEnvironmentValue("MATOMO_ADD_COMPANY_GOAL_ID");
 export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = getEnvironmentValue("MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID");
+export const MATOMO_GO_BACK_TO_YOUR_COMPANIES_LINK = "Go back to Your Companies Link";
+export const MATOMO_BACK_LINK = "Back Link";
 
 // various
 export const NOT_PROVIDED = "Not provided";

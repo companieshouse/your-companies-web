@@ -5,12 +5,9 @@
 {% extends "layouts/default.njk" %}
 
 {% block back_link %}
-
-    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
-        {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref }) }}
-    </div>
-
+    {% include "partials/back_link.njk" %}
 {% endblock %}
+
 {% block main_content %}
 
     {% set acceptHeader %}
@@ -78,6 +75,8 @@
             let subVarJ = declineIdArray[j]
                 trackEvent(subVarJ, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
         }
+
+        trackEvent("back-link-to-previous-page", "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
 
     </script>
 

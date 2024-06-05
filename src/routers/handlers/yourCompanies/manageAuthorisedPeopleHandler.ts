@@ -28,7 +28,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
-        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
+        // const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
         let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
 
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
@@ -36,22 +36,21 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
+        // let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
                 await this.handleCancellation(req, cancellation, companyAssociations);
-            } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-                deleteExtraData(req.session, constants.CANCEL_PERSON);
-                await this.handleRemoval(req, removal, companyAssociations);
             }
         } catch (error) {
-            logger.error(`Error on removal/cancellation: ${JSON.stringify(error)}`);
+            logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
         }
 
+        this.handleRemoveConfirmation(req);
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
-        if (cancellation || removal) {
+        if (cancellation) {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
@@ -69,7 +68,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
-        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations.items[0].companyName);
+        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         return Promise.resolve(this.viewData);
     }
@@ -102,14 +101,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
-    private async handleRemoval (req: Request, removal: Removal, companyAssociations: Associations) {
-        if (removal.removePerson === constants.CONFIRM) {
-            const associationId = companyAssociations.items.find(
-                association => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
-            )?.id as string;
-            if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
-                this.callRemoveUserFromCompanyAssociations(req, associationId);
-            }
+    private async handleRemoveConfirmation (req: Request) {
+        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
+        if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
             this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
             this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
             this.viewData.matomoChangeTheAuthenticationCodeLink = constants.MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK;

@@ -16,9 +16,12 @@
 {% block back_link %}
 
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
-        {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref }) }}
+        {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref, attributes: {
+                id: "back-link-to-your-companies-page",
+                "data-event-id": "back-link-to-your-companies-page-event"
+            } }) }}
     </div>
-
+    
 {% endblock %}
 
 {% block main_content %}
@@ -205,6 +208,7 @@
         if (document.getElementById("change-company-auth-code-link")) {
             trackEvent("change-company-auth-code-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoChangeTheAuthenticationCodeLink}}");
         }
+        trackEvent("back-link-to-your-companies-page", "{{title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
     </script>
 
 {% endblock %}
