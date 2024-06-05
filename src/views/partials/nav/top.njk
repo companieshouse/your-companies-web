@@ -1,10 +1,16 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <div class="js-toggle-nav" id="global-nav">
-            <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
+            <nav role="navigation" class="content" aria-label="{{lang.main_nav_bar}}">
+                {% if userEmailAddress %}
+                    <a href="#navigation" class="js-header-toggle menu">{{ userEmailAddress }}
+                        <span class="govuk-visually-hidden">{{lang.click_to_expand_or_collaps}}</span>
+                    </a>
+                {% else %}
+                    <a id="user-signin-mobile" href="/signin" class="sign-in govuk-link">Sign in / Register</a>
+                {% endif %}
 
-            <nav role="navigation" class="content mobile-hidden" aria-label="{{lang.main_nav_bar}}">
-                <ul id="navigation" class="mobile-hidden">
+                <ul id="navigation">
                     <li id="signed-in-user" class="user">
                         {{ userEmailAddress }}:
                     </li>
