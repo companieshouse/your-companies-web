@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
 import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
@@ -61,7 +61,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.companyAssociations = companyAssociations;
 
         if (companyAssociations.totalPages > 1) {
-            const urlPrefix = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+            const urlPrefix = getManageAuthorisedPeopleUrl(req.originalUrl, companyNumber);
             const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;

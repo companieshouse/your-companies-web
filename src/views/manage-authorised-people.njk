@@ -119,8 +119,7 @@
     {% for association in companyAssociations.items %}
         {% set row = [] %}
         {% set row = (row.push({text: association.userEmail}), row) %}
-        {% set defaultDisplayName = lang.not_provided if association.displayName and association.displayName === notProvided else 
-            "" %}
+        {% set defaultDisplayName = "" %}
         {% set row = (row.push({
             text: providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)
         }), row) %}
