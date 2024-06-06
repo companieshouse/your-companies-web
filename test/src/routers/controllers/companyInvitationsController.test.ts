@@ -1,9 +1,11 @@
 import mocks from "../../../mocks/all.middleware.mock";
-import { associationsWithInvitations, userAssociations, userAssociationsWithEmptyInvitations } from "../../../mocks/associations.mock";
+import { associationsWithInvitations, fifteenAssociationsAwaitingApproval, userAssociations, userAssociationsWithEmptyInvitations } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations.json";
+import * as commonEn from "../../../../src/locales/en/translation/common.json";
+import * as commonCy from "../../../../src/locales/cy/translation/common.json";
 import * as associationsService from "../../../../src/services/associationsService";
 import { AssociationStatus, Associations } from "private-api-sdk-node/dist/services/associations/types";
 
@@ -175,5 +177,38 @@ describe(`GET ${url}`, () => {
         expect(response.text).not.toContain(expectedNotContainCompanyName1);
         expect(response.text).not.toContain(expectedNotContainCompanyNumber2);
         expect(response.text).not.toContain(expectedNotContainCompanyName2);
+    });
+
+    it("should return invitation page with pagination in English if number of invitations is greater than 15 and language set to English", async () => {
+        // Given
+        userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
+
+        // When
+        const response = await router.get(`${url}?lang=en`);
+
+        // Then
+        expect(response.text).toContain(commonEn.next);
+    });
+
+    it("should return invitation page with pagination in Welsh if number of invitations is greater than 15 and language set to Welsh", async () => {
+        // Given
+        userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
+
+        // When
+        const response = await router.get(`${url}?lang=cy`);
+
+        // Then
+        expect(response.text).toContain(commonCy.next);
+    });
+
+    it("should return first invitation page with pagination if number of invitations is greater than 15 and the page number set wrongly", async () => {
+        // Given
+        userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
+
+        // When
+        const response = await router.get(`${url}?page=12345`);
+
+        // Then
+        expect(response.text).toContain(commonEn.next);
     });
 });

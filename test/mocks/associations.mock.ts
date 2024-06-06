@@ -1061,6 +1061,409 @@ export const twentyConfirmedAssociations: Associations = {
     totalPages: 2
 } as Associations;
 
+export const fifteenAssociationsAwaitingApproval: Associations = {
+    items: [
+        {
+            etag: "ABC",
+            id: "1234567890",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "adam.smith@test.org",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "2345678901",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "01777777",
+            companyName: "BRITISH AIRWAYS PLC",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "adam.smith@test.org",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "44345677554",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "10866549",
+            companyName: "ANDROID TECHNOLOGY LTD",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "j.example@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "234322344",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "08449801",
+            companyName: "BROWN AND SALTER LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "another.email@acme.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "6654463562412",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "18882777",
+            companyName: "FLOWERS LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "665121212",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "11223344",
+            companyName: "ACME LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "j.example@gmail.com5566",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "44332211",
+            companyName: "GIANT CORP PLC",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI123123",
+            companyName: "ABC LTD",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "72903908",
+            companyName: "LARKIN GROUP",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "47204431",
+            companyName: "TREMBLAY LLC LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "35293830",
+            companyName: "THIEL INC",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "87644034",
+            companyName: "BAILEY - LEMKE",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "43593313",
+            companyName: "SWIFT GROUP",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "27285558",
+            companyName: "ANDERSON AND SONS",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "81683662",
+            companyName: "GREENFELDER LTD",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            invitations:
+                [
+                    {
+                        invitedBy: "hannah.salt@gmail.com",
+                        invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
+                    }
+                ],
+            links: {
+                self: "/12345"
+            }
+        }
+    ],
+    links: {
+        self: "http://localhost:8080/associations",
+        next: "http://localhost:8080/associations?page_index=2&itesm_per_page=15"
+    },
+    itemsPerPage: 15,
+    pageNumber: 0,
+    totalResults: 29,
+    totalPages: 2
+} as Associations;
+
 export const oneConfirmedAssociation: Associations = {
     items: [
         {
