@@ -20,7 +20,10 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
         newPageIndicator = false;
     }
 
-    if (referrer && (referrer.includes("confirmation-person-removed") || referrer.includes("confirmation-cancel-person") || referrer.includes("confirmation-person-added") || referrer.includes("authorisation-email-resent"))) {
+    if (referrer && (referrer.includes("confirmation-person-removed") ||
+        referrer.includes("confirmation-cancel-person") ||
+        referrer.includes("confirmation-person-added") ||
+        referrer.includes("authorisation-email-resent"))) {
         checkedReferrer = hrefA;
     } else {
         checkedReferrer = referrer;

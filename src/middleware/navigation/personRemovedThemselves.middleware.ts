@@ -6,7 +6,7 @@ import { getExtraData } from "../../lib/utils/sessionUtils";
 export const removedThemselvesNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     const referrer: string | undefined = req.get("Referrer");
-    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    const pageIndicator = false;
     const hrefA = getExtraData(req.session, constants.REMOVE_URL_EXTRA);
 
     if (redirectPage(referrer, hrefA, constants.YOUR_COMPANIES_REMOVED_THEMSELVES_URL, pageIndicator)) {

@@ -258,6 +258,23 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
 
     });
 
+    it("should redirect, and return status 302 if referrer is undefined and pageIndicator is true", async () => {
+        // Given
+        redirectPageSpy.mockReturnValue(true);
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: undefined };
+            req.session = session;
+            next();
+        });
+        const pageIndicator = true;
+        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
+
+        // When
+        const response = await router.get(urlWithEmail);
+        // Then
+        expect(response.status).toEqual(302);
+    });
+
     it("should return status 302 on page redirect for authentication-code-remove/:userEmail page", async () => {
         redirectPageSpy.mockReturnValue(true);
         await router.get(urlWithEmail).expect(302);

@@ -7,7 +7,7 @@ import logger from "../../lib/Logger";
 export const manageAuthorisedPeopleNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
     const companyNumber = req.params[constants.COMPANY_NUMBER];
-    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    const pageIndicator = false;
     const cancelPageUrl = getExtraData(req.session, constants.CANCEL_URL_EXTRA);
     const removePageUrl = getExtraData(req.session, constants.REMOVE_URL_EXTRA);
     const manageAuthUrl = constants.MANAGE_AUTHORISED_PEOPLE_URL.replace(":companyNumber", companyNumber);

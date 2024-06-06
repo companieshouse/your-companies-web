@@ -7,7 +7,7 @@ import logger from "../../lib/Logger";
 export const presenterAlreadyAddedNavigation: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
-    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    const pageIndicator = false;
 
     logger.debug(`presenterAlreadyAddedNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
