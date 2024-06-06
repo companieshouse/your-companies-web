@@ -91,9 +91,8 @@ describe("GET /your-companies", () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValueOnce(userAssociations).mockReturnValueOnce(emptyAssociations);
-        const expectedTextStart = en.youve_been_invited_to_be_digitally_authorised_start +
-            userAssociationsWithNumberOfInvitations.totalResults;
-        const expectedTextEnd = en.youve_been_invited_to_be_digitally_authorised_end;
+        const expectedText = cy.view_invitations + " " + "&#40;" +
+            userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
         // When
         const response = await router.get("/your-companies?lang=en");
         // Then
@@ -110,19 +109,15 @@ describe("GET /your-companies", () => {
         expect(response.text).not.toContain(en.bullet_list[0]);
         expect(response.text).not.toContain(en.bullet_list[1]);
         expect(response.text).not.toContain(en.you_have_not_added_any_companies);
-        expect(response.text).not.toContain(commonEn.important);
-        expect(response.text).not.toContain(expectedTextStart);
-        expect(response.text).not.toContain(expectedTextEnd);
-        expect(response.text).not.toContain(en.view_invitations);
+        expect(response.text).not.toContain(expectedText);
     });
 
     it("should return expected Welsh content if companies are added and language version set to Welsh", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValueOnce(userAssociations).mockReturnValueOnce(emptyAssociations);
-        const expectedTextStart = cy.youve_been_invited_to_be_digitally_authorised_start +
-            userAssociationsWithNumberOfInvitations.totalResults;
-        const expectedTextEnd = cy.youve_been_invited_to_be_digitally_authorised_end;
+        const expectedText = cy.view_invitations + " " + "&#40;" +
+            userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
         // When
         const response = await router.get("/your-companies?lang=cy");
         // Then
@@ -139,42 +134,31 @@ describe("GET /your-companies", () => {
         expect(response.text).not.toContain(cy.bullet_list[0]);
         expect(response.text).not.toContain(cy.bullet_list[1]);
         expect(response.text).not.toContain(cy.you_have_not_added_any_companies);
-        expect(response.text).not.toContain(commonCy.important);
-        expect(response.text).not.toContain(expectedTextStart);
-        expect(response.text).not.toContain(expectedTextEnd);
-        expect(response.text).not.toContain(cy.view_invitations);
+        expect(response.text).not.toContain(expectedText);
     });
 
     it("should display English version of a banner with information about number of invitations if language version set to English", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
-        const expectedTextStart = en.youve_been_invited_to_be_digitally_authorised_start +
-            userAssociationsWithNumberOfInvitations.totalResults;
-        const expectedTextEnd = en.youve_been_invited_to_be_digitally_authorised_end;
+        const expectedText = en.view_invitations + " " + "&#40;" +
+            userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
         // When
         const response = await router.get("/your-companies?lang=en");
         // Then
-        expect(response.text).toContain(commonEn.important);
-        expect(response.text).toContain(expectedTextStart);
-        expect(response.text).toContain(expectedTextEnd);
-        expect(response.text).toContain(en.view_invitations);
+        expect(response.text).toContain(expectedText);
     });
 
     it("should display Welsh version of a banner with information about number of invitations if language version set to Welsh", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
-        const expectedTextStart = cy.youve_been_invited_to_be_digitally_authorised_start +
-            userAssociationsWithNumberOfInvitations.totalResults;
-        const expectedTextEnd = cy.youve_been_invited_to_be_digitally_authorised_end;
+        const expectedText = cy.view_invitations + " " + "&#40;" +
+            userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
         // When
         const response = await router.get("/your-companies?lang=cy");
         // Then
-        expect(response.text).toContain(commonCy.important);
-        expect(response.text).toContain(expectedTextStart);
-        expect(response.text).toContain(expectedTextEnd);
-        expect(response.text).toContain(cy.view_invitations);
+        expect(response.text).toContain(expectedText);
     });
 
     it("should delete the manage authorised people page indicator in extraData on page load", async () => {
