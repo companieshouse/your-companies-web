@@ -13,7 +13,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-quarters">
             <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-8">
+            <h1 class="govuk-heading-l">
                 {{ lang.check_authorised_persons_email_address }}
             </h1>
 
@@ -21,10 +21,10 @@
                 <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
 
                 {{ govukSummaryList({
-                        classes: "mobile-view-margin-top-20px",
                         rows: [
                             {
                                 key: {
+                                    classes: "govuk-!-margin-top-6",
                                     text: lang.email_address
                                 },
                                 value: {
