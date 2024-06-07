@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
 import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
@@ -11,20 +11,30 @@ import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
 import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
+import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     async execute (req: Request): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
+        const page = req.query.page as string;
+        let pageNumber = stringToPositiveInteger(page);
+
         deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
+        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
 
-        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
+        if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
+            pageNumber = 1;
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        }
+
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
@@ -39,13 +49,21 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.handleResentSuccessEmail(req);
 
         if (cancellation) {
-            companyAssociations = await getCompanyAssociations(req, companyNumber);
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
         const confirmedAssociations: Association[] = companyAssociations.items.filter(
             association => association.status === AssociationStatus.CONFIRMED);
         companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
         this.viewData.companyAssociations = companyAssociations;
+
+        if (companyAssociations.totalPages > 1) {
+            const urlPrefix = getManageAuthorisedPeopleUrl(req.originalUrl, companyNumber);
+            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
+            setLangForPagination(pagination, lang);
+            this.viewData.pagination = pagination;
+        }
+
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);

@@ -22,10 +22,6 @@
     "match_found_for": "match found for",
     "no_results_found":"No results found for",
     "no_results_that_match": "There are no results that match your search.",
-    "next": "Next",
-    "previous": "Previous",
-    "next_page": "Next page",
-    "previous_page": "Previous page",
     "company_number_must_only_include": "Company number must only include numbers and capital letters",
     "enter_a_company_number_or_part": "Enter a company number, or part of a company number",
     "cancel_search": "Cancel search"

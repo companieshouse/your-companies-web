@@ -1,4 +1,4 @@
-import { buildPaginationElement, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
+import { buildPaginationElement, stringToPositiveInteger, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
 import { PaginationData } from "../../../../src/types/pagination";
 
 const prefix = "prefix";
@@ -211,5 +211,22 @@ describe("setLangForPagination", () => {
         };
 
         expect(() => setLangForPagination(pagination, translations)).not.toThrow();
+    });
+});
+
+describe("stringToPositiveInteger should convert page query param to a positive integer, 1 or greater", () => {
+    it.each([
+        { page: "3", expected: 3 },
+        { page: "2", expected: 2 },
+        { page: "200", expected: 200 },
+        { page: "03.5", expected: 3 },
+        { page: "", expected: 1 },
+        { page: "1/5", expected: 1 },
+        { page: "-2", expected: 1 },
+        { page: "abc", expected: 1 },
+        { page: "0", expected: 1 },
+        { page: "undefined", expected: 1 }
+    ])("should return $expected for $page", ({ page, expected }) => {
+        expect(stringToPositiveInteger(page)).toEqual(expected);
     });
 });

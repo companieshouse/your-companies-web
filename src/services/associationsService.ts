@@ -60,9 +60,9 @@ export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumb
     return Promise.resolve({ state: isOrWasAssociated, associationId });
 };
 
-export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean): Promise<Associations> => {
+export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean, pageIndex?: number): Promise<Associations> => {
     const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, undefined, undefined, userEmail);
+    const sdkResponse: Resource<Associations | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, pageIndex, undefined, userEmail);
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);

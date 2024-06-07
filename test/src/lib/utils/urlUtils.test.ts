@@ -1,4 +1,4 @@
-import { addLangToUrl } from "../../../../src/lib/utils/urlUtils";
+import { addLangToUrl, getManageAuthorisedPeopleUrl } from "../../../../src/lib/utils/urlUtils";
 
 describe("addLangToUrl", () => {
     it("should return unmodified url if lang parameter is undefined", () => {
@@ -73,5 +73,17 @@ describe("addLangToUrl", () => {
         // Then
         const expectedUrl = "http://www.website.com/your-companies?cf=false";
         expect(result).toEqual(expectedUrl);
+    });
+});
+
+describe("getManageAuthorisedPeopleUrl should return correct url", () => {
+    it.each([
+        { url: "/confirmation-cancel-person", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person" },
+        { url: "/confirmation-person-removed", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-removed" },
+        { url: "/authorisation-email-resent", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/authorisation-email-resent" },
+        { url: "/confirmation-person-added", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-added" },
+        { url: "/any-other-url", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456" }
+    ])("should return $expected for $url, $companyNumber", ({ url, companyNumber, expected }) => {
+        expect(getManageAuthorisedPeopleUrl(url, companyNumber)).toEqual(expected);
     });
 });
