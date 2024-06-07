@@ -36,9 +36,17 @@
                 text: lang.go_to_your_companies, 
                 href: buttonHref,
                 role: "button",
-                classes: 'govuk-!-margin-top-3'
+                classes: 'govuk-!-margin-top-3',
+                attributes: {
+                    id: "go-to-your-companies-button",
+                    "data-event-id": "go-to-your-companies-button-event"
+                    }
             }) }}
         </div>
     </div>
+
+    <script>
+        trackEvent("go-to-your-companies-button", "{{lang.title}}", "{{matomoButtonClick}}", "{{matomoGoToYourCompaniesButton}}");
+    </script>
 
 {% endblock %}
