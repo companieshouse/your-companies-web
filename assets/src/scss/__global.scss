@@ -48,11 +48,7 @@ $govuk-global-styles: true;
     }
 
     .mobile-view-max-width-unset {
-        max-width: unset;
-    }
-
-    .mobile-view-margin-top-20px {
-        margin-top: 20px;
+        max-width: unset !important;
     }
 }
 
