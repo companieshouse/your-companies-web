@@ -4,13 +4,13 @@ import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
-import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { Association, AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
-import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
+// import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -24,7 +24,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
-        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
+        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber);
 
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
@@ -46,12 +46,21 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
 
         const confirmedAssociations: Association[] = companyAssociations.items.filter(
-            association => association.status === AssociationStatus.CONFIRMED);
-        companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
+            (association:Association) => association.status === AssociationStatus.CONFIRMED ||
+            (association.status === AssociationStatus.AWAITING_APPROVAL &&
+            new Date(association.approvalExpiryAt) > new Date())
+        );
+        companyAssociations.items = [...confirmedAssociations];
         this.viewData.companyAssociations = companyAssociations;
+        // const confirmedAssociations: Association[] = companyAssociations.items.filter(
+        //     (association:Association) => association.status === AssociationStatus.CONFIRMED);
+
+        // companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
+        //   companyAssociations.items = confirmedAssociationsAndValidAwaiting;
+        // this.viewData.companyAssociations = confirmedAssociationsAndValidAwaiting;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
-        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations.items[0].companyName);
+        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         return Promise.resolve(this.viewData);
     }
@@ -72,7 +81,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
-    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: Associations) {
+    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: AssociationList) {
         if (cancellation.cancelPerson === constants.YES) {
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
@@ -84,10 +93,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
-    private async handleRemoval (req: Request, removal: Removal, companyAssociations: Associations) {
+    private async handleRemoval (req: Request, removal: Removal, companyAssociations: AssociationList) {
         if (removal.removePerson === constants.CONFIRM) {
             const associationId = companyAssociations.items.find(
-                association => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
+                (association:Association) => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
             )?.id as string;
             if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
                 this.callRemoveUserFromCompanyAssociations(req, associationId);

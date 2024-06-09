@@ -48,6 +48,10 @@ describe("GET /your-companies", () => {
     });
 
     it("should return status 200", async () => {
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValue(emptyAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValue(emptyAssociations);
         await router.get("/your-companies").expect(200);
     });
 
@@ -191,6 +195,10 @@ describe("GET /your-companies", () => {
 
     it("should delete the manage authorised people page indicator in extraData on page load", async () => {
         // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValueOnce(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
         const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
         const value = true;
         setExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR, value);
@@ -207,6 +215,10 @@ describe("GET /your-companies", () => {
 
     it("should delete the confirm company details page indicator in extraData on page load", async () => {
         // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockReturnValueOnce(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
         const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
         const value = true;
         setExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR, value);

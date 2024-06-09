@@ -8,7 +8,6 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
     const handler = new ManageAuthorisedPeopleHandler();
     const viewData = await handler.execute(req);
     const managedAuthorisedPeopleIndicator = true;
-
     if (getExtraData(req.session, constants.CANCEL_URL_EXTRA)) {
         deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
     }
@@ -16,7 +15,8 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
         deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
     }
     setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, managedAuthorisedPeopleIndicator);
-
+    console.log("rendering", constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
+    console.log(viewData);
     res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
         ...viewData
     });

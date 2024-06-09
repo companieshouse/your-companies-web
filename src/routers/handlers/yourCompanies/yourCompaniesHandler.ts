@@ -6,7 +6,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
-import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import {
     setLangForPagination,
     getSearchQuery,
@@ -29,7 +29,7 @@ export class YourCompaniesHandler extends GenericHandler {
             errorMassage = constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE;
         }
 
-        let confirmedUserAssociations: Associations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
+        let confirmedUserAssociations: AssociationList = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
 
         // validate the page number
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
@@ -37,14 +37,17 @@ export class YourCompaniesHandler extends GenericHandler {
             confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
         }
 
-        const awaitingApprovalUserAssociations: Associations = await getInvitations(req);
-        setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
+        // const awaitingApprovalUserAssociations: Associations = await getInvitations(req);
+        const invites: InvitationList = await getInvitations(req);
+        // setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
+        // why are awaitingApprovalUserAssociations being saved to session?
+        setExtraData(req.session, constants.USER_ASSOCIATIONS, invites);
 
         deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
         deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
 
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
-        this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);
+        this.viewData = this.getViewData(confirmedUserAssociations, invites, lang);
         this.viewData.search = search;
         if (errorMassage) {
             this.viewData.errors = {
@@ -78,10 +81,10 @@ export class YourCompaniesHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (confirmedUserAssociations: Associations, awaitingApprovalUserAssociations: Associations, lang: AnyRecord): ViewData {
+    private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
             buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
-            numberOfInvitations: awaitingApprovalUserAssociations.totalResults,
+            numberOfInvitations: invitationList.totalResults,
             viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL,
             cancelSearchHref: constants.LANDING_URL,
             matomoAddCompanyButton: constants.MATOMO_ADD_COMPANY_BUTTON,
