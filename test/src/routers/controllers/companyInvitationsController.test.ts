@@ -1,73 +1,22 @@
 import mocks from "../../../mocks/all.middleware.mock";
-import { associationsWithoutInvitations, userAssociations, userAssociationsWithEmptyInvitations } from "../../../mocks/associations.mock";
+import {
+    associationsWithoutInvitations,
+    mockInvitationList,
+    userAssociations,
+    userAssociationsWithEmptyInvitations,
+    getMockInvitationList
+} from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations.json";
 import * as associationsService from "../../../../src/services/associationsService";
-import { AssociationList, Invitation, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations";
 const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
 const invitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
-
-export const mockInvitations: Invitation[] = [{
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "1234567890",
-    isActive: true
-}, {
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "2345678901",
-    isActive: true
-}, {
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "44345677554",
-    isActive: true
-},
-{
-    invitedBy: "another.email@acme.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "234322344",
-    isActive: true
-},
-{
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "6654463562412",
-    isActive: true
-}];
-
-export const mockInvitationList:InvitationList = {
-    items: mockInvitations,
-    itemsPerPage: 15,
-    pageNumber: 1,
-    totalResults: 1,
-    totalPages: 1,
-    links: {
-        self: "",
-        next: ""
-    }
-};
-// 1234567890;
-// 2345678901;
-// 44345677554;
-// 234322344;
-// 6654463562412;
-const getMockInvitationList = (invitations:Invitation[]):InvitationList => ({
-    items: invitations,
-    itemsPerPage: 15,
-    pageNumber: 1,
-    totalResults: 1,
-    totalPages: 1,
-    links: {
-        self: "",
-        next: ""
-    }
-});
 
 describe(`GET ${url}`, () => {
     beforeEach(() => {
@@ -112,29 +61,29 @@ describe(`GET ${url}`, () => {
         expect(response.text).toContain(cy.decline);
     });
 
-    // it("should return only expected company number, name and email address of a person who sent the invitation", async () => {
-    //     // Given
-    //     const associations = { ...associationsWithoutInvitations };
-    //     associations.items = associationsWithoutInvitations.items.filter(association => association.status === AssociationStatus.AWAITING_APPROVAL);
-    //     userAssociationsSpy.mockReturnValue(associations);
-    //     const expectedEmail = "another.email@acme.com";
-    //     const expectedCompanyNumber = "08449801";
-    //     const expectedCompanyName = "BROWN AND SALTER LIMITED";
-    //     const expectedNotContainEmail = "j.example@gmail.com";
-    //     const expectedNotContainCompanyNumber = "10866549";
-    //     const expectedNotContainCompanyName = "ANDROID TECHNOLOGY LTD";
+    it("should return only expected company number, name and email address of a person who sent the invitation", async () => {
+        // Given
+        const associations = { ...associationsWithoutInvitations };
+        associations.items = associationsWithoutInvitations.items.filter(association => association.status === AssociationStatus.AWAITING_APPROVAL);
+        userAssociationsSpy.mockReturnValue(associations);
+        const expectedEmail = "another.email@acme.com";
+        const expectedCompanyNumber = "08449801";
+        const expectedCompanyName = "BROWN AND SALTER LIMITED";
+        const expectedNotContainEmail = "j.example@gmail.com";
+        const expectedNotContainCompanyNumber = "10866549";
+        const expectedNotContainCompanyName = "ANDROID TECHNOLOGY LTD";
 
-    //     // When
-    //     const response = await router.get(url);
+        // When
+        const response = await router.get(url);
 
-    //     // Then
-    //     expect(response.text).toContain(expectedCompanyNumber);
-    //     expect(response.text).toContain(expectedEmail);
-    //     expect(response.text).toContain(expectedCompanyName);
-    //     expect(response.text).not.toContain(expectedNotContainEmail);
-    //     expect(response.text).not.toContain(expectedNotContainCompanyNumber);
-    //     expect(response.text).not.toContain(expectedNotContainCompanyName);
-    // });
+        // Then
+        expect(response.text).toContain(expectedCompanyNumber);
+        expect(response.text).toContain(expectedEmail);
+        expect(response.text).toContain(expectedCompanyName);
+        expect(response.text).not.toContain(expectedNotContainEmail);
+        expect(response.text).not.toContain(expectedNotContainCompanyNumber);
+        expect(response.text).not.toContain(expectedNotContainCompanyName);
+    });
 
     it("should return an expected text if no invitation awaiting approval exists and language set to English", async () => {
         // Given

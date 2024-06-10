@@ -9,14 +9,14 @@
 
 {% extends "layouts/default.njk" %}
 
-  {% set company_association = companyAssociations.items | first %}
+{% set company_association = companyAssociations.items | first %}
 {% set title = company_association.companyName + " (" + company_association.companyNumber + ") " + lang.title_manage_authorised_people %}  
 
 {% block back_link %}
 
-     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
+    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
         {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref }) }}
-    </div> 
+    </div>
 
 {% endblock %}
 
@@ -155,7 +155,7 @@
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}
-    {% endfor %} 
+    {% endfor %}
 
     {% set cancelOrRemoveHeader %}
     <span class="govuk-visually-hidden">{{lang.cancel_or_remove}}</span>
@@ -165,7 +165,7 @@
     <span class="govuk-visually-hidden">{{lang.resend_amail_invitation}}</span>
     {% endset %}
 
-     <div class="govuk-grid-row govuk-!-padding-top-3">
+    <div class="govuk-grid-row govuk-!-padding-top-3">
         <div class="govuk-grid-column-full">
             <h2 class="govuk-table__caption--m">{{lang.details_of_authorised_people}}</h2>
             {{ govukTable({
@@ -193,7 +193,7 @@
                 })
             }}
         </div>
-    </div> 
+    </div>
 
     <script>
         trackEvent("add-new-authorised-person-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddNewAuthorisedPersonButton}}");

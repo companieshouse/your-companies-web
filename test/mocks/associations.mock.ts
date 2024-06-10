@@ -1,4 +1,4 @@
-import { AssociationList, AssociationStatus, Invitation } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus, Invitation, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 
 export const userAssociations: AssociationList = {
     items: [
@@ -410,13 +410,6 @@ export const associationsWithoutInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "adam.smith@test.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -436,13 +429,6 @@ export const associationsWithoutInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "adam.smith@test.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -462,13 +448,6 @@ export const associationsWithoutInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "j.example@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -488,14 +467,6 @@ export const associationsWithoutInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC"
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "another.email@acme.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ]
-
         },
         {
             etag: "ABC",
@@ -512,13 +483,6 @@ export const associationsWithoutInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -551,13 +515,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "adam.smith@test.org",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -577,13 +534,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "adam.smith@test.org",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -603,13 +553,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "j.example@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -629,13 +572,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "another.email@acme.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -655,13 +591,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -681,13 +610,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -707,13 +629,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -733,13 +648,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -759,13 +667,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -785,13 +686,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -811,13 +705,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -837,13 +724,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -863,13 +743,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -889,13 +762,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -915,13 +781,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -941,13 +800,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -967,13 +819,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -993,13 +838,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -1019,13 +857,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -1045,13 +876,6 @@ export const twentyConfirmedAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "hannah.salt@gmail.com",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -1084,13 +908,6 @@ export const oneConfirmedAssociation: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations:
-            //     [
-            //         {
-            //             invitedBy: "adam.smith@test.org",
-            //             invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //         }
-            //     ],
             links: {
                 self: "/12345"
             }
@@ -1105,3 +922,56 @@ export const oneConfirmedAssociation: AssociationList = {
     totalResults: 1,
     totalPages: 1
 } as AssociationList;
+
+export const mockInvitations: Invitation[] = [{
+    invitedBy: "bob@bob.com",
+    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
+    associationId: "1234567890",
+    isActive: true
+}, {
+    invitedBy: "bob@bob.com",
+    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
+    associationId: "2345678901",
+    isActive: true
+}, {
+    invitedBy: "bob@bob.com",
+    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
+    associationId: "44345677554",
+    isActive: true
+},
+{
+    invitedBy: "another.email@acme.com",
+    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
+    associationId: "234322344",
+    isActive: true
+},
+{
+    invitedBy: "bob@bob.com",
+    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
+    associationId: "6654463562412",
+    isActive: true
+}];
+
+export const mockInvitationList:InvitationList = {
+    items: mockInvitations,
+    itemsPerPage: 15,
+    pageNumber: 1,
+    totalResults: 1,
+    totalPages: 1,
+    links: {
+        self: "",
+        next: ""
+    }
+};
+
+export const getMockInvitationList = (invitations:Invitation[]):InvitationList => ({
+    items: invitations,
+    itemsPerPage: 15,
+    pageNumber: 1,
+    totalResults: 1,
+    totalPages: 1,
+    links: {
+        self: "",
+        next: ""
+    }
+});

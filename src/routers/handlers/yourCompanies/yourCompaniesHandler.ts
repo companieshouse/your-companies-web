@@ -37,9 +37,7 @@ export class YourCompaniesHandler extends GenericHandler {
             confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
         }
 
-        // const awaitingApprovalUserAssociations: Associations = await getInvitations(req);
         const invites: InvitationList = await getInvitations(req);
-        // setExtraData(req.session, constants.USER_ASSOCIATIONS, awaitingApprovalUserAssociations);
         // why are awaitingApprovalUserAssociations being saved to session?
         setExtraData(req.session, constants.USER_ASSOCIATIONS, invites);
 

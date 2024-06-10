@@ -75,24 +75,24 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         const response = await router.get(`${url}?lang=en`);
         // Then
         expect(response.text).toContain(enCommon.success);
-        // expect(response.text).toContain(en.digital_authorisation_cancelled);
-        // expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_start);
-        // expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_end);
-        // expect(response.text).toContain(en.weve_sent_an_email_to_the_company);
-        // expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
-        // expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
-        // expect(response.text).toContain(en.anyone_with_access_to_the_current_authentication);
-        // expect(response.text).toContain(en.add_new_authorised_person);
-        // expect(response.text).toContain(en.details_of_authorised_people);
-        // expect(response.text).toContain(en.email_address);
-        // expect(response.text).toContain(en.name);
-        // expect(response.text).toContain(en.status);
-        // expect(response.text).toContain(en.remove);
-        // expect(response.text).toContain(enCommon.go_back_to_your_companies);
-        // expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
-        // expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-        // expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-        // expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+        expect(response.text).toContain(en.digital_authorisation_cancelled);
+        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_start);
+        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_end);
+        expect(response.text).toContain(en.weve_sent_an_email_to_the_company);
+        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
+        expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
+        expect(response.text).toContain(en.anyone_with_access_to_the_current_authentication);
+        expect(response.text).toContain(en.add_new_authorised_person);
+        expect(response.text).toContain(en.details_of_authorised_people);
+        expect(response.text).toContain(en.email_address);
+        expect(response.text).toContain(en.name);
+        expect(response.text).toContain(en.status);
+        expect(response.text).toContain(en.remove);
+        expect(response.text).toContain(enCommon.go_back_to_your_companies);
+        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
     });
 
     it("should return expected English content if person already cancelled and language version set to English", async () => {

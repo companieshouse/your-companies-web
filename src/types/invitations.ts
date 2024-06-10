@@ -3,3 +3,12 @@ export interface Invitations {
     acceptIds: string[];
     declineIds: string[];
 }
+
+export interface InvitationWithCompanyDetail {
+    invitedBy: string;
+    invitedAt: string;
+    associationId: string;
+    isActive: boolean;
+    companyName: string;
+    companyNumber: string;
+}

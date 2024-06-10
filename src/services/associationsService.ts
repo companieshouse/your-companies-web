@@ -4,9 +4,13 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
-import { Association, AssociationList, AssociationStatus, Errors, NewAssociationResponse, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
+import { Association, AssociationsResponse, AssociationList, AssociationStatus, Errors, NewAssociationResponse, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import { AssociationState, AssociationStateResponse } from "../types/associations";
 import createError from "http-errors";
+
+const stringifyApiErrors = (resource: Resource<AssociationsResponse | Errors | undefined | InvitationList>) => {
+    return JSON.stringify((resource.resource as Errors)?.errors || "No error list returned");
+};
 
 export const getUserAssociations = async (req: Request, status: AssociationStatus[], companyNumber?: string, pageIndex?: number, itemsPerPage?: number): Promise<AssociationList> => {
     const apiClient = createOauthPrivateApiClient(req);
@@ -20,9 +24,8 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to get associations with status ${JSON.stringify(status)}`;
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 
     if (!sdkResponse.resource) {
@@ -71,9 +74,8 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} -  Failed to get company associations, company number: ${companyNumber}}`;
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 
     if (!sdkResponse.resource) {
@@ -97,8 +99,7 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 
     if (!sdkResponse.resource) {
@@ -123,8 +124,7 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 
     logger.debug(`The status of an association with id ${associationId} changed`);
@@ -144,8 +144,7 @@ export const getInvitations = async (req: Request, pageIndex?: number, itemsPerP
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `GET /associations/invitations: ${sdkResponse.httpStatusCode}`;
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 
     logger.debug(`GET /associations/invitations: 200 OK`);
@@ -166,8 +165,7 @@ export const postInvitation = async (req: Request, companyNumber: string, invite
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         const errorMessage = `${sdkResponse.httpStatusCode} - POST /associations/invitations`;
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
+        return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 
     if (!sdkResponse.resource) {
@@ -181,27 +179,6 @@ export const postInvitation = async (req: Request, companyNumber: string, invite
     const associationId: string = (sdkResponse.resource as NewAssociationResponse).associationId;
 
     return Promise.resolve(associationId);
-};
-
-export const getAssocation = async (req: Request, associationId: string): Promise<Association> => {
-    const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<Association | Errors> = await apiClient.associationsService.getAssociation(associationId);
-
-    if (!sdkResponse) {
-        const errMsg = `No response from GET /association/${associationId}`;
-        logger.error(errMsg);
-        return Promise.reject(new Error(errMsg));
-    }
-
-    if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-        const errorMessage = `/association/${associationId}: ${sdkResponse.httpStatusCode}`;
-        const errors = (sdkResponse.resource as Errors)?.errors || "No error list returned";
-        return Promise.reject(createError(sdkResponse.httpStatusCode, `${JSON.stringify(errors)} ${errorMessage}`));
-    }
-
-    logger.debug(`GET /association/${associationId}: 200 OK`);
-
-    return Promise.resolve(sdkResponse.resource as Association);
 };
 
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {

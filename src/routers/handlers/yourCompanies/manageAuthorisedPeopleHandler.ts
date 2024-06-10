@@ -10,7 +10,6 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
-// import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -45,19 +44,13 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber);
         }
 
-        const confirmedAssociations: Association[] = companyAssociations.items.filter(
+        companyAssociations.items = companyAssociations.items.filter(
             (association:Association) => association.status === AssociationStatus.CONFIRMED ||
             (association.status === AssociationStatus.AWAITING_APPROVAL &&
             new Date(association.approvalExpiryAt) > new Date())
         );
-        companyAssociations.items = [...confirmedAssociations];
         this.viewData.companyAssociations = companyAssociations;
-        // const confirmedAssociations: Association[] = companyAssociations.items.filter(
-        //     (association:Association) => association.status === AssociationStatus.CONFIRMED);
 
-        // companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
-        //   companyAssociations.items = confirmedAssociationsAndValidAwaiting;
-        // this.viewData.companyAssociations = confirmedAssociationsAndValidAwaiting;
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
