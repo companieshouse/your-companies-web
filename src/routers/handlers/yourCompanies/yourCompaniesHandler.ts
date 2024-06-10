@@ -43,6 +43,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
         deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
         deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+        deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
 
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, awaitingApprovalUserAssociations, lang);

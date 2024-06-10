@@ -16,7 +16,10 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
 
     setExtraData(req.session, constants.CANCEL_URL_EXTRA, cancelPageUrl);
 
-    if (referrer && (referrer.includes("confirmation-person-removed") || referrer.includes("confirmation-cancel-person") || referrer.includes("confirmation-person-added"))) {
+    if (referrer && (referrer.includes("confirmation-person-removed") ||
+        referrer.includes("confirmation-cancel-person") ||
+        referrer.includes("confirmation-person-added") ||
+        referrer.includes("authorisation-email-resent"))) {
         checkedReferrer = hrefA;
     } else {
         checkedReferrer = referrer;
@@ -24,10 +27,13 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
 
     if (checkedReferrer?.includes("manage-authorised-people") && pageIndicator === true) {
         newPageIndicator = false;
+    } else if (checkedReferrer === undefined && pageIndicator === true) {
+        newPageIndicator = false;
     } else {
         newPageIndicator = pageIndicator;
     }
     logger.debug(`cancelPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+
     if (redirectPage(checkedReferrer, hrefA, constants.CANCEL_PERSON_URL.replace(":userEmail", userEmail), newPageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {

@@ -15,13 +15,18 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
     let checkedReferrer;
     let newPageIndicator;
 
-    if (referrer && (referrer.includes("confirmation-person-removed") || referrer.includes("confirmation-cancel-person") || referrer.includes("confirmation-person-added"))) {
+    if (referrer && (referrer.includes("confirmation-person-removed") ||
+        referrer.includes("confirmation-cancel-person") ||
+        referrer.includes("confirmation-person-added") ||
+        referrer.includes("authorisation-email-resent"))) {
         checkedReferrer = hrefA;
     } else {
         checkedReferrer = referrer;
     }
 
     if (checkedReferrer?.includes("manage-authorised-people") && pageIndicator === true) {
+        newPageIndicator = false;
+    } else if (checkedReferrer === undefined && pageIndicator === true) {
         newPageIndicator = false;
     } else {
         newPageIndicator = pageIndicator;
