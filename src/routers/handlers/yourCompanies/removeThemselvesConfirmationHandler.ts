@@ -19,7 +19,8 @@ export class RemoveThemselvesConfirmationHandler extends GenericHandler {
         const companyNoLongerAssociated = getExtraData(req.session, constants.REMOVED_THEMSELVES_FROM_COMPANY);
         return Promise.resolve({
             ...companyNoLongerAssociated,
-            buttonHref: constants.LANDING_URL
+            buttonHref: constants.LANDING_URL,
+            matomoGoToYourCompaniesButton: constants.MATOMO_GO_TO_YOUR_COMPANIES_BUTTON
         } as ViewData);
     }
 }
