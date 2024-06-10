@@ -5,7 +5,10 @@ import * as constants from "../../../constants";
 import { Invitation, AssociationList, InvitationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AnyRecord, ViewData } from "../../../types/util-types";
-import { Invitations, InvitationWithCompanyDetail } from "../../../types/invitations";
+import { InvitationWithCompanyDetail, Invitations } from "../../../types/invitations";
+
+import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class CompanyInvitationsHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
@@ -14,23 +17,37 @@ export class CompanyInvitationsHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const userInvites: InvitationList = await getInvitations(req);
-
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
+        const viewData: ViewData = {
+            lang: translations,
+            backLinkHref: constants.LANDING_URL,
+            matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
+            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK
+        };
 
+        const page = req.query.page as string;
+        let pageNumber = stringToPositiveInteger(page);
+        let userInvites: InvitationList = await getInvitations(req, pageNumber - 1);
+
+        if (!validatePageNumber(pageNumber, userInvites.totalPages)) {
+            pageNumber = 1;
+            userInvites = await getInvitations(req, pageNumber - 1, undefined);
+        }
         const invitesWithCompanyDetail:InvitationWithCompanyDetail[] = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
 
-        const { rows, acceptIds, declineIds } = await this.getRowsData(invitesWithCompanyDetail, translations);
+        if (userInvites.totalPages > 1) {
+            const urlPrefix = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
+            const pagination = buildPaginationElement(pageNumber, userInvites.totalPages, urlPrefix, "");
+            setLangForPagination(pagination, translations);
+            viewData.pagination = pagination;
+        }
 
-        return {
-            backLinkHref: constants.LANDING_URL,
-            rowsData: rows,
-            lang: translations,
-            matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
-            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK,
-            acceptIds: acceptIds,
-            declineIds: declineIds
-        };
+        const { rows, acceptIds, declineIds } = await this.getRowsData(invitesWithCompanyDetail, translations);
+        viewData.rowsData = rows;
+        viewData.acceptIds = acceptIds;
+        viewData.declineIds = declineIds;
+
+        return viewData;
     }
 
     private async getRowsData (invites:InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {

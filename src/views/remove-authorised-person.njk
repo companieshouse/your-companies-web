@@ -10,9 +10,7 @@
 {% set title = lang.remove + user_details + lang.authorisation_to_file_online + lang.title_end %}
 
 {% block back_link %}
-    <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
-        {{ govukBackLink({text: lang.back_link, href: backLinkHref }) }}
-    </div>
+    {% include "partials/back_link.njk" %}  
 {% endblock %}
 
 {% set message = null %}
@@ -89,5 +87,6 @@
     <script>
         trackEvent("remove-authorisation-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoRemoveAuthorisationButton}}");
         trackEvent("cancel-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoCancelLink}}");
+        trackEvent("back-link-to-previous-page", "{{title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
     </script>
 {% endblock %}

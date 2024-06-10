@@ -3,45 +3,52 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
 import { Association, AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
+import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     async execute (req: Request): Promise<Record<string, unknown>> {
         logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
         // ...process request here and return data for the view
+        const page = req.query.page as string;
+        let pageNumber = stringToPositiveInteger(page);
+
         deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
-        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
         let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber);
+
+        if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
+            pageNumber = 1;
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        }
 
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
                 await this.handleCancellation(req, cancellation, companyAssociations);
-            } else if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-                deleteExtraData(req.session, constants.CANCEL_PERSON);
-                await this.handleRemoval(req, removal, companyAssociations);
             }
         } catch (error) {
-            logger.error(`Error on removal/cancellation: ${JSON.stringify(error)}`);
+            logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
         }
 
+        this.handleRemoveConfirmation(req);
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
-        if (cancellation || removal) {
-            companyAssociations = await getCompanyAssociations(req, companyNumber);
+        if (cancellation) {
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
         companyAssociations.items = companyAssociations.items.filter(
@@ -49,7 +56,15 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             (association.status === AssociationStatus.AWAITING_APPROVAL &&
             new Date(association.approvalExpiryAt) > new Date())
         );
+
         this.viewData.companyAssociations = companyAssociations;
+
+        if (companyAssociations.totalPages > 1) {
+            const urlPrefix = getManageAuthorisedPeopleUrl(req.originalUrl, companyNumber);
+            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
+            setLangForPagination(pagination, lang);
+            this.viewData.pagination = pagination;
+        }
 
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
@@ -86,14 +101,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
-    private async handleRemoval (req: Request, removal: Removal, companyAssociations: AssociationList) {
-        if (removal.removePerson === constants.CONFIRM) {
-            const associationId = companyAssociations.items.find(
-                (association:Association) => association.companyNumber === removal.companyNumber && association.userEmail === removal.userEmail
-            )?.id as string;
-            if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
-                this.callRemoveUserFromCompanyAssociations(req, associationId);
-            }
+    private async handleRemoveConfirmation (req: Request) {
+        const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
+        if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
             this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
             this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
             this.viewData.matomoChangeTheAuthenticationCodeLink = constants.MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK;

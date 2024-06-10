@@ -75,6 +75,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
     njk.addGlobal("matomoButtonClick", constants.MATOMO_BUTTON_CLICK);
     njk.addGlobal("matomoLinkClick", constants.MATOMO_LINK_CLICK);
+    njk.addGlobal("matomoBackLink", constants.MATOMO_BACK_LINK);
     next();
 });
 
@@ -88,7 +89,7 @@ app.use(httpErrorHandler);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
-    res.render("partials/error_500");
+    res.render("partials/service_unavailable.njk");
 });
 
 // Unhandled exceptions

@@ -17,5 +17,10 @@
     "back_to_your_companies": "Back to your companies",
     "warning": "Warning",
     "title_error": "Error: ",
-    "go_back_to_your_companies": "Go back to ’Your companies’"
+    "go_back_to_your_companies": "Go back to ’Your companies’",
+    "next": "Next",
+    "previous": "Previous",
+    "next_page": "Next page",
+    "previous_page": "Previous page",
+    "click_to_expand_or_collaps": "Click to expand or collapse"
 }

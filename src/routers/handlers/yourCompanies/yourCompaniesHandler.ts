@@ -10,7 +10,8 @@ import { AssociationList, AssociationStatus, InvitationList } from "private-api-
 import {
     setLangForPagination,
     getSearchQuery,
-    buildPaginationElement
+    buildPaginationElement,
+    stringToPositiveInteger
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 
@@ -22,7 +23,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const search = req.query.search as string;
         const page = req.query.page as string;
 
-        let pageNumber = isNaN(Number(page)) || Number(page) < 1 ? 1 : Number(page);
+        let pageNumber = stringToPositiveInteger(page);
 
         let errorMassage;
         if (search && !validateCompanyNumberSearchString(search)) {
@@ -43,6 +44,7 @@ export class YourCompaniesHandler extends GenericHandler {
 
         deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
         deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+        deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
 
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, invites, lang);

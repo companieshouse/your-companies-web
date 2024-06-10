@@ -43,5 +43,5 @@ export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB:
 };
 
 const checkMultipleHrefs = (referrer: string, hrefs: string[]): boolean => {
-    return hrefs.some(href => referrer.endsWith(href));
+    return hrefs.some(href => referrer.includes(href));
 };

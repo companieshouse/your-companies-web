@@ -4,7 +4,7 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
-import { Association, AssociationsResponse, AssociationList, AssociationStatus, Errors, NewAssociationResponse, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationsResponse, AssociationList, AssociationStatus, Errors, NewAssociationResponse, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import { AssociationState, AssociationStateResponse } from "../types/associations";
 import createError from "http-errors";
 
@@ -64,9 +64,9 @@ export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumb
     return Promise.resolve({ state: isOrWasAssociated, associationId });
 };
 
-export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean): Promise<AssociationList> => {
+export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean, pageIndex?: number): Promise<AssociationList> => {
     const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, undefined, undefined, userEmail);
+    const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, pageIndex, undefined, userEmail);
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);

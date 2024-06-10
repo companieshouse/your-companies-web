@@ -1,4 +1,4 @@
-import { AssociationList, AssociationStatus, Invitation, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus, Invitation } from "private-api-sdk-node/dist/services/associations/types";
 
 export const userAssociations: AssociationList = {
     items: [
@@ -17,7 +17,6 @@ export const userAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            //      invitations: [],
             links: {
                 self: "/12345"
             }
@@ -37,7 +36,6 @@ export const userAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            //     invitations: [],
             links: {
                 self: "/12345"
             }
@@ -70,7 +68,6 @@ export const demoUserPolishBreweryAssociation: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            //    invitations: [],
             links: {
                 self: "/12345"
             }
@@ -103,7 +100,6 @@ export const demoUserScottishBreweryAssociation: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            //     invitations: [],
             links: {
                 self: "/12345"
             }
@@ -136,12 +132,6 @@ export const demoUserGermanBreweryAssociation: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations: [
-            //     {
-            //         invitedBy: "john.smith@test.com",
-            //         invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //     }
-            // ],
             links: {
                 self: "/12345"
             }
@@ -174,7 +164,6 @@ export const userAssociationsWithEmptyInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            //     invitations: [],
             links: {
                 self: "/12345"
             }
@@ -194,7 +183,6 @@ export const userAssociationsWithEmptyInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            //      invitations: [],
             links: {
                 self: "/12345"
             }
@@ -227,12 +215,6 @@ export const userAssociationsWithNumberOfInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations: [
-            //     {
-            //         invitedBy: "john.smith@test.com",
-            //         invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //     }
-            // ],
             links: {
                 self: "/12345"
             }
@@ -252,12 +234,6 @@ export const userAssociationsWithNumberOfInvitations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
-            // invitations: [
-            //     {
-            //         invitedBy: "john.smith@test.com",
-            //         invitedAt: "2022-04-05T11:41:09.568+00:00 UTC"
-            //     }
-            // ],
             links: {
                 self: "/12345"
             }
@@ -301,9 +277,6 @@ export const companyAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: expiryDate,
-            // invitations: [
-            //     validInvitation
-            // ],
             links: {
                 self: "/12345"
             }
@@ -323,7 +296,6 @@ export const companyAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: expiryDate,
-            //    invitations: [],
             links: {
                 self: "/12345"
             }
@@ -343,9 +315,6 @@ export const companyAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: expiryDate,
-            // invitations: [
-            //     validInvitation
-            // ],
             links: {
                 self: "/12345"
             }
@@ -365,7 +334,6 @@ export const companyAssociations: AssociationList = {
             kind: "association",
             approvalRoute: "invitation",
             approvalExpiryAt: expiryDate,
-            //    invitations: [],
             links: {
                 self: "/12345"
             }
@@ -891,6 +859,304 @@ export const twentyConfirmedAssociations: AssociationList = {
     totalPages: 2
 } as AssociationList;
 
+export const fifteenAssociationsAwaitingApproval: AssociationList = {
+    items: [
+        {
+            etag: "ABC",
+            id: "1234567890",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "2345678901",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "01777777",
+            companyName: "BRITISH AIRWAYS PLC",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "44345677554",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "10866549",
+            companyName: "ANDROID TECHNOLOGY LTD",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "234322344",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "08449801",
+            companyName: "BROWN AND SALTER LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "6654463562412",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "18882777",
+            companyName: "FLOWERS LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "665121212",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "11223344",
+            companyName: "ACME LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "j.example@gmail.com5566",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "44332211",
+            companyName: "GIANT CORP PLC",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI123123",
+            companyName: "ABC LTD",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "72903908",
+            companyName: "LARKIN GROUP",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "47204431",
+            companyName: "TREMBLAY LLC LIMITED",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "35293830",
+            companyName: "THIEL INC",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "87644034",
+            companyName: "BAILEY - LEMKE",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "43593313",
+            companyName: "SWIFT GROUP",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "27285558",
+            companyName: "ANDERSON AND SONS",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "81683662",
+            companyName: "GREENFELDER LTD",
+            status: AssociationStatus.AWAITING_APPROVAL,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        }
+    ],
+    links: {
+        self: "http://localhost:8080/associations",
+        next: "http://localhost:8080/associations?page_index=2&itesm_per_page=15"
+    },
+    itemsPerPage: 15,
+    pageNumber: 0,
+    totalResults: 29,
+    totalPages: 2
+} as AssociationList;
+
 export const oneConfirmedAssociation: AssociationList = {
     items: [
         {
@@ -923,55 +1189,351 @@ export const oneConfirmedAssociation: AssociationList = {
     totalPages: 1
 } as AssociationList;
 
-export const mockInvitations: Invitation[] = [{
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "1234567890",
-    isActive: true
-}, {
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "2345678901",
-    isActive: true
-}, {
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "44345677554",
-    isActive: true
-},
-{
-    invitedBy: "another.email@acme.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "234322344",
-    isActive: true
-},
-{
-    invitedBy: "bob@bob.com",
-    invitedAt: "2022-04-05T11:41:09.568+00:00 UTC",
-    associationId: "6654463562412",
-    isActive: true
-}];
-
-export const mockInvitationList:InvitationList = {
-    items: mockInvitations,
+export const companyAssociationsPage1: AssociationList = {
+    items: [
+        {
+            etag: "ABC",
+            id: "1234567890",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "2345678901",
+            userId: "qwertyiop",
+            userEmail: "demo1@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "44345677554",
+            userId: "qwertyiop",
+            userEmail: "demo2@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "234322344",
+            userId: "qwertyiop",
+            userEmail: "demo3@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "6654463562412",
+            userId: "qwertyiop",
+            userEmail: "demo4@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "665121212",
+            userId: "qwertyiop",
+            userEmail: "demo5@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "j.example@gmail.com5566",
+            userId: "qwertyiop",
+            userEmail: "demo6@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo7@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo8@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo9@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo10@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo11@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo12@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo13@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "1A2B3C4",
+            userId: "qwertyiop",
+            userEmail: "demo14@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        }
+    ],
+    links: {
+        self: "http://localhost:8080/associations",
+        next: "http://localhost:8080/associations?page_index=2&items_per_page=15"
+    },
     itemsPerPage: 15,
     pageNumber: 1,
-    totalResults: 1,
-    totalPages: 1,
-    links: {
-        self: "",
-        next: ""
-    }
-};
+    totalResults: 20,
+    totalPages: 2
+} as AssociationList;
 
-export const getMockInvitationList = (invitations:Invitation[]):InvitationList => ({
-    items: invitations,
-    itemsPerPage: 15,
-    pageNumber: 1,
-    totalResults: 1,
-    totalPages: 1,
+export const companyAssociationsPage2: AssociationList = {
+    items: [
+        {
+            etag: "ABC",
+            id: "1234567890",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        },
+        {
+            etag: "ABC",
+            id: "2345678901",
+            userId: "qwertyiop",
+            userEmail: "demo1@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: "invitation",
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        }
+    ],
     links: {
-        self: "",
-        next: ""
-    }
-});
+        self: "http://localhost:8080/associations",
+        next: "http://localhost:8080/associations?page_index=2&items_per_page=15"
+    },
+    itemsPerPage: 15,
+    pageNumber: 2,
+    totalResults: 17,
+    totalPages: 2
+} as AssociationList;
