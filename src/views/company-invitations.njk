@@ -1,6 +1,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
 
 {% extends "layouts/default.njk" %}
 
@@ -26,29 +27,33 @@
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
             {% if rowsData | length %}
                 {{ govukTable({
-                    caption: lang.invitations_to_be_digitally_authorised,
-                    captionClasses: "govuk-table__caption--m govuk-visually-hidden",
-                    firstCellIsHeader: true,
-                    head: [
-                        {
-                            text: lang.company_name
-                        },
-                        {
-                            text: lang.company_number
-                        },
-                        {
-                            text: lang.invited_by
-                        },
-                        {
-                            html: acceptHeader
-                        },
-                        {
-                            html: declineHeader
-                        }
-                    ],
-                    rows: rowsData
-                })
-            }}
+                        caption: lang.invitations_to_be_digitally_authorised,
+                        captionClasses: "govuk-table__caption--m govuk-visually-hidden",
+                        firstCellIsHeader: true,
+                        head: [
+                            {
+                                text: lang.company_name
+                            },
+                            {
+                                text: lang.company_number
+                            },
+                            {
+                                text: lang.invited_by
+                            },
+                            {
+                                html: acceptHeader
+                            },
+                            {
+                                html: declineHeader
+                            }
+                        ],
+                        rows: rowsData
+                    })
+                }}
+
+                {% if pagination and pagination.items | length %}
+                    {{ govukPagination(pagination) }}
+                {% endif %}
             {% else %}
                 <p class="govuk-body govuk-!-padding-top-5">{{lang.no_pending_invitations}}</p>
             {% endif %}
@@ -65,20 +70,22 @@
         let acceptIdText = "{{ acceptIds }}";
         let declineIdText = "{{ declineIds }}";
 
-        if(acceptIdText.length > 0){
+        if (acceptIdText.length > 0) {
             let acceptIdArray = acceptIdText.split(",");
             let declineIdArray = declineIdText.split(",");
 
-            for (let i in acceptIdArray){
+            for (let i in acceptIdArray) {
                 let subVarI = acceptIdArray[i]
                 trackEvent(subVarI, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
             }
-            for (let j in declineIdArray){
-                let subVarJ = declineIdArray[j]
-                    trackEvent(subVarJ, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
-            }
-        }
 
+            for (let j in declineIdArray) {
+                let subVarJ = declineIdArray[j]
+                trackEvent(subVarJ, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
+            }
+
+            trackEvent("back-link-to-previous-page", "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
+        }
     </script>
 
 {% endblock %}

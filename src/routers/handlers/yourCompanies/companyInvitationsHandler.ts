@@ -7,6 +7,8 @@ import { getUserAssociations } from "../../../services/associationsService";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getNewestInvite } from "../../../lib/helpers/invitationHelper";
 import { Invitations } from "../../../types/invitations";
+import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
+import { validatePageNumber } from "../../../lib/validation/generic";
 
 export class CompanyInvitationsHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
@@ -15,19 +17,36 @@ export class CompanyInvitationsHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const userAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
-        const { rows, acceptIds, declineIds } = await this.getRowsData(userAssociations.items, translations);
-
-        return {
-            backLinkHref: constants.LANDING_URL,
-            rowsData: rows,
+        const viewData: ViewData = {
             lang: translations,
+            backLinkHref: constants.LANDING_URL,
             matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
-            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK,
-            acceptIds: acceptIds,
-            declineIds: declineIds
+            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK
         };
+
+        const page = req.query.page as string;
+        let pageNumber = stringToPositiveInteger(page);
+        let userAssociations: Associations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, pageNumber - 1);
+
+        if (!validatePageNumber(pageNumber, userAssociations.totalPages)) {
+            pageNumber = 1;
+            userAssociations = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, pageNumber - 1);
+        }
+
+        if (userAssociations.totalPages > 1) {
+            const urlPrefix = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
+            const pagination = buildPaginationElement(pageNumber, userAssociations.totalPages, urlPrefix, "");
+            setLangForPagination(pagination, translations);
+            viewData.pagination = pagination;
+        }
+
+        const { rows, acceptIds, declineIds } = await this.getRowsData(userAssociations.items, translations);
+        viewData.rowsData = rows;
+        viewData.acceptIds = acceptIds;
+        viewData.declineIds = declineIds;
+
+        return viewData;
     }
 
     private async getRowsData (userAssociations: Association[], translations: AnyRecord): Promise<Invitations> {
