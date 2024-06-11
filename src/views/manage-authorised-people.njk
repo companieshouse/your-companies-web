@@ -11,7 +11,17 @@
 {% extends "layouts/default.njk" %}
 
 {% set company_association = companyAssociations.items | first %}
-{% set title = company_association.companyName + " (" + company_association.companyNumber + ") " + lang.title_manage_authorised_people %}  
+{% if authorisedPersonSuccess %}
+    {% set title_middle_part = lang.title_email_sent %}
+{% elif removedPerson %}
+    {% set title_middle_part = lang.title_authorisation_removed %}
+{% elif cancelledPerson %}
+    {% set title_middle_part = lang.title_authorisation_cancelled %}
+{% elif showEmailResentSuccess %}
+    {% set title_middle_part = lang.title_email_resent %}
+{% endif %}
+{% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_manage_authorised_people_finish if title_middle_part else 
+    lang.title_manage_authorised_people %}
 
 {% block back_link %}
 
@@ -21,7 +31,7 @@
                 "data-event-id": "back-link-to-your-companies-page-event"
             } }) }}
     </div>
-    
+
 {% endblock %}
 
 {% block main_content %}
@@ -122,11 +132,12 @@
     {% for association in companyAssociations.items %}
         {% set row = [] %}
         {% set row = (row.push({text: association.userEmail}), row) %}
-        {% set defaultDisplayName = lang.not_provided 
-        if association.displayName 
-        and association.displayName === notProvided 
+        {% set defaultDisplayName = lang.not_provided
+        if association.displayName
+        and association.displayName === notProvided
         and association.status === confirmed
-        else "" %}        
+        else 
+            "" %}
         {% set row = (row.push({
             text: providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)
         }), row) %}
