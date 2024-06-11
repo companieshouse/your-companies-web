@@ -146,7 +146,11 @@ export const getInvitations = async (req: Request, pageIndex?: number, itemsPerP
         const errorMessage = `GET /associations/invitations: ${sdkResponse.httpStatusCode}`;
         return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
-
+    if (!sdkResponse.resource) {
+        const errMsg = `Invitations API returned sdkResponse but no resource`;
+        logger.error(errMsg);
+        return Promise.reject(new Error(errMsg));
+    }
     logger.debug(`GET /associations/invitations: 200 OK`);
     logger.debug(`Received invitations ${JSON.stringify(sdkResponse)}`);
 
