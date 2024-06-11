@@ -7,10 +7,10 @@
 
 {% set user_details = userName if userName else 
     userEmail %}
-{% set title = lang.remove + user_details + lang.authorisation_to_file_online + lang.title_end %}
+{% set title = lang.title_remove_authorised_person %}
 
 {% block back_link %}
-    {% include "partials/back_link.njk" %}  
+    {% include "partials/back_link.njk" %}
 {% endblock %}
 
 {% set message = null %}
@@ -20,7 +20,7 @@
         {% set message = {
             text: lang[value.text]
         } %}
-        {% set title = lang.title_error + title %}
+        {% set title = lang.title_error + lang.title_remove_authorised_person %}
     {% endif %}
 {% endfor %}
 
