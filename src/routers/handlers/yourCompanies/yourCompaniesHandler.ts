@@ -74,6 +74,8 @@ export class YourCompaniesHandler extends GenericHandler {
             setLangForPagination(pagination, lang);
 
             this.viewData.pagination = pagination;
+            this.viewData.pageNumber = pageNumber;
+            this.viewData.numberOfPages = confirmedUserAssociations.totalPages;
         }
 
         return Promise.resolve(this.viewData);
