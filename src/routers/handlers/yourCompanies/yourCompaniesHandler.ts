@@ -39,8 +39,6 @@ export class YourCompaniesHandler extends GenericHandler {
         }
 
         const invites: InvitationList = await getInvitations(req);
-        // why are awaitingApprovalUserAssociations being saved to session?
-        setExtraData(req.session, constants.USER_ASSOCIATIONS, invites);
 
         deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
         deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);

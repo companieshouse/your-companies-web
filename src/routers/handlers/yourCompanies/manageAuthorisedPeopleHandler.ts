@@ -27,8 +27,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
-        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber);
-
+        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
             pageNumber = 1;
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
