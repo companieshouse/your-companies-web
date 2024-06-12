@@ -4,7 +4,7 @@ import { postInvitation } from "../../../src/services/associationsService";
 import { Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { mockRequest } from "../../mocks/request.mock";
-import createError, { BadRequest } from "http-errors";
+import { BadRequest } from "http-errors";
 
 jest.mock("../../../src/services/apiClientService");
 

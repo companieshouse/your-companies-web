@@ -31,7 +31,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
 
         if (!validatePageNumber(pageNumber, userInvites.totalPages)) {
             pageNumber = 1;
-            userInvites = await getInvitations(req, pageNumber - 1, undefined);
+            userInvites = await getInvitations(req, pageNumber - 1);
         }
         const invitesWithCompanyDetail:InvitationWithCompanyDetail[] = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
 
