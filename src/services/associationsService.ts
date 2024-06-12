@@ -168,7 +168,8 @@ export const postInvitation = async (req: Request, companyNumber: string, invite
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
-        const errorMessage = `${sdkResponse.httpStatusCode} - POST /associations/invitations`;
+        const errorMessage = `${sdkResponse.httpStatusCode} - POST /associations/invitations - `;
+        logger.debug(errorMessage + stringifyApiErrors(sdkResponse));
         return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
 

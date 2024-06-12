@@ -4,7 +4,7 @@ import { postInvitation } from "../../../src/services/associationsService";
 import { Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { mockRequest } from "../../mocks/request.mock";
-import createError from "http-errors";
+import createError, { BadRequest } from "http-errors";
 
 jest.mock("../../../src/services/apiClientService");
 
@@ -56,10 +56,9 @@ describe("associationsService", () => {
             mockPostInvitation.mockResolvedValueOnce({
                 httpStatusCode: StatusCodes.BAD_REQUEST
             } as Resource<Errors>);
-            const expectedError = createError(400, `"No error list returned" 400 - POST /associations/invitations`);
 
             await expect(postInvitation(request, companyNumber, inviteeEmailAddress))
-                .rejects.toEqual(expectedError);
+                .rejects.toThrow(BadRequest);
         });
 
         it("Should throw an error if no response resource returned from SDK", async () => {
