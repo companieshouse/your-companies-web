@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
-import { getExtraData, getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import { isRemovingThemselves } from "../../lib/utils/removeThemselves";
 import { Removal } from "../../types/removal";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../services/associationsService";
 import { Associations } from "private-api-sdk-node/dist/services/associations/types";
@@ -47,5 +48,3 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
         return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, removal.companyNumber));
     }
 };
-
-const isRemovingThemselves = (session: Session, removalEmail:string):boolean => removalEmail === getLoggedInUserEmail(session);
