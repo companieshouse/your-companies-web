@@ -20,8 +20,17 @@
 {% elif showEmailResentSuccess %}
     {% set title_middle_part = lang.title_email_resent %}
 {% endif %}
-{% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_manage_authorised_people_finish if title_middle_part else 
-    lang.title_manage_authorised_people %}
+{% if pagination and pagination.items | length %}
+    {% if title_middle_part %}
+        {% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
+    {% else %}
+        {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
+    {% endif %}
+{% elif title_middle_part and not pagination %}
+    {% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_manage_authorised_people_finish %}
+{% else %}
+    {% set title = lang.title_manage_authorised_people %}
+{% endif %}
 
 {% block back_link %}
 
