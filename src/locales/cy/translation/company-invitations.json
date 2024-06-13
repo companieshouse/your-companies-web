@@ -1,5 +1,8 @@
 {
-    "title":"[CY] Invitations to be digitally authorised - Find and update company information - GOV.UK",
+    "title_company_invitations":"[CY] Invitations to be digitally authorised - Find and update company information - GOV.UK",
+    "title_company_invitations_start":"[CY] Invitations to be digitally authorised (page ",
+    "title_company_invitations_middle":" of ",
+    "title_company_invitations_finish":"[CY] ) - Find and update company information - GOV.UK",
     "h1":"[CY] Invitations to be digitally authorised",
     "company_name": "[CY] Company name",
     "company_number": "[CY] Company number",

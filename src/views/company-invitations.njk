@@ -5,6 +5,9 @@
 
 {% extends "layouts/default.njk" %}
 
+{% set title = lang.title_company_invitations_start + pageNumber + lang.title_company_invitations_middle + numberOfPages + lang.title_company_invitations_finish if pagination and pagination.items | length else 
+    lang.title_company_invitations %}
+
 {% block back_link %}
     {% include "partials/back_link.njk" %}
 {% endblock %}
