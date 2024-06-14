@@ -12,5 +12,6 @@
     "is_appointed_as_an_officer": " [CY] is appointed as an officer of the company, such as director or secretary, removing their digital authorisation to file does not remove their appointment.",
     "i_confirm_that_i_have_read": "[CY] I confirm that I have read and understood this information.",
     "remove_authorisation": "[CY] Remove authorisation",
-    "select_if_you_confirm_that_you_have_read": "[CY] Select if you confirm that you have read and understood this information"
+    "select_if_you_confirm_that_you_have_read": "[CY] Select if you confirm that you have read and understood this information",
+    "title": "[CY] Remove authorisation to file online for this company - Find and update company information - GOV.UK"
 }

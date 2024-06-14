@@ -1,8 +1,9 @@
 {% extends "layouts/default.njk" %}
-{% set title = lang.title_your_companies %}
+{% set title = lang.your_companies_page_start + pageNumber + lang.your_companies_page_middle + numberOfPages + lang.your_companies_page_finish if pagination and pagination.items | length else 
+    lang.title_your_companies %}
 {% for key, value in errors %}
     {% if key == "search" %}
-        {% set title = lang.title_error + lang.title_your_companies %}
+        {% set title = lang.title_error + title %}
     {% endif %}
 {% endfor %}
 

@@ -63,6 +63,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;
+            this.viewData.pageNumber = pageNumber;
+            this.viewData.numberOfPages = companyAssociations.totalPages;
         }
 
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);

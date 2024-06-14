@@ -40,6 +40,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
             const pagination = buildPaginationElement(pageNumber, userInvites.totalPages, urlPrefix, "");
             setLangForPagination(pagination, translations);
             viewData.pagination = pagination;
+            viewData.pageNumber = pageNumber;
+            viewData.numberOfPages = userAssociations.totalPages;
         }
 
         const { rows, acceptIds, declineIds } = await this.getRowsData(invitesWithCompanyDetail, translations);
