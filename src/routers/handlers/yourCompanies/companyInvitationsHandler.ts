@@ -33,7 +33,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
             pageNumber = 1;
             userInvites = await getInvitations(req, pageNumber - 1);
         }
-        const invitesWithCompanyDetail:InvitationWithCompanyDetail[] = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
+        const invitesWithCompanyDetail: InvitationWithCompanyDetail[] = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
 
         if (userInvites.totalPages > 1) {
             const urlPrefix = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
@@ -41,7 +41,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
             setLangForPagination(pagination, translations);
             viewData.pagination = pagination;
             viewData.pageNumber = pageNumber;
-            viewData.numberOfPages = userAssociations.totalPages;
+            viewData.numberOfPages = userInvites.totalPages;
         }
 
         const { rows, acceptIds, declineIds } = await this.getRowsData(invitesWithCompanyDetail, translations);
@@ -52,7 +52,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
         return viewData;
     }
 
-    private async getRowsData (invites:InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
+    private async getRowsData (invites: InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
         const acceptIds = new Set<string>();
         const declineIds = new Set<string>();
         const rows: ({ text: string } | { html: string })[][] = [];
@@ -87,7 +87,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
         return `<a href="${path}" id="${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}">${text}</a>`;
     }
 
-    private async addCompanyInfoToInvites (req: Request, invites:Invitation[]):Promise<InvitationWithCompanyDetail[]|undefined> {
+    private async addCompanyInfoToInvites (req: Request, invites: Invitation[]): Promise<InvitationWithCompanyDetail[] | undefined> {
         const userAssociations: AssociationList = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
         if (invites.length) {
             return invites.map(invite => {
