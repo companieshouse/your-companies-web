@@ -14,6 +14,7 @@ import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 import { when } from "jest-when";
+import { Association } from "private-api-sdk-node/dist/services/associations/types";
 
 const router = supertest(app);
 
@@ -65,7 +66,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             companyNumber: companyAssociations.items[0].companyNumber
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
-        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        expectedCompanyAssociations.items = companyAssociations.items.filter((item: Association) => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
@@ -102,7 +103,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             companyNumber: companyAssociations.items[0].companyNumber
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
-        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        expectedCompanyAssociations.items = companyAssociations.items.filter((item: Association) => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);
@@ -139,7 +140,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             companyNumber: companyAssociations.items[0].companyNumber
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
-        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        expectedCompanyAssociations.items = companyAssociations.items.filter((item: Association) => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
@@ -176,7 +177,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             companyNumber: companyAssociations.items[0].companyNumber
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
-        expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== cancellation.userEmail);
+        expectedCompanyAssociations.items = companyAssociations.items.filter((item: Association) => item.userEmail !== cancellation.userEmail);
         getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);

@@ -3,7 +3,7 @@ import * as constants from "../../constants";
 import { getExtraData, getLoggedInUserEmail, setExtraData } from "../../lib/utils/sessionUtils";
 import { Removal } from "../../types/removal";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../services/associationsService";
-import { Associations } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import logger from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import { CompanyNameAndNumber } from "../../types/util-types";
@@ -21,7 +21,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
     const companyNumber: string = req.params[constants.COMPANY_NUMBER];
     const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
 
-    const companyAssociations: Associations = await getCompanyAssociations(req, companyNumber);
+    const companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber);
 
     const associationToBeRemoved = companyAssociations.items.find(assoc => assoc.userEmail === removal.userEmail);
 
