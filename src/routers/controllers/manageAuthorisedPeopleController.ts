@@ -22,7 +22,7 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
             ...viewData
         });
     } catch (error) {
-        res.redirect(constants.LANDING_URL);
+        return res.redirect(constants.LANDING_URL);
     }
 
 };
