@@ -6,18 +6,23 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/ses
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response): Promise<void> => {
 
     const handler = new ManageAuthorisedPeopleHandler();
-    const viewData = await handler.execute(req);
-    const managedAuthorisedPeopleIndicator = true;
+    try {
+        const viewData = await handler.execute(req);
+        const managedAuthorisedPeopleIndicator = true;
 
-    if (getExtraData(req.session, constants.CANCEL_URL_EXTRA)) {
-        deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
-    }
-    if (getExtraData(req.session, constants.REMOVE_URL_EXTRA)) {
-        deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
-    }
-    setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, managedAuthorisedPeopleIndicator);
+        if (getExtraData(req.session, constants.CANCEL_URL_EXTRA)) {
+            deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
+        }
+        if (getExtraData(req.session, constants.REMOVE_URL_EXTRA)) {
+            deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
+        }
+        setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, managedAuthorisedPeopleIndicator);
 
-    res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
-        ...viewData
-    });
+        res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
+            ...viewData
+        });
+    } catch (error) {
+        res.redirect(constants.LANDING_URL);
+    }
+
 };

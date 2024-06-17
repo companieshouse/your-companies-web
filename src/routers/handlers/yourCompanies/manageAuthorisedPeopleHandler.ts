@@ -5,13 +5,16 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
 import { Association, AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
-import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
+import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
+import { AssociationState, AssociationStateResponse } from "../../../types/associations";
+import createError from "http-errors";
+import { StatusCodes } from "http-status-codes";
 
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
@@ -24,6 +27,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
+
+        await this.preventUnauthorisedAccess(req, companyNumber);
+
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
@@ -51,9 +57,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
 
         companyAssociations.items = companyAssociations.items.filter(
-            (association:Association) => association.status === AssociationStatus.CONFIRMED ||
-            (association.status === AssociationStatus.AWAITING_APPROVAL &&
-            new Date(association.approvalExpiryAt) > new Date())
+            (association: Association) => association.status === AssociationStatus.CONFIRMED ||
+                (association.status === AssociationStatus.AWAITING_APPROVAL &&
+                    new Date(association.approvalExpiryAt) > new Date())
         );
 
         this.viewData.companyAssociations = companyAssociations;
@@ -72,6 +78,13 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         return Promise.resolve(this.viewData);
+    }
+
+    private async preventUnauthorisedAccess (req: Request, companyNumber: string) {
+        const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
+        if (isAssociated.state !== AssociationState.COMPNANY_ASSOCIATED_WITH_USER) {
+            return Promise.reject(createError(StatusCodes.FORBIDDEN));
+        }
     }
 
     private getViewData (companyNumber: string, lang: AnyRecord): ViewData {
