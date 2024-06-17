@@ -16,8 +16,7 @@ export const addCompanyJourneyCompanyAuth = (req: Request, res: Response, next: 
 
     const associationStateResponse: AssociationStateResponse = getExtraData(req.session, constants.ASSOCIATION_STATE_RESPONSE);
 
-    if (associationStateResponse.state === AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER ||
-        associationStateResponse.state === AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER) {
+    if (associationStateResponse.state === AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER) {
         logger.debug(`skipping company auth, assocation ${companyNumber}, ${associationStateResponse.state} exits`);
         return next();
     }

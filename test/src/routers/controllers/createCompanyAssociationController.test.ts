@@ -43,6 +43,7 @@ describe("create company association controller tests", () => {
         await router.get(url);
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
         expect(mockCreateCompanyAssociation).toHaveBeenCalled();
     });
