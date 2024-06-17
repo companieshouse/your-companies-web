@@ -30,7 +30,6 @@ import { removedThemselvesConfirmationControllerGet } from "./controllers/remove
 import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
 import { removedThemselvesNavigation } from "../middleware/navigation/personRemovedThemselves.middleware";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
-import { addCompanyJourneyCompanyAuth } from "../middleware/companyAuthentication/add.company.journey.company.authentication";
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 
 const router: Router = Router();
@@ -59,7 +58,7 @@ router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthentic
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyNavigation, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
-router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, addCompanyJourneyCompanyAuth, createCompanyAssociationControllerGet as RequestHandler);
+router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, companyAuthenticationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedNavigation, companyAddedControllerGet as RequestHandler);
 
 router.get(constants.ADD_PRESENTER_URL, addPresenterNavigation, addPresenterControllerGet as RequestHandler);
