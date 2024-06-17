@@ -17,7 +17,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     return next();
 });
 
-const mockCreateAssociation = jest.spyOn(associationsService, "createAssociation");
+const mockPostInvitation = jest.spyOn(associationsService, "postInvitation");
 
 const router = supertest(app);
 const url = "/your-companies/add-presenter-check-details/12345678";
@@ -88,7 +88,7 @@ describe(`POST ${url}`, () => {
         const email = "bruce@bruce.com";
         session.data.extra_data.authorisedPersonEmail = email;
         const associationId = "12345678";
-        mockCreateAssociation.mockResolvedValue(associationId);
+        mockPostInvitation.mockResolvedValue(associationId);
         // When
         const response = await router.post(url);
         // Then

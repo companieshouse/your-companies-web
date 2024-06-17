@@ -1,10 +1,11 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createOauthPrivateApiClient } from "../../../src/services/apiClientService";
 import { getUserAssociations } from "../../../src/services/associationsService";
-import { Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { userAssociations } from "../../mocks/associations.mock";
 import { Request } from "express";
+import { HttpError } from "http-errors";
 jest.mock("../../../src/services/apiClientService");
 
 const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
@@ -28,7 +29,7 @@ describe("associationsService", () => {
         it("should return associations", async () => {
             // Given
             const status: AssociationStatus[] = [AssociationStatus.CONFIRMED];
-            const sdkResource: Resource<Associations> = {
+            const sdkResource: Resource<AssociationList> = {
                 httpStatusCode: StatusCodes.OK,
                 resource: userAssociations
             };
@@ -50,17 +51,17 @@ describe("associationsService", () => {
             const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
             mockSearchAssociations.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
-            } as Resource<Associations>);
+            } as Resource<AssociationList>);
 
             await expect(getUserAssociations(reqest, []))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.BAD_REQUEST });
+                .rejects.toThrow(HttpError);
         });
 
         it("Should throw an error if no response resource returned from SDK", async () => {
             const HTTP_STATUS_CODE = StatusCodes.OK;
             mockSearchAssociations.mockResolvedValueOnce({
                 httpStatusCode: HTTP_STATUS_CODE
-            } as Resource<Associations>);
+            } as Resource<AssociationList>);
 
             await expect(getUserAssociations(reqest, []))
                 .rejects.toEqual({ httpStatusCode: StatusCodes.OK });

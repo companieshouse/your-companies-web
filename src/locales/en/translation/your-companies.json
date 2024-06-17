@@ -24,5 +24,8 @@
     "no_results_that_match": "There are no results that match your search.",
     "company_number_must_only_include": "Company number must only include numbers and capital letters",
     "enter_a_company_number_or_part": "Enter a company number, or part of a company number",
-    "cancel_search": "Cancel search"
+    "cancel_search": "Cancel search",
+    "your_companies_page_start": "Your companies (page ",
+    "your_companies_page_middle": " of ",
+    "your_companies_page_finish": ") - Find and update company information - GOV.UK"
 }

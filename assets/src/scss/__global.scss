@@ -1,22 +1,16 @@
 $govuk-global-styles: true;
 
+@function custom-url-handler($filename) {
+    @return url("/fonts/#{$filename}");
+  }
+
+$govuk-font-url-function: 'custom-url-handler';
+
 @import "node_modules/govuk-frontend/govuk/all";
 @import "./govuk-language-select";
 
 * {
   font-family: "GDS Transport", Arial, sans-serif;
-}
-
-@font-face {
-    font-family: "GDS Transport";
-    font-weight: bold;
-    src: url("../fonts/bold-b542beb274-v2.woff2") format("woff2");
-}
-
-@font-face {
-    font-family: "GDS Transport";
-    font-weight: normal;
-    src: url("../fonts/light-94a07e06a1-v2.woff2") format("woff2");
 }
 
 .border-box {

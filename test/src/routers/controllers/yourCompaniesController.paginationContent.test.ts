@@ -2,7 +2,7 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { getUserAssociations } from "../../../../src/services/associationsService";
+import { getInvitations, getUserAssociations } from "../../../../src/services/associationsService";
 import { emptyAssociations, oneConfirmedAssociation, twentyConfirmedAssociations } from "../../../mocks/associations.mock";
 import * as en from "../../../../src/locales/en/translation/your-companies.json";
 import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
@@ -13,6 +13,7 @@ jest.mock("../../../../src/services/associationsService");
 const router = supertest(app);
 
 const mockGetUserAssociations = getUserAssociations as jest.Mock;
+const mockGetInvitations = getInvitations as jest.Mock;
 
 describe("GET /your-companies", () => {
 
@@ -31,6 +32,7 @@ describe("GET /your-companies", () => {
     it("should return pagination if more than 15 companies returned", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        mockGetInvitations.mockResolvedValue(oneConfirmedAssociation);
         // When
         const response = await router.get("/your-companies");
         // Then
@@ -41,6 +43,8 @@ describe("GET /your-companies", () => {
     it("should return pagination in Welsh if more than 15 companies returned", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        mockGetInvitations.mockResolvedValue(oneConfirmedAssociation);
+
         // When
         const response = await router.get("/your-companies?lang=cy");
         // Then
@@ -51,6 +55,8 @@ describe("GET /your-companies", () => {
     it("should return selected page", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        mockGetInvitations.mockResolvedValue(oneConfirmedAssociation);
+
         // When
         const response = await router.get("/your-companies?page=2");
         // Then
@@ -62,6 +68,7 @@ describe("GET /your-companies", () => {
     it("should ignore incorrect page numbers", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        mockGetInvitations.mockResolvedValue(twentyConfirmedAssociations);
         // When
         const response = await router.get("/your-companies?page=abc");
         // Then
@@ -74,6 +81,7 @@ describe("GET /your-companies", () => {
     it("should display company when company number provided and match is found", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(oneConfirmedAssociation);
+        mockGetInvitations.mockResolvedValue(oneConfirmedAssociation);
         // When
         const response = await router.get("/your-companies?search=NI03837");
         // Then
@@ -87,6 +95,7 @@ describe("GET /your-companies", () => {
     it("should display no matches when no matches found", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(emptyAssociations);
+        mockGetInvitations.mockResolvedValue(oneConfirmedAssociation);
         // When
         const response = await router.get("/your-companies?search=ABCDEF");
         // Then
@@ -107,6 +116,7 @@ describe("GET /your-companies", () => {
     it("shoud display Welsh error message and default table of associations if search value not following company number format and language set to Welsh", async () => {
         // Give
         mockGetUserAssociations.mockResolvedValue(twentyConfirmedAssociations);
+        mockGetInvitations.mockResolvedValue(twentyConfirmedAssociations);
         // When
         const response = await router.get("/your-companies?lang=cy&search=kskksksk");
         // Then

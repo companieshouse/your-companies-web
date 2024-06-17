@@ -5,7 +5,7 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
-import { createAssociation } from "../../../services/associationsService";
+import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "types/associations";
 
 export class CheckPresenterHandler extends GenericHandler {
@@ -17,7 +17,7 @@ export class CheckPresenterHandler extends GenericHandler {
         this.viewData = await this.getViewData(req, companyNumber, companyName, emailAddress);
         if (method === constants.POST) {
             try {
-                await createAssociation(req, companyNumber, emailAddress);
+                await postInvitation(req, companyNumber, emailAddress);
                 const authorisedPerson: AuthorisedPerson = {
                     authorisedPersonEmailAddress: emailAddress,
                     authorisedPersonCompanyName: companyName

@@ -1,5 +1,11 @@
 import mocks from "../../../mocks/all.middleware.mock";
-import { associationsWithInvitations, fifteenAssociationsAwaitingApproval, userAssociations, userAssociationsWithEmptyInvitations } from "../../../mocks/associations.mock";
+import {
+    associationsWithoutInvitations,
+    userAssociations,
+    userAssociationsWithEmptyInvitations,
+    fifteenAssociationsAwaitingApproval
+} from "../../../mocks/associations.mock";
+import { mockInvitationList, getMockInvitationList, getPaginatedMockInvitationList, fifteenMockInvitations } from "../../../mocks/invitations.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations.json";
@@ -7,16 +13,18 @@ import * as cy from "../../../../src/locales/cy/translation/company-invitations.
 import * as commonEn from "../../../../src/locales/en/translation/common.json";
 import * as commonCy from "../../../../src/locales/cy/translation/common.json";
 import * as associationsService from "../../../../src/services/associationsService";
-import { AssociationStatus, Associations } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations";
 const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+const invitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
 
 describe(`GET ${url}`, () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        userAssociationsSpy.mockReturnValue(associationsWithInvitations);
+        userAssociationsSpy.mockReturnValue(associationsWithoutInvitations);
+        invitationsSpy.mockReturnValue(mockInvitationList);
     });
 
     it("should check session, company and user auth before returning the page", async () => {
@@ -57,8 +65,8 @@ describe(`GET ${url}`, () => {
 
     it("should return only expected company number, name and email address of a person who sent the invitation", async () => {
         // Given
-        const associations = { ...associationsWithInvitations };
-        associations.items = associationsWithInvitations.items.filter(association => association.status === AssociationStatus.AWAITING_APPROVAL);
+        const associations = { ...associationsWithoutInvitations };
+        associations.items = associationsWithoutInvitations.items.filter(association => association.status === AssociationStatus.AWAITING_APPROVAL);
         userAssociationsSpy.mockReturnValue(associations);
         const expectedEmail = "another.email@acme.com";
         const expectedCompanyNumber = "08449801";
@@ -82,6 +90,7 @@ describe(`GET ${url}`, () => {
     it("should return an expected text if no invitation awaiting approval exists and language set to English", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(userAssociations);
+        invitationsSpy.mockResolvedValue(getMockInvitationList([]));
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
@@ -107,6 +116,7 @@ describe(`GET ${url}`, () => {
     it("should return an expected text if no invitation awaiting approval exists and language set to Welsh", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(userAssociations);
+        invitationsSpy.mockResolvedValue(getMockInvitationList([]));
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
@@ -131,7 +141,8 @@ describe(`GET ${url}`, () => {
 
     it("should return an expected text if no invitation provided", async () => {
         // Given
-        userAssociationsSpy.mockResolvedValue({} as Associations);
+        userAssociationsSpy.mockResolvedValue({} as AssociationList);
+        invitationsSpy.mockResolvedValue(getMockInvitationList([]));
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
@@ -157,6 +168,7 @@ describe(`GET ${url}`, () => {
     it("should return an expected text if invitation empty", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(userAssociationsWithEmptyInvitations);
+        invitationsSpy.mockResolvedValue(getMockInvitationList([]));
         const expectedNotContainEmail = "another.email@acme.com";
         const expectedNotContainCompanyNumber1 = "NI038379";
         const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
@@ -182,6 +194,7 @@ describe(`GET ${url}`, () => {
     it("should return invitation page with pagination in English if number of invitations is greater than 15 and language set to English", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
+        invitationsSpy.mockReturnValue(getPaginatedMockInvitationList(fifteenMockInvitations));
 
         // When
         const response = await router.get(`${url}?lang=en`);
@@ -193,7 +206,7 @@ describe(`GET ${url}`, () => {
     it("should return invitation page with pagination in Welsh if number of invitations is greater than 15 and language set to Welsh", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
-
+        invitationsSpy.mockReturnValue(getPaginatedMockInvitationList(fifteenMockInvitations));
         // When
         const response = await router.get(`${url}?lang=cy`);
 
@@ -204,7 +217,7 @@ describe(`GET ${url}`, () => {
     it("should return first invitation page with pagination if number of invitations is greater than 15 and the page number set wrongly", async () => {
         // Given
         userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
-
+        invitationsSpy.mockReturnValue(getPaginatedMockInvitationList(fifteenMockInvitations));
         // When
         const response = await router.get(`${url}?page=12345`);
 

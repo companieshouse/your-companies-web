@@ -4,13 +4,12 @@ import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
-import { Association, Associations, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { Association, AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { Removal } from "../../../types/removal";
-import { getAssociationsWithValidInvitation } from "../../../lib/helpers/invitationHelper";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
 
@@ -28,8 +27,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
-        let companyAssociations: Associations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
-
+        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
             pageNumber = 1;
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
@@ -52,9 +50,12 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        const confirmedAssociations: Association[] = companyAssociations.items.filter(
-            association => association.status === AssociationStatus.CONFIRMED);
-        companyAssociations.items = [...confirmedAssociations, ...getAssociationsWithValidInvitation(companyAssociations.items)];
+        companyAssociations.items = companyAssociations.items.filter(
+            (association:Association) => association.status === AssociationStatus.CONFIRMED ||
+            (association.status === AssociationStatus.AWAITING_APPROVAL &&
+            new Date(association.approvalExpiryAt) > new Date())
+        );
+
         this.viewData.companyAssociations = companyAssociations;
 
         if (companyAssociations.totalPages > 1) {
@@ -62,6 +63,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;
+            this.viewData.pageNumber = pageNumber;
+            this.viewData.numberOfPages = companyAssociations.totalPages;
         }
 
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
@@ -87,7 +90,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
-    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: Associations) {
+    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: AssociationList) {
         if (cancellation.cancelPerson === constants.YES) {
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
