@@ -15,6 +15,7 @@ import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 import { when } from "jest-when";
 import { Association } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -44,9 +45,12 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {
         jest.clearAllMocks();
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
     });
 
     redirectPageSpy.mockReturnValue(false);

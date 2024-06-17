@@ -8,6 +8,7 @@ import * as en from "../../../../src/locales/en/translation/manage-authorised-pe
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -30,9 +31,12 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {
         jest.clearAllMocks();
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
     });
 
     const resentSuccessEmail = "bob@bob.com";

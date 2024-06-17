@@ -7,6 +7,8 @@ import * as en from "../../../../src/locales/en/translation/manage-authorised-pe
 import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as constants from "../../../../src/constants";
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -28,9 +30,12 @@ const companyNumber = "NI038379";
 describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     const url = `/your-companies/manage-authorised-people/${companyNumber}`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {
         jest.clearAllMocks();
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {
@@ -47,6 +52,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(200);
+    });
+
+    it("should redirect to the langing page if user not authorised to see the page", async () => {
+        // Given
+        const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "" };
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.status).toEqual(302);
+        expect(response.header.location).toEqual(constants.LANDING_URL);
     });
 
     it("should return expected English content if language version set to English", async () => {

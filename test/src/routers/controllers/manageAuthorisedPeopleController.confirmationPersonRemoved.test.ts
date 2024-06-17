@@ -13,6 +13,7 @@ import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import * as constants from "../../../../src/constants";
 import { when } from "jest-when";
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -37,9 +38,12 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {
         jest.clearAllMocks();
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
     });
 
     redirectPageSpy.mockReturnValue(false);
