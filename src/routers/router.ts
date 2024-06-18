@@ -29,6 +29,8 @@ import { removeAuthorisedPersonRequestController } from "./controllers/removeAut
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removeThemselvesConfirmationController";
 import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
 import { removedThemselvesNavigation } from "../middleware/navigation/personRemovedThemselves.middleware";
+import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
+import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 
 const router: Router = Router();
 
@@ -45,18 +47,18 @@ router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, m
 
 router.get(constants.ADD_COMPANY_URL, addCompanyControllerGet as RequestHandler);
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandler);
-router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonNavigation, removeAuthorisedPersonControllerGet as RequestHandler);
-router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonControllerPost as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonNavigation, removeAuthorisedPersonControllerGet as RequestHandler);
+router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerPost as RequestHandler);
 router.get(constants.REMOVE_ASSOCIATION_URL, removeAuthorisedPersonRequestController);
 router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesNavigation, removedThemselvesConfirmationControllerGet as RequestHandler);
 
-router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler);
-router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, cancelPersonControllerPost as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler);
+router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, cancelPersonControllerPost as RequestHandler);
 
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyNavigation, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
-router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, createCompanyAssociationControllerGet as RequestHandler);
+router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, companyAuthenticationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedNavigation, companyAddedControllerGet as RequestHandler);
 
 router.get(constants.ADD_PRESENTER_URL, addPresenterNavigation, addPresenterControllerGet as RequestHandler);

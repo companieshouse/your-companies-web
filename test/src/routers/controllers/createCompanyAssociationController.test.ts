@@ -35,7 +35,7 @@ describe("create company association controller tests", () => {
     it("should check session, auth and company authorisation before creating association", async () => {
         // Given
         mockCreateCompanyAssociation.mockResolvedValueOnce("0123456789");
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber: "01234567", companyName: "Test Inc." };
+        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
         session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
         const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER };
         session.setExtraData(constants.ASSOCIATION_STATE_RESPONSE, associationStateResponse);
@@ -44,13 +44,14 @@ describe("create company association controller tests", () => {
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
         expect(mockCreateCompanyAssociation).toHaveBeenCalled();
     });
 
     it("should redirect to success page after creating company assocation", async () => {
         // Given
         mockCreateCompanyAssociation.mockResolvedValueOnce("0123456789");
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber: "01234567", companyName: "Test Inc." };
+        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
         session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
         const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER };
         session.setExtraData(constants.ASSOCIATION_STATE_RESPONSE, associationStateResponse);
@@ -65,7 +66,7 @@ describe("create company association controller tests", () => {
     it("should redirect to success page after updating company assocation status to confirmed", async () => {
         // Given
         mockUpdateAssociationStatus.mockResolvedValueOnce("0123456789");
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber: "01234567", companyName: "Test Inc." };
+        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
         session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
         const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER, associationId: "0123456789" };
         session.setExtraData(constants.ASSOCIATION_STATE_RESPONSE, associationStateResponse);
@@ -81,7 +82,7 @@ describe("create company association controller tests", () => {
         const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
         const badRequestError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association`);
         mockUpdateAssociationStatus.mockRejectedValueOnce(badRequestError);
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber: "01234567", companyName: "Test Inc." };
+        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
         session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
         const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER, associationId: "0123456789" };
         session.setExtraData(constants.ASSOCIATION_STATE_RESPONSE, associationStateResponse);
