@@ -19,7 +19,8 @@ export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB:
     if (referrer?.endsWith("/")) {
         referrer = referrer.substring(0, referrer.length - 1);
     }
-    if (pageIndicator) {
+
+    if (pageIndicator === true) {
         logger.debug(`pageIndicator is true, redirectPage returning false`);
         return false;
     }

@@ -20,6 +20,7 @@ export const PROPOSED_EMAIL = "proposedEmail";
 export const ASSOCIATION_STATE_RESPONSE = "associationStateResponse";
 export const ASSOCIATION_STATE_CHANGED_FOR = "associationStateChagedFor";
 export const REMOVED_THEMSELVES_FROM_COMPANY = "removedThemselvesFromCompany";
+export const USER_EMAILS_ARRAY = "userEmailsArray";
 
 // query params
 export const CLEAR_FORM = "cf";
