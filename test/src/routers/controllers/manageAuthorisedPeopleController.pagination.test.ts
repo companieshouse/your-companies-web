@@ -5,6 +5,7 @@ import * as associationsService from "../../../../src/services/associationsServi
 import supertest from "supertest";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -26,9 +27,12 @@ const companyNumber = "NI038379";
 describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     const url = `/your-companies/manage-authorised-people/${companyNumber}`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {
         jest.clearAllMocks();
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {

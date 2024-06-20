@@ -4,7 +4,7 @@ import app from "../../../../src/app";
 import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
-import { AuthorisedPerson } from "../../../../src/types/associations";
+import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../../src/types/associations";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../src/constants";
 import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
@@ -30,11 +30,14 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-added`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 
     beforeEach(() => {
         jest.clearAllMocks();
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
     });
 
     redirectPageSpy.mockReturnValue(false);
