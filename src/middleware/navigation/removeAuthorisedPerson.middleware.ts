@@ -25,9 +25,7 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
         checkedReferrer = referrer;
     }
 
-    if (checkedReferrer?.includes("manage-authorised-people") && pageIndicator) {
-        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-    } else if (companyNumber === pageIndicator && userEmails.includes(userEmail)) {
+    if (companyNumber === pageIndicator && userEmails.includes(userEmail)) {
         newPageIndicator = true;
     } else {
         deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
