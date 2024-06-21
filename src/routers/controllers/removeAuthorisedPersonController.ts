@@ -7,6 +7,8 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
     const handler = new RemoveAuthorisedPersonHandler();
     const viewData = await handler.execute(req, constants.GET);
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
+
     res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, {
         ...viewData
     });

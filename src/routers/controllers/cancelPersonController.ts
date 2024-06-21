@@ -7,6 +7,7 @@ export const cancelPersonControllerGet = async (req: Request, res: Response): Pr
     const handler = new CancelPersonHandler();
     const viewData = await handler.execute(req, res, constants.GET);
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
     res.render(constants.CANCEL_PERSON_PAGE, {
         ...viewData

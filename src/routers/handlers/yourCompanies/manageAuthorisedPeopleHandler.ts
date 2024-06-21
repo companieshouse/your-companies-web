@@ -62,6 +62,12 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
                     new Date(association.approvalExpiryAt) > new Date())
         );
 
+        const emailArray = [];
+
+        for (let i = 0; i < companyAssociations.items.length; i++) {
+            emailArray.push(companyAssociations?.items[i]?.userEmail);
+        }
+
         this.viewData.companyAssociations = companyAssociations;
 
         if (companyAssociations.totalPages > 1) {
@@ -77,6 +83,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
+        setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
         return Promise.resolve(this.viewData);
     }
 

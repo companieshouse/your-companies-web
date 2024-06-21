@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
-import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger from "../../lib/Logger";
 
@@ -11,6 +11,7 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
     const companyNumber = req.params[constants.COMPANY_NUMBER];
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     const removePageUrl = (constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL.replace(":companyNumber", companyNumber)).replace(":userEmail", userEmail);
+    const userEmails = getExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
     let checkedReferrer;
     let newPageIndicator;
@@ -24,11 +25,10 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
         checkedReferrer = referrer;
     }
 
-    if (checkedReferrer?.includes("manage-authorised-people") && pageIndicator === true) {
-        newPageIndicator = false;
-    } else if (checkedReferrer === undefined && pageIndicator === true) {
-        newPageIndicator = false;
+    if (companyNumber === pageIndicator && userEmails.includes(userEmail)) {
+        newPageIndicator = true;
     } else {
+        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
         newPageIndicator = pageIndicator;
     }
 

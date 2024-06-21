@@ -11,14 +11,9 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
     let checkedReferrer;
-    let newPageIndicator;
 
-    if (pageIndicator === true) {
-        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        newPageIndicator = false;
-    } else {
-        newPageIndicator = false;
-    }
+    deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
     if (referrer && (referrer.includes("confirmation-person-removed") ||
         referrer.includes("confirmation-cancel-person") ||
@@ -30,7 +25,7 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
     }
     logger.debug(`addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(checkedReferrer, hrefA, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber), newPageIndicator, [constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber)])) {
+    if (redirectPage(checkedReferrer, hrefA, constants.ADD_PRESENTER_URL.replace(":companyNumber", companyNumber), pageIndicator, [constants.CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber)])) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
