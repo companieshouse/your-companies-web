@@ -102,7 +102,6 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             };
         } else {
-            setExtraData(req.session, constants.ASSOCIATION_STATE_RESPONSE, isAssociated);
             setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         }
     }

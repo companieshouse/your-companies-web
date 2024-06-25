@@ -17,7 +17,6 @@ export const REMOVE_PERSON = "removePerson";
 export const USER_NAME = "userName";
 export const PROPOSED_COMPANY_NUM = "proposedCompanyNumber";
 export const PROPOSED_EMAIL = "proposedEmail";
-export const ASSOCIATION_STATE_RESPONSE = "associationStateResponse";
 export const ASSOCIATION_STATE_CHANGED_FOR = "associationStateChagedFor";
 export const REMOVED_THEMSELVES_FROM_COMPANY = "removedThemselvesFromCompany";
 export const USER_EMAILS_ARRAY = "userEmailsArray";
