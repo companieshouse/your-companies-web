@@ -6,20 +6,20 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/ses
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response): Promise<void> => {
 
     const handler = new ManageAuthorisedPeopleHandler();
-    try {
-        const viewData = await handler.execute(req);
-        const companyNumber: string = getExtraData(req.session, constants.COMPANY_NUMBER);
-        const managedAuthorisedPeopleIndicator = companyNumber;
+    //   try {
+    const viewData = await handler.execute(req);
+    const companyNumber: string = getExtraData(req.session, constants.COMPANY_NUMBER);
+    const managedAuthorisedPeopleIndicator = companyNumber;
 
-        deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
-        deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
+    deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
+    deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
 
-        setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, managedAuthorisedPeopleIndicator);
+    setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, managedAuthorisedPeopleIndicator);
 
-        res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
-            ...viewData
-        });
-    } catch (error) {
-        return res.redirect(constants.LANDING_URL);
-    }
+    res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
+        ...viewData
+    });
+    //  } catch (error) {
+    //       return res.redirect(constants.LANDING_URL);
+    //   }
 };

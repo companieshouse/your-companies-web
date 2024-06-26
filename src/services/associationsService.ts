@@ -64,9 +64,9 @@ export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumb
     return Promise.resolve({ state: isOrWasAssociated, associationId });
 };
 
-export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean, pageIndex?: number): Promise<AssociationList> => {
+export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean, pageIndex?: number, itemsPerPage?: number): Promise<AssociationList> => {
     const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, pageIndex, undefined, userEmail);
+    const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, pageIndex, itemsPerPage, userEmail);
 
     if (!sdkResponse) {
         logger.error(`Associations API for a company with company number ${companyNumber}`);
@@ -84,6 +84,8 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
     }
 
     logger.debug(`Received associations for a company with company number ${companyNumber}`);
+    logger.debug(`GET company associations: 200 OK`);
+    logger.debug(`Received associations ${JSON.stringify(sdkResponse)}`);
 
     return Promise.resolve(sdkResponse.resource as AssociationList);
 };
@@ -123,6 +125,8 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
+        logger.debug(`Bad response from updateAssociationStatus - ${JSON.stringify(sdkResponse)}`);
+
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
         return Promise.reject(createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`));
     }
@@ -188,6 +192,7 @@ export const postInvitation = async (req: Request, companyNumber: string, invite
 
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {
     if (associationId) {
+        console.log("we have an id it is ", associationId);
         await updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
         return Promise.resolve(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
     } else {

@@ -5,7 +5,8 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
 import { Association, AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
-import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
+// import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
+import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, updateAssociationStatus } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
 import { AnyRecord, ViewData } from "../../../types/util-types";
@@ -39,14 +40,14 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        try {
-            if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
-                deleteExtraData(req.session, constants.REMOVE_PERSON);
-                await this.handleCancellation(req, cancellation, companyAssociations);
-            }
-        } catch (error) {
-            logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
+        // try {
+        if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
+            deleteExtraData(req.session, constants.REMOVE_PERSON);
+            await this.handleCancellation(req, cancellation, companyNumber);
         }
+        // } catch (error) {
+        //     logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
+        // }
 
         this.handleRemoveConfirmation(req);
         this.handleConfirmationPersonAdded(req);
@@ -110,12 +111,15 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
-    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: AssociationList) {
+    private async handleCancellation (req: Request, cancellation: Cancellation, companyNumber:string) {
         if (cancellation.cancelPerson === constants.YES) {
+            const companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, undefined, 100000);
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
             )?.id as string;
+            console.log("the id of the assocation to cancel is ", associationId);
             if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
+                console.log("user was not removed, calling remove now - ");
                 this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
             this.viewData.cancelledPerson = cancellation.userEmail;
@@ -132,14 +136,16 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     }
 
     private isUserRemovedFromCompanyAssociations (req: Request): boolean {
+        console.log("user removed is ", getExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS));
         return getExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS) === constants.TRUE;
     }
 
     private async callRemoveUserFromCompanyAssociations (req: Request, associationId: string) {
-        const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(req, associationId)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
-        if (isUserRemovedFromCompanyAssociations) {
-            setExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, constants.TRUE);
-        }
+        // const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(req, associationId)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
+        await updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);
+        // if (isUserRemovedFromCompanyAssociations) {
+        setExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS, constants.TRUE);
+        //  }
     }
 
     private handleResentSuccessEmail (req: Request) {
