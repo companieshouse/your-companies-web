@@ -117,7 +117,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
             )?.id as string;
             if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
-                this.callRemoveUserFromCompanyAssociations(req, associationId);
+                await this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
             this.viewData.cancelledPerson = cancellation.userEmail;
         }
