@@ -11,6 +11,12 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
     const removePageUrl = getExtraData(req.session, constants.REMOVE_URL_EXTRA);
     const manageAuthUrl = constants.MANAGE_AUTHORISED_PEOPLE_URL.replace(":companyNumber", companyNumber);
 
+    const allowedEmailResentUrls: string[] = [
+        constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(":companyNumber", companyNumber),
+        constants.CONFIRMATION_PERSON_REMOVED_URL,
+        constants.CONFIRMATION_CANCEL_PERSON_URL
+    ];
+
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
@@ -30,7 +36,8 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
         deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
     } else if (req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL) &&
-        redirectPage(referrer, manageAuthUrl, constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL.replace(":companyNumber", companyNumber), pageIndicator)) {
+
+    redirectPage(referrer, manageAuthUrl, constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL.replace(":companyNumber", companyNumber), pageIndicator, allowedEmailResentUrls)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
