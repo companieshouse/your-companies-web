@@ -80,6 +80,6 @@ describe("removeAuthorisedPersonRequestController", () => {
 
         await expect(removeAuthorisedPersonRequestController(request, response))
             .rejects
-            .toThrow("validation for removal of assocation failed");
+            .toThrow("validation for removal of association failed");
     });
 });

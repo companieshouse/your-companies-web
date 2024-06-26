@@ -71,7 +71,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
         expectedCompanyAssociations.items = companyAssociations.items.filter((item: Association) => item.userEmail !== cancellation.userEmail);
-        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
+        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
@@ -108,7 +108,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         };
         const expectedCompanyAssociations = Object.assign({}, companyAssociations);
         expectedCompanyAssociations.items = companyAssociations.items.filter((item: Association) => item.userEmail !== cancellation.userEmail);
-        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
+        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);

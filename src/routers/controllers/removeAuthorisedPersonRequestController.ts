@@ -22,12 +22,12 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
     const companyNumber: string = req.params[constants.COMPANY_NUMBER];
     const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
 
-    const companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber);
+    const companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, undefined, 100000);
 
     const associationToBeRemoved = companyAssociations.items.find(assoc => assoc.userEmail === removal.userEmail);
 
     if (!associationToBeRemoved || !validateRemoveAssociation(removal, companyNumber)) {
-        throw new Error("validation for removal of assocation failed");
+        throw new Error("validation for removal of association failed");
     }
 
     logger.info(`Request to remove association ${associationToBeRemoved.id}, ${associationToBeRemoved.companyNumber}`);
