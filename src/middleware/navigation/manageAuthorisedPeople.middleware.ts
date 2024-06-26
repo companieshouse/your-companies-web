@@ -30,7 +30,7 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
         deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
     } else if (req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL) &&
-        redirectPage(referrer, manageAuthUrl, constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, pageIndicator)) {
+        redirectPage(referrer, manageAuthUrl, constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL.replace(":companyNumber", companyNumber), pageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
