@@ -42,7 +42,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         try {
             if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
                 deleteExtraData(req.session, constants.REMOVE_PERSON);
-                await this.handleCancellation(req, cancellation, companyAssociations);
+                await this.handleCancellation(req, cancellation, companyNumber);
             }
         } catch (error) {
             logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
@@ -110,13 +110,14 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
-    private async handleCancellation (req: Request, cancellation: Cancellation, companyAssociations: AssociationList) {
+    private async handleCancellation (req: Request, cancellation: Cancellation, companyNumber:string) {
         if (cancellation.cancelPerson === constants.YES) {
+            const companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, undefined, 100000);
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
             )?.id as string;
             if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
-                this.callRemoveUserFromCompanyAssociations(req, associationId);
+                await this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
             this.viewData.cancelledPerson = cancellation.userEmail;
         }
