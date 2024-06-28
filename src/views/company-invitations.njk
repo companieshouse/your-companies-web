@@ -68,7 +68,7 @@
             location.reload();
         });
 
-        trackEvent("back-link-to-previous-page", "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
+        trackEvent("back-link-to-previous-page", "{{title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
 
         let acceptIdText = "{{ acceptIds }}";
         let declineIdText = "{{ declineIds }}";
@@ -79,15 +79,13 @@
 
             for (let i in acceptIdArray) {
                 let subVarI = acceptIdArray[i]
-                trackEvent(subVarI, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
+                trackEvent(subVarI, "{{title}}", "{{matomoLinkClick}}", "{{matomoAcceptAuthorisedUserInvitationLink}}");
             }
 
             for (let j in declineIdArray) {
                 let subVarJ = declineIdArray[j]
-                trackEvent(subVarJ, "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
+                trackEvent(subVarJ, "{{title}}", "{{matomoLinkClick}}", "{{matomoDeclineAuthorisedUserInvitationLink}}");
             }
-
-            trackEvent("back-link-to-previous-page", "{{lang.title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
         }
     </script>
 
