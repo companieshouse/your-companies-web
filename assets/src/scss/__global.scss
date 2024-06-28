@@ -46,6 +46,10 @@ $govuk-font-url-function: 'custom-url-handler';
     }
 }
 
+#footer ul li {
+    margin-bottom: 10px;
+}
+
 /* styling from https://github.com/companieshouse/find-update-company-info-prototype/blob/main/app/assets/sass/custom.scss */
 
 .grid-row:after, fieldset:after, .form-section:after, .form-group:after, .form-block:after, .notice:after, #content:after, .panel:after, #global-nav .inner:after, .navigation-list:after, .pager ul:after, ol.breadcrumb:after, ul.pager:after, .section-tabs:after {
@@ -84,7 +88,7 @@ $govuk-font-url-function: 'custom-url-handler';
   padding: 0.5em 0.5em 0;
   margin: 0 auto 0;
   height: auto;
-  width: auto;
+  width: auto !important;
   max-width: 960px;
   border-bottom: 10px solid #005ea5;
 }
