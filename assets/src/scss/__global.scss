@@ -87,7 +87,7 @@ $govuk-font-url-function: 'custom-url-handler';
   float: right;
 }
 
-#chs-customer-insights {
+#chs-customer-insights, #customer-insights-top-banner {
   background-color: #005ea5;
   padding: 0.5em 0.5em 0;
   margin: 0 auto 0;
@@ -97,15 +97,15 @@ $govuk-font-url-function: 'custom-url-handler';
   border-bottom: 10px solid #005ea5;
 }
 
-#chs-customer-insights a:link, #chs-customer-insights a:visited {
+#chs-customer-insights a:link, #chs-customer-insights a:visited, #customer-insights-top-banner a:link, #customer-insights-top-banner a:visited {
   color: #fff;
 }
 
-#chs-customer-insights a:focus {
+#chs-customer-insights a:focus, #customer-insights-top-banner a:focus {
   color: #0b0c0c;
 }
 
-#chs-customer-insights a:hover {
+#chs-customer-insights a:hover, #customer-insights-top-banner a:hover{
   color: #bfc1c3;
 }
 
