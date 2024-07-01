@@ -52,6 +52,7 @@ export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
 export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
 export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
+export const SERVICE_UNAVAILABLE = "service-unavailable";
 
 // Routing paths
 export const SEPARATOR = "/";
