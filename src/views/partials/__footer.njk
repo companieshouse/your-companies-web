@@ -53,7 +53,7 @@
     window.PIWIK_URL = '{{ piwikUrl }}';
     window.PIWIK_SITE_ID = '{{ piwikSiteId }}';
 </script>
-<script src="{{ cdnHost }}/javascripts/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.js"></script>
+<script type="module" src="{{ cdnUrlJs }}/govuk-frontend.min.js"></script>
 <script src="{{ cdnHost }}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
 <script src="{{ cdnHost }}/javascripts/app/cookie-consent/matomo-only-cookie-consent.js"></script>
 <script src="{{ cdnHost }}/javascripts/vendor/jquery-3.5.1.min.js"></script>
@@ -67,8 +67,7 @@
         });
     });
 </script>
-<script>
-    window
-        .GOVUKFrontend
-        .initAll()
+<script type="module">
+    import {initAll} from "{{ cdnUrlJs }}/govuk-frontend.min.js"
+    initAll()
 </script>

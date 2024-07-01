@@ -8,10 +8,10 @@
 
     <body class="govuk-template__body" >
         <script>
-            document.body.className = (
-                (document.body.className)
-                ? document.body.className + ' js-enabled'
-                : 'js-enabled');
+            document.body.className += ' js-enabled' + (
+                'noModule' in HTMLScriptElement.prototype
+                ? ' govuk-frontend-supported'
+                : '');
         </script>
         {% include "partials/cookie_consent_banner.njk" %}
         <div role="navigation" aria-label="{{lang.skip_to_main_content}}">
