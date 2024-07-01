@@ -2,33 +2,51 @@
 
 {{
     govukFooter({
-      meta: {
-        items: [
-          {
-            href: "https://resources.companieshouse.gov.uk/serviceInformation.shtml",
-            text: "Policies"
-          },
-          {
-            href: "/help/cookies",
-            text: "Cookies"
-          },
-          {
-            href: "/help/contact-us",
-            text: "Contact us"
-          },
-          {
-            href: "/help/accessibility-statement",
-            text: "Accessibility statement"
-          },
-          {
-            href: "https://developer.company-information.service.gov.uk/",
-            text: "Developers"
-          }
-        ],
-        html: 'Built by <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">Companies House</a>'
-      }
+        attributes: {
+            id: "footer"
+        },
+        meta: {
+            items: [
+                {
+                    href: "https://resources.companieshouse.gov.uk/serviceInformation.shtml",
+                    text: "Policies",
+                    attributes: {
+                        id: "footer-policies"
+                    }
+                },
+                {
+                    href: "/help/cookies",
+                    text: "Cookies",
+                    attributes: {
+                        id: "footer-cookies"
+                    }
+                },
+                {
+                    href: "/help/contact-us",
+                    text: "Contact us",
+                    attributes: {
+                        id: "footer-contact-us"
+                    }
+                },
+                {
+                    href: "/help/accessibility-statement",
+                    text: "Accessibility statement",
+                    attributes: {
+                        id: "footer-accessibility-statement"
+                    }
+                },
+                {
+                    href: "https://developer.company-information.service.gov.uk/",
+                    text: "Developers",
+                    attributes: {
+                        id: "footer-developers"
+                    }
+                }
+            ],
+            html: 'Built by <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">Companies House</a>'
+        }
     })
-  }}
+}}
 
 <script type="application/javascript">
     window.SERVICE_NAME = '{{ serviceName }}';
