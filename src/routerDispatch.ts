@@ -1,12 +1,14 @@
 // Do Router dispatch here, i.e. map incoming routes to appropriate router
 import { Application, Request, Response } from "express";
 import router from "./routers/router";
-import { SERVICE_UNAVAILABLE_TEMPLATE, LANDING_URL } from "./constants";
+import * as constants from "./constants";
+import { getTranslationsForView } from "./lib/utils/translations";
 
-const routerDispatch = (app: Application) => {
-    app.use(LANDING_URL, router);
+const routerDispatch = (app: Application):void => {
+    app.use(constants.LANDING_URL, router);
     app.use("*", (req: Request, res: Response) => {
-        return res.status(404).render(SERVICE_UNAVAILABLE_TEMPLATE);
+        const translations = getTranslationsForView(req.t, constants.SERVICE_UNAVAILABLE);
+        res.status(404).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, { lang: translations });
     });
 };
 

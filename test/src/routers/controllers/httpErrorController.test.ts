@@ -6,6 +6,9 @@ import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { NextFunction } from "express";
 import logger from "../../../../src/lib/Logger";
+import * as getTranslationsForView from "../../../../src/lib/utils/translations";
+
+const mockGetTranslationsForView = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 
 logger.errorRequest = jest.fn();
 
@@ -35,12 +38,13 @@ describe("httpErrorHandler", () => {
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
         request.method = "POST";
+        mockGetTranslationsForView.mockReturnValueOnce({});
 
         const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`);
         // When
         httpErrorHandler(unauthorizedError, request, response, mockNext);
         // Then
-        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable.njk");
+        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
             expect.stringContaining(`A 401 UnauthorizedError`)
