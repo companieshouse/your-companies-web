@@ -12,6 +12,7 @@ import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
 import { addLangToUrl } from "./lib/utils/urlUtils";
 import { httpErrorHandler } from "./routers/controllers/httpErrorController";
+import { getTranslationsForView } from "./lib/utils/translations";
 
 const app = express();
 
@@ -86,7 +87,8 @@ app.use(httpErrorHandler);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
-    res.render("partials/service_unavailable.njk");
+    const translations = getTranslationsForView(req.t, constants.SERVICE_UNAVAILABLE);
+    res.render(constants.SERVICE_UNAVAILABLE_TEMPLATE, { lang: translations });
 });
 
 // Unhandled exceptions
