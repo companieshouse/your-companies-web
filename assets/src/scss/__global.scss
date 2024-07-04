@@ -50,8 +50,8 @@ $govuk-font-url-function: 'custom-url-handler';
     margin-bottom: 10px;
 }
 
-.remove-border-bottom{
-    border-bottom: 0;
+.new-border-bottom{
+    border-bottom: 10px solid #005ea5;
 }
 
 .does-not-verify-link-spacing{
@@ -99,6 +99,10 @@ $govuk-font-url-function: 'custom-url-handler';
   width: auto !important;
   max-width: 960px;
   border-bottom: 10px solid #005ea5;
+}
+
+#customer-insights-top-banner{
+    margin-top: -10px;
 }
 
 #chs-customer-insights a:link, #chs-customer-insights a:visited, #customer-insights-top-banner a:link, #customer-insights-top-banner a:visited {
