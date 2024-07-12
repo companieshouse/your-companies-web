@@ -20,8 +20,9 @@ $govuk-font-url-function: 'custom-url-handler';
     padding: 2em;
 }
 
-.white-space-pre {
-    white-space: pre !important;
+.wrap-word {
+    display: inline-block;
+    max-width: min-content;
 }
 
 @media (max-width: 640px) {
@@ -99,6 +100,7 @@ $govuk-font-url-function: 'custom-url-handler';
   width: auto !important;
   max-width: 960px;
   border-bottom: 10px solid #005ea5;
+  position: relative;
 }
 
 #customer-insights-top-banner{
