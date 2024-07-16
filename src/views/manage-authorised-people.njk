@@ -151,7 +151,7 @@
             text: providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)
         }), row) %}
         {% if association.status === confirmed %}
-            {% set tag = govukTag({text: lang.confirmed.toUpperCase(), classes: "govuk-tag--green"}) %}
+            {% set tag = govukTag({text: lang.confirmed, classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set query_params = {
@@ -168,7 +168,7 @@
             {% set row = (row.push({text: ""}), row) %}
         {% else %}
             {% set awaitingConfirmationText %}
-            <span class="white-space-pre">{{lang.awaiting_confirmation}}</span>
+            <span class="wrap-word">{{lang.awaiting_confirmation}}</span>
             {% endset %}
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
