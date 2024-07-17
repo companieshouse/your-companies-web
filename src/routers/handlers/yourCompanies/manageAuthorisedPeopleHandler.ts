@@ -56,12 +56,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        companyAssociations.items = companyAssociations.items.filter(
-            (association: Association) => association.status === AssociationStatus.CONFIRMED ||
-                (association.status === AssociationStatus.AWAITING_APPROVAL &&
-                    new Date(association.approvalExpiryAt) > new Date())
-        );
-
         const emailArray = [];
 
         for (let i = 0; i < companyAssociations.items.length; i++) {
@@ -110,7 +104,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
-    private async handleCancellation (req: Request, cancellation: Cancellation, companyNumber:string) {
+    private async handleCancellation (req: Request, cancellation: Cancellation, companyNumber: string) {
         if (cancellation.cancelPerson === constants.YES) {
             const companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, undefined, 100000);
             const associationId = companyAssociations.items.find(
