@@ -179,6 +179,8 @@ export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = getEnvironmentValue("MAT
 export const MATOMO_GO_BACK_TO_YOUR_COMPANIES_LINK = "Go back to Your Companies Link";
 export const MATOMO_GO_TO_YOUR_COMPANIES_BUTTON = "Go to Your Companies Button";
 export const MATOMO_BACK_LINK = "Back Link";
+export const MATOMO_VIEW_INVITATIONS_LINK = "View Invitations to be Digitally Authorised Link";
+export const MATOMO_BACK_TO_YOUR_COMPANIES_LINK = "Back to Your Companies Link";
 
 // various
 export const NOT_PROVIDED = "Not provided";
