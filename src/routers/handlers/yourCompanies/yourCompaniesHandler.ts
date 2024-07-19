@@ -92,7 +92,8 @@ export class YourCompaniesHandler extends GenericHandler {
             matomoViewAndManageLink: constants.MATOMO_VIEW_AND_MANAGE_LINK,
             matomoSearchForACompanyLink: constants.MATOMO_SEARCH_FOR_A_COMPANY_BUTTON,
             matomoCancelSearchLink: constants.MATOMO_CANCEL_SEARCH_LINK,
-            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
+            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
+            matomoViewInvitationsLink: constants.MATOMO_VIEW_INVITATIONS_LINK
         };
 
         if (confirmedUserAssociations.totalResults > 0) {

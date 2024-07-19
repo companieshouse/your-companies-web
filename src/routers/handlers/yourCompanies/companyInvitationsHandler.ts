@@ -22,7 +22,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
             lang: translations,
             backLinkHref: constants.LANDING_URL,
             matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
-            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK
+            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK,
+            matomoBackToYourCompaniesLink: constants.MATOMO_BACK_TO_YOUR_COMPANIES_LINK
         };
 
         const page = req.query.page as string;
