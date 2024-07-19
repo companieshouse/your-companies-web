@@ -1,12 +1,12 @@
 {
     "title":"[CY] Confirm this is the correct company - Find and update company information - GOV.UK",
-    "confirm_this_is_the_correct_company": "Cadarnhewch mai hwn yw'r cwmni cywir",
-    "company_name": "[CY] Company name",
+    "confirm_this_is_the_correct_company": "Cadarnhau mai hwn yw’r cwmni cywir",
+    "company_name": "Enw’r cwmni",
     "company_number": "Rhif y cwmni",
     "status": "Statws",
     "incorporation_date": "Dyddiad corffori",
     "company_type": "Math o gwmni",
     "registered_office_address": "Cyfeiriad swyddfa gofrestredig",
     "confirm_and_continue": "Cadarnhau a pharhau",
-    "choose_a_different_company": "Dewiswch gwmni gwahanol"
+    "choose_a_different_company": "Dewis cwmni gwahanol."
 }
