@@ -36,7 +36,7 @@
             <p>{{ lang.if_you_remove + user_details + lang.digital_authorisation_this_means_they + companyName + lang.without_a_current_auth_code + user_details + lang.to_let_them_know_you_have_removed }}</p>
 
             {% set warning_text_html %}
-                {% if lang.remove == "Dileu awdurdodiad " %}
+                {% if locale == "cy" %}
                     <span class="govuk-!-display-block govuk-!-margin-bottom-5">
                         {{ lang.bydd_welsh_only + user_details + lang.will_still_be_able_to_file }}
                     </span>
