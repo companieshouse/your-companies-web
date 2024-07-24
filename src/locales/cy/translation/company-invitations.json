@@ -3,16 +3,16 @@
     "title_company_invitations_start":"[CY] Invitations to be digitally authorised (page ",
     "title_company_invitations_middle":" of ",
     "title_company_invitations_finish":"[CY] ) - Find and update company information - GOV.UK",
-    "h1":"[CY] Invitations to be digitally authorised",
-    "company_name": "[CY] Company name",
-    "company_number": "[CY] Company number",
-    "invited_by": "[CY] Invited by",
-    "accept": "[CY] Accept",
-    "decline": "[CY] Decline",
+    "h1":"Gwahoddiadau i gael eich awdurdodi’n ddigidol",
+    "company_name": "Enw’r cwmni",
+    "company_number": "Rhif y cwmni",
+    "invited_by": "Gwahoddwyd gan",
+    "accept": "Derbyn",
+    "decline": "Gwrthod",
     "accept_an_invitation": "[CY] Accept an invitation",
     "accept_an_invitation_from": "[CY] Accept an invitation from ",
     "decline_an_invitation": "[CY] Decline an invitation",
     "decline_an_invitation_from": "[CY] Decline an invitation from ",
     "invitations_to_be_digitally_authorised": "[CY] Invitations to be digitally authorised for a company",
-    "no_pending_invitations": "[CY] No pending invitations."
+    "no_pending_invitations": "Dim gwahoddiadau yn yr arfaeth."
 }
