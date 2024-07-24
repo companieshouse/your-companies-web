@@ -1,7 +1,7 @@
 {
-    "check_authorised_persons_email_address": "[CY] Check the email address is correct before we send the email",
-    "email_address": "[CY] Email address",
-    "change": "[CY] Change",
-    "confirm_and_send_email": "[CY] Confirm and send email",
+    "check_authorised_persons_email_address": "Gwiriwch fod y cyfeiriad e-bost yn gywir cyn i ni anfon yr e-bost",
+    "email_address": "Cyfeiriad e-bost",
+    "change": "Newid",
+    "confirm_and_send_email": "Cadarnhau ac anfon e-bost",
     "title": "[CY] Check the email address is correct before we send the email - Find and update company information - GOV.UK"
 }
