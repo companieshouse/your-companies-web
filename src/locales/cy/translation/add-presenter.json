@@ -1,9 +1,9 @@
 {
-    "authorised_persons_email_address": "[CY] What is the email address of the person you want to authorise?",
-    "tell_us_the_email": "[CY] Tell us the email address of the person you want to digitally authorise to file online for this company.",
-    "you_can_change_who": "[CY] You can change who is digitally authorised to file at any time.",
-    "email_address": "[CY] Email address",
-    "well_send_them_an_email": "[CY] We'll send them an email that contains a link.",
+    "authorised_persons_email_address": "Beth yw cyfeiriad e-bost y person rydych am ei awdurdodi?",
+    "tell_us_the_email": "Dywedwch wrthym gyfeiriad e-bost y person rydych am ei awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn.",
+    "you_can_change_who": "Gallwch newid pwy sydd wedi’i awdurdodi’n ddigidol i ffeilio ar unrhyw adeg.",
+    "email_address": "Cyfeiriad e-bost",
+    "well_send_them_an_email": "Byddwn yn anfon e-bost atynt sy’n cynnwys dolen.",
     "title_add_presenter": "[CY] What is the email address of the person you want to authorise? - Find and update company information - GOV.UK",
     "errors_email_required": "[CY] Enter the authorised person’s email address",
     "errors_email_invalid": "[CY] Enter an email address in the correct format, like name@example.com"
