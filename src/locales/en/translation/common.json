@@ -31,6 +31,8 @@
     "sign_out_header": "Sign out",
     "find_and_update_company_information_header": "Find and update company information",
     "tell_us_what_you_think_of_this_service": "Tell us what you think of this service",
+    "tell_us_what_you_think_of_companies_house": "Tell us what you think of Companies House",
+    "companies_house_does_not_verify": "Companies House does not verify the accuracy of the information filed",
     "is_there_anything_wrong_with_this_page": "Is there anything wrong with this page?",
     "policies_footer": "Policies",
     "cookies_footer": "Cookies",
@@ -41,6 +43,6 @@
     "companies_house_footer": "Companies House",
     "all_content_is_available_under_footer": "All content is available under the ",
     "open_gov_licence_footer": "Open Government Licence v3.0", 
-    "except_where_otherwise_stated_footer": "except where otherwise stated",
+    "except_where_otherwise_stated_footer": ", except where otherwise stated",
     "crown_copyright_footer": "© Crown copyright"
 }
