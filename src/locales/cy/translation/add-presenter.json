@@ -5,6 +5,6 @@
     "email_address": "Cyfeiriad e-bost",
     "well_send_them_an_email": "Byddwn yn anfon e-bost atynt sy’n cynnwys dolen.",
     "title_add_presenter": "[CY] What is the email address of the person you want to authorise? - Find and update company information - GOV.UK",
-    "errors_email_required": "[CY] Enter the authorised person’s email address",
-    "errors_email_invalid": "[CY] Enter an email address in the correct format, like name@example.com"
+    "errors_email_required": "Cofnodwch gyfeiriad e-bost y person awdurdodedig",
+    "errors_email_invalid": "Cofnodwch gyfeiriad e-bost yn y fformat cywir, fel enw@enghraifft.com"
 }
