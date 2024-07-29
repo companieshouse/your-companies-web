@@ -1,5 +1,20 @@
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 
+{% set content_html %}
+    <span class="govuk-footer__licence-description">
+        {{lang.all_content_is_available_under_footer}}
+        <a class="govuk-footer__link" 
+        href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" 
+        rel="license">{{lang.open_gov_licence_footer}}</a>{{lang.except_where_otherwise_stated_footer}}
+    </span>
+{% endset %}
+
+{% set meta_html%}
+    <div class="govuk-footer__meta-custom">
+          {{lang.built_by_footer}} <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">{{lang.companies_house_footer}}</a>
+        </div>
+{% endset %}
+
 {{
     govukFooter({
         attributes: {
@@ -9,41 +24,47 @@
             items: [
                 {
                     href: "https://resources.companieshouse.gov.uk/serviceInformation.shtml",
-                    text: "Policies",
+                    text: lang.policies_footer,
                     attributes: {
                         id: "footer-policies"
                     }
                 },
                 {
                     href: "/help/cookies",
-                    text: "Cookies",
+                    text: lang.cookies_footer,
                     attributes: {
                         id: "footer-cookies"
                     }
                 },
                 {
                     href: "/help/contact-us",
-                    text: "Contact us",
+                    text: lang.contact_us_footer,
                     attributes: {
                         id: "footer-contact-us"
                     }
                 },
                 {
                     href: "/help/accessibility-statement",
-                    text: "Accessibility statement",
+                    text: lang.accessibility_statement_footer,
                     attributes: {
                         id: "footer-accessibility-statement"
                     }
                 },
                 {
                     href: "https://developer.company-information.service.gov.uk/",
-                    text: "Developers",
+                    text: lang.developers_footer,
                     attributes: {
                         id: "footer-developers"
                     }
                 }
             ],
-            html: 'Built by <a href="https://www.gov.uk/government/organisations/companies-house" class="govuk-footer__link">Companies House</a>'
+            html: meta_html
+        },
+        contentLicence:{
+            html: content_html
+        },
+        copyright:{
+            text: lang.crown_copyright_footer
         }
     })
 }}
