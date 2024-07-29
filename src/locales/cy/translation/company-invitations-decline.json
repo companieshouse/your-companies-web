@@ -1,7 +1,7 @@
 {
-    "invitation_declined": "[CY] Invitation declined",
-    "you_have_declined_to_be_digitally_authorised": "[CY] You have declined to be digitally authorised to file online for ",
-    "what_happens_now_youve_declined": "[CY] What happens now you’ve declined to be digitally authorised",
-    "weve_sent_an_email": "[CY] We’ve sent an email to the company’s registered email address and to any other people who are digitally authorised. We’ve let them know you’ve declined to be digitally authorised to file for this company.",
-    "view_your_companies": "[CY] View your companies"
+    "invitation_declined": "Gwahoddiad wedi ei wrthod",
+    "you_have_declined_to_be_digitally_authorised": "Rydych wedi gwrthod i gael eich awdurdodi yn ddigidol i ffeilio ar-lein ar gyfer ",
+    "what_happens_now_youve_declined": "Beth sy’n digwydd nawr eich bod wedi gwrthod cael eich awdurdodi yn ddigidol",
+    "weve_sent_an_email": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi’n ddigidol. Rydym wedi rhoi gwybod iddynt eich bod wedi gwrthod cael eich awdurdodi yn ddigidol i ffeilio ar gyfer y cwmni hwn.",
+    "view_your_companies": "Gweld eich cwmnïau"
 }
