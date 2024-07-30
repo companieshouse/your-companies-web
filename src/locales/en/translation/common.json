@@ -44,5 +44,6 @@
     "all_content_is_available_under_footer": "All content is available under the ",
     "open_gov_licence_footer": "Open Government Licence v3.0", 
     "except_where_otherwise_stated_footer": ", except where otherwise stated",
-    "crown_copyright_footer": "© Crown copyright"
+    "crown_copyright_footer": "© Crown copyright",
+    "generic_error_message": "There was an error processing your request. Please try again."
 }

@@ -1,7 +1,7 @@
 const errorManifest = {
     generic: {
         serverError: {
-            summary: "There was an error processing your request. Please try again."
+            summary: "generic_error_message"
         }
     },
     validation: {
