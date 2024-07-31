@@ -9,7 +9,6 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
 import * as associationService from "../../../../src/services/associationsService";
-import errorManifest from "../../../../src/lib/utils/error_manifests/errorManifest";
 import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
@@ -344,6 +343,6 @@ describe("POST /your-companies/add-company", () => {
         // When
         const response = await router.post("/your-companies/add-company").send({ companyNumber: "12345678" });
         // Then
-        expect(response.text).toContain(errorManifest.generic.serverError.summary);
+        expect(response.text).toContain(enCommon.generic_error_message);
     });
 });

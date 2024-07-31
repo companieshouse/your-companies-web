@@ -3,7 +3,7 @@
 {% if errors is not undefined and errors is not null and errors | length %}
     {% set errorList = [] %}
     {% if errors.serverError is not undefined %}
-        {% set errorList = (errorList.push({text: errors.serverError.summary}), errorList) %}
+        {% set errorList = (errorList.push({text: lang[errors.serverError.summary]}), errorList) %}
     {% else %}
         {% for key, value in errors %}
             {% set href = ["#", key] | join %}

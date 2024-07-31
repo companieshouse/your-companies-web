@@ -44,5 +44,6 @@
     "all_content_is_available_under_footer": "Mae'r holl gynnwys ar gael o dan y ",
     "open_gov_licence_footer": "Drwydded Llywodraeth Agored v3.0", 
     "except_where_otherwise_stated_footer": ", heblaw lle nodir yn wahanol",
-    "crown_copyright_footer": "© Hawlfraint y Goron"
+    "crown_copyright_footer": "© Hawlfraint y Goron",
+    "generic_error_message": "Roedd camgymeriad yn prosesu eich cais. Ceisiwch eto, os gwelwch yn dda."
 }
