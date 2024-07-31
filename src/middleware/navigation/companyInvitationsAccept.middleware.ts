@@ -9,7 +9,7 @@ export const companyInvitationsAcceptNavigation = async (req: Request, res: Resp
     const pageIndicator = false;
     const associationId = req.params[constants.ASSOCIATIONS_ID];
     const companyName = req.query[constants.COMPANY_NAME] as string;
-    const hrefB = `${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${companyName.replace(/ /g, "+")}`;
+    const hrefB = `${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
