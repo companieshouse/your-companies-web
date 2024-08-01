@@ -5,7 +5,7 @@
         "ffeilio ar gyfer y cwmni ar-lein",
         "awdurdodi pobl eraill yn ddigidol i ffeilio ar-lein ar gyfer y cwmni"
     ],
-    "title_your_companies": "[CY] Your companies - Find and update company information - GOV.UK",
+    "title_your_companies": "Eich cwmnïau - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "you_have_not_added_any_companies": "Nid ydych wedi ychwanegu unrhyw gwmnïau at eich cyfrif",
     "your_companies": "Eich cwmnïau",
     "company_name": "Enw’r cwmni",
@@ -25,7 +25,7 @@
     "company_number_must_only_include": "Rhaid i rif y cwmni gynnwys rhifau a phrif lythrennau yn unig",
     "enter_a_company_number_or_part": "Cofnodwch rif y cwmni, neu ran o rif y cwmni.",
     "cancel_search": "Canslo’r chwiliad",
-    "your_companies_page_start": "[CY] Your companies (page ",
-    "your_companies_page_middle": "[CY]  of ",
-    "your_companies_page_finish": "[CY] ) - Find and update company information - GOV.UK"
+    "your_companies_page_start": "Eich cwmnïau (tudalen ",
+    "your_companies_page_middle": " o ",
+    "your_companies_page_finish": ") - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
 }
