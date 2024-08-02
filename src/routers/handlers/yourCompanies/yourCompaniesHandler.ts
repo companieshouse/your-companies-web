@@ -44,6 +44,7 @@ export class YourCompaniesHandler extends GenericHandler {
         deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
         deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
         deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
+        deleteExtraData(req.session, constants.CURRENT_COMPANY_NUM);
 
         const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, invites, lang);

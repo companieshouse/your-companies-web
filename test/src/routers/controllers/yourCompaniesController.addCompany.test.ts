@@ -18,6 +18,7 @@ import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
 import { Session } from "@companieshouse/node-session-handler";
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import * as constants from "../../../../src/constants";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -344,5 +345,31 @@ describe("POST /your-companies/add-company", () => {
         const response = await router.post("/your-companies/add-company").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(enCommon.generic_error_message);
+    });
+
+    it("should return company already added error message if user has come from the current page (switched languages)", async () => {
+        // Given
+        const url = "/your-companies/add-company";
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: url };
+            req.session = session;
+            next();
+        });
+
+        const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
+
+        const associationSpy: jest.SpyInstance = jest.spyOn(associationService, "isOrWasCompanyAssociatedWithUser");
+        const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "12345678" };
+        associationSpy.mockReturnValue(associationStateResponse);
+
+        const companyNumber = "12345678";
+        setExtraData(session, constants.CURRENT_COMPANY_NUM, companyNumber);
+
+        // When
+        const response = await router.get(url).send({ companyNumber: "12345678" });
+
+        // Then
+        expect(response.text).toContain("This company has already been added to your account");
     });
 });

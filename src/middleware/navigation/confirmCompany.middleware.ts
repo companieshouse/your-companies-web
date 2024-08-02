@@ -9,6 +9,7 @@ export const confirmCompanyNavigation = async (req: Request, res: Response, next
     const pageIndicator = false;
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    deleteExtraData(req.session, constants.CURRENT_COMPANY_NUM);
 
     logger.debug(`confirmCompanyNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
