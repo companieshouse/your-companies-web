@@ -1,24 +1,27 @@
 // the order of the mock imports matter
 import mocks from "../../../mocks/all.middleware.mock";
-import { validActiveCompanyProfile, validDisolvedCompanyProfile } from "../../../mocks/companyProfile.mock";
-import { Resource } from "@companieshouse/api-sdk-node";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import {
+    validActiveCompanyProfile,
+    validDisolvedCompanyProfile
+} from "../../../mocks/companyProfile.mock";
+import {Resource} from "@companieshouse/api-sdk-node";
+import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+import {NextFunction, Request, Response} from "express";
+import {StatusCodes} from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
 import * as associationService from "../../../../src/services/associationsService";
-import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
+import * as constants from "../../../../src/constants";
+import {PROPOSED_COMPANY_NUM} from "../../../../src/constants";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../src/locales/en/translation/add-company.json";
 import * as cy from "../../../../src/locales/cy/translation/add-company.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
-import { Session } from "@companieshouse/node-session-handler";
-import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
-import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
-import * as constants from "../../../../src/constants";
+import {Session} from "@companieshouse/node-session-handler";
+import {AssociationState, AssociationStateResponse} from "../../../../src/types/associations";
+import {getExtraData, setExtraData} from "../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -113,6 +116,46 @@ describe("GET /your-companies/add-company", () => {
         // Then
         expect(data).toBeTruthy();
         expect(resultData).toBeUndefined();
+    });
+
+    it("should handle saved profile scenario", async () => {
+        const redirectPageSpy = jest.spyOn(referrerUtils, "redirectPage");
+        redirectPageSpy.mockReturnValue(false);
+
+        const companyProfileSpy = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockResolvedValue(validActiveCompanyProfile);
+
+        const savedProfile = {companyNumber: "12345678"};
+        setExtraData(session, constants.COMPANY_PROFILE, savedProfile);
+
+        const response = await router.get("/your-companies/add-company");
+
+        expect(response.status).toBe(200);
+        expect(response.text).toContain(savedProfile.companyNumber); // Check if saved profile company number is displayed
+        expect(companyProfileSpy).toHaveBeenCalledWith(savedProfile.companyNumber);
+    });
+
+    it("should handle matching referrer URL scenario", async () => {
+        const redirectPageSpy = jest.spyOn(referrerUtils, "redirectPage");
+        redirectPageSpy.mockReturnValue(false);
+
+        const companyProfileSpy = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+        companyProfileSpy.mockResolvedValue(validActiveCompanyProfile);
+
+        setExtraData(session, constants.COMPANY_PROFILE, null); // Ensure no saved profile
+        setExtraData(session, constants.CURRENT_COMPANY_NUM, "87654321");
+
+        mocks.mockSessionMiddleware.mockImplementationOnce((req, res, next) => {
+            req.session = session;
+            req.headers = {referer: constants.YOUR_COMPANIES_ADD_COMPANY_URL};
+            next();
+        });
+
+        const response = await router.get("/your-companies/add-company");
+
+        expect(response.status).toBe(200);
+        expect(response.text).toContain("87654321"); // Check if current company number is displayed
+        expect(companyProfileSpy).toHaveBeenCalledWith("87654321");
     });
 
 });
