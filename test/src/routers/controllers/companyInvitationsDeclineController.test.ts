@@ -3,7 +3,7 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import * as en from "../../../../src/locales/en/translation/company-invitations-decline.json";
 import * as cy from "../../../../src/locales/cy/translation/company-invitations-decline.json";
-import { updateAssociationStatus } from "../../../../src/services/associationsService";
+import {updateAssociationStatus} from "../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
@@ -92,5 +92,23 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         // Then
         expect(result.statusCode).toEqual(302);
         expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
+    it("should return viewData when association state has changed and referrer includes the correct URL for decline", async () => {
+        // Given
+        const langVersion = "&lang=en";
+        const fullUrl = `${url}${langVersion}`;
+        const referrerUrl = `http://localhost${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
+        getExtraDataSpy.mockReturnValue(constants.TRUE);
+        // When
+        const result = await router
+        .get(fullUrl)
+        .set("Referer", referrerUrl);
+        // Then
+        expect(result.statusCode).toBe(200);
+        expect(result.text).toContain(companyName);
+        expect(result.text).toContain(en.invitation_declined);
+        expect(result.text).toContain(en.view_your_companies);
+        expect(result.text).toContain(constants.LANDING_URL);
     });
 });

@@ -16,6 +16,10 @@ import { AssociationState, AssociationStateResponse } from "../../../types/assoc
 export class AddCompanyHandler extends GenericHandler {
 
     async execute (req: Request, res: Response, method: string): Promise<ViewData> {
+
+        const referrer: string | undefined = req.get("Referrer");
+        const hrefB = constants.YOUR_COMPANIES_ADD_COMPANY_URL;
+
         logger.info(`${method} request to add company to user account`);
         // ...process request here and return data for the view
         try {
@@ -30,6 +34,8 @@ export class AddCompanyHandler extends GenericHandler {
             }
             if (method === constants.POST) {
                 const { companyNumber } = req.body;
+                setExtraData(req.session, constants.CURRENT_COMPANY_NUM, companyNumber);
+
                 if (typeof companyNumber === "string") {
                     setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, companyNumber);
                     deleteExtraData(req.session, constants.COMPANY_PROFILE);
@@ -41,6 +47,7 @@ export class AddCompanyHandler extends GenericHandler {
                 // GET request validation
                 const invalidCompanyNumber = getExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
                 const savedProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
+                const currentCompanyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM);
                 // display any errors with the current input
                 if (typeof invalidCompanyNumber === "string") {
                     this.viewData.proposedCompanyNumber = invalidCompanyNumber;
@@ -48,6 +55,9 @@ export class AddCompanyHandler extends GenericHandler {
                 } else if (typeof savedProfile?.companyNumber === "string") {
                     this.viewData.proposedCompanyNumber = savedProfile.companyNumber;
                     await this.validateCompanyNumber(req, savedProfile.companyNumber);
+                } else if (referrer && referrer.includes(hrefB)) {
+                    this.viewData.proposedCompanyNumber = currentCompanyNumber;
+                    await this.validateCompanyNumber(req, currentCompanyNumber);
                 }
             }
         } catch (err: any) {

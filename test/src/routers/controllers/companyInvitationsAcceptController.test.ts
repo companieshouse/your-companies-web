@@ -5,7 +5,7 @@ import * as en from "../../../../src/locales/en/translation/company-invitations-
 import * as cy from "../../../../src/locales/cy/translation/company-invitations-accept.json";
 import * as enCommon from "../../../../src/locales/en/translation/common.json";
 import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
-import { updateAssociationStatus } from "../../../../src/services/associationsService";
+import {updateAssociationStatus} from "../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
@@ -118,5 +118,22 @@ describe(`GET ${url}`, () => {
         // Then
         expect(result.statusCode).toEqual(302);
         expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
+    it("should return viewData when association state has changed and referrer includes the correct URL", async () => {
+        // Given
+        const lang = "&lang=en";
+        const queryString = `?${lang}&${companyNameQueryParam}`;
+        const fullUrl = `${url.replace(":associationId", associationId)}${queryString}`;
+        const referrerUrl = `http://localhost${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
+        getExtraDataSpy.mockReturnValue(constants.TRUE);
+        // When
+        const result = await router
+        .get(fullUrl)
+        .set("Referer", referrerUrl);
+        // Then
+        expect(result.statusCode).toBe(200);
+        expect(result.text).toContain(companyName);
+        expect(result.text).toContain(constants.LANDING_URL);
     });
 });
