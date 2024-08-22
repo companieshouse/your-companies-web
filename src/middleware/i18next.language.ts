@@ -20,6 +20,18 @@ function loadJsonFiles (dir: string): AnyRecord {
 
 export const enableI18next = (app: Application): void => {
 
+    /*
+     * Construct the resources object by merging translations from different sources:
+     * 1. Local translations specific to this application
+     * 2. Navbar translations from the @companieshouse/ch-node-utils package
+     *
+     * We merge these into the 'common' namespace to ensure that navbar translations
+     * are available on all templates, alongside our local common translations.
+     *
+     * This approach allows us to:
+     * - Reuse shared components (like the navbar)
+     * - Maintain the ability to override or extend translations as needed
+     */
     const resources = ["en", "cy"].reduce((acc: AnyRecord, lang) => {
         const chNodeUtilsTranslations: AnyRecord = loadJsonFiles(path.join(chNodeUtilsLocales, lang));
         const localTranslations: AnyRecord = loadJsonFiles(path.join(locales, lang, "translation"));
