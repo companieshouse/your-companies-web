@@ -4,7 +4,6 @@ import nunjucks from "nunjucks";
 import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./routerDispatch";
-import { enableI18next } from "./middleware/i18next.language";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
@@ -13,6 +12,7 @@ import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
 import { addLangToUrl } from "./lib/utils/urlUtils";
 import { httpErrorHandler } from "./routers/controllers/httpErrorController";
 import { getTranslationsForView } from "./lib/utils/translations";
+import { LocalesMiddleware, LocalesService } from "@companieshouse/ch-node-utils";
 
 const app = express();
 
@@ -65,9 +65,11 @@ app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
 
 // Add i18next middleware and retrieve user email address to use in view
-enableI18next(app);
+LocalesService.getInstance("locales", true);
+app.use(LocalesMiddleware());
+
 app.use((req: Request, res: Response, next: NextFunction) => {
-    njk.addGlobal("locale", req.language);
+    njk.addGlobal("locale", (req as any).lang);
     njk.addGlobal("userEmailAddress", getLoggedInUserEmail(req.session));
     njk.addGlobal("feedbackSource", req.originalUrl);
     njk.addGlobal("ENGLISH", "en");
@@ -89,7 +91,7 @@ app.use(httpErrorHandler);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
-    const translations = getTranslationsForView(req.t, constants.SERVICE_UNAVAILABLE);
+    const translations = getTranslationsForView((req as any).lang, constants.SERVICE_UNAVAILABLE);
     res.render(constants.SERVICE_UNAVAILABLE_TEMPLATE, { lang: translations });
 });
 

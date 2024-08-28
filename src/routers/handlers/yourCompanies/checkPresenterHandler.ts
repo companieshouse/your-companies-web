@@ -34,7 +34,7 @@ export class CheckPresenterHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request, companyNumber: string, companyName: string, emailAddress: string): Promise<ViewData> {
-        const translations = getTranslationsForView(req.t, constants.CHECK_PRESENTER_PAGE);
+        const translations = getTranslationsForView((req as any).lang, constants.CHECK_PRESENTER_PAGE);
         const url = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber);
 
         return {

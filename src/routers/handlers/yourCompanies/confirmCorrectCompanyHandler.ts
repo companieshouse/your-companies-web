@@ -4,14 +4,16 @@ import * as constants from "../../../constants";
 import { formatForDisplay, buildAddress } from "../../../lib/utils/confirmCompanyUtils";
 import * as i18next from "i18next";
 import { AnyRecord, ViewData } from "../../../types/util-types";
+import {LocalesService} from "@companieshouse/ch-node-utils";
 
 export class ConfirmCorrectCompanyHandler extends GenericHandler {
-    async execute (translateFn: i18next.TFunction, companyProfile: CompanyProfile, lang: string): Promise<Record<string, unknown>> {
+    async execute (lang: string, companyProfile: CompanyProfile): Promise<Record<string, unknown>> {
+        const localesServicei18nCh = LocalesService.getInstance().i18nCh;
         const translations = {
-            ...translateFn(constants.COMMON, { returnObjects: true }),
-            ...translateFn(constants.CONFIRM_COMPANY_PAGE, { returnObjects: true }),
-            ...translateFn(constants.COMPANY_STATUS, { returnObjects: true }),
-            ...translateFn(constants.COMPANY_TYPE, { returnObjects: true })
+            ...localesServicei18nCh.getResourceBundle(lang, constants.COMMON),
+            ...localesServicei18nCh.getResourceBundle(lang, constants.CONFIRM_COMPANY_PAGE),
+            ...localesServicei18nCh.getResourceBundle(lang, constants.COMPANY_STATUS),
+            ...localesServicei18nCh.getResourceBundle(lang, constants.COMPANY_TYPE)
         };
         this.viewData = this.getViewData(companyProfile, translations, lang);
 

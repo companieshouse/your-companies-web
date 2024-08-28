@@ -29,7 +29,7 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
     }
 
     private getViewData (req: Request): ViewData {
-        const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
+        const translations = getTranslationsForView((req as any).lang, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
         const companyName = req.query[constants.COMPANY_NAME] as string;
         return {
             lang: translations,
