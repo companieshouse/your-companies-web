@@ -74,7 +74,7 @@
                         text: lang.confirm_and_continue,
                         attributes: {
                         id: "submit",
-                        "data-event-id": "submit-button-event"
+                        "data-event-id": "confirm-continue-button"
                         }
                     })
                 }}
@@ -83,7 +83,7 @@
         </form>
 
         <p class="govuk-body">
-            <a href={{backLinkWithClearForm}} class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>
+            <a href={{backLinkWithClearForm}} data-event-id="choose-different-company" class="govuk-link govuk-link--no-visited-state">{{ lang.choose_a_different_company }}</a>
         </p>
     </div>
 

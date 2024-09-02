@@ -16,7 +16,7 @@
     } %}
     {% set company_name = elem | first %}
     {% set visuallyHiddenText = company_name.text %}
-    {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, params) %}
+      {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view_and_manage_link", params) %}
     {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set rowsData = (rowsData.push(rowElem), rowsData) %}
 {% endfor %}
@@ -36,7 +36,7 @@
                 href: buttonHref,
                 attributes: {
                     id: "add-a-company-button",
-                    "data-event-id": "add-a-company-button-event"
+                    "data-event-id": "add-a-company-button"
                 }
             })
         }}
