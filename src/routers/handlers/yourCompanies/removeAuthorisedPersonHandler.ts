@@ -39,6 +39,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     private getViewData (req: Request): ViewData {
         const lang = getTranslationsForView(req.t, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         return {
+            templateName: constants.REMOVE_AUTHORISED_PERSON_PAGE,
             lang: lang,
             companyNumber: req.params[constants.COMPANY_NUMBER],
             cancelLinkHref: getExtraData(req.session, constants.REFERER_URL),

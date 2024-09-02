@@ -38,6 +38,7 @@ export class CheckPresenterHandler extends GenericHandler {
         const url = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber);
 
         return {
+            templateName: constants.CHECK_PRESENTER_PAGE,
             lang: translations,
             companyName: companyName,
             companyNumber: companyNumber,

@@ -21,6 +21,7 @@ export class PresenterAlreadyAddedHandler extends GenericHandler {
         const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
         const backLinkHref = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_CHECK_PRESENTER_URL, companyNumber);
         return {
+            templateName: constants.PRESENTER_ALREADY_ADDED_PAGE,
             lang: translations,
             companyNumber,
             companyName,

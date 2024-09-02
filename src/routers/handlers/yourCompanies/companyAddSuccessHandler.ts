@@ -13,6 +13,7 @@ export class CompanyAddSuccessHandler extends GenericHandler {
             constants.COMPANY_ADD_SUCCESS_PAGE
         );
         this.addMatomoTags();
+        this.viewData.templateName = constants.COMPANY_ADD_SUCCESS_PAGE;
         return Promise.resolve(this.viewData);
     }
 

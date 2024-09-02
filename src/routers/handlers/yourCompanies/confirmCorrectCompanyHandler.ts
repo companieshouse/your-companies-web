@@ -24,6 +24,7 @@ export class ConfirmCorrectCompanyHandler extends GenericHandler {
 
         return {
             ...formattedCompanyProfile,
+            templateName: constants.CONFIRM_COMPANY_PAGE,
             registeredOfficeAddress: buildAddress(formattedCompanyProfile),
             backLinkHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
             backLinkWithClearForm: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,

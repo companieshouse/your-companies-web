@@ -40,6 +40,7 @@ export class CancelPersonHandler extends GenericHandler {
     private getViewData (req: Request): ViewData {
         const lang = getTranslationsForView(req.t, constants.CANCEL_PERSON_PAGE);
         return {
+            templateName: constants.CANCEL_PERSON_PAGE,
             lang: lang,
             backLinkHref: getExtraData(req.session, constants.REFERER_URL),
             companyName: getExtraData(req.session, constants.COMPANY_NAME),

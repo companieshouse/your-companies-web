@@ -30,6 +30,7 @@ export class CompanyInvitationsDeclineHandler extends GenericHandler {
     private getViewData (req: Request): ViewData {
         const lang = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_DECLINE_PAGE);
         return {
+            templateName: constants.COMPANY_INVITATIONS_DECLINE_PAGE,
             companyName: req.query[constants.COMPANY_NAME] as string,
             buttonLinkHref: constants.LANDING_URL,
             lang: lang,

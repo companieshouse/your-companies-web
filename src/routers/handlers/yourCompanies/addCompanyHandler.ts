@@ -25,6 +25,7 @@ export class AddCompanyHandler extends GenericHandler {
         try {
             this.viewData = this.getViewData();
             this.viewData.lang = getTranslationsForView(req.t, constants.ADD_COMPANY_PAGE);
+            this.viewData.templateName = constants.ADD_COMPANY_PAGE;
 
             // we delete the form values when the journey begins again (cf param in url is true)
             const clearForm = req.query[constants.CLEAR_FORM] as string;

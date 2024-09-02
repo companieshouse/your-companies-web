@@ -12,6 +12,7 @@ export class RemoveThemselvesConfirmationHandler extends GenericHandler {
             req.t,
             constants.REMOVED_THEMSELVES
         );
+        this.viewData.templateName = constants.REMOVED_THEMSELVES;
         return Promise.resolve(this.viewData);
     }
 

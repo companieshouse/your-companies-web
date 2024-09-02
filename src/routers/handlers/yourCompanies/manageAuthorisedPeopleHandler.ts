@@ -90,6 +90,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     private getViewData (companyNumber: string, lang: AnyRecord): ViewData {
         return {
+            templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
             lang: lang,
             backLinkHref: constants.LANDING_URL,
             buttonHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber) + constants.CLEAR_FORM_TRUE,

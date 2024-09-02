@@ -19,6 +19,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
     private async getViewData (req: Request): Promise<ViewData> {
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
         const viewData: ViewData = {
+            templateName: constants.COMPANY_INVITATIONS_PAGE,
             lang: translations,
             backLinkHref: constants.LANDING_URL,
             matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
