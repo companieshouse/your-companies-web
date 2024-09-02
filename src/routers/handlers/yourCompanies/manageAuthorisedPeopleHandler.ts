@@ -96,13 +96,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             buttonHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber) + constants.CLEAR_FORM_TRUE,
             cancelUrl: constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber),
             resendEmailUrl: constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
-            removeUrl: constants.YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL,
-            matomoAddNewAuthorisedPersonButton: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON,
-            matomoRemoveAuthorisedUserLink: constants.MATOMO_REMOVE_AUTHORISED_USER_LINK,
-            matomoCancelAuthorisedUserLink: constants.MATOMO_CANCEL_AUTHORISED_USER_LINK,
-            matomoResendAuthorisedUserEmailLink: constants.MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK,
-            matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID,
-            matomoBackToYourCompaniesLink: constants.MATOMO_BACK_TO_YOUR_COMPANIES_LINK
+            removeUrl: constants.YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL
         };
     }
 
@@ -124,7 +118,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
             this.viewData.removedPerson = removal.userName ? removal.userName : removal.userEmail;
             this.viewData.changeCompanyAuthCodeUrl = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
-            this.viewData.matomoChangeTheAuthenticationCodeLink = constants.MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK;
         }
     }
 

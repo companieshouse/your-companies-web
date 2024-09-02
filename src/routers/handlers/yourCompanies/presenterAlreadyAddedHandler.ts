@@ -27,8 +27,7 @@ export class PresenterAlreadyAddedHandler extends GenericHandler {
             companyName,
             emailAddress,
             backLinkHref,
-            landingPageUrl: constants.LANDING_URL,
-            matomoBackToYourCompaniesLink: constants.MATOMO_GO_BACK_TO_YOUR_COMPANIES_LINK
+            landingPageUrl: constants.LANDING_URL
         };
     }
 }

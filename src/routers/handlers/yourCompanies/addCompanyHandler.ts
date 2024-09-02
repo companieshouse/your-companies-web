@@ -75,7 +75,6 @@ export class AddCompanyHandler extends GenericHandler {
                 this.viewData.errors = this.processHandlerException(err);
             }
         }
-        this.addMatomoTags();
         return Promise.resolve(this.viewData);
     }
 
@@ -121,10 +120,5 @@ export class AddCompanyHandler extends GenericHandler {
         return {
             backLinkHref: constants.LANDING_URL
         } as ViewData;
-    }
-
-    private addMatomoTags () {
-        this.viewData.matomoButtonClick = constants.MATOMO_BUTTON_CLICK;
-        this.viewData.matomoContinueButton = constants.MATOMO_CONTINUE_BUTTON;
     }
 }

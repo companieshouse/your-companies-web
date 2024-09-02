@@ -19,12 +19,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
     private async getViewData (req: Request): Promise<ViewData> {
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
         const viewData: ViewData = {
-            templateName: constants.COMPANY_INVITATIONS_PAGE,
             lang: translations,
-            backLinkHref: constants.LANDING_URL,
-            matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
-            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK,
-            matomoBackToYourCompaniesLink: constants.MATOMO_BACK_TO_YOUR_COMPANIES_LINK
+            backLinkHref: constants.LANDING_URL
         };
 
         const page = req.query.page as string;
@@ -63,8 +59,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
                 const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, invite.associationId);
                 const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, invite.associationId);
                 const companyNameQueryParam = `?${constants.COMPANY_NAME}=${invite.companyName.replace(/ /g, "+")}`;
-                const acceptId = `${constants.MATOMO_ACCEPT_INVITATION_LINK_ID}-${invite.companyNumber}-${invite.invitedBy}`;
-                const declineId = `${constants.MATOMO_DECLINE_INVITATION_LINK_ID}-${invite.companyNumber}-${invite.invitedBy}`;
+                const acceptId = `${""}-${invite.companyNumber}-${invite.invitedBy}`;
+                const declineId = `${""}-${invite.companyNumber}-${invite.invitedBy}`;
 
                 acceptIds.add(acceptId);
                 declineIds.add(declineId);

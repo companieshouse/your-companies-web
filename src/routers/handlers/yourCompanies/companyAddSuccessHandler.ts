@@ -12,7 +12,6 @@ export class CompanyAddSuccessHandler extends GenericHandler {
             req.t,
             constants.COMPANY_ADD_SUCCESS_PAGE
         );
-        this.addMatomoTags();
         this.viewData.templateName = constants.COMPANY_ADD_SUCCESS_PAGE;
         return Promise.resolve(this.viewData);
     }
@@ -24,7 +23,4 @@ export class CompanyAddSuccessHandler extends GenericHandler {
         } as ViewData);
     }
 
-    private addMatomoTags () {
-        this.viewData.matomoViewYourCompaniesLink = constants.MATOMO_VIEW_YOUR_COMPANIES_LINK;
-    }
 }
