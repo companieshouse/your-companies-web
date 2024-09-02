@@ -1,11 +1,11 @@
-import {Request} from "express";
-import {GenericHandler} from "../genericHandler";
-import {getTranslationsForView} from "../../../lib/utils/translations";
+import { Request } from "express";
+import { GenericHandler } from "../genericHandler";
+import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import {ViewData} from "../../../types/util-types";
-import {updateAssociationStatus} from "../../../services/associationsService";
-import {AssociationStatus} from "private-api-sdk-node/dist/services/associations/types";
-import {getExtraData, setExtraData} from "../../../lib/utils/sessionUtils";
+import { ViewData } from "../../../types/util-types";
+import { updateAssociationStatus } from "../../../services/associationsService";
+import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 
 export class CompanyInvitationsAcceptHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
