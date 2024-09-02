@@ -2,17 +2,21 @@ import { Application } from "express";
 import i18next, { InitOptions, Resource } from "i18next";
 import * as middleware from "i18next-http-middleware";
 import path from "path";
-import fs, { existsSync } from "fs";
+import fs from "fs";
 import { AnyRecord } from "../types/util-types";
 
 const locales = path.join(__dirname, "/../locales");
-const _chNodeUtilsLocalesLocal = path.join(__dirname, "/../../node_modules/@companieshouse/ch-node-utils/locales");
-const _chNodeUtilsLocalesEnvironment = path.join(__dirname, "/../node_modules/@companieshouse/ch-node-utils/locales");
-const chNodeUtilsLocales = existsSync(_chNodeUtilsLocalesLocal) ? _chNodeUtilsLocalesLocal : _chNodeUtilsLocalesEnvironment;
+const chNodeUtilsLocalesLocal = path.join(__dirname, "/../../node_modules/@companieshouse/ch-node-utils/locales");
+const chNodeUtilsLocalesEnvironment = path.join(__dirname, "/../node_modules/@companieshouse/ch-node-utils/locales");
 
 function loadJsonFiles (dir: string): AnyRecord {
-    return fs.readdirSync(chNodeUtilsLocales)
-        .filter(file => file.endsWith(".json"))
+    let jsonFiles;
+    try {
+        jsonFiles = fs.readdirSync(chNodeUtilsLocalesLocal);
+    } catch {
+        jsonFiles = fs.readdirSync(chNodeUtilsLocalesEnvironment);
+    }
+    return jsonFiles.filter(file => file.endsWith(".json"))
         .reduce((acc: AnyRecord, file) => {
             const fileName = path.parse(file).name;
             acc[fileName] = JSON.parse(fs.readFileSync(path.join(dir, file), "utf8"));
