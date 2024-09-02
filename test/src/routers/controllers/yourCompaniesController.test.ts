@@ -7,8 +7,6 @@ import * as associationsService from "../../../../src/services/associationsServi
 import { emptyAssociations, userAssociations, userAssociationsWithNumberOfInvitations } from "../../../mocks/associations.mock";
 import * as en from "../../../../src/locales/en/translation/your-companies.json";
 import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
-import * as commonEn from "../../../../src/locales/en/translation/common.json";
-import * as commonCy from "../../../../src/locales/cy/translation/common.json";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
