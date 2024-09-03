@@ -45,11 +45,18 @@
                         items: [
                             {
                                 value: "yes",
-                                text: lang.yes
+                                text: lang.yes,
+                                attributes: {
+                                    "data-event-id": "yes-option"
+                                }
                             },
+
                             {
                                 value: "no",
-                                text: lang.no
+                                text: lang.no,
+                                attributes: {
+                                    "data-event-id": "no-option"
+                                }
                             }
                         ],
                         errorMessage: message
@@ -60,12 +67,12 @@
                     role: "button",
                     "aria-label": lang.continue_button_to_proceed_to_the_next_page,
                     id: "continue-button",
-                    "data-event-id": "continue-button-event"
+                    "data-event-id": "continue-button"
                 } %}
                 <div class="govuk-button-group">
                     {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
 
-                    <a id="cancel-link" class="govuk-link" href="{{backLinkHref}}" aria-label="{{lang.link_to_cancel_the_authorisation_cancellation_process}}">{{lang.cancel}}</a>
+                    <a id="cancel-link" data-event-id="cancel", class="govuk-link" href="{{backLinkHref}}" aria-label="{{lang.link_to_cancel_the_authorisation_cancellation_process}}">{{lang.cancel}}</a>
                 </div>
             </form>
         </div>

@@ -81,8 +81,15 @@ export class CompanyInvitationsHandler extends GenericHandler {
         return { rows, acceptIds: Array.from(acceptIds), declineIds: Array.from(declineIds) };
     }
 
+    // private getLink (path: string, ariaLabel: string, text: string, id: string): string {
+    //     return `<a href="${path}" id="${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}">${text}</a>`;
+    // }
+
     private getLink (path: string, ariaLabel: string, text: string, id: string): string {
-        return `<a href="${path}" id="${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}">${text}</a>`;
+        let dataEventId = "";
+        if (path.includes("accept")) { dataEventId = "accept"; }
+        else if (path.includes("decline")) { dataEventId = "decline"; }
+        return `<a href="${path}" id="${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}" data-event-id="${dataEventId}">${text}</a>`;
     }
 
     private async addCompanyInfoToInvites (req: Request, invites: Invitation[]): Promise<InvitationWithCompanyDetail[] | undefined> {

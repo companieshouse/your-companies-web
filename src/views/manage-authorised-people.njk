@@ -79,7 +79,7 @@
             <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
             <p class="govuk-body">
                 {{lang.you_may_wish_to}}
-                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
+                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
                 {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
             </p>
         {% endset%}
@@ -148,7 +148,7 @@
             }}
             {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, attributes: {
                 id: "add-new-authorised-person-button",
-                "data-event-id": "add-new-authorised-person-button-event"
+                "data-event-id": "add-new-authorised-person-button"
             } }) }}
         </div>
     </div>
@@ -175,7 +175,7 @@
             }
             if association.displayName and association.displayName !== "Not provided" else 
                 undefined %}
-            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, {
+            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, "remove-authorised-person", {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }, query_params) %}
@@ -188,10 +188,10 @@
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
-            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, {userEmail: association.userEmail})%}
+            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, "cancel-authorised-person", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
             {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, {userEmail: association.userEmail})%}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, "resend-invite-email", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}
