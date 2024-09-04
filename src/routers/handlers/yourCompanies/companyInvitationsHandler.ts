@@ -13,6 +13,7 @@ import { validatePageNumber } from "../../../lib/validation/generic";
 export class CompanyInvitationsHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
         this.viewData = await this.getViewData(req);
+        this.viewData.templateName = constants.COMPANY_INVITATIONS_PAGE;
         return Promise.resolve(this.viewData);
     }
 
@@ -87,9 +88,12 @@ export class CompanyInvitationsHandler extends GenericHandler {
 
     private getLink (path: string, ariaLabel: string, text: string, id: string): string {
         let dataEventId = "";
-        if (path.includes("accept")) { dataEventId = "accept"; }
-        else if (path.includes("decline")) { dataEventId = "decline"; }
-        return `<a href="${path}" id="${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}" data-event-id="${dataEventId}">${text}</a>`;
+        if (path.includes("accept")) {
+            dataEventId = "accept-invite";
+        } else if (path.includes("decline")) {
+            dataEventId = "decline-invite";
+        }
+        return `<a href="${path}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}" data-event-id="${dataEventId}">${text}</a>`;
     }
 
     private async addCompanyInfoToInvites (req: Request, invites: Invitation[]): Promise<InvitationWithCompanyDetail[] | undefined> {
