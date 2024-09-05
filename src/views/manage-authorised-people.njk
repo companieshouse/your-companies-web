@@ -146,9 +146,12 @@
                     text: lang.anyone_with_access_to_the_current_authentication
                 })
             }}
-            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, attributes: {
+            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, 
+            
+            attributes: {
                 id: "add-new-authorised-person-button",
-                "data-event-id": "add-new-authorised-person-button"
+                "data-event-id": "add-new-authorised-person-button",
+                onclick: "_paq.push(['trackGoal'," + matomoAddNewAuthorisedPersonGoalId + "]);"
             } }) }}
         </div>
     </div>
