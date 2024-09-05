@@ -2,9 +2,6 @@ import fs from "fs";
 import http from "http";
 import https from "https";
 import logger from "./lib/Logger";
-import dotenv from "dotenv";
-dotenv.config();
-console.log(process.env);
 import app from "./app"; // eslint-disable-line
 
 // start the HTTP server
