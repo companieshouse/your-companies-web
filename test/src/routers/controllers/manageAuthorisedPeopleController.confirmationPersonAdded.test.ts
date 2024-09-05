@@ -7,8 +7,8 @@ import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../../src/types/associations";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../src/constants";
-import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
-import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
+import * as en from "../../../../locales/en/manage-authorised-people.json";
+import * as cy from "../../../../locales/cy/manage-authorised-people.json";
 
 const router = supertest(app);
 

@@ -1,9 +1,9 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../src/locales/en/translation/company-invitations-decline.json";
-import * as cy from "../../../../src/locales/cy/translation/company-invitations-decline.json";
-import {updateAssociationStatus} from "../../../../src/services/associationsService";
+import * as en from "../../../../locales/en/company-invitations-decline.json";
+import * as cy from "../../../../locales/cy/company-invitations-decline.json";
+import { updateAssociationStatus } from "../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
@@ -102,8 +102,8 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         getExtraDataSpy.mockReturnValue(constants.TRUE);
         // When
         const result = await router
-        .get(fullUrl)
-        .set("Referer", referrerUrl);
+            .get(fullUrl)
+            .set("Referer", referrerUrl);
         // Then
         expect(result.statusCode).toBe(200);
         expect(result.text).toContain(companyName);

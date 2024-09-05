@@ -6,8 +6,8 @@ import { NextFunction, Request, Response } from "express";
 import { validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import * as en from "../../../../src/locales/en/translation/confirm-company-details.json";
-import * as cy from "../../../../src/locales/cy/translation/confirm-company-details.json";
+import * as en from "../../../../locales/en/confirm-company-details.json";
+import * as cy from "../../../../locales/cy/confirm-company-details.json";
 
 const router = supertest(app);
 const url = "/your-companies/confirm-company-details";
@@ -107,7 +107,7 @@ describe(`GET ${url}`, () => {
     });
     it("should return formatted company information from get profile request", async () => {
         session.data.extra_data.companyProfile = badFormatCompanyProfile;
-        const response = await router.get(`${url}`);
+        const response = await router.get(`${url}?lang=en`);
         const expectedCompanyStatus = "Active";
         const expectedCompanyType = "Private limited company";
         const expectedDateOfCreation = "22 June 1972";

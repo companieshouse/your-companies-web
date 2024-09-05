@@ -4,10 +4,10 @@ import supertest from "supertest";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import * as constants from "../../../../src/constants";
-import * as en from "../../../../src/locales/en/translation/presenter-already-added.json";
-import * as cy from "../../../../src/locales/cy/translation/presenter-already-added.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/presenter-already-added.json";
+import * as cy from "../../../../locales/cy/presenter-already-added.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 import { when } from "jest-when";
 
 const router = supertest(app);

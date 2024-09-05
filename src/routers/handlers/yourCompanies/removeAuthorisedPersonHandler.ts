@@ -37,7 +37,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private getViewData (req: Request): ViewData {
-        const lang = getTranslationsForView(req.t, constants.REMOVE_AUTHORISED_PERSON_PAGE);
+        const lang = getTranslationsForView((req as any).lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         return {
             lang: lang,
             companyNumber: req.params[constants.COMPANY_NUMBER],

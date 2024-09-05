@@ -3,8 +3,8 @@ import { companyAssociationsPage2, companyAssociationsPage1 } from "../../../moc
 import app from "../../../../src/app";
 import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
 const router = supertest(app);

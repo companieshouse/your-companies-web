@@ -112,3 +112,6 @@ typings/
 # IDE metadata
 .idea
 .vscode
+
+# ch-node-utils
+**/ch-node-utils*.json

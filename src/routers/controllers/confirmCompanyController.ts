@@ -11,7 +11,7 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response): 
     const confirmCompanyDetailsIndicator = true;
     setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, confirmCompanyDetailsIndicator);
 
-    const viewData = await new ConfirmCorrectCompanyHandler().execute(req.t, companyProfile, req.language);
+    const viewData = await new ConfirmCorrectCompanyHandler().execute((req as any).lang, companyProfile);
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };
 
@@ -26,5 +26,4 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
     const nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
 
     return res.redirect(nextPageUrl);
-
 };

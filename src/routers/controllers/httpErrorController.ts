@@ -26,7 +26,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         const statusCode: number = err.statusCode || 500;
 
         res.status(statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {
-            lang: getTranslationsForView(req.t, constants.SERVICE_UNAVAILABLE)
+            lang: getTranslationsForView((req as any).lang, constants.SERVICE_UNAVAILABLE)
         });
     } else {
         next(err);
