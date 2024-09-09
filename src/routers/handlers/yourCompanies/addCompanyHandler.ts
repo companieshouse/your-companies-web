@@ -25,6 +25,7 @@ export class AddCompanyHandler extends GenericHandler {
         try {
             this.viewData = this.getViewData();
             this.viewData.lang = getTranslationsForView(req.t, constants.ADD_COMPANY_PAGE);
+            this.viewData.templateName = constants.ADD_COMPANY_PAGE;
 
             // we delete the form values when the journey begins again (cf param in url is true)
             const clearForm = req.query[constants.CLEAR_FORM] as string;
@@ -74,7 +75,6 @@ export class AddCompanyHandler extends GenericHandler {
                 this.viewData.errors = this.processHandlerException(err);
             }
         }
-        this.addMatomoTags();
         return Promise.resolve(this.viewData);
     }
 
@@ -120,10 +120,5 @@ export class AddCompanyHandler extends GenericHandler {
         return {
             backLinkHref: constants.LANDING_URL
         } as ViewData;
-    }
-
-    private addMatomoTags () {
-        this.viewData.matomoButtonClick = constants.MATOMO_BUTTON_CLICK;
-        this.viewData.matomoContinueButton = constants.MATOMO_CONTINUE_BUTTON;
     }
 }

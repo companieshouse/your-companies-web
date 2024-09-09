@@ -58,15 +58,11 @@
                     role: "button",
                     "aria-label": lang.continue_button_to_proceed_to_the_next_page,
                     id: "continue-button",
-                    "data-event-id": "continue-button-event"
+                    "data-event-id": "continue-button"
                 } %}
                 {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
             </form>
         </div>
     </div>
-
-    <script>
-        trackEvent("continue-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoContinueButton}}");
-        trackEvent("back-link-to-previous-page", "{{title}}", "{{matomoLinkClick}}", "{{matomoBackLink}}");
-    </script>
+    
 {% endblock %}

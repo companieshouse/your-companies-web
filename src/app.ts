@@ -73,9 +73,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("ENGLISH", "en");
     njk.addGlobal("WELSH", "cy");
     njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
-    njk.addGlobal("matomoButtonClick", constants.MATOMO_BUTTON_CLICK);
-    njk.addGlobal("matomoLinkClick", constants.MATOMO_LINK_CLICK);
-    njk.addGlobal("matomoBackLink", constants.MATOMO_BACK_LINK);
     next();
 });
 

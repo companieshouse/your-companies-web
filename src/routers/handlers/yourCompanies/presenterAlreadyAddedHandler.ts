@@ -21,13 +21,13 @@ export class PresenterAlreadyAddedHandler extends GenericHandler {
         const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
         const backLinkHref = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_CHECK_PRESENTER_URL, companyNumber);
         return {
+            templateName: constants.PRESENTER_ALREADY_ADDED_PAGE,
             lang: translations,
             companyNumber,
             companyName,
             emailAddress,
             backLinkHref,
-            landingPageUrl: constants.LANDING_URL,
-            matomoBackToYourCompaniesLink: constants.MATOMO_GO_BACK_TO_YOUR_COMPANIES_LINK
+            landingPageUrl: constants.LANDING_URL
         };
     }
 }

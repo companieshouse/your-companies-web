@@ -32,11 +32,10 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
         const companyName = req.query[constants.COMPANY_NAME] as string;
         return {
+            templateName: constants.COMPANY_INVITATIONS_ACCEPT_PAGE,
             lang: translations,
             yourCompaniesUrl: constants.LANDING_URL,
-            companyName,
-            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
-            matomoViewYourCompaniesLink: constants.MATOMO_VIEW_YOUR_COMPANIES_LINK
+            companyName
         };
     }
 }

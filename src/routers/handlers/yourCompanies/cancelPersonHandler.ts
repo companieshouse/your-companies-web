@@ -40,13 +40,12 @@ export class CancelPersonHandler extends GenericHandler {
     private getViewData (req: Request): ViewData {
         const lang = getTranslationsForView(req.t, constants.CANCEL_PERSON_PAGE);
         return {
+            templateName: constants.CANCEL_PERSON_PAGE,
             lang: lang,
             backLinkHref: getExtraData(req.session, constants.REFERER_URL),
             companyName: getExtraData(req.session, constants.COMPANY_NAME),
             userEmail: req.params[constants.USER_EMAIL],
-            buttonHref: req.originalUrl,
-            matomoContinueButton: constants.MATOMO_CONTINUE_BUTTON,
-            matomoCancelLink: constants.MATOMO_CANCEL_LINK
+            buttonHref: req.originalUrl
         };
     }
 }

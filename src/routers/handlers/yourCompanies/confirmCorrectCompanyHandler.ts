@@ -24,13 +24,12 @@ export class ConfirmCorrectCompanyHandler extends GenericHandler {
 
         return {
             ...formattedCompanyProfile,
+            templateName: constants.CONFIRM_COMPANY_PAGE,
             registeredOfficeAddress: buildAddress(formattedCompanyProfile),
             backLinkHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
             backLinkWithClearForm: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
             feedbackSource: constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
-            lang: translations,
-            matomoConfirmAndContinueButton: constants.MATOMO_CONFIRM_AND_CONTINUE_BUTTON,
-            matomoChooseDifferentCompanyLink: constants.MATOMO_CHOOSE_DIFFERENT_COMPANY_LINK
+            lang: translations
         };
     }
 }

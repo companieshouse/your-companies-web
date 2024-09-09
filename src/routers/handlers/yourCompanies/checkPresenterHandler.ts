@@ -38,14 +38,13 @@ export class CheckPresenterHandler extends GenericHandler {
         const url = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber);
 
         return {
+            templateName: constants.CHECK_PRESENTER_PAGE,
             lang: translations,
             companyName: companyName,
             companyNumber: companyNumber,
             emailAddress,
             backLinkHref: url,
-            backLinkWithClearForm: url + constants.CLEAR_FORM_TRUE,
-            matomoConfirmAndSendEmailButton: constants.MATOMO_CONFIRM_AND_SEND_EMAIL_BUTTON,
-            matomoChangeLink: constants.MATOMO_CHANGE_LINK
+            backLinkWithClearForm: url + constants.CLEAR_FORM_TRUE
         };
     }
 }

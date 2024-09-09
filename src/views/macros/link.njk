@@ -1,20 +1,18 @@
-{# 
+{#
 This macro creates a hyperlink with a visually hidden text
 @param text - (string, required) is the text to enclose in <a></a> tags
 @param visuallyHiddenText - (string, required) is the visually hidden text for screen readers
 @param href - (string, required) is the URL that the hyperlink points to
-@param matomoParams - (string[], required) contains matomo tags used to track a click event.
-                        It should contain 3 tags: event category, event action, and event name.
+@param matomoTagName - (string, required) contains matomo tag name used to track a click event.
 @param urlParams - ({ [key: string]: string }, optional) contains key/value pairs
                 to replace the route parameters in href
 @param queryParams - ({ [key: string]: string }, optional) contains key/value pairs
                 to replace the query parameters in href
 #}
 
-{% macro link(text, visuallyHiddenText, href, matomoParams, urlParams, queryParams) %}
+{% macro link(text, visuallyHiddenText, href, matomoTagName, urlParams, queryParams) %}
     {% set href = prepareHref(href, urlParams, queryParams) %}
-
-    <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state" onclick="_paq.push(['trackEvent', '{{matomoParams[0]}}', '{{matomoParams[1]}}', '{{matomoParams[2]}}']);">
+    <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state" data-event-id="{{matomoTagName}}">
         {{text}}
         <span class="govuk-visually-hidden">{{visuallyHiddenText}}</span>
     </a>

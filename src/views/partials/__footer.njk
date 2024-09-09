@@ -74,6 +74,8 @@
     window.PIWIK_URL = '{{ piwikUrl }}';
     window.PIWIK_SITE_ID = '{{ piwikSiteId }}';
 </script>
+<div id="templateName" data-id='{{templateName}}' hidden></div>
+<script src="{{ cdnHost }}/javascripts/app/piwik-enable.js"></script>
 <script type="module" src="{{ cdnUrlJs }}/govuk-frontend.min.js"></script>
 <script src="{{ cdnHost }}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
 <script src="{{ cdnHost }}/javascripts/app/cookie-consent/matomo-only-cookie-consent.js"></script>
@@ -88,6 +90,11 @@
         });
     });
 </script>
+<noscript>
+    <p>
+        <img src="{{piwikUrl}}/piwik.php?idsite={{piwikSiteId}}" style="border:0;" alt="" />
+    </p>
+</noscript>
 <script type="module">
     import {initAll} from "{{ cdnUrlJs }}/govuk-frontend.min.js"
     initAll()
