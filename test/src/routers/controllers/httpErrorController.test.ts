@@ -63,4 +63,20 @@ describe("httpErrorHandler", () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
         expect(mockNext).toHaveBeenCalledWith(error);
     });
+    it("should redirect to your-companies if error has property redirctToYourCompanies true", async () => {
+        const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
+        request.originalUrl = "/originalUrl";
+        request.method = "POST";
+        mockGetTranslationsForView.mockReturnValueOnce({});
+
+        const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`, { redirctToYourCompanies: true });
+        // When
+        httpErrorHandler(unauthorizedError, request, response, mockNext);
+        // Then
+        expect(response.redirect).toHaveBeenCalledWith("/your-companies");
+        expect(logger.errorRequest).toHaveBeenCalledTimes(1);
+        expect(logger.errorRequest).toHaveBeenCalledWith(request,
+            expect.stringContaining(`A 401 UnauthorizedError`)
+        );
+    });
 });

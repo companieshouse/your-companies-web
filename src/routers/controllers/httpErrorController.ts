@@ -23,6 +23,10 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
             req,
             `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request was made to ${req.originalUrl}. Re-routing to the error template page. Error name: ${err.name}, Error status: ${err.status}, Error message:  + ${err.message}, Stack: " + ${err.stack}`
         );
+        if (err.redirctToYourCompanies === true) {
+            logger.error(err.message);
+            return res.redirect(constants.LANDING_URL);
+        }
         const statusCode: number = err.statusCode || 500;
 
         res.status(statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {

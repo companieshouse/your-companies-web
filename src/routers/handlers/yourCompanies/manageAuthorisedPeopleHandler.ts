@@ -84,7 +84,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     private async preventUnauthorisedAccess (req: Request, companyNumber: string) {
         const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
         if (isAssociated.state !== AssociationState.COMPNANY_ASSOCIATED_WITH_USER) {
-            return Promise.reject(createError(StatusCodes.FORBIDDEN));
+            const errorText = `${ManageAuthorisedPeopleHandler.name} ${this.preventUnauthorisedAccess.name}: Unauthorised, redirecting to your companies`;
+            const forbiddenError = createError(StatusCodes.FORBIDDEN, errorText, { redirctToYourCompanies: true });
+            return Promise.reject(createError(forbiddenError));
         }
     }
 
