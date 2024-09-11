@@ -17,6 +17,7 @@
         document
             .getElementById(elementId)
             .addEventListener("click", () => {
+            console.log("tracking goal", elementId, goalId)
                 _paq.push(["trackGoal", goalId]);
             });
     }
