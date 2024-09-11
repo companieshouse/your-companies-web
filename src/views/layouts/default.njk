@@ -12,6 +12,14 @@
                 'noModule' in HTMLScriptElement.prototype
                 ? ' govuk-frontend-supported'
                 : '');
+
+    function trackGoal(elementId, goalId) {
+        document
+            .getElementById(elementId)
+            .addEventListener("click", () => {
+                _paq.push(["trackGoal", goalId]);
+            });
+    }
         </script>
         {% include "partials/cookie_consent_banner.njk" %}
         <div role="navigation" aria-label="{{lang.skip_to_main_content}}">
