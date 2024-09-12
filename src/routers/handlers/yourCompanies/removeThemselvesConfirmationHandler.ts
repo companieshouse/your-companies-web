@@ -9,7 +9,7 @@ export class RemoveThemselvesConfirmationHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
         this.viewData = await this.getViewData(req);
         this.viewData.lang = getTranslationsForView(
-            req.t,
+            (req as any).lang,
             constants.REMOVED_THEMSELVES
         );
         this.viewData.templateName = constants.REMOVED_THEMSELVES;

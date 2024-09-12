@@ -1,7 +1,7 @@
 import mocks from "../mocks/all.middleware.mock";
 import supertest from "supertest";
 import app from "../../src/app";
-import * as en from "../../src/locales/en/translation/service-unavailable.json";
+import * as en from "../../locales/en/service-unavailable.json";
 
 const router = supertest(app);
 const url = "/wrong-url";

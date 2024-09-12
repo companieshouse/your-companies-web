@@ -3,8 +3,8 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import * as en from "../../../../src/locales/en/translation/add-presenter.json";
-import * as cy from "../../../../src/locales/cy/translation/add-presenter.json";
+import * as en from "../../../../locales/en/add-presenter.json";
+import * as cy from "../../../../locales/cy/add-presenter.json";
 import * as constants from "../../../../src/constants";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { NextFunction, Request, Response } from "express";
@@ -76,7 +76,7 @@ describe(`GET ${url}`, () => {
         const expectedInput = "bad email";
         session.setExtraData("proposedEmail", expectedInput);
 
-        const response = await router.get(`${url}`);
+        const response = await router.get(`${url}?lang=en`);
 
         expect(response.text).toContain(expectedInput);
         expect(response.text).toContain("Enter an email address in the correct format");

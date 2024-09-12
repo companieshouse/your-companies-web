@@ -50,7 +50,7 @@ export class AddPresenterHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request, companyNumber: string, companyName: string): Promise<ViewData> {
-        const translations = getTranslationsForView(req.t, constants.ADD_PRESENTER_PAGE);
+        const translations = getTranslationsForView((req as any).lang, constants.ADD_PRESENTER_PAGE);
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
 
         return {

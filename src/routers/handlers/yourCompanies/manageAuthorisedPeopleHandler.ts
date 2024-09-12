@@ -30,7 +30,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         await this.preventUnauthorisedAccess(req, companyNumber);
 
-        const lang = getTranslationsForView(req.t, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
+        const lang = getTranslationsForView((req as any).lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData = this.getViewData(companyNumber, lang);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);

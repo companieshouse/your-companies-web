@@ -5,10 +5,10 @@ import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../src/constants";
-import * as en from "../../../../src/locales/en/translation/confirmation-company-added.json";
-import * as cy from "../../../../src/locales/cy/translation/confirmation-company-added.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/confirmation-company-added.json";
+import * as cy from "../../../../locales/cy/confirmation-company-added.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 
 const router = supertest(app);
 const url = `/your-companies/confirmation-company-added`;

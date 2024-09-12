@@ -15,10 +15,10 @@ import * as associationService from "../../../../src/services/associationsServic
 import * as constants from "../../../../src/constants";
 import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import * as en from "../../../../src/locales/en/translation/add-company.json";
-import * as cy from "../../../../src/locales/cy/translation/add-company.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/add-company.json";
+import * as cy from "../../../../locales/cy/add-company.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 import { Session } from "@companieshouse/node-session-handler";
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
@@ -91,7 +91,7 @@ describe("GET /your-companies/add-company", () => {
         companyProfileSpy.mockRejectedValue({
             httpStatusCode: StatusCodes.BAD_REQUEST
         } as Resource<CompanyProfile>);
-        const response = await router.get("/your-companies/add-company");
+        const response = await router.get("/your-companies/add-company?lang=en");
         expect(response.text).toContain(expectedInput);
         expect(response.text).toContain("Enter a company number that is 8 characters long");
     });
@@ -385,7 +385,7 @@ describe("POST /your-companies/add-company", () => {
             httpStatusCode: StatusCodes.BAD_GATEWAY
         } as Resource<CompanyProfile>);
         // When
-        const response = await router.post("/your-companies/add-company").send({ companyNumber: "12345678" });
+        const response = await router.post("/your-companies/add-company?lang=en").send({ companyNumber: "12345678" });
         // Then
         expect(response.text).toContain(enCommon.generic_error_message);
     });

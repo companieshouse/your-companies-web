@@ -18,7 +18,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const translations = getTranslationsForView(req.t, constants.COMPANY_INVITATIONS_PAGE);
+        const translations = getTranslationsForView((req as any).lang, constants.COMPANY_INVITATIONS_PAGE);
         const viewData: ViewData = {
             lang: translations,
             backLinkHref: constants.LANDING_URL

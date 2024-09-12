@@ -3,10 +3,10 @@ import { companyAssociations } from "../../../mocks/associations.mock";
 import app from "../../../../src/app";
 import * as associationsService from "../../../../src/services/associationsService";
 import supertest from "supertest";
-import * as en from "../../../../src/locales/en/translation/manage-authorised-people.json";
-import * as cy from "../../../../src/locales/cy/translation/manage-authorised-people.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/manage-authorised-people.json";
+import * as cy from "../../../../locales/cy/manage-authorised-people.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 import * as constants from "../../../../src/constants";
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 
