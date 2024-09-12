@@ -1,15 +1,17 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { toReadableFormat } from "./date";
+import { FormattedCompanyProfile, OfficeAddress } from "../../types/util-types";
 
-export const formatForDisplay = (companyProfile: CompanyProfile, lang: string) => {
-    const registeredOfficeAddress = {
+export const formatForDisplay = (companyProfile: CompanyProfile, lang: string): FormattedCompanyProfile => {
+    const registeredOfficeAddress: OfficeAddress = {
         addressLineOne: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineOne),
         addressLineTwo: formatTitleCase(companyProfile.registeredOfficeAddress.addressLineTwo),
         locality: formatTitleCase(companyProfile.registeredOfficeAddress.locality),
         region: formatTitleCase(companyProfile.registeredOfficeAddress.region),
         country: formatTitleCase(companyProfile.registeredOfficeAddress.country),
-        postalCode: companyProfile.registeredOfficeAddress.postalCode ? companyProfile.registeredOfficeAddress.postalCode.toUpperCase() : null,
-        poBox: companyProfile.registeredOfficeAddress.poBox ? companyProfile.registeredOfficeAddress.poBox.toUpperCase() : null
+        postalCode: companyProfile.registeredOfficeAddress.postalCode.toUpperCase(),
+        poBox: companyProfile.registeredOfficeAddress.poBox.toUpperCase(),
+        premises: companyProfile.registeredOfficeAddress.premises
     };
 
     return {
@@ -33,7 +35,7 @@ export const formatTitleCase = (str: string | undefined): string => {
         });
 };
 
-export const buildAddress = (formattedCompanyProfile: any): string => {
+export const buildAddress = (formattedCompanyProfile: FormattedCompanyProfile): string => {
     const addressArray: string[] = [
         formattedCompanyProfile.registeredOfficeAddress.poBox,
         formattedCompanyProfile.registeredOfficeAddress.premises,
