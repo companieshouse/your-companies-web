@@ -1,4 +1,9 @@
-import { validateCompanyNumberSearchString, validateEmailString, validatePageNumber, validateClearForm } from "../../../../src/lib/validation/generic";
+import {
+    validateCompanyNumberSearchString,
+    validateEmailString,
+    validatePageNumber,
+    validateClearForm
+} from "../../../../src/lib/validation/generic";
 
 describe("Should validate emails", () => {
     it.each([
