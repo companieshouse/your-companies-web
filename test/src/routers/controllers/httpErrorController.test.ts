@@ -33,7 +33,7 @@ describe("httpErrorHandler", () => {
         jest.clearAllMocks();
     });
 
-    it("should detect a http-error Error, call logger.errorRequest and render an service unavailable template", async () => {
+    it("should detect a http-error Error, call logger.errorRequest and render an service unavailable template", () => {
         // Given
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
@@ -50,7 +50,7 @@ describe("httpErrorHandler", () => {
             expect.stringContaining(`A 401 UnauthorizedError`)
         );
     });
-    it("should ignore errors that are not from http-errors modules, and pass then to next", async () => {
+    it("should ignore errors that are not from http-errors modules, and pass then to next", () => {
         // Given
         request.originalUrl = "/originalUrl";
         request.method = "POST";
@@ -63,7 +63,7 @@ describe("httpErrorHandler", () => {
         expect(mockNext).toHaveBeenCalledTimes(1);
         expect(mockNext).toHaveBeenCalledWith(error);
     });
-    it("should redirect to your-companies if error has property redirctToYourCompanies true", async () => {
+    it("should redirect to your-companies if error has property redirctToYourCompanies true", () => {
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
         request.method = "POST";
@@ -79,7 +79,7 @@ describe("httpErrorHandler", () => {
             expect.stringContaining(`A 401 UnauthorizedError`)
         );
     });
-    it("should not redirect to your-companies if error does not have property redirctToYourCompanies true", async () => {
+    it("should not redirect to your-companies if error does not have property redirctToYourCompanies true", () => {
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
         request.method = "POST";
