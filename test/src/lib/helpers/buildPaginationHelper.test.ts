@@ -163,6 +163,22 @@ describe("Pagination element test suite", () => {
     });
 
     it.each([
+        [1, { previous: false, items: ["1", "2", "...", "10"], next: true }],
+        [2, { previous: true, items: ["1", "2", "3", "...", "10"], next: true }],
+        [3, { previous: true, items: ["1", "2", "3", "4", "...", "10"], next: true }],
+        [4, { previous: true, items: ["1", "2", "3", "4", "5", "...", "10"], next: true }],
+        [5, { previous: true, items: ["1", "...", "4", "5", "6", "...", "10"], next: true }],
+        [6, { previous: true, items: ["1", "...", "5", "6", "7", "...", "10"], next: true }],
+        [7, { previous: true, items: ["1", "...", "6", "7", "8", "9", "10"], next: true }],
+        [8, { previous: true, items: ["1", "...", "7", "8", "9", "10"], next: true }],
+        [9, { previous: true, items: ["1", "...", "8", "9", "10"], next: true }],
+        [10, { previous: true, items: ["1", "...", "9", "10"], next: false }]
+    ])("10 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
+        const numOfPages = 10;
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+    });
+
+    it.each([
         [2, { previous: true, items: ["1", "2", "3", "...", "22"], next: true }],
         [7, { previous: true, items: ["1", "...", "6", "7", "8", "...", "22"], next: true }],
         [13, { previous: true, items: ["1", "...", "12", "13", "14", "...", "22"], next: true }],
