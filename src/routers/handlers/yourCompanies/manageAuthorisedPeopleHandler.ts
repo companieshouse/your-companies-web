@@ -39,13 +39,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        try {
-            if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
-                deleteExtraData(req.session, constants.REMOVE_PERSON);
-                await this.handleCancellation(req, cancellation, companyNumber);
-            }
-        } catch (error) {
-            logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
+        if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
+            deleteExtraData(req.session, constants.REMOVE_PERSON);
+            await this.handleCancellation(req, cancellation, companyNumber);
         }
 
         this.handleRemoveConfirmation(req);
