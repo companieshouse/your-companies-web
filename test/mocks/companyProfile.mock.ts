@@ -2,6 +2,7 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from "http-status-codes";
+import { FormattedCompanyProfile, OfficeAddress } from "../../src/types/util-types";
 
 jest.mock("../../src/services/companyProfileService");
 
@@ -43,6 +44,24 @@ export const validActiveCompanyProfile: CompanyProfile = {
     },
     sicCodes: ["123"],
     type: "ltd"
+};
+
+export const formatterValidActiveCompanyProfile: FormattedCompanyProfile = {
+    companyNumber: "12345678",
+    companyName: "Test Company",
+    type: "ltd",
+    companyStatus: "active",
+    dateOfCreation: "22 June 1972",
+    registeredOfficeAddress: {
+        addressLineOne: "Line1",
+        addressLineTwo: "Line2",
+        locality: "Locality",
+        region: "Region",
+        country: "Uk",
+        postalCode: "POST CODE",
+        poBox: "123",
+        premises: "premises"
+    } as OfficeAddress
 };
 
 export const validDisolvedCompanyProfile: CompanyProfile = {
