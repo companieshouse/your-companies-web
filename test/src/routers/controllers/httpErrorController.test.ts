@@ -14,7 +14,6 @@ logger.errorRequest = jest.fn();
 
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
-
     return {
         __esModule: true,
         ...originalModule,
@@ -44,7 +43,10 @@ describe("httpErrorHandler", () => {
         // When
         httpErrorHandler(unauthorizedError, request, response, mockNext);
         // Then
-        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
+        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.objectContaining({
+            lang: {},
+            templateName: "service-unavailable"
+        }));
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
             expect.stringContaining(`A 401 UnauthorizedError error occurred when a POST request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
@@ -91,7 +93,10 @@ describe("httpErrorHandler", () => {
         // When
         httpErrorHandler(unauthorizedError, request, response, mockNext);
         // Then
-        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
+        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.objectContaining({
+            lang: {},
+            templateName: "service-unavailable"
+        }));
         expect(response.redirect).not.toHaveBeenCalled();
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
