@@ -8,10 +8,10 @@ import {
 import { mockInvitationList, getMockInvitationList, getPaginatedMockInvitationList, fifteenMockInvitations } from "../../../mocks/invitations.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../src/locales/en/translation/company-invitations.json";
-import * as cy from "../../../../src/locales/cy/translation/company-invitations.json";
-import * as commonEn from "../../../../src/locales/en/translation/common.json";
-import * as commonCy from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/company-invitations.json";
+import * as cy from "../../../../locales/cy/company-invitations.json";
+import * as commonEn from "../../../../locales/en/common.json";
+import * as commonCy from "../../../../locales/cy/common.json";
 import * as associationsService from "../../../../src/services/associationsService";
 import { AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 
@@ -150,7 +150,7 @@ describe(`GET ${url}`, () => {
         const expectedNotContainCompanyName2 = "BRITISH AIRWAYS PLC";
 
         // When
-        const response = await router.get(url);
+        const response = await router.get(url + "?lang=en");
 
         // Then
         expect(response.text).toContain(en.h1);

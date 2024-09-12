@@ -4,10 +4,10 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { getInvitations, getUserAssociations } from "../../../../src/services/associationsService";
 import { emptyAssociations, oneConfirmedAssociation, twentyConfirmedAssociations } from "../../../mocks/associations.mock";
-import * as en from "../../../../src/locales/en/translation/your-companies.json";
-import * as cy from "../../../../src/locales/cy/translation/your-companies.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
+import * as en from "../../../../locales/en/your-companies.json";
+import * as cy from "../../../../locales/cy/your-companies.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
+import * as enCommon from "../../../../locales/en/common.json";
 jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
@@ -58,7 +58,7 @@ describe("GET /your-companies", () => {
         mockGetInvitations.mockResolvedValue(oneConfirmedAssociation);
 
         // When
-        const response = await router.get("/your-companies?page=2");
+        const response = await router.get("/your-companies?page=2&lang=en");
         // Then
         expect(response.text).toContain(en.search);
         expect(response.text).toContain(enCommon.previous);

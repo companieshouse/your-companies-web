@@ -9,7 +9,7 @@ export class CompanyAddSuccessHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
         this.viewData = await this.getViewData(req);
         this.viewData.lang = getTranslationsForView(
-            req.t,
+            (req as any).lang,
             constants.COMPANY_ADD_SUCCESS_PAGE
         );
         this.viewData.templateName = constants.COMPANY_ADD_SUCCESS_PAGE;

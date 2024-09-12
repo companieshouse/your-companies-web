@@ -1,10 +1,10 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../src/locales/en/translation/company-invitations-accept.json";
-import * as cy from "../../../../src/locales/cy/translation/company-invitations-accept.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/company-invitations-accept.json";
+import * as cy from "../../../../locales/cy/company-invitations-accept.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 import { updateAssociationStatus } from "../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";

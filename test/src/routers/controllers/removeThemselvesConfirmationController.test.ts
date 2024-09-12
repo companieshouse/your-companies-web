@@ -3,10 +3,10 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import * as en from "../../../../src/locales/en/translation/confirmation-person-removed-themselves.json";
-import * as cy from "../../../../src/locales/cy/translation/confirmation-person-removed-themselves.json";
-import * as enCommon from "../../../../src/locales/en/translation/common.json";
-import * as cyCommon from "../../../../src/locales/cy/translation/common.json";
+import * as en from "../../../../locales/en/confirmation-person-removed-themselves.json";
+import * as cy from "../../../../locales/cy/confirmation-person-removed-themselves.json";
+import * as enCommon from "../../../../locales/en/common.json";
+import * as cyCommon from "../../../../locales/cy/common.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
 

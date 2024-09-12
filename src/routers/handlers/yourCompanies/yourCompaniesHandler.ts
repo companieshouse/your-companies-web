@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AssociationList, AssociationStatus, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
@@ -46,7 +46,7 @@ export class YourCompaniesHandler extends GenericHandler {
         deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
         deleteExtraData(req.session, constants.CURRENT_COMPANY_NUM);
 
-        const lang = getTranslationsForView(req.t, constants.YOUR_COMPANIES_PAGE);
+        const lang = getTranslationsForView((req as any).lang, constants.YOUR_COMPANIES_PAGE);
         this.viewData = this.getViewData(confirmedUserAssociations, invites, lang);
         this.viewData.search = search;
         if (errorMassage) {

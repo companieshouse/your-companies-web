@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "rm -rf ./dist",
     "build:assets": "gulp build",
-    "build:server": "tsc && cp -r src/views dist/ && cp -r src/locales dist/",
+    "build:server": "tsc && cp -r src/views dist/ && cp -r locales dist/",
     "build": "npm run build:assets && npm run build:server",
     "lint": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts'",
     "lint:fix": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts' --fix",
@@ -35,7 +35,7 @@
   "dependencies": {
     "@braintree/sanitize-url": "^7.0.1",
     "@companieshouse/api-sdk-node": "^2.0.160",
-    "@companieshouse/ch-node-utils": "^1.3.8",
+    "@companieshouse/ch-node-utils": "^1.3.10",
     "@companieshouse/node-session-handler": "^5.0.2",
     "@companieshouse/structured-logging-node": "^2.0.1",
     "@companieshouse/web-security-node": "^4.1.1",
@@ -56,6 +56,7 @@
     "nunjucks": "3.2.4",
     "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.20",
     "require-directory": "^2.1.1",
+    "tslib": "^2.6.3",
     "uuid": "9.0.1",
     "yargs": "17.7.2",
     "zod": "^3.23.8"
