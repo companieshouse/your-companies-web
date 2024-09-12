@@ -25,7 +25,8 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         );
         if (err.redirctToYourCompanies) {
             logger.error(err.message);
-            return res.redirect(constants.LANDING_URL);
+            res.redirect(constants.LANDING_URL);
+            return;
         }
         const statusCode: number = err.statusCode || 500;
 
