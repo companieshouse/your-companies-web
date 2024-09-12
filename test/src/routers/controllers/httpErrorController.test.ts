@@ -47,7 +47,7 @@ describe("httpErrorHandler", () => {
         expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a POST request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
         );
     });
     it("should ignore errors that are not from http-errors modules, and pass then to next", () => {
@@ -66,7 +66,7 @@ describe("httpErrorHandler", () => {
     it("should redirect to your-companies if error has property redirctToYourCompanies true", () => {
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
-        request.method = "POST";
+        request.method = "GET";
         mockGetTranslationsForView.mockReturnValueOnce({});
 
         const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`, { redirctToYourCompanies: true });
@@ -76,13 +76,13 @@ describe("httpErrorHandler", () => {
         expect(response.redirect).toHaveBeenCalledWith("/your-companies");
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
         );
     });
     it("should not redirect to your-companies if error does not have property redirctToYourCompanies true", () => {
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
-        request.method = "POST";
+        request.method = "GET";
         mockGetTranslationsForView.mockReturnValueOnce({});
 
         const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`, { redirctToYourCompanies: false });
@@ -93,7 +93,7 @@ describe("httpErrorHandler", () => {
         expect(response.redirect).not.toHaveBeenCalled();
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
         );
     });
 });
