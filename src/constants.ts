@@ -151,43 +151,15 @@ export const SERVICE_NAME = "Your companies";
 // Booleans
 export const TRUE = "true";
 
-// Matomo
-export const MATOMO_LINK_CLICK = "Link Click";
-export const MATOMO_BUTTON_CLICK = "Button Click";
-export const MATOMO_ADD_COMPANY_BUTTON = "Add a Company Button";
-export const MATOMO_VIEW_AND_MANAGE_LINK = "View and Manage Link";
-export const MATOMO_CONTINUE_BUTTON = "Continue Button";
-export const MATOMO_CONFIRM_AND_CONTINUE_BUTTON = "Confirm and Continue Button";
-export const MATOMO_CHOOSE_DIFFERENT_COMPANY_LINK = "Choose a Different Company Link";
-export const MATOMO_VIEW_YOUR_COMPANIES_LINK = "View Your Companies Link";
-export const MATOMO_ADD_NEW_AUTHORISED_PERSON_BUTTON = "Add a New Authorised Person Button";
-export const MATOMO_REMOVE_AUTHORISED_USER_LINK = "Remove Authorised User Link";
-export const MATOMO_CANCEL_AUTHORISED_USER_LINK = "Cancel Authorised User Link";
-export const MATOMO_RESEND_AUTHORISED_USER_EMAIL_LINK = "Resend Authorised User Email Link";
-export const MATOMO_SEARCH_FOR_A_COMPANY_BUTTON = "Search for a Company Button";
-export const MATOMO_CANCEL_SEARCH_LINK = "Cancel search link";
-export const MATOMO_CONFIRM_AND_SEND_EMAIL_BUTTON = "Confirm and Send Email Button";
-export const MATOMO_CHANGE_LINK = "Change Link";
-export const MATOMO_REMOVE_AUTHORISATION_BUTTON = "Remove Authorisation Button";
-export const MATOMO_CANCEL_LINK = "Cancel Link";
-export const MATOMO_CHANGE_THE_AUTHENTICATION_CODE_LINK = "Change the Authentication Code Link";
-export const MATOMO_ACCEPT_INVITATION_LINK_ID = "accept-authorised-user-invitation-link";
-export const MATOMO_DECLINE_INVITATION_LINK_ID = "decline-authorised-user-invitation-link";
-export const MATOMO_ACCEPT_INVITATION_LINK = "Accept Authorised User Invitation Link";
-export const MATOMO_DECLINE_INVITATION_LINK = "Decline Authorised User Invitation Link";
-export const MATOMO_ADD_COMPANY_GOAL_ID = getEnvironmentValue("MATOMO_ADD_COMPANY_GOAL_ID");
-export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = getEnvironmentValue("MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID");
-export const MATOMO_GO_BACK_TO_YOUR_COMPANIES_LINK = "Go back to Your Companies Link";
-export const MATOMO_GO_TO_YOUR_COMPANIES_BUTTON = "Go to Your Companies Button";
-export const MATOMO_BACK_LINK = "Back Link";
-export const MATOMO_VIEW_INVITATIONS_LINK = "View Invitations to be Digitally Authorised Link";
-export const MATOMO_BACK_TO_YOUR_COMPANIES_LINK = "Back to Your Companies Link";
-
 // various
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "confirmed";
 export const YES = "yes";
 export const CONFIRM = "confirm";
+
+// matomo tags for the goals
+export const MATOMO_ADD_COMPANY_GOAL_ID = getEnvironmentValue("MATOMO_ADD_COMPANY_GOAL_ID");
+export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = getEnvironmentValue("MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID");
 /**
  * This is the default number of associations per page that API uses if nothing is provided.
  * It is used by the pagination component and it will normally be max number

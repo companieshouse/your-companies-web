@@ -37,7 +37,7 @@
     <div role="navigation" aria-label="{{lang.link_back_to_previous_page}}">
         {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref, attributes: {
                 id: "back-link-to-your-companies-page",
-                "data-event-id": "back-link-to-your-companies-page-event"
+                "data-event-id": "back-link-to-previous-page"
             } }) }}
     </div>
 
@@ -79,7 +79,7 @@
             <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
             <p class="govuk-body">
                 {{lang.you_may_wish_to}}
-                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
+                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
                 {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
             </p>
         {% endset%}
@@ -146,9 +146,12 @@
                     text: lang.anyone_with_access_to_the_current_authentication
                 })
             }}
-            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, attributes: {
+            {{ govukButton({text: lang.add_new_authorised_person, href: buttonHref, 
+            
+            attributes: {
                 id: "add-new-authorised-person-button",
-                "data-event-id": "add-new-authorised-person-button-event"
+                "data-event-id": "add-new-authorised-person-button",
+                "onclick": "_paq.push(['trackGoal', '" + matomoAddNewAuthorisedPersonGoalId + "'])"
             } }) }}
         </div>
     </div>
@@ -175,8 +178,7 @@
             }
             if association.displayName and association.displayName !== "Not provided" else 
                 undefined %}
-            {% set matomoParamsRemove = [title, matomoLinkClick, matomoRemoveAuthorisedUserLink] %}
-            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, matomoParamsRemove, {
+            {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, "remove-authorised-person", {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }, query_params) %}
@@ -189,12 +191,10 @@
             {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
-            {% set matomoParamsCancel = [title, matomoLinkClick, matomoCancelAuthorisedUserLink] %}
-            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, matomoParamsCancel, {userEmail: association.userEmail})%}
+            {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, "cancel-authorised-person", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
             {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
-            {% set matomoParamsResendEmail = [title, matomoLinkClick, matomoResendAuthorisedUserEmailLink] %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, matomoParamsResendEmail , {userEmail: association.userEmail})%}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, "resend-invite-email", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: resendEmailLink}), row) %}
         {% endif %}
         {% set rows = (rows.push(row), rows) %}
@@ -241,14 +241,5 @@
             {% endif %}
         </div>
     </div>
-
-    <script>
-        trackEvent("back-link-to-your-companies-page", "{{title}}", "{{matomoLinkClick}}", "{{matomoBackToYourCompaniesLink}}");
-        trackEvent("add-new-authorised-person-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddNewAuthorisedPersonButton}}");
-        trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
-        if (document.getElementById("change-company-auth-code-link")) {
-            trackEvent("change-company-auth-code-link", "{{title}}", "{{matomoLinkClick}}", "{{matomoChangeTheAuthenticationCodeLink}}");
-        }
-    </script>
 
 {% endblock %}

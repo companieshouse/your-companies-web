@@ -85,16 +85,12 @@ export class YourCompaniesHandler extends GenericHandler {
 
     private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
+            templateName: constants.YOUR_COMPANIES_PAGE,
             buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
             numberOfInvitations: invitationList.totalResults,
             viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL,
             cancelSearchHref: constants.LANDING_URL,
-            matomoAddCompanyButton: constants.MATOMO_ADD_COMPANY_BUTTON,
-            matomoViewAndManageLink: constants.MATOMO_VIEW_AND_MANAGE_LINK,
-            matomoSearchForACompanyLink: constants.MATOMO_SEARCH_FOR_A_COMPANY_BUTTON,
-            matomoCancelSearchLink: constants.MATOMO_CANCEL_SEARCH_LINK,
-            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
-            matomoViewInvitationsLink: constants.MATOMO_VIEW_INVITATIONS_LINK
+            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
         };
 
         if (confirmedUserAssociations.totalResults > 0) {

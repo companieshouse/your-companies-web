@@ -14,15 +14,11 @@
             {{ govukButton({text: lang.add_a_company, href: buttonHref,
                     attributes: {
                         id: "add-a-company-button",
-                        "data-event-id": "add-a-company-button-event"
+                        "data-event-id": "add-a-company-button",
+                        "onclick": "_paq.push(['trackGoal', '" + matomoAddCompanyGoalId + "'])"
                     }
                 })
             }}
         </div>
     </div>
 </div>
-
-<script>
-    trackEvent("add-a-company-button", "{{title}}", "{{matomoButtonClick}}", "{{matomoAddCompanyButton}}");
-    trackGoal("add-a-company-button", {{matomoAddCompanyGoalId}});
-</script>

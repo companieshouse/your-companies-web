@@ -12,6 +12,7 @@ export class AddPresenterHandler extends GenericHandler {
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
         this.viewData = await this.getViewData(req, companyNumber, companyName);
+
         const clearForm = req.query.cf as string;
         if (validateClearForm(clearForm)) {
             deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
@@ -53,12 +54,11 @@ export class AddPresenterHandler extends GenericHandler {
         const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
 
         return {
+            templateName: constants.ADD_PRESENTER_PAGE,
             lang: translations,
             companyName,
             companyNumber,
-            backLinkHref: href,
-            matomoButtonClick: constants.MATOMO_BUTTON_CLICK,
-            matomoContinueButton: constants.MATOMO_CONTINUE_BUTTON
+            backLinkHref: href
         };
     }
 

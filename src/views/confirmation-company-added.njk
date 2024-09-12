@@ -17,7 +17,7 @@
             {% set html %}
             <p class="govuk-notification-banner__heading">
                 {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}
-                <a href="/your-companies" class="govuk-link" onclick="_paq.push(['trackEvent', '{{lang.title}}', '{{matomoLinkClick}}', '{{matomoViewYourCompaniesLink}}']);">{{lang.view_your_companies}}</a>.
+                <a href="/your-companies" data-event-id="view-your-companies" class="govuk-link">{{lang.view_your_companies}}</a>.
             </p>
             {% endset %}
 

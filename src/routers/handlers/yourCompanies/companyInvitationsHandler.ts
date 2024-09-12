@@ -13,6 +13,7 @@ import { validatePageNumber } from "../../../lib/validation/generic";
 export class CompanyInvitationsHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
         this.viewData = await this.getViewData(req);
+        this.viewData.templateName = constants.COMPANY_INVITATIONS_PAGE;
         return Promise.resolve(this.viewData);
     }
 
@@ -20,10 +21,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
         const translations = getTranslationsForView((req as any).lang, constants.COMPANY_INVITATIONS_PAGE);
         const viewData: ViewData = {
             lang: translations,
-            backLinkHref: constants.LANDING_URL,
-            matomoAcceptAuthorisedUserInvitationLink: constants.MATOMO_ACCEPT_INVITATION_LINK,
-            matomoDeclineAuthorisedUserInvitationLink: constants.MATOMO_DECLINE_INVITATION_LINK,
-            matomoBackToYourCompaniesLink: constants.MATOMO_BACK_TO_YOUR_COMPANIES_LINK
+            backLinkHref: constants.LANDING_URL
         };
 
         const page = req.query.page as string;
@@ -45,47 +43,45 @@ export class CompanyInvitationsHandler extends GenericHandler {
             viewData.numberOfPages = userInvites.totalPages;
         }
 
-        const { rows, acceptIds, declineIds } = await this.getRowsData(invitesWithCompanyDetail, translations);
+        const { rows } = await this.getRowsData(invitesWithCompanyDetail, translations);
         viewData.rowsData = rows;
-        viewData.acceptIds = acceptIds;
-        viewData.declineIds = declineIds;
 
         return viewData;
     }
 
     private async getRowsData (invites: InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
-        const acceptIds = new Set<string>();
-        const declineIds = new Set<string>();
+
         const rows: ({ text: string } | { html: string })[][] = [];
         if (invites?.length) {
             for (const invite of invites) {
                 const acceptPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(`:${constants.ASSOCIATIONS_ID}`, invite.associationId);
                 const declinePath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(`:${constants.ASSOCIATIONS_ID}`, invite.associationId);
                 const companyNameQueryParam = `?${constants.COMPANY_NAME}=${invite.companyName.replace(/ /g, "+")}`;
-                const acceptId = `${constants.MATOMO_ACCEPT_INVITATION_LINK_ID}-${invite.companyNumber}-${invite.invitedBy}`;
-                const declineId = `${constants.MATOMO_DECLINE_INVITATION_LINK_ID}-${invite.companyNumber}-${invite.invitedBy}`;
-
-                acceptIds.add(acceptId);
-                declineIds.add(declineId);
 
                 rows.push([
                     { text: invite.companyName },
                     { text: invite.companyNumber },
                     { text: invite.invitedBy },
                     {
-                        html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${invite.companyName}`, translations.accept as string, acceptId)
+                        html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${invite.companyName}`, translations.accept as string)
                     },
                     {
-                        html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${invite.companyName}`, translations.decline as string, declineId)
+                        html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${invite.companyName}`, translations.decline as string)
                     }
                 ]);
             }
         }
-        return { rows, acceptIds: Array.from(acceptIds), declineIds: Array.from(declineIds) };
+        return { rows };
     }
 
-    private getLink (path: string, ariaLabel: string, text: string, id: string): string {
-        return `<a href="${path}" id="${id}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}">${text}</a>`;
+    private getLink (path: string, ariaLabel: string, text: string): string {
+        let dataEventId = "";
+        if (path.includes("accept")) {
+            dataEventId = "accept-invite";
+        } else if (path.includes("decline")) {
+            dataEventId = "decline-invite";
+        }
+        return `<a href="${path}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}" data-event-id="${dataEventId}">${text}</a>`;
     }
 
     private async addCompanyInfoToInvites (req: Request, invites: Invitation[]): Promise<InvitationWithCompanyDetail[] | undefined> {

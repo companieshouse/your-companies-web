@@ -39,15 +39,14 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     private getViewData (req: Request): ViewData {
         const lang = getTranslationsForView((req as any).lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         return {
+            templateName: constants.REMOVE_AUTHORISED_PERSON_PAGE,
             lang: lang,
             companyNumber: req.params[constants.COMPANY_NUMBER],
             cancelLinkHref: getExtraData(req.session, constants.REFERER_URL),
             backLinkHref: getExtraData(req.session, constants.REFERER_URL),
             companyName: getExtraData(req.session, constants.COMPANY_NAME),
             userEmail: req.params[constants.USER_EMAIL],
-            userName: req.query[constants.USER_NAME],
-            matomoRemoveAuthorisationButton: constants.MATOMO_REMOVE_AUTHORISATION_BUTTON,
-            matomoCancelLink: constants.MATOMO_CANCEL_LINK
+            userName: req.query[constants.USER_NAME]
         };
     }
 

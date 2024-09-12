@@ -33,14 +33,10 @@
                 text: lang.view_your_companies,
                 href: yourCompaniesUrl, attributes: {
                 id: "view-your-companies-button",
-                "data-event-id": "view-your-companies-button-event"
+                "data-event-id": "view-your-companies"
                     }
             }) }}
         </div>
     </div>
-
-    <script>
-        trackEvent("view-your-companies-button", "{{lang.title}}", "{{matomoButtonClick}}", "{{matomoViewYourCompaniesLink}}");
-    </script>
 
 {% endblock %}
