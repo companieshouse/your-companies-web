@@ -73,7 +73,7 @@ describe("httpErrorHandler", () => {
 
         const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`, { redirctToYourCompanies: true });
         // When
-        const result = httpErrorHandler(unauthorizedError, request, response, mockNext);
+        httpErrorHandler(unauthorizedError, request, response, mockNext);
         // Then
         expect(response.render).not.toHaveBeenCalled();
         expect(response.redirect).toHaveBeenCalledWith("/your-companies");
@@ -81,8 +81,8 @@ describe("httpErrorHandler", () => {
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
             expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
         );
-        expect(result).toEqual(undefined);
     });
+
     it("should not redirect to your-companies if error does not have property redirctToYourCompanies true", () => {
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";

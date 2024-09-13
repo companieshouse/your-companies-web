@@ -25,12 +25,9 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         );
         if (err.redirctToYourCompanies) {
             logger.error(err.message);
-            res.redirect(constants.LANDING_URL);
-            return;
+            return res.redirect(constants.LANDING_URL);
         }
-        const statusCode: number = err.statusCode || 500;
-
-        res.status(statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {
+        res.status(err.statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {
             lang: getTranslationsForView((req as any).lang, constants.SERVICE_UNAVAILABLE),
             templateName: constants.SERVICE_UNAVAILABLE
         });
