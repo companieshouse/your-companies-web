@@ -56,7 +56,7 @@ describe("create company association controller tests", () => {
         expect(response.text).toContain(PAGE_HEADING);
     });
 
-    it("should not redirect to success page if updateAssociationStatus request fails", async () => {
+    it("should error and render and error page if updateAssociationStatus request fails", async () => {
         // Given
         const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
         const badRequestError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association`);
@@ -66,6 +66,6 @@ describe("create company association controller tests", () => {
         // When
         const response = await router.get(url);
         // Then
-        expect(response.status).toBe(400);
+        expect(response.text).toContain("Sorry, there is a problem with the service");
     });
 });

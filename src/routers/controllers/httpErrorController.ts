@@ -27,7 +27,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
             logger.error(err.message);
             return res.redirect(constants.LANDING_URL);
         }
-        res.status(err.statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {
+        res.render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {
             lang: getTranslationsForView((req as any).lang, constants.SERVICE_UNAVAILABLE),
             templateName: constants.SERVICE_UNAVAILABLE
         });
