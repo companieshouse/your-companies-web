@@ -1,25 +1,25 @@
-import { httpErrorHandler } from "../../../../src/routers/controllers/httpErrorController";
-import { mockRequest } from "../../../mocks/request.mock";
-import { mockResponse } from "../../../mocks/response.mock";
+import { httpErrorHandler } from "../../../src/routers/controllers/httpErrorController";
+import { mockRequest } from "../../mocks/request.mock";
+import { mockResponse } from "../../mocks/response.mock";
 import { Session } from "@companieshouse/node-session-handler";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { NextFunction } from "express";
-import logger from "../../../../src/lib/Logger";
-import * as getTranslationsForView from "../../../../src/lib/utils/translations";
+import logger from "../../../src/lib/Logger";
+import * as getTranslationsForView from "../../../src/lib/utils/translations";
 
 const mockGetTranslationsForView = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 
 logger.errorRequest = jest.fn();
 
-jest.mock("../../../../src/lib/utils/sessionUtils", () => {
-    const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
-    return {
-        __esModule: true,
-        ...originalModule,
-        setExtraData: jest.fn()
-    };
-});
+// jest.mock("../../../../src/lib/utils/sessionUtils", () => {
+//     const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
+//     return {
+//         __esModule: true,
+//         ...originalModule,
+//         setExtraData: jest.fn()
+//     };
+// });
 const session: Session = new Session();
 const request = mockRequest();
 request.session = session;
