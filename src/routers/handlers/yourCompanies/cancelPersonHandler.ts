@@ -38,7 +38,7 @@ export class CancelPersonHandler extends GenericHandler {
     }
 
     private getViewData (req: Request): ViewData {
-        const lang = getTranslationsForView((req as any).lang, constants.CANCEL_PERSON_PAGE);
+        const lang = getTranslationsForView(req.lang, constants.CANCEL_PERSON_PAGE);
         return {
             templateName: constants.CANCEL_PERSON_PAGE,
             lang: lang,

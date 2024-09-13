@@ -11,7 +11,7 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response): 
     const confirmCompanyDetailsIndicator = true;
     setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, confirmCompanyDetailsIndicator);
 
-    const viewData = await new ConfirmCorrectCompanyHandler().execute((req as any).lang, companyProfile);
+    const viewData = await new ConfirmCorrectCompanyHandler().execute(req.lang, companyProfile);
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };
 
