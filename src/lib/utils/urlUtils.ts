@@ -49,3 +49,8 @@ export const getManageAuthorisedPeopleUrl = (url: string, companyNumber: string)
 
     return constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
 };
+
+export const isReferrerIncludes = (referrer: string): boolean => referrer.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) ||
+    referrer.includes(constants.CONFIRMATION_CANCEL_PERSON_URL) ||
+    referrer.includes(constants.CONFIRMATION_PERSON_ADDED) ||
+    referrer.includes(constants.AUTHORISATION_EMAIL_RESENT_URL);

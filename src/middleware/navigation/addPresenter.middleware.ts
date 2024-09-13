@@ -3,6 +3,7 @@ import * as constants from "../../constants";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger from "../../lib/Logger";
+import { isReferrerIncludes } from "../../lib/utils/urlUtils";
 
 export const addPresenterNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -15,10 +16,7 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
-    if (referrer && (referrer.includes("confirmation-person-removed") ||
-        referrer.includes("confirmation-cancel-person") ||
-        referrer.includes("confirmation-person-added") ||
-        referrer.includes("authorisation-email-resent"))) {
+    if (referrer && isReferrerIncludes(referrer)) {
         checkedReferrer = hrefA;
     } else {
         checkedReferrer = referrer;
