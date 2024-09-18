@@ -10,6 +10,21 @@ describe("formatForDisplay", () => {
         // Then
         expect(result).toEqual(formatterValidActiveCompanyProfile);
     });
+
+    it("should return company profile formatted for display when po box and postal code not provided", () => {
+        // Given
+        const lang = "en";
+        const companyProfile = { ...validActiveCompanyProfile };
+        const companyAddress = { ...validActiveCompanyProfile.registeredOfficeAddress, poBox: undefined!, postalCode: undefined! };
+        companyProfile.registeredOfficeAddress = companyAddress;
+        const expectedFormattedCompanyProfile = { ...formatterValidActiveCompanyProfile };
+        const expectedCompanyAddress = { ...formatterValidActiveCompanyProfile.registeredOfficeAddress, poBox: "", postalCode: "" };
+        expectedFormattedCompanyProfile.registeredOfficeAddress = expectedCompanyAddress;
+        // When
+        const result = formatForDisplay(companyProfile, lang);
+        // Then
+        expect(result).toEqual(expectedFormattedCompanyProfile);
+    });
 });
 
 describe("formatTitleCase", () => {
