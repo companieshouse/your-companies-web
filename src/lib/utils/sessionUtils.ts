@@ -34,3 +34,10 @@ export const deleteExtraData = (session: Session | undefined, key: string): bool
 export const getAccessToken = (session: Session | undefined): string => {
     return session?.data.signin_info?.access_token?.access_token as string;
 };
+
+export const popExtraData = (session: Session | undefined, key: string): any => {
+    if (!session) return undefined;
+    const data = session.getExtraData(key);
+    session.deleteExtraData(key);
+    return data;
+};
