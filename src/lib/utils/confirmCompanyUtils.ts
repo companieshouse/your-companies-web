@@ -9,8 +9,8 @@ export const formatForDisplay = (companyProfile: CompanyProfile, lang: string): 
         locality: formatTitleCase(companyProfile.registeredOfficeAddress.locality),
         region: formatTitleCase(companyProfile.registeredOfficeAddress.region),
         country: formatTitleCase(companyProfile.registeredOfficeAddress.country),
-        postalCode: companyProfile.registeredOfficeAddress.postalCode.toUpperCase(),
-        poBox: companyProfile.registeredOfficeAddress.poBox.toUpperCase(),
+        postalCode: companyProfile.registeredOfficeAddress.postalCode ? companyProfile.registeredOfficeAddress.postalCode.toUpperCase() : "",
+        poBox: companyProfile.registeredOfficeAddress.poBox ? companyProfile.registeredOfficeAddress.poBox.toUpperCase() : "",
         premises: companyProfile.registeredOfficeAddress.premises
     };
 
