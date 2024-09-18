@@ -8,17 +8,17 @@
         <div class="govuk-grid-column-two-thirds">
             {{ govukNotificationBanner({
                 type: "success",
-                titleText: "Success",
-                html: '<p class="govuk-notification-banner__heading">You have removed ' + companyName + '.</p>'
+                titleText: lang.success,
+                html: '<p class="govuk-notification-banner__heading">' + lang.you_have_removed + ' ' + companyName + '.</p>'
             }) }}
 
             <span class="govuk-caption-l">{{ companyName + " (" + companyNumber + ")" }}</span>
-            <h1 class="govuk-heading-l">What happens now you've removed this company</h1>
-            <p class="govuk-body">You are no longer able to file online for this company without a current authentication code. We've sent an email to the company's registered email address and to any other people who are authorised to let them know.</p>
+            <h1 class="govuk-heading-l">{{ lang.what_happens_now }}</h1>
+            <p class="govuk-body">{{ lang.no_longer_able_to_file }}</p>
 
             <div class="govuk-button-group govuk-!-padding-top-3">
                 {{ govukButton({
-                    text: "Go to your companies",
+                    text: lang.go_to_your_companies,
                     href: "company-added",
                     classes: "govuk-button",
                     attributes: {
