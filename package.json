@@ -41,6 +41,7 @@
     "@companieshouse/web-security-node": "^4.1.1",
     "axios": "^1.6.8",
     "cookie-parser": "1.4.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
     "govuk_frontend_toolkit": "^9.0.1",
@@ -122,7 +123,7 @@
     "ignore": [
       "**/*.test.ts"
     ],
-    "exec": "npm run build && source ./dist/config/.env && node dist/server.js"
+    "exec": "node --inspect=0 -r ts-node/register src/server.ts"
   },
   "directories": {
     "test": "test"
