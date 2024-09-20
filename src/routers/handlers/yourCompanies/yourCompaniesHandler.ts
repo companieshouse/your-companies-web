@@ -83,6 +83,19 @@ export class YourCompaniesHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
+    private getStatusDisplay (status: AssociationStatus): string {
+        switch (status) {
+        case AssociationStatus.CONFIRMED:
+            return "Active";
+        case AssociationStatus.REMOVED:
+            return "Removed";
+        case AssociationStatus.AWAITING_APPROVAL:
+            return "Awaiting Approval";
+        default:
+            return "Unknown";
+        }
+    }
+
     private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
             templateName: constants.YOUR_COMPANIES_PAGE,
@@ -102,6 +115,9 @@ export class YourCompaniesHandler extends GenericHandler {
                     },
                     {
                         text: confirmedUserAssociations.items[index].companyNumber
+                    },
+                    {
+                        text: this.getStatusDisplay(confirmedUserAssociations.items[index].status)
                     }
                 ];
             }
@@ -109,8 +125,10 @@ export class YourCompaniesHandler extends GenericHandler {
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
             viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
+            viewData.removeCompanyUrl = constants.YOUR_COMPANIES_REMOVE_COMPANY_URL;
         }
 
         return { ...viewData, lang: lang };
+
     }
 }
