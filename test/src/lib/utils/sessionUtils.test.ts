@@ -116,7 +116,7 @@ describe("Session Utils", () => {
             // Given
             const accessToken = "access token";
             const session: Session = new Session();
-            (session.data.signin_info as any) = { access_token: { access_token: accessToken } };
+            (session.data.signin_info as unknown) = { access_token: { access_token: accessToken } };
             // When
             const result = getAccessToken(session);
             // Then

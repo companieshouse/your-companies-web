@@ -68,7 +68,7 @@ LocalesService.getInstance("locales", true);
 app.use(LocalesMiddleware());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-    njk.addGlobal("locale", (req as any).lang);
+    njk.addGlobal("locale", req.lang);
     njk.addGlobal("userEmailAddress", getLoggedInUserEmail(req.session));
     njk.addGlobal("feedbackSource", req.originalUrl);
     njk.addGlobal("ENGLISH", "en");
@@ -87,7 +87,7 @@ app.use(httpErrorHandler);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
-    const translations = getTranslationsForView((req as any).lang, constants.SERVICE_UNAVAILABLE);
+    const translations = getTranslationsForView(req.lang, constants.SERVICE_UNAVAILABLE);
     res.render(constants.SERVICE_UNAVAILABLE_TEMPLATE, { lang: translations });
 });
 

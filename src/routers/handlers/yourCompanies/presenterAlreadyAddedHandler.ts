@@ -15,7 +15,7 @@ export class PresenterAlreadyAddedHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const translations = getTranslationsForView((req as any).lang, constants.PRESENTER_ALREADY_ADDED_PAGE);
+        const translations = getTranslationsForView(req.lang, constants.PRESENTER_ALREADY_ADDED_PAGE);
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);

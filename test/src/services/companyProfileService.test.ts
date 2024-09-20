@@ -16,7 +16,7 @@ mockCreateApiClient.mockReturnValue({
     }
 });
 
-const clone = (objectToClone: any): any => {
+const clone = (objectToClone: unknown): unknown => {
     return JSON.parse(JSON.stringify(objectToClone));
 };
 

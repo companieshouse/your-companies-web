@@ -1,4 +1,4 @@
-import { addLangToUrl, getManageAuthorisedPeopleUrl } from "../../../../src/lib/utils/urlUtils";
+import { addLangToUrl, getManageAuthorisedPeopleUrl, isReferrerIncludes } from "../../../../src/lib/utils/urlUtils";
 
 describe("addLangToUrl", () => {
     it.each([
@@ -27,5 +27,21 @@ describe("getManageAuthorisedPeopleUrl should return correct url", () => {
         { url: "/any-other-url", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456" }
     ])("should return $expected for $url, $companyNumber", ({ url, companyNumber, expected }) => {
         expect(getManageAuthorisedPeopleUrl(url, companyNumber)).toEqual(expected);
+    });
+});
+
+describe("isReferrerIncludes", () => {
+    it.each([
+        // Given
+        [true, "http://some-service.com/confirmation-person-removed"],
+        [true, "http://some-service.com/confirmation-cancel-person"],
+        [true, "http://some-service.com/confirmation-person-added"],
+        [true, "http://some-service.com/authorisation-email-resent"],
+        [false, "http://some-service.com/something-else"]
+    ])("should return %s for %s", (expectedResult, referrer) => {
+        // When
+        const result = isReferrerIncludes(referrer);
+        // Then
+        expect(result).toEqual(expectedResult);
     });
 });
