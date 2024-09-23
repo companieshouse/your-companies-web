@@ -63,14 +63,11 @@ export class RemoveCompanyHandler extends GenericHandler {
         try {
             const associationState = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
 
-            if (associationState.state === 'COMPNANY_ASSOCIATED_WITH_USER' && associationState.associationId) {
+            if (associationState.state === associationState.associationId) {
                 const removalResult = await removeUserFromCompanyAssociations(req, associationState.associationId);
 
                 if (removalResult === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
                     setExtraData(req.session, constants.COMPANY_STATUS_INACTIVE, true);
-                    logger.info(`Company ${companyNumber} successfully removed for user`);
-
-                    // Set the data for the confirmation page
                     setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME, companyName);
                     setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER, companyNumber);
 
@@ -93,8 +90,5 @@ export class RemoveCompanyHandler extends GenericHandler {
             };
             res.render(constants.REMOVE_COMPANY_PAGE, this.viewData);
         }
-
-        deleteExtraData(req.session, constants.COMPANY_NAME);
-        deleteExtraData(req.session, constants.COMPANY_NUMBER);
     }
 }

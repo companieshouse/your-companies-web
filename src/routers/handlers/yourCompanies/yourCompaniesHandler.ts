@@ -106,21 +106,12 @@ export class YourCompaniesHandler extends GenericHandler {
             matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
         };
 
-        if (confirmedUserAssociations.totalResults > 0) {
-            const associationData: { text: string }[][] = [];
-            for (let index = 0; index < confirmedUserAssociations.items.length; index++) {
-                associationData[index] = [
-                    {
-                        text: confirmedUserAssociations.items[index].companyName
-                    },
-                    {
-                        text: confirmedUserAssociations.items[index].companyNumber
-                    },
-                    {
-                        text: this.getStatusDisplay(confirmedUserAssociations.items[index].status)
-                    }
-                ];
-            }
+        if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
+            const associationData = confirmedUserAssociations.items.map(item => ({
+                company_name: item.companyName,
+                company_number: item.companyNumber,
+                company_status: this.getStatusDisplay(item.status)
+            }));
 
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;

@@ -7,10 +7,11 @@
 
 {% set rowsData = [] %}
 {% for elem in associationData %}
-    {% set rowElem = [] %}
-    {% set rowElem = (rowElem.push(elem.company_name), rowElem) %}
-    {% set rowElem = (rowElem.push(elem.company_number), rowElem) %}
-    {% set rowElem = (rowElem.push(elem.company_status), rowElem) %}
+     {% set rowElem = [
+                { "text": elem.company_name },
+                { "text": elem.company_number },
+                { "text": elem.company_status }
+            ] %}
     {% set params = {
         companyNumber: elem.company_number
     } %}
