@@ -32,6 +32,7 @@ import { removedThemselvesNavigation } from "../middleware/navigation/personRemo
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
+import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 
 const router: Router = Router();
 
@@ -52,7 +53,8 @@ router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, remo
 router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerPost as RequestHandler);
 router.get(constants.REMOVE_ASSOCIATION_URL, removeAuthorisedPersonRequestController);
 router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesNavigation, removedThemselvesConfirmationControllerGet as RequestHandler);
-
+router.get(constants.REMOVE_COMPANY_URL, removeCompanyControllerGet as RequestHandler);
+router.get(constants.REMOVE_COMPANY_URL, removeCompanyControllerPost as RequestHandler);
 router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, removeCompanyConfirmedControllerGet);
 
 router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler);
