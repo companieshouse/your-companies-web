@@ -74,6 +74,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("ENGLISH", "en");
     njk.addGlobal("WELSH", "cy");
     njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
+    njk.addGlobal("serviceHost", req.get("host"));
     next();
 });
 
