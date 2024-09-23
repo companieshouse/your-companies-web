@@ -21,6 +21,8 @@ export const ASSOCIATION_STATE_CHANGED_FOR = "associationStateChagedFor";
 export const REMOVED_THEMSELVES_FROM_COMPANY = "removedThemselvesFromCompany";
 export const USER_EMAILS_ARRAY = "userEmailsArray";
 export const CURRENT_COMPANY_NUM = "currentCompanyNumber";
+export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
+export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
 
 // query params
 export const CLEAR_FORM = "cf";
@@ -51,6 +53,7 @@ export const COMPANY_INVITATIONS_PAGE = "company-invitations";
 export const COMPANY_INVITATIONS_ACCEPT_PAGE = "company-invitations-accept";
 export const COMPANY_INVITATIONS_DECLINE_PAGE = "company-invitations-decline";
 export const REMOVE_AUTHORISED_PERSON_PAGE = "remove-authorised-person";
+export const REMOVE_COMPANY_CONFIRMED = "confirmation-company-removed";
 export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 export const SERVICE_UNAVAILABLE = "service-unavailable";
@@ -64,6 +67,8 @@ export const YOUR_COMPANIES_URL = "/";
 export const YOUR_COMPANIES_ADD_COMPANY_URL = `${LANDING_URL}${ADD_COMPANY_URL}`;
 export const CONFIRM_COMPANY_DETAILS_URL = "/confirm-company-details";
 export const COMPANY_ADDED_SUCCESS_URL = "/confirmation-company-added";
+export const REMOVE_COMPANY_CONFIRMED_URL = `/${REMOVE_COMPANY_CONFIRMED}`;
+export const REMOVE_COMPANY_CONFIRMED_FULL_URL = `${LANDING_URL}/${REMOVE_COMPANY_CONFIRMED}`;
 export const YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL = `${LANDING_URL}${CONFIRM_COMPANY_DETAILS_URL}`;
 export const YOUR_COMPANIES_COMPANY_ADDED_SUCCESS_URL = `${LANDING_URL}${COMPANY_ADDED_SUCCESS_URL}`;
 export const CREATE_COMPANY_ASSOCIATION_PATH_FULL = LANDING_URL + `${COMPANY_AUTH_PROTECTED_BASE}/create-company-association`;

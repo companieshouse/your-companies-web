@@ -1,0 +1,31 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/default.njk" %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {{ govukNotificationBanner({
+                type: "success",
+                titleText: lang.success,
+                html: '<p class="govuk-notification-banner__heading">' + lang.you_have_removed + ' ' + companyName + '.</p>'
+            }) }}
+
+            <span class="govuk-caption-l">{{ companyName + " (" + companyNumber + ")" }}</span>
+            <h1 class="govuk-heading-l">{{ lang.what_happens_now }}</h1>
+            <p class="govuk-body">{{ lang.no_longer_able_to_file }}</p>
+
+            <div class="govuk-button-group govuk-!-padding-top-3">
+                {{ govukButton({
+                    text: lang.go_to_your_companies,
+                    href: "company-added",
+                    classes: "govuk-button",
+                    attributes: {
+                        "data-module": "govuk-button"
+                    }
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
