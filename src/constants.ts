@@ -43,6 +43,7 @@ export const COMPANY_TYPE = "company-type";
 // English and Welsh translation files AND Nunjucks template files
 export const YOUR_COMPANIES_PAGE = "your-companies";
 export const ADD_COMPANY_PAGE = "add-company";
+export const REMOVE_COMPANY_PAGE = "remove-company";
 export const CONFIRM_COMPANY_PAGE = "confirm-company-details";
 export const COMPANY_ADD_SUCCESS_PAGE = "confirmation-company-added";
 export const MANAGE_AUTHORISED_PEOPLE_PAGE = "manage-authorised-people";
@@ -108,8 +109,8 @@ export const CONFIRMATION_PERSON_REMOVED_URL = "/confirmation-person-removed";
 export const CONFIRMATION_PERSON_ADDED = "/confirmation-person-added";
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_REMOVED_URL}`;
 export const YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${LANDING_URL}${MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL}`;
-export const YOUR_COMPANIES_REMOVE_COMPANY_URL = "/remove-company";
-
+export const YOUR_COMPANIES_REMOVE_COMPANY_URL = `${LANDING_URL}/remove-company/:${COMPANY_NUMBER}`;
+export const REMOVE_COMPANY_URL = `/remove-company/:${COMPANY_NUMBER}`;
 export const REMOVED_THEMSELVES_URL = SEPARATOR + REMOVED_THEMSELVES;
 export const YOUR_COMPANIES_REMOVED_THEMSELVES_URL = LANDING_URL + REMOVED_THEMSELVES_URL;
 
