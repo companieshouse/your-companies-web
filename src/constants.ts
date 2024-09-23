@@ -131,6 +131,7 @@ export const POST = "POST";
 
 // Status
 export const COMPANY_STATUS_ACTIVE = "active";
+export const COMPANY_STATUS_INACTIVE = "inactive";
 
 // Associations
 export const USER_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user removed from company associations";
