@@ -20,17 +20,12 @@ export const removeCompanyControllerPost = async (req: Request, res: Response): 
 
     if (viewData) {
         if (viewData.errors && Object.keys(viewData.errors).length > 0) {
-            // If there are errors (e.g., "Yes" or "No" was not selected), re-render the form with the errors
             return res.render(constants.REMOVE_COMPANY_PAGE, { ...viewData });
         }
-
         if (viewData.submissionSuccessful && !viewData.removalCancelled) {
-            // If "Yes" was selected and the removal was successful, redirect to the confirmation page
             return res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
         }
-
         if (viewData.removalCancelled) {
-            // If "No" was selected, redirect to the landing page
             return res.redirect(constants.LANDING_URL);
         }
     }

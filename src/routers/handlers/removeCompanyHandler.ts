@@ -73,7 +73,6 @@ export class RemoveCompanyHandler extends GenericHandler {
                         setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME, companyName);
                         setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER, companyNumber);
 
-                        // Redirect to the landing page
                         res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
                     } else {
                         logger.error(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
