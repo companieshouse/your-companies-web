@@ -214,4 +214,61 @@ describe("GET /your-companies", () => {
         expect(data).toBeTruthy();
         expect(resultData).toBeUndefined();
     });
+
+    it("should display company status for each company", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockResolvedValue(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockResolvedValue({ items: [] });
+
+        // When
+        const response = await router.get("/your-companies?lang=en");
+
+        // Then
+        userAssociations.items.forEach(company => {
+            expect(response.text).toContain("Active"); // Check for "Active" instead of AssociationStatus.CONFIRMED
+        });
+    });
+
+    it("should include a remove company link for each company", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockResolvedValue(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockResolvedValue({ items: [] });
+
+        // When
+        const response = await router.get("/your-companies?lang=en");
+
+        // Then
+        userAssociations.items.forEach(company => {
+            const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
+            expect(response.text).toContain(expectedLink);
+            expect(response.text).toContain(en.remove_company);
+
+            // Additional checks
+            expect(response.text).toContain(company.companyName);
+            expect(response.text).toContain(company.companyNumber);
+        });
+    });
+
+    it("should display company status and remove company link in Welsh", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockResolvedValue(userAssociations);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockResolvedValue({ items: [] });
+
+        // When
+        const response = await router.get("/your-companies?lang=cy");
+
+        // Then
+        userAssociations.items.forEach(company => {
+            expect(response.text).toContain("Active")
+            const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
+            expect(response.text).toContain(expectedLink);
+            expect(response.text).toContain(cy.remove_company);
+        });
+    });
 });
