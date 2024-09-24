@@ -15,7 +15,7 @@ jest.mock("../../../../src/services/associationsService");
 const router = supertest(app);
 const url = "/your-companies/company-invitations-accept/:associationId";
 const associationId = "0123456789";
-const companyName = "Flowers Ltd.";
+const companyName = "Morrisons";
 const companyNameQueryParam = `companyName=${companyName}`;
 
 describe(`GET ${url}`, () => {
