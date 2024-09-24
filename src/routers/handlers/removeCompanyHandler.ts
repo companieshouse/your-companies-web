@@ -7,6 +7,7 @@ import { ViewData } from "../../types/util-types";
 import logger from "../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../services/associationsService";
 import { getCompanyProfile } from "../../services/companyProfileService";
+import { AssociationState } from "../../types/associations";
 
 export class RemoveCompanyHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<ViewData | void> {
@@ -63,19 +64,24 @@ export class RemoveCompanyHandler extends GenericHandler {
         try {
             const associationState = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
 
-            if (associationState.state === associationState.associationId) {
-                const removalResult = await removeUserFromCompanyAssociations(req, associationState.associationId);
+            if (associationState.state === AssociationState.COMPNANY_ASSOCIATED_WITH_USER) {
+                if (associationState.associationId) {
+                    const removalResult = await removeUserFromCompanyAssociations(req, associationState.associationId);
 
-                if (removalResult === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
-                    setExtraData(req.session, constants.COMPANY_STATUS_INACTIVE, true);
-                    setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME, companyName);
-                    setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER, companyNumber);
+                    if (removalResult === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
+                        setExtraData(req.session, constants.COMPANY_STATUS_INACTIVE, true);
+                        setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME, companyName);
+                        setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER, companyNumber);
 
-                    // Redirect to the confirmation page
-                    res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
+                        // Redirect to the landing page
+                        res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
+                    } else {
+                        logger.error(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
+                        throw new Error('Unexpected result from company removal');
+                    }
                 } else {
-                    logger.error(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
-                    throw new Error('Unexpected result from company removal');
+                    logger.error(`Association ID is undefined for company ${companyNumber}`);
+                    throw new Error('Association ID is undefined');
                 }
             } else {
                 logger.error(`Cannot remove company ${companyNumber} as it is not associated with the user`);
