@@ -8,8 +8,8 @@ export const removeCompanyControllerGet = async (req: Request, res: Response): P
     const handler = new RemoveCompanyHandler();
     const viewData = await handler.execute(req, res, constants.GET);
     if (!viewData) {
-        logger.error('Failed to load view data for GET request');
-        return res.status(500).render('error-page', { message: 'Failed to load company removal page' });
+        logger.error("Failed to load view data for GET request");
+        return res.status(500).render("error-page", { message: "Failed to load company removal page" });
     }
     res.render(constants.REMOVE_COMPANY_PAGE, { ...viewData });
 
@@ -34,4 +34,4 @@ export const removeCompanyControllerPost = async (req: Request, res: Response): 
             return res.redirect(constants.LANDING_URL);
         }
     }
-}
+};

@@ -29,15 +29,15 @@ export class RemoveCompanyHandler extends GenericHandler {
             if (!selectedOption) {
                 this.viewData.errors = {
                     confirmRemoval: {
-                        text: 'you_must_select_an_option'
+                        text: "you_must_select_an_option"
                     }
                 };
                 return this.viewData;
             } else {
-                if (selectedOption === 'yes') {
+                if (selectedOption === "yes") {
                     await this.handleCompanyRemoval(req, res);
-                    return; // The redirect is handled in handleCompanyRemoval
-                } else if (selectedOption === 'no') {
+                    // The redirect is handled in handleCompanyRemoval
+                } else if (selectedOption === "no") {
                     this.viewData.submissionSuccessful = true;
                     this.viewData.removalCancelled = true;
                     return this.viewData;
@@ -54,7 +54,7 @@ export class RemoveCompanyHandler extends GenericHandler {
             companyNumber: req.params[constants.COMPANY_NUMBER],
             companyName: getExtraData(req.session, constants.COMPANY_NAME),
             backLinkHref: constants.LANDING_URL
-        }
+        };
     }
 
     private async handleCompanyRemoval (req: Request, res: Response): Promise<void> {
@@ -77,21 +77,21 @@ export class RemoveCompanyHandler extends GenericHandler {
                         res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
                     } else {
                         logger.error(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
-                        throw new Error('Unexpected result from company removal');
+                        throw new Error("Unexpected result from company removal");
                     }
                 } else {
                     logger.error(`Association ID is undefined for company ${companyNumber}`);
-                    throw new Error('Association ID is undefined');
+                    throw new Error("Association ID is undefined");
                 }
             } else {
                 logger.error(`Cannot remove company ${companyNumber} as it is not associated with the user`);
-                throw new Error('Company not associated with user');
+                throw new Error("Company not associated with user");
             }
         } catch (error) {
             logger.error(`Error removing company ${companyNumber}: ${error}`);
             this.viewData.errors = {
                 generic: {
-                    text: 'error_removing_company'
+                    text: "error_removing_company"
                 }
             };
             res.render(constants.REMOVE_COMPANY_PAGE, this.viewData);
