@@ -21,7 +21,7 @@
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
         {% include "no-companies-added.njk" %}
     {% endif %}
-<script>
+<script nonce={{ nonce | dump | safe }}>
         trackGoal("add-a-company-button", {{matomoAddCompanyGoalId}});
 </script>
 {% endblock %}

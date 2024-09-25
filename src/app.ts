@@ -13,6 +13,10 @@ import { addLangToUrl } from "./lib/utils/urlUtils";
 import { httpErrorHandler } from "./routers/controllers/httpErrorController";
 import { getTranslationsForView } from "./lib/utils/translations";
 import { LocalesMiddleware, LocalesService } from "@companieshouse/ch-node-utils";
+import helmet from "helmet";
+import { v4 as uuidv4 } from "uuid";
+import { prepareCSPConfig } from "./middleware/content.security.policy.middleware.config";
+import nocache from "nocache";
 
 const app = express();
 
@@ -60,6 +64,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
+const nonce: string = uuidv4();
+
+app.use(nocache());
+app.use(helmet(prepareCSPConfig(nonce)));
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);
@@ -74,6 +82,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("ENGLISH", "en");
     njk.addGlobal("WELSH", "cy");
     njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
+    res.locals.nonce = nonce;
     next();
 });
 
