@@ -13,6 +13,7 @@ export class RemoveCompanyConfirmedHandler extends GenericHandler {
             constants.REMOVE_COMPANY_CONFIRMED
         );
         this.viewData.templateName = constants.REMOVE_COMPANY_CONFIRMED;
+        this.viewData.buttonHref = constants.LANDING_URL;
         return Promise.resolve(this.viewData);
     }
 
