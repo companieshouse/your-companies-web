@@ -9,10 +9,10 @@
     "invited_by": "Gwahoddwyd gan",
     "accept": "Derbyn",
     "decline": "Gwrthod",
-    "accept_an_invitation": "[CY] Accept an invitation",
-    "accept_an_invitation_from": "[CY] Accept an invitation from ",
-    "decline_an_invitation": "[CY] Decline an invitation",
-    "decline_an_invitation_from": "[CY] Decline an invitation from ",
-    "invitations_to_be_digitally_authorised": "[CY] Invitations to be digitally authorised for a company",
+    "accept_an_invitation": "[CY] Accept invitation to be digitally authorised",
+    "accept_an_invitation_from": "[CY] Accept invitation to be digitally authorised for ",
+    "decline_an_invitation": "[CY] Decline invitation to be digitally authorised",
+    "decline_an_invitation_from": "[CY] Decline invitation to be digitally authorised for ",
+    "invitations_to_be_digitally_authorised": "[CY] Invitations to be digitally authorised",
     "no_pending_invitations": "Dim gwahoddiadau yn yr arfaeth."
 }

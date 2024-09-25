@@ -1,5 +1,6 @@
 {
     "back_link": "Ôl",
+    "back_to_previous_page":"[CY] Back to previous page",
     "continue": "Parhau",
     "there_is_a_problem": "Mae yna broblem",
     "link_back_to_previous_page": "[CY] Link back to the previous page",
@@ -8,10 +9,9 @@
     "cancel": "Canslo",
     "title_end": " - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "skip_to_main_content": "[CY] Skip to main content",
-    "customer_insights": "[CY] Customer insights",
-    "main_nav_bar": "[CY] Main nav bar",
-    "language_switcher": "[CY] Language switcher",
-    "continue_button_to_proceed_to_the_next_page": "[CY] Continue button to proceed to the next page",
+    "customer_insights": "[CY] Links to a survey to tell us what you think of this service and an online form to tell us if there is anything wrong with this page",
+    "main_nav_bar": "[CY] Menu",
+    "language_switcher": "Change language to English",
     "success":"Llwyddiant",
     "important": "[CY] Important",
     "back_to_your_companies": "Nôl i eich cwmnïau",
@@ -22,7 +22,7 @@
     "previous": "Blaenorol",
     "next_page": "[CY] Next page",
     "previous_page": "[CY] Previous page",
-    "click_to_expand_or_collaps": "[CY] Click to expand or collapse",
+    "click_to_expand_or_collaps": "[CY] Select to show or hide",
     "your_companies_header": "Eich cwmnïau",
     "your_filings_header": "Eich ffeilio",
     "companies_you_follow_header": "Cwmnïau rydych yn dilyn",
@@ -45,5 +45,6 @@
     "open_gov_licence_footer": "Drwydded Llywodraeth Agored v3.0", 
     "except_where_otherwise_stated_footer": ", heblaw lle nodir yn wahanol",
     "crown_copyright_footer": "© Hawlfraint y Goron",
-    "generic_error_message": "Roedd camgymeriad yn prosesu eich cais. Ceisiwch eto, os gwelwch yn dda."
+    "generic_error_message": "Roedd camgymeriad yn prosesu eich cais. Ceisiwch eto, os gwelwch yn dda.",
+    "opens_in_a_new_tab": "[CY] Opens in a new tab"
 }
