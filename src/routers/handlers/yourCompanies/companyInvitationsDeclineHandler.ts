@@ -13,7 +13,7 @@ export class CompanyInvitationsDeclineHandler extends GenericHandler {
         const associationStateChanged = getExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId) === constants.TRUE;
         const referrer: string | undefined = req.get("Referrer");
         const companyName = req.query[constants.COMPANY_NAME] as string;
-        const hrefB = `${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27").replace("+", "%20")}`;
+        const hrefB = `${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
 
         if (!associationStateChanged) {
             await updateAssociationStatus(req, associationId, AssociationStatus.REMOVED);

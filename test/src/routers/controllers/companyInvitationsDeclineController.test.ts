@@ -12,7 +12,7 @@ jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);
 const associationId = "123456";
-const companyName = "Doughnuts Limited";
+const companyName = "Morrisons";
 const url = `/your-companies/company-invitations-decline/${associationId}?companyName=${companyName}`;
 
 describe("GET /your-companies/companies-invitations-decline/:associationId", () => {
