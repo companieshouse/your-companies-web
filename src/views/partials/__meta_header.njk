@@ -10,7 +10,7 @@
     {% include "partials/__styles.njk" %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     {# Set the page object to hold values exported from server to JS files #}
-    <script>
+    <script nonce={{ nonce | dump | safe }}>
         var page = page || {};
     </script>
 </head>
