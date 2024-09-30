@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../handlers/genericHandler";
 import { getTranslationsForView } from "../../lib/utils/translations";
 import * as constants from "../../constants";
-import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { ViewData } from "../../types/util-types";
 import logger from "../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../services/associationsService";
@@ -12,7 +12,6 @@ import { AssociationState } from "../../types/associations";
 export class RemoveCompanyHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<ViewData | void> {
         if (method === constants.GET) {
-            deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
             const companyNumber = req.params[constants.COMPANY_NUMBER];
             try {
                 const companyProfile = await getCompanyProfile(companyNumber);

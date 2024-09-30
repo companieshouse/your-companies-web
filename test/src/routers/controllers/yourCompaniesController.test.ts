@@ -226,7 +226,7 @@ describe("GET /your-companies", () => {
         const response = await router.get("/your-companies?lang=en");
 
         // Then
-        userAssociations.items.forEach(company => {
+        userAssociations.items.forEach(() => {
             expect(response.text).toContain("Active"); // Check for "Active" instead of AssociationStatus.CONFIRMED
         });
     });

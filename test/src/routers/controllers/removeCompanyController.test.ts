@@ -10,6 +10,7 @@ import * as enCommon from "../../../../locales/en/common.json";
 import * as cyCommon from "../../../../locales/cy/common.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { getCompanyProfile } from "../../../../src/services/companyProfileService";
 
 const router = supertest(app);
 const companyNumber = "123456";
@@ -29,6 +30,8 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => ({
     getExtraData: jest.fn()
 }));
 
+jest.mock("../../../../src/services/companyProfileService");
+
 describe("GET /your-companies/remove-company", () => {
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 
@@ -40,6 +43,11 @@ describe("GET /your-companies/remove-company", () => {
         (getExtraData as jest.Mock).mockImplementation((session, key) => session.data[key]);
         setExtraData(session, constants.COMPANY_NAME, companyName);
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
+
+        (getCompanyProfile as jest.Mock).mockResolvedValue({
+            companyName: companyName,
+            companyNumber: companyNumber
+        });
     });
 
     redirectPageSpy.mockReturnValue(false);
@@ -54,6 +62,7 @@ describe("GET /your-companies/remove-company", () => {
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
     });
 
     it("should return status 200 for remove company page", async () => {
@@ -82,6 +91,7 @@ describe("GET /your-companies/remove-company", () => {
         expect(response.text).toContain(enCommon.yes);
         expect(response.text).toContain(enCommon.no);
         expect(response.text).toContain(enCommon.continue);
+        expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
     });
 
     it("should return expected Welsh content if language version set to Welsh", async () => {
@@ -99,6 +109,7 @@ describe("GET /your-companies/remove-company", () => {
         expect(response.text).toContain(cyCommon.yes);
         expect(response.text).toContain(cyCommon.no);
         expect(response.text).toContain(cyCommon.continue);
+        expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
     });
 });
 
