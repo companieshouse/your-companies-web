@@ -147,7 +147,7 @@ describe("POST /your-companies/remove-company", () => {
         // Then
         expect(response.status).toBe(302);
         expect(response.header.location).toBe(constants.LANDING_URL);
-    });
+    }, 3000);
 
     it("Should return expected English error message if no option selected and language version set to English", async () => {
         // Given
