@@ -124,7 +124,7 @@ describe("POST /your-companies/remove-company", () => {
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
     });
 
-    it("should re-render page with errors when no option is selected", async () => {
+    it("should re-render page with errors when no option is selected in Welsh", async () => {
         // Given
         const request = router.post(url);
 
@@ -133,8 +133,8 @@ describe("POST /your-companies/remove-company", () => {
 
         // Then
         expect(response.status).toBe(200);
-        expect(response.text).toContain(en.you_must_select_an_option);
-        expect(response.text).toContain(enCommon.title_error);
+        expect(response.text).toContain(cy.you_must_select_an_option);
+        expect(response.text).toContain(cyCommon.title_error);
     });
 
     it("should redirect to landing page when 'No' is selected", async () => {
