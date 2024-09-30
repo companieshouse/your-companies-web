@@ -7,20 +7,22 @@
 
 {% set rowsData = [] %}
 {% for elem in associationData %}
-     {% set rowElem = [
-                { "text": elem.company_name },
-                { "text": elem.company_number },
-                { "text": elem.company_status }
-            ] %}
     {% set params = {
         companyNumber: elem.company_number
     } %}
     {% set visuallyHiddenText = elem.company_name %}
     {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
-    {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
     {% set remove_link = link(lang.remove_company, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
-    {% set rowElem = (rowElem.push({html: remove_link}), rowElem) %}
-    {% set rowsData = (rowsData.push(rowElem), rowsData) %}
+    
+    {% set rowElem = [
+        { "text": elem.company_name },
+        { "text": elem.company_number },
+        { "html": '<strong class="govuk-tag govuk-tag--blue">' + elem.company_status + '</strong>' },
+        { "html": view_and_manage_link },
+        { "html": remove_link }
+    ] %}
+    
+    {% set rowsData = rowsData.concat([rowElem]) %}
 {% endfor %}
 
 {% set message = null %}
