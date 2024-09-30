@@ -9,10 +9,11 @@ export class RemoveCompanyConfirmedHandler extends GenericHandler {
     async execute (req: Request): Promise<ViewData> {
         this.viewData = await this.getViewData(req);
         this.viewData.lang = getTranslationsForView(
-            (req as any).lang,
+            req.lang,
             constants.REMOVE_COMPANY_CONFIRMED
         );
         this.viewData.templateName = constants.REMOVE_COMPANY_CONFIRMED;
+        this.viewData.buttonHref = constants.LANDING_URL;
         return Promise.resolve(this.viewData);
     }
 
