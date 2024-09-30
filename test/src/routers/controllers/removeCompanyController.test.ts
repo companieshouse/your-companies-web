@@ -11,6 +11,7 @@ import * as cyCommon from "../../../../locales/cy/common.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../../src/services/companyProfileService";
+import * as associationsService from "../../../../src/services/associationsService";
 
 const router = supertest(app);
 const companyNumber = "123456";
@@ -31,6 +32,12 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => ({
 }));
 
 jest.mock("../../../../src/services/companyProfileService");
+
+jest.mock("../../../../src/services/associationsService", () => ({
+    ...jest.requireActual("../../../../src/services/associationsService"),
+    isOrWasCompanyAssociatedWithUser: jest.fn(),
+    removeUserFromCompanyAssociations: jest.fn()
+}));
 
 describe("GET /your-companies/remove-company", () => {
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
@@ -114,6 +121,7 @@ describe("GET /your-companies/remove-company", () => {
 });
 
 describe("POST /your-companies/remove-company", () => {
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
     beforeEach(() => {
         jest.clearAllMocks();
         (setExtraData as jest.Mock).mockImplementation((session, key, value) => {
@@ -122,7 +130,16 @@ describe("POST /your-companies/remove-company", () => {
         (getExtraData as jest.Mock).mockImplementation((session, key) => session.data[key]);
         setExtraData(session, constants.COMPANY_NAME, companyName);
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
+
+        (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
+            state: "COMPNANY_ASSOCIATED_WITH_USER",
+            associationId: "test-association-id"
+        });
+
+        (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
     });
+
+    redirectPageSpy.mockReturnValue(false);
 
     it("should re-render page with errors when no option is selected in Welsh", async () => {
         // Given
@@ -147,6 +164,22 @@ describe("POST /your-companies/remove-company", () => {
         // Then
         expect(response.status).toBe(302);
         expect(response.header.location).toBe(constants.LANDING_URL);
+    });
+
+    it("should redirect to confirmation page when 'Yes' is selected", async () => {
+        // Given
+        const request = router.post(url).send({ confirmRemoval: "yes" });
+
+        // When
+        const response = await request;
+
+        // Then
+        expect(response.status).toBe(302);
+        expect(response.header.location).toBe(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
+        expect(associationsService.isOrWasCompanyAssociatedWithUser).toHaveBeenCalledWith(
+            expect.anything(),
+            companyNumber
+        );
     });
 
     it("Should return expected English error message if no option selected and language version set to English", async () => {
