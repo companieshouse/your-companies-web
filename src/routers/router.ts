@@ -33,7 +33,6 @@ import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthenti
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
-import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 
 const router: Router = Router();
 
