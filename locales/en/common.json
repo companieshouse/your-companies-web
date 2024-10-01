@@ -1,5 +1,6 @@
 {
     "back_link": "Back",
+    "back_to_previous_page":"Back to previous page",
     "continue": "Continue",
     "there_is_a_problem": "There is a problem",
     "link_back_to_previous_page": "Link back to the previous page",
@@ -8,10 +9,9 @@
     "cancel": "Cancel",
     "title_end": " - Find and update company information - GOV.UK",
     "skip_to_main_content": "Skip to main content",
-    "customer_insights": "Customer insights",
-    "main_nav_bar": "Main nav bar",
-    "language_switcher": "Language switcher",
-    "continue_button_to_proceed_to_the_next_page": "Continue button to proceed to the next page",
+    "customer_insights": "Links to a survey to tell us what you think of this service and an online form to tell us if there is anything wrong with this page",
+    "main_nav_bar": "Menu",
+    "language_switcher": "[CY] Change language to Cymraeg",
     "success": "Success",
     "important": "Important",
     "back_to_your_companies": "Back to your companies",
@@ -22,7 +22,7 @@
     "previous": "Previous",
     "next_page": "Next page",
     "previous_page": "Previous page",
-    "click_to_expand_or_collaps": "Click to expand or collapse",
+    "click_to_expand_or_collaps": "Select to show or hide",
     "your_companies_header": "Your companies",
     "your_filings_header": "Your filings",
     "companies_you_follow_header": "Companies you follow",
@@ -45,5 +45,6 @@
     "open_gov_licence_footer": "Open Government Licence v3.0", 
     "except_where_otherwise_stated_footer": ", except where otherwise stated",
     "crown_copyright_footer": "© Crown copyright",
-    "generic_error_message": "There was an error processing your request. Please try again."
+    "generic_error_message": "There was an error processing your request. Please try again.",
+    "opens_in_a_new_tab": "Opens in a new tab"
 }

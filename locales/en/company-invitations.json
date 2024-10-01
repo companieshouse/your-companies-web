@@ -9,10 +9,10 @@
     "invited_by": "Invited by",
     "accept": "Accept",
     "decline": "Decline",
-    "accept_an_invitation": "Accept an invitation",
-    "accept_an_invitation_from": "Accept an invitation from ",
-    "decline_an_invitation": "Decline an invitation",
-    "decline_an_invitation_from": "Decline an invitation from ",
-    "invitations_to_be_digitally_authorised": "Invitations to be digitally authorised for a company",
+    "accept_an_invitation": "Accept invitation to be digitally authorised",
+    "accept_an_invitation_from": "Accept invitation to be digitally authorised for ",
+    "decline_an_invitation": "Decline invitation to be digitally authorised",
+    "decline_an_invitation_from": "Decline invitation to be digitally authorised for ",
+    "invitations_to_be_digitally_authorised": "Invitations to be digitally authorised",
     "no_pending_invitations": "No pending invitations."
 }

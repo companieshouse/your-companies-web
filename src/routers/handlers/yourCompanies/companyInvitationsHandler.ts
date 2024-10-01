@@ -63,10 +63,10 @@ export class CompanyInvitationsHandler extends GenericHandler {
                     { text: invite.companyNumber },
                     { text: invite.invitedBy },
                     {
-                        html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from} ${invite.companyName}`, translations.accept as string)
+                        html: this.getLink(acceptPath + companyNameQueryParam, `${translations.accept_an_invitation_from}${invite.companyName}`, translations.accept as string)
                     },
                     {
-                        html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from} ${invite.companyName}`, translations.decline as string)
+                        html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from}${invite.companyName}`, translations.decline as string)
                     }
                 ]);
             }
