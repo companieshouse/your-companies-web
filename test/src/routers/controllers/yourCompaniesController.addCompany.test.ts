@@ -158,6 +158,36 @@ describe("GET /your-companies/add-company", () => {
         expect(companyProfileSpy).toHaveBeenCalledWith("87654321");
     });
 
+    it("should return Welsh page without Enter 8 Character Company Number error", async () => {
+        // Given
+        const url = "/your-companies/add-company";
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: url };
+            req.session = session;
+            next();
+        });
+        // When
+        const response = await router.get("/your-companies/add-company?lang=cy");
+
+        // Then
+        expect(response.text).not.toContain(cy.enter_a_company_number_that_is_8_characters_long);
+    });
+
+    it("should return English page without Enter 8 Character Company Number error", async () => {
+        // Given
+        const url = "/your-companies/add-company";
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: url };
+            req.session = session;
+            next();
+        });
+        // When
+        const response = await router.get("/your-companies/add-company?lang=en");
+
+        // Then
+        expect(response.text).not.toContain(en.enter_a_company_number_that_is_8_characters_long);
+    });
+
 });
 
 describe("POST /your-companies/add-company", () => {
