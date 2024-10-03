@@ -56,7 +56,7 @@ export class AddCompanyHandler extends GenericHandler {
                 } else if (typeof savedProfile?.companyNumber === "string") {
                     this.viewData.proposedCompanyNumber = savedProfile.companyNumber;
                     await this.validateCompanyNumber(req, savedProfile.companyNumber);
-                } else if (referrer && referrer.includes(hrefB)) {
+                } else if (referrer && referrer.includes(hrefB) && currentCompanyNumber) {
                     this.viewData.proposedCompanyNumber = currentCompanyNumber;
                     await this.validateCompanyNumber(req, currentCompanyNumber);
                 }
