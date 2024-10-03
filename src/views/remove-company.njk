@@ -14,7 +14,7 @@
 {% set message = null %}
 
 {% for key, value in errors %}
-    {% if key == "confirmRemoval" %}
+    {% if ["confirmRemoval", "generic"].includes(key) %}
         {% set message = {
             text: lang[value.text]
         } %}

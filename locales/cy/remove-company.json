@@ -3,5 +3,6 @@
     "if_you_remove_this_company": "[CY] If you remove this company, you will no longer be able to file online for",
     "title_your_companies": "[CY] Your companies - Find and update company information - GOV.UK",
     "without_a_current_auth_code": "[CY] without a current authentication code.",
-    "you_must_select_an_option": "[CY] You must select an option"
+    "you_must_select_an_option": "[CY] You must select an option",
+    "error_removing_company": "Error removing company"
   }

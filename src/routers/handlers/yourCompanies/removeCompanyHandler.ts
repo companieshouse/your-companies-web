@@ -35,7 +35,7 @@ export class RemoveCompanyHandler extends GenericHandler {
             } else {
                 if (selectedOption === "yes") {
                     // The redirect is handled in handleCompanyRemoval
-                    await this.handleCompanyRemoval(req, res);
+                    return await this.handleCompanyRemoval(req, res);
                 } else if (selectedOption === "no") {
                     return res.redirect(constants.LANDING_URL);
                 }
@@ -54,7 +54,7 @@ export class RemoveCompanyHandler extends GenericHandler {
         };
     }
 
-    private async handleCompanyRemoval (req: Request, res: Response): Promise<void> {
+    private async handleCompanyRemoval (req: Request, res: Response): Promise<ViewData | void> {
         const companyNumber = req.params[constants.COMPANY_NUMBER];
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
 
@@ -77,13 +77,13 @@ export class RemoveCompanyHandler extends GenericHandler {
         res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
     }
 
-    private renderErrorPage (res: Response, errorMessage: string): void {
+    private renderErrorPage (res: Response, errorMessage: string): ViewData {
         logger.error(errorMessage);
         this.viewData.errors = {
             generic: {
                 text: "error_removing_company"
             }
         };
-        res.render(constants.REMOVE_COMPANY_PAGE, this.viewData);
+        return this.viewData;
     }
 }

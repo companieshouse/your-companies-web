@@ -130,13 +130,6 @@ describe("POST /your-companies/remove-company", () => {
         (getExtraData as jest.Mock).mockImplementation((session, key) => session.data[key]);
         setExtraData(session, constants.COMPANY_NAME, companyName);
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
-
-        (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
-            state: "COMPANY_ASSOCIATED_WITH_USER",
-            associationId: "test-association-id"
-        });
-
-        (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
     });
 
     redirectPageSpy.mockReturnValue(false);
@@ -168,6 +161,13 @@ describe("POST /your-companies/remove-company", () => {
 
     it("should redirect to confirmation page when 'Yes' is selected", async () => {
         // Given
+        (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
+            state: "COMPANY_ASSOCIATED_WITH_USER",
+            associationId: "test-association-id"
+        });
+
+        (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+
         const request = router.post(url).send({ confirmRemoval: "yes" });
 
         // When
@@ -180,6 +180,41 @@ describe("POST /your-companies/remove-company", () => {
             expect.anything(),
             companyNumber
         );
+    });
+
+    it("should render error page if company is not associated with user", async () => {
+        // Given
+        (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
+            state: "COMPANY_NOT_ASSOCIATED_WITH_USER"
+        });
+
+        const request = router.post(url).send({ confirmRemoval: "yes" });
+
+        // When
+        const response = await request;
+
+        // Then
+        expect(response.status).toBe(200);
+        expect(response.text).toContain("Error removing company");
+    });
+
+    it("should render error page if removal result is unexpected", async () => {
+        // Given
+        (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
+            state: "COMPANY_ASSOCIATED_WITH_USER",
+            associationId: "test-association-id"
+        });
+
+        (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue("UNEXPECTED_RESULT");
+
+        const request = router.post(url).send({ confirmRemoval: "yes" });
+
+        // When
+        const response = await request;
+
+        // Then
+        expect(response.status).toBe(200);
+        expect(response.text).toContain("Error removing company");
     });
 
     it("Should return expected English error message if option not selected and language version set to English", async () => {
