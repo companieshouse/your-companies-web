@@ -31,7 +31,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
     const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
     const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {

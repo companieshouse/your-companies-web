@@ -132,7 +132,7 @@ describe("POST /your-companies/remove-company", () => {
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
 
         (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
-            state: "COMPNANY_ASSOCIATED_WITH_USER",
+            state: "COMPANY_ASSOCIATED_WITH_USER",
             associationId: "test-association-id"
         });
 
@@ -182,7 +182,7 @@ describe("POST /your-companies/remove-company", () => {
         );
     });
 
-    it("Should return expected English error message if no option selected and language version set to English", async () => {
+    it("Should return expected English error message if option not selected and language version set to English", async () => {
         // Given
         const request = router.post(`${url}?lang=en`);
 
@@ -193,7 +193,7 @@ describe("POST /your-companies/remove-company", () => {
         expect(response.text).toContain(en.you_must_select_an_option);
     });
 
-    it("Should return expected Welsh error message if no option selected and language version set to Welsh", async () => {
+    it("Should return expected Welsh error message if option not selected and language version set to Welsh", async () => {
         // Given
         const request = router.post(`${url}?lang=cy`);
 
