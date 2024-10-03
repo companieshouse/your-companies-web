@@ -188,6 +188,67 @@ describe("GET /your-companies/add-company", () => {
         expect(response.text).not.toContain(en.enter_a_company_number_that_is_8_characters_long);
     });
 
+    it("should return English page without Enter 8 Character Company Number error when referrer and hrefB are not equal", async () => {
+        // Given
+        const url = "/your-companies/";
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: url };
+            req.session = session;
+            next();
+        });
+        // When
+        const response = await router.get("/your-companies/add-company?lang=en");
+
+        // Then
+        expect(response.text).not.toContain(en.enter_a_company_number_that_is_8_characters_long);
+    });
+
+    it("should return Welsh page without Enter 8 Character Company Number error when referrer and hrefB are not equal", async () => {
+        // Given
+        const url = "/your-companies/";
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: url };
+            req.session = session;
+            next();
+        });
+        // When
+        const response = await router.get("/your-companies/add-company?lang=cy");
+
+        // Then
+        expect(response.text).not.toContain(cy.enter_a_company_number_that_is_8_characters_long);
+    });
+
+    it("should return expected English content if language version set to English and referrer is undefined", async () => {
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: undefined };
+            req.session = session;
+            next();
+        });
+
+        const response = await router.get("/your-companies/add-company?lang=en");
+
+        expect(response.text).toContain(enCommon.back_link);
+        expect(response.text).toContain(en.what_is_the_company_number);
+        expect(response.text).toContain(en.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(en.you_can_find_this_by_searching);
+        expect(response.text).toContain(en.how_do_i_find_the_company_number);
+        expect(response.text).toContain(enCommon.continue);
+    });
+
+    it("should return expected Welsh content if language version set to Welsh and referrer is undefined", async () => {
+        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+            req.headers = { referrer: undefined };
+            req.session = session;
+            next();
+        });
+        const response = await router.get("/your-companies/add-company?lang=cy");
+        expect(response.text).toContain(cyCommon.back_link);
+        expect(response.text).toContain(cy.what_is_the_company_number);
+        expect(response.text).toContain(cy.a_company_number_is_8_characters_long);
+        expect(response.text).toContain(cy.you_can_find_this_by_searching);
+        expect(response.text).toContain(cy.how_do_i_find_the_company_number);
+        expect(response.text).toContain(cyCommon.continue);
+    });
 });
 
 describe("POST /your-companies/add-company", () => {
