@@ -35,7 +35,7 @@ export class RemoveCompanyHandler extends GenericHandler {
             } else {
                 if (selectedOption === "yes") {
                     // The redirect is handled in handleCompanyRemoval
-                    return await this.handleCompanyRemoval(req, res);
+                    return this.handleCompanyRemoval(req, res);
                 } else if (selectedOption === "no") {
                     return res.redirect(constants.LANDING_URL);
                 }
