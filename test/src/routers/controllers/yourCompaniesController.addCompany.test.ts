@@ -157,7 +157,6 @@ describe("GET /your-companies/add-company", () => {
         expect(response.text).toContain("87654321"); // Check if current company number is displayed
         expect(companyProfileSpy).toHaveBeenCalledWith("87654321");
     });
-
 });
 
 describe("POST /your-companies/add-company", () => {
