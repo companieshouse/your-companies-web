@@ -12,7 +12,7 @@
     } %}
     {% set visuallyHiddenText = elem.company_name %}
     {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
-    {% set remove_link = link(lang.remove_company, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
+    {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
     
     {% set rowElem = [
         { "text": elem.company_name },
