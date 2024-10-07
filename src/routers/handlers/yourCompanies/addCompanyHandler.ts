@@ -105,7 +105,7 @@ export class AddCompanyHandler extends GenericHandler {
         deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
 
         const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyProfile.companyNumber);
-        if (isAssociated.state === AssociationState.COMPNANY_ASSOCIATED_WITH_USER) {
+        if (isAssociated.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
             this.viewData.errors = {
                 companyNumber: {
                     text: constants.THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT

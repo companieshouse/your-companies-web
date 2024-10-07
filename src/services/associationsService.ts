@@ -41,27 +41,24 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
 export const isOrWasCompanyAssociatedWithUser = async (req: Request, companyNumber: string): Promise<AssociationStateResponse> => {
     const statuses: AssociationStatus[] = [AssociationStatus.AWAITING_APPROVAL, AssociationStatus.CONFIRMED, AssociationStatus.REMOVED];
     const userAssociations: AssociationList = await getUserAssociations(req, statuses, companyNumber);
-    let isOrWasAssociated: AssociationState;
-    let associationId;
     if (userAssociations.totalResults > 0) {
+        let isOrWasAssociated: AssociationState;
         const associationStatus: AssociationStatus = userAssociations.items[0].status;
         switch (associationStatus) {
         case AssociationStatus.CONFIRMED:
-            isOrWasAssociated = AssociationState.COMPNANY_ASSOCIATED_WITH_USER;
+            isOrWasAssociated = AssociationState.COMPANY_ASSOCIATED_WITH_USER;
             break;
         case AssociationStatus.AWAITING_APPROVAL:
-            isOrWasAssociated = AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER;
+            isOrWasAssociated = AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER;
             break;
         case AssociationStatus.REMOVED:
-            isOrWasAssociated = AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER;
+            isOrWasAssociated = AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER;
             break;
         }
-        associationId = userAssociations.items[0].id;
-    } else {
-        isOrWasAssociated = AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER;
+        return Promise.resolve({ state: isOrWasAssociated, associationId: userAssociations.items[0].id });
     }
 
-    return Promise.resolve({ state: isOrWasAssociated, associationId });
+    return Promise.resolve({ state: AssociationState.COMPANY_NOT_ASSOCIATED_WITH_USER });
 };
 
 export const getCompanyAssociations = async (req: Request, companyNumber: string, userEmail?: string, includeRemoved?: boolean, pageIndex?: number, itemsPerPage?: number): Promise<AssociationList> => {

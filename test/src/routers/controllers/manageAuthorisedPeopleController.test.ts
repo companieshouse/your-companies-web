@@ -30,7 +30,7 @@ const companyNumber = "NI038379";
 describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
     const url = `/your-companies/manage-authorised-people/${companyNumber}`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
-    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "" };
+    const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
     const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
     beforeEach(() => {
@@ -56,7 +56,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
 
     it("should redirect to the langing page if user not authorised to see the page", async () => {
         // Given
-        const isAssociated: AssociationStateResponse = { state: AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "" };
+        const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "" };
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
         // When
         const response = await router.get(url);

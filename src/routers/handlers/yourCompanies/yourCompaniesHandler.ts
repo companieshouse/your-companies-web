@@ -83,6 +83,19 @@ export class YourCompaniesHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
+    private getStatusDisplay (status: AssociationStatus): string {
+        switch (status) {
+        case AssociationStatus.CONFIRMED:
+            return "Active";
+        case AssociationStatus.REMOVED:
+            return "Removed";
+        case AssociationStatus.AWAITING_APPROVAL:
+            return "Awaiting Approval";
+        default:
+            return "Unknown";
+        }
+    }
+
     private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
             templateName: constants.YOUR_COMPANIES_PAGE,
@@ -93,24 +106,20 @@ export class YourCompaniesHandler extends GenericHandler {
             matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
         };
 
-        if (confirmedUserAssociations.totalResults > 0) {
-            const associationData: { text: string }[][] = [];
-            for (let index = 0; index < confirmedUserAssociations.items.length; index++) {
-                associationData[index] = [
-                    {
-                        text: confirmedUserAssociations.items[index].companyName
-                    },
-                    {
-                        text: confirmedUserAssociations.items[index].companyNumber
-                    }
-                ];
-            }
+        if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
+            const associationData = confirmedUserAssociations.items.map(item => ({
+                company_name: item.companyName,
+                company_number: item.companyNumber,
+                company_status: this.getStatusDisplay(item.status)
+            }));
 
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
             viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
+            viewData.removeCompanyUrl = constants.YOUR_COMPANIES_REMOVE_COMPANY_URL;
         }
 
         return { ...viewData, lang: lang };
+
     }
 }

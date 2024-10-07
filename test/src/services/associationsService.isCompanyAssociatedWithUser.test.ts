@@ -20,7 +20,7 @@ describe("associationsService", () => {
             // Given
             const companyNumber = "NI038379";
             mockGetUserAssociations.mockResolvedValue(demoUserPolishBreweryAssociation);
-            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_ASSOCIATED_WITH_USER, associationId: "1234567890" };
+            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "1234567890" };
             // When
             const result = await associationsService.isOrWasCompanyAssociatedWithUser(reqest, companyNumber);
             // Then
@@ -31,7 +31,7 @@ describe("associationsService", () => {
             // Given
             const companyNumber = "NI038333";
             mockGetUserAssociations.mockResolvedValue(demoUserGermanBreweryAssociation);
-            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "1234567888" };
+            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "1234567888" };
             // When
             const result = await associationsService.isOrWasCompanyAssociatedWithUser(reqest, companyNumber);
             // Then
@@ -42,7 +42,7 @@ describe("associationsService", () => {
             // Given
             const companyNumber = "AB012345";
             mockGetUserAssociations.mockResolvedValue(demoUserScottishBreweryAssociation);
-            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_WAS_ASSOCIATED_WITH_USER, associationId: "1122334455" };
+            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER, associationId: "1122334455" };
             // When
             const result = await associationsService.isOrWasCompanyAssociatedWithUser(reqest, companyNumber);
             // Then
@@ -53,7 +53,7 @@ describe("associationsService", () => {
             // Given
             const companyNumber = "12345678";
             mockGetUserAssociations.mockResolvedValue(emptyAssociations);
-            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPNANY_NOT_ASSOCIATED_WITH_USER };
+            const expectedAssociationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_NOT_ASSOCIATED_WITH_USER };
             // When
             const result = await associationsService.isOrWasCompanyAssociatedWithUser(reqest, companyNumber);
             // Then

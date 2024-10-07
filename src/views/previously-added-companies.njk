@@ -7,18 +7,22 @@
 
 {% set rowsData = [] %}
 {% for elem in associationData %}
-    {% set rowElem = [] %}
-    {% set rowElem = (rowElem.push(elem | first), rowElem) %}
-    {% set rowElem = (rowElem.push(elem | last), rowElem) %}
-    {% set company_number = elem | last %}
     {% set params = {
-        companyNumber: company_number.text
+        companyNumber: elem.company_number
     } %}
-    {% set company_name = elem | first %}
-    {% set visuallyHiddenText = company_name.text %}
-      {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
-    {% set rowElem = (rowElem.push({html: view_and_manage_link}), rowElem) %}
-    {% set rowsData = (rowsData.push(rowElem), rowsData) %}
+    {% set visuallyHiddenText = elem.company_name %}
+    {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
+    {% set remove_link = link(lang.remove_company, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
+    
+    {% set rowElem = [
+        { "text": elem.company_name },
+        { "text": elem.company_number },
+        { "html": '<strong class="govuk-tag govuk-tag--blue">' + elem.company_status + '</strong>' },
+        { "html": view_and_manage_link },
+        { "html": remove_link }
+    ] %}
+    
+    {% set rowsData = rowsData.concat([rowElem]) %}
 {% endfor %}
 
 {% set message = null %}
@@ -31,6 +35,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
+        
         {{ govukButton({
                 text: lang.add_a_company,
                 href: buttonHref,
@@ -67,20 +72,16 @@
                     </div>
                 </div>
             </form>
-
         {% endif %}
 
         {% if showNumOfMatches %}
             {% if numOfMatches == 0 %}
                 <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{search}}'</h2>
                 <p class="govuk-body">{{lang.no_results_that_match}}</p>
-
             {% elif numOfMatches == 1 %}
-                <h2 class="govuk-heading-s">{{numOfMatches}}
-                    {{lang.match_found_for}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.match_found_for}} '{{search}}'</h2>
             {% else %}
-                <h2 class="govuk-heading-s">{{numOfMatches}}
-                    {{lang.matches_found_for}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.matches_found_for}} '{{search}}'</h2>
             {% endif %}
         {% endif %}
 
@@ -99,7 +100,13 @@
                             text: lang.company_number
                         },
                         {
+                            text: lang.company_status
+                        },
+                        {
                             text: lang.people_digitally_authorised_to_file_online
+                        },
+                        {
+                            text: lang.remove_company
                         }
                     ],
                     rows: rowsData
