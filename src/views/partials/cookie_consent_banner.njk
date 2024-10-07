@@ -1,27 +1,27 @@
 {% from "govuk/components/cookie-banner/macro.njk"  import govukCookieBanner %}
 
 {% set html %}
-<p>We use some essential cookies to make our services work.</p>
-<p>We'd also like to use analytics cookies so we can understand how you use our services and to make improvements.</p>
+  <p>{{ lang.we_use_essential_cookies }}</p>
+  <p>{{ lang.we_use_analytics_cookies }}</p>
 {% endset %}
 
 {% set acceptHtml %}
-<p>You've accepted analytics cookies. You can <a class="govuk-link" href="{{ chsUrl }}/help/cookies">change your cookie settings</a> at any time.</p>
+  <p>{{ lang.accepted_analytics_cookies }} {{ lang.you_can }} <a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{ lang.change_cookie_settings }}</a> {{ lang.at_any_time }}</p>
 {% endset %}
 
 {% set rejectHtml %}
-<p>You've rejected analytics cookies. You can <a class="govuk-link" href="{{ chsUrl }}/help/cookies">change your cookie settings</a> at any time.</p>
+  <p>{{ lang.rejected_analytics_cookies }} {{ lang.you_can }} <a class="govuk-link" href="{{ chsUrl }}/help/cookies">{{ lang.change_cookie_settings }}</a> {{ lang.at_any_time }}</p>
 {% endset %}
 
 {{ govukCookieBanner({
-  ariaLabel: "Cookies on Companies House services",
+  ariaLabel: lang.cookies_on_companies_house_services,
   attributes: {
     id: "cookie-banner"
   },
   hidden: true,
   messages: [
     {
-      headingText: "Cookies on Companies House services",
+      headingText: lang.cookies_on_companies_house_services,
       attributes: {
       id: "accept-or-reject-message"
     },
@@ -29,7 +29,7 @@
       html: html,
       actions: [
       {
-        text: "Accept analytics cookies",
+        text: lang.accept_analytics_cookies,
         type: "button",
         name: "cookies",
         value: "accept",
@@ -38,7 +38,7 @@
       }
       },
       {
-        text: "Reject analytics cookies",
+        text: lang.reject_analytics_cookies,
         type: "button",
         name: "cookies",
         value: "reject",
@@ -47,7 +47,7 @@
       }
       },
       {
-        text: "View cookies",
+        text: lang.view_cookies,
         href: chsUrl + "/help/cookies"
       }
     ]
@@ -61,7 +61,7 @@
       hidden: true,
       actions: [
       {
-        text: "Hide this message",
+        text: lang.hide_this_message,
         type: "button",
         name: "hide",
         value: "hide",
@@ -80,7 +80,7 @@
       hidden: true,
       actions: [
       {
-        text: "Hide this message",
+        text: lang.hide_this_message,
         type: "button",
         name: "hide",
         value: "hide",
@@ -94,12 +94,12 @@
 }) }}
 
 <noscript>
-    {{ govukCookieBanner({
-    ariaLabel: "Cookies on Companies House services",
+  {{ govukCookieBanner({
+    ariaLabel: lang.cookies_on_companies_house_services,
     messages: [
       {
-        headingText: "Cookies on Companies House services",
-        text: "We use cookies to make our services work and collect analytics information. To accept or reject analytics cookies, turn on JavaScript in your browser settings and reload this page."
+        headingText: lang.cookies_on_companies_house_services,
+        text: lang.noscript_cookie_message
       }
     ]
   }) }}

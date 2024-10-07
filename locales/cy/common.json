@@ -46,5 +46,18 @@
     "except_where_otherwise_stated_footer": ", heblaw lle nodir yn wahanol",
     "crown_copyright_footer": "© Hawlfraint y Goron",
     "generic_error_message": "Roedd camgymeriad yn prosesu eich cais. Ceisiwch eto, os gwelwch yn dda.",
-    "opens_in_a_new_tab": "[CY] Opens in a new tab"
+    "opens_in_a_new_tab": "[CY] Opens in a new tab",
+    "cookies_on_companies_house_services": "[CY] Cookies on Companies House services",
+    "we_use_essential_cookies": "[CY] We use some essential cookies to make our services work.",
+    "we_use_analytics_cookies": "[CY] We'd also like to use analytics cookies so we can understand how you use our services and to make improvements.",
+    "accepted_analytics_cookies": "[CY] You've accepted analytics cookies.",
+    "rejected_analytics_cookies": "[CY] You've rejected analytics cookies.",
+    "change_cookie_settings": "[CY] change your cookie settings",
+    "at_any_time": "[CY] at any time.",
+    "you_can": "[CY] You can",
+    "accept_analytics_cookies": "[CY] Accept analytics cookies",
+    "reject_analytics_cookies": "[CY] Reject analytics cookies",
+    "view_cookies": "[CY] View cookies",
+    "hide_this_message": "[CY] Hide this message",
+    "noscript_cookie_message": "[CY] We use cookies to make our services work and collect analytics information. To accept or reject analytics cookies, turn on JavaScript in your browser settings and reload this page."
 }
