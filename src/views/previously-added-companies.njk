@@ -15,11 +15,11 @@
     {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
     
     {% set rowElem = [
-        { "text": elem.company_name, "classes": "govuk-!-width-one-quarter" },
-        { "text": elem.company_number, "classes": "govuk-!-width-one-sixth" },
-        { "html": '<strong class="govuk-tag govuk-tag--blue">' + elem.company_status + '</strong>', "classes": "govuk-!-width-one-eighth govuk-!-padding-right-3" },
-        { "html": view_and_manage_link, "classes": "govuk-!-width-one-quarter govuk-!-padding-left-3" },
-        { "html": remove_link, "classes": "govuk-!-width-one-sixth" }
+        { "text": elem.company_name },
+        { "text": elem.company_number },
+        { "html": '<strong class="govuk-tag govuk-tag--blue">' + elem.company_status + '</strong>' },
+        { "html": view_and_manage_link },
+        { "html": remove_link }
     ] %}
     
     {% set rowsData = rowsData.concat([rowElem]) %}
@@ -66,7 +66,7 @@
                     {% endif %}
                     <div id="search-input-group">
                         <input class="{{inputClasses}}" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
-                        <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
+                        <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
                         </button>
                         <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="your-companies-cancel-search-link" data-event-id="your-companies-cancel-search-link">{{lang.cancel_search}}</a>
                     </div>
@@ -89,33 +89,24 @@
 
         {% if numOfMatches > 0 %}
             {{ govukTable({
-                 classes: "govuk-!-margin-bottom-9",
-                attributes: {
-                        style: "width: 100%;"
-                },
                     caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
                     captionClasses: "govuk-table__caption--m govuk-visually-hidden",
                     firstCellIsHeader: true,
-                      head: [
+                    head: [
                         {
-                            text: lang.company_name,
-                            classes: "govuk-!-width-one-quarter"
+                            text: lang.company_name
                         },
                         {
-                            text: lang.company_number,
-                            classes: "govuk-!-width-one-sixth"
+                            text: lang.company_number
                         },
                         {
-                            text: lang.company_status,
-                            classes: "govuk-!-width-one-eighth govuk-!-padding-right-3"
+                            text: lang.company_status
                         },
                         {
-                            text: lang.people_digitally_authorised_to_file_online,
-                            classes: "govuk-!-width-one-quarter govuk-!-padding-left-3"
+                            text: lang.people_digitally_authorised_to_file_online
                         },
                         {
-                            text: lang.remove_company,
-                            classes: "govuk-!-width-one-sixth"
+                            text: lang.remove_company
                         }
                     ],
                     rows: rowsData
