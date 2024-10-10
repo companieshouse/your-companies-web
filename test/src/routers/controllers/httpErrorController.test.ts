@@ -33,7 +33,7 @@ describe("httpErrorHandler", () => {
         jest.clearAllMocks();
     });
 
-    it("should detect a http-error Error, call logger.errorRequest and render an service unavailable template", async () => {
+    it("should detect a http-error Error, call logger.errorRequest and render an service unavailable template", () => {
         // Given
         const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
         request.originalUrl = "/originalUrl";
@@ -47,10 +47,10 @@ describe("httpErrorHandler", () => {
         expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a POST request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
         );
     });
-    it("should ignore errors that are not from http-errors modules, and pass then to next", async () => {
+    it("should ignore errors that are not from http-errors modules, and pass then to next", () => {
         // Given
         request.originalUrl = "/originalUrl";
         request.method = "POST";
@@ -62,5 +62,38 @@ describe("httpErrorHandler", () => {
         expect(logger.errorRequest).not.toHaveBeenCalled();
         expect(mockNext).toHaveBeenCalledTimes(1);
         expect(mockNext).toHaveBeenCalledWith(error);
+    });
+
+    it("should redirect to your-companies if error has property redirctToYourCompanies true", () => {
+        const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
+        request.originalUrl = "/originalUrl";
+        request.method = "GET";
+        mockGetTranslationsForView.mockReturnValueOnce({});
+        const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`, { redirctToYourCompanies: true });
+        // When
+        httpErrorHandler(unauthorizedError, request, response, mockNext);
+        // Then
+        expect(response.redirect).toHaveBeenCalledWith("/your-companies");
+        expect(logger.errorRequest).toHaveBeenCalledTimes(1);
+        expect(logger.errorRequest).toHaveBeenCalledWith(request,
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
+        );
+    });
+
+    it("should not redirect to your-companies if error does not have property redirctToYourCompanies true", () => {
+        const HTTP_STATUS_CODE = StatusCodes.UNAUTHORIZED;
+        request.originalUrl = "/originalUrl";
+        request.method = "GET";
+        mockGetTranslationsForView.mockReturnValueOnce({});
+        const unauthorizedError = createError(HTTP_STATUS_CODE, `An error messsage`, { redirctToYourCompanies: false });
+        // When
+        httpErrorHandler(unauthorizedError, request, response, mockNext);
+        // Then
+        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
+        expect(response.redirect).not.toHaveBeenCalled();
+        expect(logger.errorRequest).toHaveBeenCalledTimes(1);
+        expect(logger.errorRequest).toHaveBeenCalledWith(request,
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
+        );
     });
 });
