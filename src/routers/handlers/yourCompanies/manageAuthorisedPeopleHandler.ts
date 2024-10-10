@@ -39,13 +39,9 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        try {
-            if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
-                deleteExtraData(req.session, constants.REMOVE_PERSON);
-                await this.handleCancellation(req, cancellation, companyNumber);
-            }
-        } catch (error) {
-            logger.error(`Error on cancellation: ${JSON.stringify(error)}`);
+        if (cancellation && req.originalUrl.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
+            deleteExtraData(req.session, constants.REMOVE_PERSON);
+            await this.handleCancellation(req, cancellation, companyNumber);
         }
 
         this.handleRemoveConfirmation(req);
@@ -84,8 +80,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     private async preventUnauthorisedAccess (req: Request, companyNumber: string) {
         const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
         if (isAssociated.state !== AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
-            return Promise.reject(createError(StatusCodes.FORBIDDEN));
+            const errorText = `${ManageAuthorisedPeopleHandler.name} ${this.preventUnauthorisedAccess.name}: Unauthorised, redirecting to your companies`;
+            return Promise.reject(createError(StatusCodes.FORBIDDEN, errorText, { redirctToYourCompanies: true }));
         }
+        return Promise.resolve();
     }
 
     private getViewData (companyNumber: string, lang: AnyRecord): ViewData {

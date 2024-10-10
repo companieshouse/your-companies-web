@@ -54,10 +54,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         expect(response.status).toEqual(200);
     });
 
-    it("should redirect to the langing page if user not authorised to see the page", async () => {
+    it("should redirect to the landing page /your-companies if user not authorised to see the page", async () => {
         // Given
-        const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "" };
-        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
+        const notAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "" };
+        isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(notAssociated);
         // When
         const response = await router.get(url);
         // Then
