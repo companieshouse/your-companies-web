@@ -272,6 +272,7 @@ describe("GET /your-companies", () => {
             expect(response.text).toContain(cy.remove_company);
         });
     });
+
     it("should display company status 'active' in Welsh", async () => {
         // Given
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
@@ -283,6 +284,7 @@ describe("GET /your-companies", () => {
         // Then
         expect(response.text).toContain("Gweithredol"); // Gweithredol is active in Welsh
     });
+
     it("should display company status 'closed' in Welsh", async () => {
         // Given
         const closedCompanyAssociation = {
@@ -292,7 +294,6 @@ describe("GET /your-companies", () => {
                 companyStatus: "closed"
             }]
         };
-
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockResolvedValue(closedCompanyAssociation);
         const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
@@ -302,6 +303,7 @@ describe("GET /your-companies", () => {
         // Then
         expect(response.text).toContain("Wedi cau");
     });
+
     it("should display company status 'insolvency-proceedings' in Welsh", async () => {
         // Given
         const insolventCompanyAssociation = {
@@ -311,7 +313,6 @@ describe("GET /your-companies", () => {
                 companyStatus: "insolvency-proceedings"
             }]
         };
-
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
         userAssociationsSpy.mockResolvedValue(insolventCompanyAssociation);
         const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
@@ -321,4 +322,5 @@ describe("GET /your-companies", () => {
         // Then
         expect(response.text).toContain("Trafodion Ansolfedd");
     });
+
 });
