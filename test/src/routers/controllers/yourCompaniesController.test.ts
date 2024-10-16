@@ -291,7 +291,7 @@ describe("GET /your-companies", () => {
             ...userAssociationWithCompanyStatus,
             items: [{
                 ...userAssociationWithCompanyStatus.items[0],
-                companyStatus: "closed"
+                companyStatus: CompanyStatuses.CLOSED
             }]
         };
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
@@ -310,7 +310,7 @@ describe("GET /your-companies", () => {
             ...userAssociationWithCompanyStatus,
             items: [{
                 ...userAssociationWithCompanyStatus.items[0],
-                companyStatus: "insolvency-proceedings"
+                companyStatus: CompanyStatuses.INSOLVENCY_PROCEEDINGS
             }]
         };
         const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
