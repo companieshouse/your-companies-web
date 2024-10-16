@@ -1,4 +1,5 @@
-import { AssociationList, AssociationStatus, Invitation, CompanyStatuses } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus, Invitation } from "private-api-sdk-node/dist/services/associations/types";
+import { CompanyStatuses } from "../../src/types/associations";
 
 export const userAssociations: AssociationList = {
     items: [

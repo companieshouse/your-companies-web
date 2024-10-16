@@ -28,3 +28,18 @@ export type AssociationStateWithoutId = {
 };
 
 export type AssociationStateResponse = AssociationStateWithId | AssociationStateWithoutId;
+
+export const CompanyStatuses = {
+    ACTIVE: "active",
+    DISSOLVED: "dissolved",
+    LIQUIDATION: "liquidation",
+    RECEIVERSHIP: "receivership",
+    CONVERTED_CLOSED: "converted-closed",
+    VOLUNTARY_ARRANGEMENT: "voluntary-arrangement",
+    INSOLVENCY_PROCEEDINGS: "insolvency-proceedings",
+    ADMINISTRATION: "administration",
+    OPEN: "open",
+    CLOSED: "closed",
+    REGISTERED: "registered",
+    REMOVED: "removed"
+} as const;
