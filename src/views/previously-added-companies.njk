@@ -17,7 +17,7 @@
     {% set rowElem = [
         { "text": elem.company_name, "classes": "govuk-!-width-one-quarter" },
         { "text": elem.company_number, "classes": "govuk-!-width-one-sixth" },
-        { "html": '<strong class="govuk-tag govuk-tag--blue">' + elem.company_status + '</strong>', "classes": "govuk-!-width-one-eighth govuk-!-padding-right-3" },
+        { "html": '<strong class="govuk-tag govuk-tag--blue">' + lang["company-status-" + elem.company_status] + '</strong>', "classes": "govuk-!-width-one-eighth govuk-!-padding-right-3" },
         { "html": view_and_manage_link, "classes": "govuk-!-width-one-quarter govuk-!-padding-left-3" },
         { "html": remove_link, "classes": "govuk-!-width-one-sixth" }
     ] %}
