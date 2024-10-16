@@ -4,12 +4,13 @@ import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import * as associationsService from "../../../../src/services/associationsService";
-import { emptyAssociations, userAssociations, userAssociationsWithNumberOfInvitations } from "../../../mocks/associations.mock";
+import { emptyAssociations, userAssociations, userAssociationsWithNumberOfInvitations, userAssociationWithCompanyStatus } from "../../../mocks/associations.mock";
 import * as en from "../../../../locales/en/your-companies.json";
 import * as cy from "../../../../locales/cy/your-companies.json";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
+import { CompanyStatuses } from "../../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -270,5 +271,54 @@ describe("GET /your-companies", () => {
             expect(response.text).toContain(expectedLink);
             expect(response.text).toContain(cy.remove_company);
         });
+    });
+    it("should display company status 'active' in Welsh", async () => {
+        // Given
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockResolvedValue(userAssociationWithCompanyStatus);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockResolvedValue({ items: [] });
+        // When
+        const response = await router.get("/your-companies?lang=cy");
+        // Then
+        expect(response.text).toContain("Gweithredol"); // Gweithredol is active in Welsh
+    });
+    it("should display company status 'closed' in Welsh", async () => {
+        // Given
+        const closedCompanyAssociation = {
+            ...userAssociationWithCompanyStatus,
+            items: [{
+                ...userAssociationWithCompanyStatus.items[0],
+                companyStatus: "closed"
+            }]
+        };
+
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockResolvedValue(closedCompanyAssociation);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockResolvedValue({ items: [] });
+        // When
+        const response = await router.get("/your-companies?lang=cy");
+        // Then
+        expect(response.text).toContain("Wedi cau");
+    });
+    it("should display company status 'insolvency-proceedings' in Welsh", async () => {
+        // Given
+        const insolventCompanyAssociation = {
+            ...userAssociationWithCompanyStatus,
+            items: [{
+                ...userAssociationWithCompanyStatus.items[0],
+                companyStatus: "insolvency-proceedings"
+            }]
+        };
+
+        const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
+        userAssociationsSpy.mockResolvedValue(insolventCompanyAssociation);
+        const getInvitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
+        getInvitationsSpy.mockResolvedValue({ items: [] });
+        // When
+        const response = await router.get("/your-companies?lang=cy");
+        // Then
+        expect(response.text).toContain("Trafodion Ansolfedd");
     });
 });

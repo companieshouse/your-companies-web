@@ -1,4 +1,4 @@
-import { AssociationList, AssociationStatus, Invitation } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus, Invitation, ApprovalRoute } from "private-api-sdk-node/dist/services/associations/types";
 import { CompanyStatuses } from "../../src/types/associations";
 
 export const userAssociations: AssociationList = {
@@ -1609,3 +1609,36 @@ export const companyAssociationsPage2: AssociationList = {
     totalResults: 17,
     totalPages: 2
 } as AssociationList;
+
+export const userAssociationWithCompanyStatus: AssociationList = {
+    items: [
+        {
+            etag: "ABC",
+            id: "1234567890",
+            userId: "qwertyiop",
+            userEmail: "demo@ch.gov.uk",
+            displayName: "Not provided",
+            companyNumber: "NI038379",
+            companyName: "THE POLISH BREWERY",
+            companyStatus: CompanyStatuses.ACTIVE,
+            status: AssociationStatus.CONFIRMED,
+            createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+            approvedAt: "",
+            removedAt: "",
+            kind: "association",
+            approvalRoute: ApprovalRoute.AUTH_CODE,
+            approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            links: {
+                self: "/12345"
+            }
+        }
+    ],
+    links: {
+        self: "http://localhost:8080/associations",
+        next: "http://localhost:8080/associations?page_index=2&itesm_per_page=15"
+    },
+    itemsPerPage: 15,
+    pageNumber: 0,
+    totalResults: 2,
+    totalPages: 1
+};
