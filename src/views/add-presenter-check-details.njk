@@ -18,6 +18,7 @@
             </h1>
 
             <form method="post">
+                {% include "partials/csrf_token.njk" %}
                 <hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible">
 
                 {{ govukSummaryList({

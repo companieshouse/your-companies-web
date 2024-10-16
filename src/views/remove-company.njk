@@ -14,12 +14,12 @@
 {% set message = null %}
 
 {% for key, value in errors %}
-    {% if ["confirmRemoval", "generic"].includes(key) %}
-        {% set message = {
-            text: lang[value.text]
-        } %}
-        {% set title = lang.title_error + lang.title_your_companies %}
-    {% endif %}
+    {% if["confirmRemoval", "generic"].includes(key) %}
+    {% set message = {
+        text: lang[value.text]
+    } %}
+    {% set title = lang.title_error + lang.title_your_companies %}
+{% endif %}
 {% endfor %}
 
 {% block main_content %}
@@ -29,33 +29,36 @@
         <h1 class="govuk-heading-xl">
             {{ lang.are_you_sure_you_want_to_remove_company }}
         </h1>
-        
+
         <form method="post" action="{{ url }}">
+            {% include "partials/csrf_token.njk" %}
             {{ govukRadios({
-                idPrefix: "confirm-removal",
-                name: "confirmRemoval",
-                errorMessage: message,
-                items: [
-                    {
-                        value: "yes",
-                        text: lang.yes,
-                        hint: {
-                            text: lang.if_you_remove_this_company + ' ' + companyName + ' ' + lang.without_a_current_auth_code
+                    idPrefix: "confirm-removal",
+                    name: "confirmRemoval",
+                    errorMessage: message,
+                    items: [
+                        {
+                            value: "yes",
+                            text: lang.yes,
+                            hint: {
+                                text: lang.if_you_remove_this_company + ' ' + companyName + ' ' + lang.without_a_current_auth_code
+                            }
+                        },
+                        {
+                            value: "no",
+                            text: lang.no
                         }
-                    },
-                    {
-                        value: "no",
-                        text: lang.no
-                    }
-                ]
-            }) }}
+                    ]
+                })
+            }}
 
             {{ govukButton({
-                text: lang.continue,
-                attributes: {
-                    id: "submit"
-                }
-            }) }}
+                    text: lang.continue,
+                    attributes: {
+                        id: "submit"
+                    }
+                })
+            }}
         </form>
     </div>
 </div>

@@ -1,0 +1,7 @@
+{% from "csrf-token-input/macro.njk" import csrfTokenInput %}
+
+{{
+    csrfTokenInput({
+        csrfToken: csrfToken
+    })
+}}

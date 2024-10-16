@@ -52,6 +52,7 @@ describe(`GET ${url}`, () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockCsrfProtectionMiddleware).toHaveBeenCalled();
     });
 
     it("should return status 200", async () => {
