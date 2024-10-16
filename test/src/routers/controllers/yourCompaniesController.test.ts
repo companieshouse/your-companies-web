@@ -265,7 +265,7 @@ describe("GET /your-companies", () => {
 
         // Then
         userAssociations.items.forEach(company => {
-            expect(response.text).toContain("Active");
+            expect(response.text).toContain("Gweithredol"); // Gweithredol is active in Welsh
             const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
             expect(response.text).toContain(expectedLink);
             expect(response.text).toContain(cy.remove_company);

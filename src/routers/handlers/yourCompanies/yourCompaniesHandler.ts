@@ -14,6 +14,7 @@ import {
     stringToPositiveInteger
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
+import { i18nCh } from "@companieshouse/ch-node-utils";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -46,7 +47,12 @@ export class YourCompaniesHandler extends GenericHandler {
         deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
         deleteExtraData(req.session, constants.CURRENT_COMPANY_NUM);
 
-        const lang = getTranslationsForView(req.lang, constants.YOUR_COMPANIES_PAGE);
+        const localesServicei18nCh = i18nCh.getInstance();
+        const lang = {
+            ...getTranslationsForView(req.lang, constants.YOUR_COMPANIES_PAGE),
+            ...localesServicei18nCh.getResourceBundle(req.lang, constants.COMPANY_STATUS)
+        };
+
         this.viewData = this.getViewData(confirmedUserAssociations, invites, lang);
         this.viewData.search = search;
         if (errorMassage) {
@@ -83,19 +89,6 @@ export class YourCompaniesHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getStatusDisplay (status: AssociationStatus): string {
-        switch (status) {
-        case AssociationStatus.CONFIRMED:
-            return "Active";
-        case AssociationStatus.REMOVED:
-            return "Removed";
-        case AssociationStatus.AWAITING_APPROVAL:
-            return "Awaiting Approval";
-        default:
-            return "Unknown";
-        }
-    }
-
     private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
             templateName: constants.YOUR_COMPANIES_PAGE,
@@ -110,7 +103,7 @@ export class YourCompaniesHandler extends GenericHandler {
             const associationData = confirmedUserAssociations.items.map(item => ({
                 company_name: item.companyName,
                 company_number: item.companyNumber,
-                company_status: this.getStatusDisplay(item.status)
+                company_status: item.companyStatus
             }));
 
             viewData.associationData = associationData;
