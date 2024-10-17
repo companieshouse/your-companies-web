@@ -26,6 +26,7 @@ describe("csrfErrorHandler", () => {
         // When
         csrfErrorHandler(err, request, response, mockNext);
         // Then
+        expect(response.status).toHaveBeenCalledWith(403);
         expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
         expect(logger.error).toHaveBeenCalledTimes(1);
         expect(logger.error).toHaveBeenCalledWith(
