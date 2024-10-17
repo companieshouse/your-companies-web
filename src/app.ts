@@ -76,7 +76,7 @@ app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
     sessionStore,
-    enabled: false,
+    enabled: true,
     sessionCookieName: constants.COOKIE_NAME
 });
 
