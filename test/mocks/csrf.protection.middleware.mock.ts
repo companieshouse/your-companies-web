@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { csrfProtectionMiddleware } from "../../src/middleware/csrf.protection.middleware";
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 
-jest.mock("../../src/middleware/csrf.protection.middleware");
-
-const mockCsrfProtectionMiddleware = csrfProtectionMiddleware as jest.Mock;
-
-mockCsrfProtectionMiddleware.mockImplementation((_opts) => (_req: Request, _res: Response, next: NextFunction) => next());
+jest.mock("@companieshouse/web-security-node");
+const mockCsrfProtectionMiddleware = CsrfProtectionMiddleware as jest.Mock;
+mockCsrfProtectionMiddleware.mockImplementation((_opts) => (req: Request, res: Response, next: NextFunction) => next());
 
 export default mockCsrfProtectionMiddleware;

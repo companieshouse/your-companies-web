@@ -3,12 +3,12 @@
 jest.mock("ioredis");
 jest.mock("@companieshouse/web-security-node");
 
-import app from "../../../src/app";
 import mockSessionMiddleware from "../../mocks/session.middleware.mock";
 import mockCsrfProtectionMiddleware from "../../mocks/csrf.protection.middleware.mock";
 import mockAuthenticationMiddleware from "../../mocks/authentication.middleware.mock";
 import { authMiddleware } from "@companieshouse/web-security-node";
 import request from "supertest";
+import app from "../../../src/app";
 import * as constants from "../../../src/constants";
 
 // get handle on mocked function and create mock function to be returned from calling companyAuthMiddleware
