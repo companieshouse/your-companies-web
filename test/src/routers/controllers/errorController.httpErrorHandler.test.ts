@@ -1,4 +1,4 @@
-import { httpErrorHandler } from "../../../../src/routers/controllers/httpErrorController";
+import { httpErrorHandler } from "../../../../src/routers/controllers/errorController";
 import { mockRequest } from "../../../mocks/request.mock";
 import { mockResponse } from "../../../mocks/response.mock";
 import { Session } from "@companieshouse/node-session-handler";

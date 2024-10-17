@@ -1,7 +1,16 @@
 {
-    "title":"Mae'n ddrwg gennym, mae problem gyda'r gwasanaeth - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "page_header": "Mae'n ddrwg gennym, mae problem gyda'r gwasanaeth",
-    "try_again_later": "Ceisiwch eto yn nes ymlaen.",
     "contact_companies_house": "Cysylltu â Dŷ'r Cwmnïau",
-    "if_you_have_questions": " os oes gennych unrhyw gwestiynau."
+    "contact_us_link": "[CY] contact us",
+    "for_help": "[CY] for help.",
+    "if_the_problem_continues": "[CY] If the problem continues,",
+    "if_you_have_questions": " os oes gennych unrhyw gwestiynau.",
+    "page_header": "Mae'n ddrwg gennym, mae problem gyda'r gwasanaeth",
+    "sign_out_of_the_service": "[CY] sign out of the service, and then sign back in",
+    "sorry_something_went_wrong": "[CY] Sorry, something went wrong",
+    "title_csrf": "[CY] Sorry, something went wrong – Find and update company information - GOV.UK",
+    "title_other": "Mae'n ddrwg gennym, mae problem gyda'r gwasanaeth - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "try_again_later": "Ceisiwch eto yn nes ymlaen.",
+    "try_the_following": "[CY] Try the following:",
+    "use_the_back_link": "[CY] use the back link to return to the previous screen and resubmit the information",
+    "we_have_not_been_able_to_save": "[CY] We have not been able to save the information you submitted on the previous screen. This may be because the page was inactive for too long, or because of a technical issue."
 }

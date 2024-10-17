@@ -38,6 +38,7 @@
             }}
 
             <form method="post" novalidate>
+                {% include "partials/csrf_token.njk" %}
                 {{ govukInput({
                         label: {
                             text: lang.email_address
@@ -63,5 +64,5 @@
             </form>
         </div>
     </div>
-    
+
 {% endblock %}

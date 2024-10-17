@@ -13,7 +13,7 @@
     {% set visuallyHiddenText = elem.company_name %}
     {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
     {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
-    
+
     {% set rowElem = [
         { "text": elem.company_name, "classes": "govuk-!-width-one-quarter" },
         { "text": elem.company_number, "classes": "govuk-!-width-one-sixth" },
@@ -21,7 +21,7 @@
         { "html": view_and_manage_link, "classes": "govuk-!-width-one-quarter govuk-!-padding-left-3" },
         { "html": remove_link, "classes": "govuk-!-width-one-sixth" }
     ] %}
-    
+
     {% set rowsData = rowsData.concat([rowElem]) %}
 {% endfor %}
 
@@ -35,7 +35,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        
+
         {{ govukButton({
                 text: lang.add_a_company,
                 href: buttonHref,
@@ -51,6 +51,7 @@
             {% set inputClasses = "govuk-input govuk-input--error govuk-input--width-10 govuk-!-margin-right-1" if message else "govuk-input govuk-input--width-10 govuk-!-margin-right-1" %}
 
             <form method="post">
+                {% include "partials/csrf_token.njk" %}
                 <div class="{{formClasses}}">
                     <label class="govuk-label govuk-label--m" for="search">
                         {{lang.search_for_a_company}}
@@ -79,9 +80,11 @@
                 <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{search}}'</h2>
                 <p class="govuk-body">{{lang.no_results_that_match}}</p>
             {% elif numOfMatches == 1 %}
-                <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.match_found_for}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{numOfMatches}}
+                    {{lang.match_found_for}} '{{search}}'</h2>
             {% else %}
-                <h2 class="govuk-heading-s">{{numOfMatches}} {{lang.matches_found_for}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{numOfMatches}}
+                    {{lang.matches_found_for}} '{{search}}'</h2>
             {% endif %}
         {% endif %}
 
