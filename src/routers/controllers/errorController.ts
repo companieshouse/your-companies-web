@@ -50,7 +50,7 @@ export const csrfErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
             `${translations.sorry_something_went_wrong}${translations.title_end}`;
 
         res.status(403).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, {
-            lang: getTranslationsForView(req.lang || "en", constants.SERVICE_UNAVAILABLE),
+            lang,
             csrfErrors: true,
             title: getTitle(lang)
         });
