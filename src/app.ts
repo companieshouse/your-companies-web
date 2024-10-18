@@ -10,7 +10,7 @@ import { authenticationMiddleware } from "./middleware/authentication.middleware
 import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
 import { addLangToUrl } from "./lib/utils/urlUtils";
-import errorHandler from "./routers/controllers/errorController";
+import * as errorHandler from "./routers/controllers/errorController";
 import { getTranslationsForView } from "./lib/utils/translations";
 import { LocalesMiddleware, LocalesService } from "@companieshouse/ch-node-utils";
 import helmet from "helmet";
@@ -101,7 +101,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 routerDispatch(app);
 
 // http-error error handler
-app.use(...errorHandler);
+app.use(...Object.values(errorHandler));
 
 // Unhandled errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

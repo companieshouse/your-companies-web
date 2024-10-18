@@ -58,5 +58,3 @@ export const csrfErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         next(err);
     }
 };
-
-export default [httpErrorHandler, csrfErrorHandler];

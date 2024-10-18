@@ -1,4 +1,3 @@
-import { httpErrorHandler } from "../../../../src/routers/controllers/errorController";
 import { mockRequest } from "../../../mocks/request.mock";
 import { mockResponse } from "../../../mocks/response.mock";
 import { Session } from "@companieshouse/node-session-handler";
@@ -7,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { NextFunction } from "express";
 import logger from "../../../../src/lib/Logger";
 import * as getTranslationsForView from "../../../../src/lib/utils/translations";
+import { httpErrorHandler } from "../../../../src/routers/controllers/errorController";
 
 const mockGetTranslationsForView = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 

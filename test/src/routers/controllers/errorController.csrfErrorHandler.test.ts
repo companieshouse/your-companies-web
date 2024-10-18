@@ -1,10 +1,10 @@
-import { csrfErrorHandler } from "../../../../src/routers/controllers/errorController";
 import { mockRequest } from "../../../mocks/request.mock";
 import { mockResponse } from "../../../mocks/response.mock";
 import { NextFunction, Request, Response } from "express";
 import logger from "../../../../src/lib/Logger";
 import * as getTranslationsForView from "../../../../src/lib/utils/translations";
 import { CsrfError } from "@companieshouse/web-security-node";
+import { csrfErrorHandler } from "../../../../src/routers/controllers/errorController";
 
 const mockGetTranslationsForView: jest.SpyInstance = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 
