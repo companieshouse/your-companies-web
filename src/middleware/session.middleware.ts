@@ -2,7 +2,7 @@ import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-ha
 import Redis from "ioredis";
 import * as constants from "../constants";
 
-const sessionStore = new SessionStore(new Redis(`redis://${constants.CACHE_SERVER}`));
+export const sessionStore = new SessionStore(new Redis(`redis://${constants.CACHE_SERVER}`));
 
 // passing true to SessionMiddleware means
 // that a session will be created if none found

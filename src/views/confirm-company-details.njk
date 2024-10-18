@@ -68,6 +68,7 @@
         }}
 
         <form method="post">
+            {% include "partials/csrf_token.njk" %}
             <div class="govuk-button-group">
 
                 {{ govukButton({
