@@ -57,7 +57,7 @@
     "luxon": "^3.4.4",
     "nocache": "^4.0.0",
     "nunjucks": "3.2.4",
-    "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.20",
+    "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.38",
     "require-directory": "^2.1.1",
     "tslib": "^2.6.3",
     "uuid": "^9.0.1",
