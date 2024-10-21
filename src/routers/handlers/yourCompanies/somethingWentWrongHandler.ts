@@ -12,14 +12,13 @@ export class SomethingWentWrongHandler extends GenericHandler {
 
     private getViewData (req: Request): ViewData {
         const translations = getTranslationsForView(req.lang || "en", constants.SERVICE_UNAVAILABLE);
-        const viewData = {
+
+        return {
             lang: translations,
             csrfErrors: true,
             title: `${translations.sorry_something_went_wrong}${translations.title_end}`,
             templateName: constants.SERVICE_UNAVAILABLE
         };
-
-        return viewData;
     }
 
 }
