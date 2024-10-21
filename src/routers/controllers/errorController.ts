@@ -3,6 +3,7 @@ import type { ErrorRequestHandler } from "express";
 import { HttpError } from "http-errors";
 import { getTranslationsForView } from "../../lib/utils/translations";
 import * as constants from "../../constants";
+import { CsrfError } from "@companieshouse/web-security-node";
 
 /*  This controller catches and logs HTTP errors from the http-errors module.
     It returns an error template back to the user.
@@ -32,6 +33,18 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
             lang: getTranslationsForView(req.lang, constants.SERVICE_UNAVAILABLE),
             templateName: constants.SERVICE_UNAVAILABLE
         });
+    } else {
+        next(err);
+    }
+};
+
+export const csrfErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    if (err instanceof CsrfError) {
+        logger.error(
+            `CSRF Error occured ${err.message}, Stack: ${err.stack}`
+        );
+
+        res.status(403).redirect(constants.YOUR_COMPANIES_SOMETHING_WENT_WRONG_URL);
     } else {
         next(err);
     }

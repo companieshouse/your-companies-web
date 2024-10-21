@@ -33,6 +33,7 @@ import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthenti
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
+import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
 
 const router: Router = Router();
 
@@ -81,5 +82,7 @@ router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineN
 router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptNavigation, companyInvitationsAcceptControllerGet as RequestHandler);
 
 router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedNavigation, presenterAlreadyAddedControllerGet);
+
+router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
 
 export default router;

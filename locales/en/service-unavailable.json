@@ -1,7 +1,16 @@
 {
-    "title":"Sorry, there is a problem with the service – Find and update company information - GOV.UK",
-    "page_header": "Sorry, there is a problem with the service",
-    "try_again_later": "Try again later.",
     "contact_companies_house": "Contact Companies House",
-    "if_you_have_questions": " if you have any questions."
+    "contact_us_link": "contact us",
+    "for_help": "for help.",
+    "if_the_problem_continues": "If the problem continues,",
+    "if_you_have_questions": " if you have any questions.",
+    "page_header": "Sorry, there is a problem with the service",
+    "sign_out_of_the_service": "sign out of the service, and then sign back in",
+    "sorry_something_went_wrong": "Sorry, something went wrong",
+    "title_csrf": "Sorry, something went wrong – Find and update company information - GOV.UK",
+    "title_other": "Sorry, there is a problem with the service – Find and update company information - GOV.UK",
+    "try_again_later": "Try again later.",
+    "try_the_following": "Try the following:",
+    "use_the_back_link": "use the back link to return to the previous screen and resubmit the information",
+    "we_have_not_been_able_to_save": "We have not been able to save the information you submitted on the previous screen. This may be because the page was inactive for too long, or because of a technical issue."
 }

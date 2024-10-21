@@ -1,16 +1,15 @@
-import { httpErrorHandler } from "../../../../src/routers/controllers/httpErrorController";
 import { mockRequest } from "../../../mocks/request.mock";
 import { mockResponse } from "../../../mocks/response.mock";
-import { Session } from "@companieshouse/node-session-handler";
-import createError from "http-errors";
-import { StatusCodes } from "http-status-codes";
-import { NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import logger from "../../../../src/lib/Logger";
 import * as getTranslationsForView from "../../../../src/lib/utils/translations";
+import { CsrfError } from "@companieshouse/web-security-node";
+import { csrfErrorHandler, httpErrorHandler } from "../../../../src/routers/controllers/errorController";
+import { StatusCodes } from "http-status-codes";
+import createError from "http-errors";
+import * as constants from "../../../../src/constants";
 
-const mockGetTranslationsForView = jest.spyOn(getTranslationsForView, "getTranslationsForView");
-
-logger.errorRequest = jest.fn();
+const mockGetTranslationsForView: jest.SpyInstance = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 
 jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../src/lib/utils/sessionUtils");
@@ -21,11 +20,50 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
         setExtraData: jest.fn()
     };
 });
-const session: Session = new Session();
-const request = mockRequest();
-request.session = session;
-const response = mockResponse();
+
+logger.errorRequest = jest.fn();
+logger.error = jest.fn();
+const request: Request = mockRequest();
+const response: Response = mockResponse();
 const mockNext: NextFunction = jest.fn();
+
+describe("csrfErrorHandler", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should detect a csrfError and render an error template", async () => {
+        // Given
+        mockGetTranslationsForView.mockReturnValue({
+            some_key: "some text",
+            sorry_something_went_wrong: "Sorry, something went wrong",
+            title_end: " - title end."
+        });
+        const err = new CsrfError();
+        // When
+        csrfErrorHandler(err, request, response, mockNext);
+        // Then
+        expect(response.status).toHaveBeenCalledWith(403);
+        expect(response.redirect).toHaveBeenCalledWith(constants.YOUR_COMPANIES_SOMETHING_WENT_WRONG_URL);
+        expect(logger.error).toHaveBeenCalledTimes(1);
+        expect(logger.error).toHaveBeenCalledWith(
+            expect.stringContaining("CSRF Error occured")
+        );
+    });
+
+    it("should ignore errors that are not of type CsrfError and pass then to next", async () => {
+        // Given
+        const error = new Error();
+        // When
+        csrfErrorHandler(error, request, response, mockNext);
+        // Then
+        expect(response.redirect).not.toHaveBeenCalled();
+        expect(logger.error).not.toHaveBeenCalled();
+        expect(mockNext).toHaveBeenCalledTimes(1);
+        expect(mockNext).toHaveBeenCalledWith(error);
+    });
+});
 
 describe("httpErrorHandler", () => {
 

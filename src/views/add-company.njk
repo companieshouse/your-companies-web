@@ -26,6 +26,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <form method="post">
+                {% include "partials/csrf_token.njk" %}
                 {{ govukInput({
                         label: {
                             text: lang.what_is_the_company_number,

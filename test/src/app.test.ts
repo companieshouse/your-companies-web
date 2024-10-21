@@ -1,4 +1,5 @@
 import mocks from "../mocks/all.middleware.mock";
+import mockCsrfProtectionMiddleware from "../mocks/csrf.protection.middleware.mock";
 import supertest from "supertest";
 import app from "../../src/app";
 import { NextFunction, Request, Response } from "express";
@@ -10,6 +11,10 @@ const companyNumber = "12345678";
 const url = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, companyNumber);
 
 describe("process.on", () => {
+
+    beforeEach(() => {
+        mockCsrfProtectionMiddleware.mockClear();
+    });
 
     it("catches uncaught exceptions", async () => {
         // Given
