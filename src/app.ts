@@ -101,7 +101,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 routerDispatch(app);
 
 // http-error error handler
-app.use(...Object.values(errorHandler));
+app.use(errorHandler.httpErrorHandler);
+app.use(errorHandler.csrfErrorHandler);
 
 // Unhandled errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
