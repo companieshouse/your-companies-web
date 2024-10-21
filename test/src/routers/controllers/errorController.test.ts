@@ -7,6 +7,7 @@ import { CsrfError } from "@companieshouse/web-security-node";
 import { csrfErrorHandler, httpErrorHandler } from "../../../../src/routers/controllers/errorController";
 import { StatusCodes } from "http-status-codes";
 import createError from "http-errors";
+import * as constants from "../../../../src/constants";
 
 const mockGetTranslationsForView: jest.SpyInstance = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 
@@ -44,15 +45,7 @@ describe("csrfErrorHandler", () => {
         csrfErrorHandler(err, request, response, mockNext);
         // Then
         expect(response.status).toHaveBeenCalledWith(403);
-        expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.objectContaining({
-            lang: {
-                some_key: "some text",
-                sorry_something_went_wrong: "Sorry, something went wrong",
-                title_end: " - title end."
-            },
-            csrfErrors: true,
-            title: "Sorry, something went wrong - title end."
-        }));
+        expect(response.redirect).toHaveBeenCalledWith(constants.YOUR_COMPANIES_SOMETHING_WENT_WRONG_URL);
         expect(logger.error).toHaveBeenCalledTimes(1);
         expect(logger.error).toHaveBeenCalledWith(
             expect.stringContaining("CSRF Error occured")
@@ -65,7 +58,7 @@ describe("csrfErrorHandler", () => {
         // When
         csrfErrorHandler(error, request, response, mockNext);
         // Then
-        expect(response.render).not.toHaveBeenCalled();
+        expect(response.redirect).not.toHaveBeenCalled();
         expect(logger.error).not.toHaveBeenCalled();
         expect(mockNext).toHaveBeenCalledTimes(1);
         expect(mockNext).toHaveBeenCalledWith(error);
