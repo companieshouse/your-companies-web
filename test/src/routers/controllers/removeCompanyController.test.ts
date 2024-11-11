@@ -118,6 +118,14 @@ describe("GET /your-companies/remove-company", () => {
         expect(response.text).toContain(cyCommon.continue);
         expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
     });
+
+    it("should return correct response message to /your-companies for remove-company page redirection", async () => {
+        redirectPageSpy.mockReturnValue(true);
+
+        const urlPath = constants.LANDING_URL;
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
 });
 
 describe("POST /your-companies/remove-company", () => {
@@ -136,7 +144,7 @@ describe("POST /your-companies/remove-company", () => {
 
     it("should re-render page with errors when no option is selected in Welsh", async () => {
         // Given
-        const request = router.post(url);
+        const request = router.post(`${url}?lang=cy`);
 
         // When
         const response = await request;

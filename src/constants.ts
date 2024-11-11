@@ -31,6 +31,7 @@ export const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicat
 export const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
 export const CANCEL_URL_EXTRA = "cancelPersonUrlExtraData";
 export const REMOVE_URL_EXTRA = "removePersonUrlExtraData";
+export const REMOVE_COMPANY_URL_EXTRA = "removeCompanyUrlExtraData";
 
 // Paths to Nunjucks template files
 export const SERVICE_UNAVAILABLE_TEMPLATE = "partials/service_unavailable";

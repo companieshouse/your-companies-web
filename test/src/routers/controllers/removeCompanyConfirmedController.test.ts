@@ -9,6 +9,7 @@ import * as enCommon from "../../../../locales/en/common.json";
 import * as cyCommon from "../../../../locales/cy/common.json";
 import * as constants from "../../../../src/constants";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 
 const router = supertest(app);
 const url = `/your-companies/confirmation-company-removed`;
@@ -20,11 +21,13 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 
 describe(`GET ${url}`, () => {
+    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
     beforeEach(() => {
         jest.clearAllMocks();
         deleteExtraData(session, constants.LAST_REMOVED_COMPANY_NAME);
         deleteExtraData(session, constants.LAST_REMOVED_COMPANY_NUMBER);
     });
+    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the remove company confirmed page", async () => {
         await router.get(url);
@@ -116,5 +119,13 @@ describe(`GET ${url}`, () => {
             expect(response.text).toContain(name);
             expect(response.text).toContain(number);
         });
+    });
+
+    it("should return correct response message to /your-companies for confirmation-company-removed page redirection", async () => {
+        redirectPageSpy.mockReturnValue(true);
+
+        const urlPath = constants.LANDING_URL;
+        const response = await router.get(url);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });
