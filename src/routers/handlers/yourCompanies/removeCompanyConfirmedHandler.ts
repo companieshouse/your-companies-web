@@ -2,7 +2,7 @@ import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { popExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData } from "../../../lib/utils/sessionUtils";
 import { ViewData } from "../../../types/util-types";
 
 export class RemoveCompanyConfirmedHandler extends GenericHandler {
@@ -18,12 +18,8 @@ export class RemoveCompanyConfirmedHandler extends GenericHandler {
     }
 
     private async getViewData (req: Request): Promise<ViewData> {
-        const companyName = popExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
-        const companyNumber = popExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
-
-        if (companyName === undefined || companyNumber === undefined) {
-            throw new Error("Company data not found in session");
-        }
+        const companyName = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
+        const companyNumber = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
 
         return Promise.resolve({
             companyName,

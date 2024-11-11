@@ -1,6 +1,6 @@
 import { Session } from "@companieshouse/node-session-handler";
 import { getSessionRequestWithPermission, userMail } from "../../../mocks/session.mock";
-import { deleteExtraData, getAccessToken, getExtraData, getLoggedInUserEmail, setExtraData, popExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { deleteExtraData, getAccessToken, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
@@ -121,63 +121,6 @@ describe("Session Utils", () => {
             const result = getAccessToken(session);
             // Then
             expect(result).toEqual(accessToken);
-        });
-    });
-
-    describe("popExtraData", () => {
-        it("should retrieve and delete extra data from session if it exists", () => {
-            // Given
-            const session: Session = new Session();
-            const key = "testKey";
-            const value = "testValue";
-            setExtraData(session, key, value);
-            expect(session.data.extra_data[key]).toEqual(value);
-
-            // When
-            const result = popExtraData(session, key);
-
-            // Then
-            expect(result).toEqual(value);
-            expect(session.data.extra_data[key]).toBeUndefined();
-        });
-
-        it("should return undefined if session is not provided", () => {
-            // Given
-            const session = undefined;
-            const key = "testKey";
-
-            // When
-            const result = popExtraData(session, key);
-
-            // Then
-            expect(result).toBeUndefined();
-        });
-
-        it("should return undefined if the key doesn't exist in extra data", () => {
-            // Given
-            const session: Session = new Session();
-            const key = "nonExistentKey";
-
-            // When
-            const result = popExtraData(session, key);
-
-            // Then
-            expect(result).toBeUndefined();
-        });
-
-        it("should not affect other extra data when popping a specific key", () => {
-            // Given
-            const session: Session = new Session();
-            setExtraData(session, "key1", "value1");
-            setExtraData(session, "key2", "value2");
-
-            // When
-            const result = popExtraData(session, "key1");
-
-            // Then
-            expect(result).toEqual("value1");
-            expect(session.data.extra_data.key1).toBeUndefined();
-            expect(session.data.extra_data.key2).toEqual("value2");
         });
     });
 });

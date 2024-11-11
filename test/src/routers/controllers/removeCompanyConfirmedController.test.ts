@@ -8,7 +8,7 @@ import * as cy from "../../../../locales/cy/confirmation-company-removed.json";
 import * as enCommon from "../../../../locales/en/common.json";
 import * as cyCommon from "../../../../locales/cy/common.json";
 import * as constants from "../../../../src/constants";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { deleteExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 
 const router = supertest(app);
@@ -50,40 +50,6 @@ describe(`GET ${url}`, () => {
             expect(response.text).toContain(removedMessage);
             expect(response.text).toContain(companyName);
             expect(response.text).toContain(companyNumber);
-
-            expect(getExtraData(session, constants.LAST_REMOVED_COMPANY_NAME)).toBeUndefined();
-            expect(getExtraData(session, constants.LAST_REMOVED_COMPANY_NUMBER)).toBeUndefined();
-        });
-    });
-
-    it("should clear company data from session after rendering", async () => {
-        const companyName = "Test Company";
-        const companyNumber = "TC123456";
-
-        setExtraData(session, constants.LAST_REMOVED_COMPANY_NAME, companyName);
-        setExtraData(session, constants.LAST_REMOVED_COMPANY_NUMBER, companyNumber);
-
-        await router.get(url);
-
-        expect(getExtraData(session, constants.LAST_REMOVED_COMPANY_NAME)).toBeUndefined();
-        expect(getExtraData(session, constants.LAST_REMOVED_COMPANY_NUMBER)).toBeUndefined();
-    });
-
-    describe.each([
-        { scenario: "missing company name", name: undefined, number: "12345678" },
-        { scenario: "missing company number", name: "Missing Number Ltd", number: undefined },
-        { scenario: "both company name and number missing", name: undefined, number: undefined }
-    ])("Bad day scenario: $scenario", ({ name, number }) => {
-        it("should return 200 OK with an error message", async () => {
-            if (name !== undefined) setExtraData(session, constants.LAST_REMOVED_COMPANY_NAME, name);
-            if (number !== undefined) setExtraData(session, constants.LAST_REMOVED_COMPANY_NUMBER, number);
-
-            const response = await router.get(url + "?lang=en");
-
-            expect(response.status).toBe(200);
-            expect(response.text).toContain("Sorry, there is a problem with the service");
-            expect(response.text).toContain("Try again later");
-            expect(response.text).toContain("Contact Companies House");
         });
     });
 
