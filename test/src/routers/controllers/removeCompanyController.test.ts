@@ -91,7 +91,7 @@ describe("GET /your-companies/remove-company", () => {
         const response = await request;
 
         // Then
-        expect(response.text).toContain(en.title_your_companies);
+        expect(response.text).toContain(en.title_remove_company);
         expect(response.text).toContain(companyName);
         expect(response.text).toContain(companyNumber);
         expect(response.text).toContain(en.are_you_sure_you_want_to_remove_company);
@@ -109,7 +109,7 @@ describe("GET /your-companies/remove-company", () => {
         const response = await request;
 
         // Then
-        expect(response.text).toContain(cy.title_your_companies);
+        expect(response.text).toContain(cy.title_remove_company);
         expect(response.text).toContain(companyName);
         expect(response.text).toContain(companyNumber);
         expect(response.text).toContain(cy.are_you_sure_you_want_to_remove_company);
