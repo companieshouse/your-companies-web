@@ -119,13 +119,28 @@ describe("GET /your-companies/remove-company", () => {
         expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
     });
 
+    it("should return error in page content if error exists in session data", async () => {
+        // Given
+        setExtraData(session, constants.YOU_MUST_SELECT_AN_OPTION, en.you_must_select_an_option);
+        const request = router.get(url);
+
+        // When
+        const response = await request;
+
+        // Then
+        expect(response.text).toContain(en.you_must_select_an_option);
+    });
+
     it("should return correct response message to /your-companies for remove-company page redirection", async () => {
         redirectPageSpy.mockReturnValue(true);
-
+        // Given
         const urlPath = constants.LANDING_URL;
+        // When
         const response = await router.get(url);
+        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
+
 });
 
 describe("POST /your-companies/remove-company", () => {

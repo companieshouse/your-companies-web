@@ -49,6 +49,7 @@ export class YourCompaniesHandler extends GenericHandler {
         deleteExtraData(req.session, constants.REMOVE_COMPANY_URL_EXTRA);
         deleteExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
         deleteExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
+        deleteExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION);
 
         const localesServicei18nCh = i18nCh.getInstance();
         const lang = {

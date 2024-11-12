@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../../handlers/genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { ViewData } from "../../../types/util-types";
 import logger from "../../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
@@ -13,13 +13,26 @@ export class RemoveCompanyHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<ViewData | void> {
         if (method === constants.GET) {
             const companyNumber = req.params[constants.COMPANY_NUMBER];
+            const error = getExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION
+            );
+
             try {
                 const companyProfile = await getCompanyProfile(companyNumber);
                 setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
             } catch (error) {
                 logger.error(`Error fetching company profile for ${companyNumber}: ${error}`);
             }
+
             this.viewData = await this.getViewData(req);
+
+            if (error) {
+                this.viewData.errors = {
+                    confirmRemoval: {
+                        text: "you_must_select_an_option"
+                    }
+                };
+            }
+
             return this.viewData;
         } else if (method === constants.POST) {
             this.viewData = await this.getViewData(req);
@@ -31,8 +44,10 @@ export class RemoveCompanyHandler extends GenericHandler {
                         text: "you_must_select_an_option"
                     }
                 };
+                setExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION, this.viewData.errors);
                 return this.viewData;
             } else {
+                deleteExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION);
                 if (selectedOption === "yes") {
                     // The redirect is handled in handleCompanyRemoval
                     return this.handleCompanyRemoval(req, res);
