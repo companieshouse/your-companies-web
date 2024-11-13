@@ -34,6 +34,8 @@ import { companyAuthenticationMiddleware } from "../middleware/company.authentic
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
+import { removeCompanyNavigation } from "../middleware/navigation/removeCompany.middleware";
+import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/confirmationCompanyRemoved.middleware";
 
 const router: Router = Router();
 
@@ -55,9 +57,9 @@ router.post(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, rem
 router.get(constants.REMOVE_ASSOCIATION_URL, removeAuthorisedPersonRequestController);
 router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesNavigation, removedThemselvesConfirmationControllerGet as RequestHandler);
 
-router.get(constants.REMOVE_COMPANY_URL, removeCompanyControllerGet as RequestHandler);
+router.get(constants.REMOVE_COMPANY_URL, removeCompanyNavigation, removeCompanyControllerGet as RequestHandler);
 router.post(constants.REMOVE_COMPANY_URL, removeCompanyControllerPost as RequestHandler);
-router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, removeCompanyConfirmedControllerGet);
+router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, confirmationCompanyRemovedNavigation, removeCompanyConfirmedControllerGet);
 
 router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, cancelPersonControllerPost as RequestHandler);

@@ -5,7 +5,7 @@
 
 {% extends "layouts/default.njk" %}
 
-{% set title = lang.title_your_companies %}
+{% set title = lang.title_remove_company %}
 
 {% block back_link %}
     {% include "partials/back_link.njk" %}
@@ -30,7 +30,7 @@
             {{ lang.are_you_sure_you_want_to_remove_company }}
         </h1>
 
-        <form method="post" action="{{ url }}">
+        <form method="post">
             {% include "partials/csrf_token.njk" %}
             {{ govukRadios({
                     idPrefix: "confirm-removal",

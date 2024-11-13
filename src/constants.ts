@@ -31,6 +31,7 @@ export const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicat
 export const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
 export const CANCEL_URL_EXTRA = "cancelPersonUrlExtraData";
 export const REMOVE_URL_EXTRA = "removePersonUrlExtraData";
+export const REMOVE_COMPANY_URL_EXTRA = "removeCompanyUrlExtraData";
 
 // Paths to Nunjucks template files
 export const SERVICE_UNAVAILABLE_TEMPLATE = "partials/service_unavailable";
@@ -132,6 +133,7 @@ export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you
 export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_that_you_have_read";
 export const COMPANY_NUMBER_MUST_ONLY_INCLUDE = "company_number_must_only_include";
 export const ENTER_A_COMPANY_NUMBER_OR_PART = "enter_a_company_number_or_part";
+export const YOU_MUST_SELECT_AN_OPTION = "you_must_select_an_option";
 
 // HTTP Methods
 export const GET = "GET";

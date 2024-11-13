@@ -91,7 +91,7 @@ describe("GET /your-companies/remove-company", () => {
         const response = await request;
 
         // Then
-        expect(response.text).toContain(en.title_your_companies);
+        expect(response.text).toContain(en.title_remove_company);
         expect(response.text).toContain(companyName);
         expect(response.text).toContain(companyNumber);
         expect(response.text).toContain(en.are_you_sure_you_want_to_remove_company);
@@ -109,7 +109,7 @@ describe("GET /your-companies/remove-company", () => {
         const response = await request;
 
         // Then
-        expect(response.text).toContain(cy.title_your_companies);
+        expect(response.text).toContain(cy.title_remove_company);
         expect(response.text).toContain(companyName);
         expect(response.text).toContain(companyNumber);
         expect(response.text).toContain(cy.are_you_sure_you_want_to_remove_company);
@@ -118,6 +118,29 @@ describe("GET /your-companies/remove-company", () => {
         expect(response.text).toContain(cyCommon.continue);
         expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
     });
+
+    it("should return error in page content if error exists in session data", async () => {
+        // Given
+        setExtraData(session, constants.YOU_MUST_SELECT_AN_OPTION, en.you_must_select_an_option);
+        const request = router.get(url);
+
+        // When
+        const response = await request;
+
+        // Then
+        expect(response.text).toContain(en.you_must_select_an_option);
+    });
+
+    it("should return correct response message to /your-companies for remove-company page redirection", async () => {
+        redirectPageSpy.mockReturnValue(true);
+        // Given
+        const urlPath = constants.LANDING_URL;
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
 });
 
 describe("POST /your-companies/remove-company", () => {
@@ -136,7 +159,7 @@ describe("POST /your-companies/remove-company", () => {
 
     it("should re-render page with errors when no option is selected in Welsh", async () => {
         // Given
-        const request = router.post(url);
+        const request = router.post(`${url}?lang=cy`);
 
         // When
         const response = await request;
