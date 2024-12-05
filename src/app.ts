@@ -5,7 +5,7 @@ import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./routerDispatch";
 import cookieParser from "cookie-parser";
-import { sessionMiddleware, sessionStore } from "./middleware/session.middleware";
+import { sessionMiddleware, sessionStore, ensureSessionCookiePresentMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
@@ -73,6 +73,7 @@ app.use(nocache());
 app.use(helmet(prepareCSPConfig(nonce)));
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
+app.use(`${constants.LANDING_URL}*`, ensureSessionCookiePresentMiddleware);
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
     sessionStore,
