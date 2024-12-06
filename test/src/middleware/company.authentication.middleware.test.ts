@@ -24,6 +24,7 @@ describe("company authentication middleware tests", () => {
     beforeEach(() => {
         mockCompanyAuthMiddleware.mockClear();
         mockSessionMiddleware.mockClear();
+        mockEnsureSessionCookiePresentMiddleware.mockClear();
         mockCsrfProtectionMiddleware.mockClear();
         mockAuthenticationMiddleware.mockClear();
     });
@@ -38,6 +39,7 @@ describe("company authentication middleware tests", () => {
             companyNumber: "12345678"
         });
         expect(mockAuthReturnedFunction).toHaveBeenCalled();
+        expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
     });
 
     it("should call CH company authentication library when cancelling an authorised person", async () => {
@@ -51,5 +53,6 @@ describe("company authentication middleware tests", () => {
             companyNumber: "12345678"
         });
         expect(mockAuthReturnedFunction).toHaveBeenCalled();
+        expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
     });
 });

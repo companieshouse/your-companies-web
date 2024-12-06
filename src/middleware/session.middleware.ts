@@ -30,7 +30,6 @@ export const ensureSessionCookiePresentMiddleware: RequestHandler = (req: Reques
     if (isWhitelistedUrl(req.originalUrl)) {
         return next();
     }
-    console.log(req.cookies, "COOKIES REQUEST");
 
     return EnsureSessionCookiePresentMiddleware({
         ...cookieConfig
