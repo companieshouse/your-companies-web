@@ -34,6 +34,7 @@ describe(`GET ${url}`, () => {
     it("should check session, company and user auth before returning the page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should return status 200", async () => {

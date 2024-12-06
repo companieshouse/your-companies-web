@@ -3,7 +3,7 @@
 jest.mock("ioredis");
 jest.mock("@companieshouse/web-security-node");
 
-import mockSessionMiddleware from "../../mocks/session.middleware.mock";
+import { mockEnsureSessionCookiePresentMiddleware, mockSessionMiddleware } from "../../mocks/session.middleware.mock";
 import mockCsrfProtectionMiddleware from "../../mocks/csrf.protection.middleware.mock";
 import mockAuthenticationMiddleware from "../../mocks/authentication.middleware.mock";
 import { authMiddleware } from "@companieshouse/web-security-node";

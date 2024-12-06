@@ -72,6 +72,7 @@ describe(`GET ${url}`, () => {
         session.data.extra_data.companyProfile = validActiveCompanyProfile;
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
     it("should return status 200", async () => {

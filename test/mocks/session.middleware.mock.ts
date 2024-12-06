@@ -18,7 +18,6 @@ mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: Nex
 });
 
 mockEnsureSessionCookiePresentMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
-    req.session = session;
     next();
 });
 
