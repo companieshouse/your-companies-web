@@ -1,4 +1,4 @@
-import { addLangToUrl, getManageAuthorisedPeopleUrl, isReferrerIncludes } from "../../../../src/lib/utils/urlUtils";
+import { addLangToUrl, getManageAuthorisedPeopleUrl, isReferrerIncludes, isWhitelistedUrl } from "../../../../src/lib/utils/urlUtils";
 
 describe("addLangToUrl", () => {
     it.each([
@@ -43,5 +43,34 @@ describe("isReferrerIncludes", () => {
         const result = isReferrerIncludes(referrer);
         // Then
         expect(result).toEqual(expectedResult);
+    });
+});
+
+describe("isWhitelistedUrl", () => {
+    it("Should return true when url in the allow list", () => {
+        // Given
+        const url = "/your-companies/healthcheck";
+        // When
+        const result = isWhitelistedUrl(url);
+        // Then
+        expect(result).toBeTruthy();
+    });
+
+    it("Should return false when url is not in the allow list", () => {
+        // Given
+        const url = "/your-companies/healthcheckbad";
+        // When
+        const result = isWhitelistedUrl(url);
+        // Then
+        expect(result).toBeFalsy();
+    });
+
+    it("Should return false when url is not an exact match", () => {
+        // Given
+        const url = "/healthcheck";
+        // When
+        const result = isWhitelistedUrl(url);
+        // Then
+        expect(result).toBeFalsy();
     });
 });

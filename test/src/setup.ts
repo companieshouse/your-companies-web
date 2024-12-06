@@ -7,7 +7,7 @@ process.env.NUNJUCKS_LOADER_NO_CACHE = "true";
 process.env.CHS_URL = "http://chsurl.co";
 
 process.env.API_URL = "http://testapi.co";
-process.env.COOKIE_SECRET = "Xy6onkjQWF0TkRn0hfdqUw==";
+process.env.COOKIE_SECRET = "123";
 process.env.COOKIE_DOMAIN = "cookie domain";
 process.env.CACHE_SERVER = "test";
 process.env.COOKIE_NAME = "cookie_name";
