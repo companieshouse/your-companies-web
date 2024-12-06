@@ -58,6 +58,7 @@ njk.addGlobal("piwikUrl", process.env.PIWIK_URL);
 njk.addGlobal("piwikSiteId", process.env.PIWIK_SITE_ID);
 njk.addGlobal("piwikChsDomain", process.env.PIWIK_CHS_DOMAIN);
 njk.addGlobal("serviceName", constants.SERVICE_NAME);
+njk.addGlobal("displayYourCompanies", "yes");
 
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
