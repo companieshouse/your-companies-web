@@ -10,7 +10,6 @@ import * as en from "../../../../locales/en/cancel-person.json";
 import * as cy from "../../../../locales/cy/cancel-person.json";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { setExtraData } from "../../../../src/lib/utils/sessionUtils";
-
 const router = supertest(app);
 const session: Session = new Session();
 const userEmail = "test@test.com";
@@ -48,6 +47,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
     it("should check session and auth before returning the /your-companies/company/:companyNumber/cancel-person/:userEmail page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+        expect(mocks.mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
