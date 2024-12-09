@@ -47,7 +47,7 @@ describe("session middleware tests", () => {
         expect(mockSessionReturnedFunction).toHaveBeenCalledWith(req, res, next);
     });
 
-    it("should not redirect to sign in when url is on whitelist", () => {
+    it("should call next if url is on the whitelist", () => {
         req.originalUrl = LANDING_URL + HEALTHCHECK;
         sessionMiddleware(req, res, next);
         expect(mockSessionMiddleware).not.toHaveBeenCalled();
@@ -67,7 +67,7 @@ describe("ensure session cookie present middleware tests", () => {
         expect(mockEnsureSessionCookiePresentReturnedFunction).toHaveBeenCalledWith(req, res, next);
     });
 
-    it("should not redirect to sign in when url is on whitelist", () => {
+    it("should call next if url is on the whitelist", () => {
         req.originalUrl = LANDING_URL + HEALTHCHECK;
         ensureSessionCookiePresentMiddleware(req, res, next);
         expect(mockEnsureSessionCookiePresentMiddleware).not.toHaveBeenCalled();
