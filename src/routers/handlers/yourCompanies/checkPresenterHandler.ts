@@ -4,7 +4,7 @@ import { ViewData } from "../../../types/util-types";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
-import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { getFullUrl, getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "types/associations";
 
@@ -35,7 +35,7 @@ export class CheckPresenterHandler extends GenericHandler {
 
     private async getViewData (req: Request, companyNumber: string, companyName: string, emailAddress: string): Promise<ViewData> {
         const translations = getTranslationsForView(req.lang, constants.CHECK_PRESENTER_PAGE);
-        const url = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber);
+        const url = getUrlWithCompanyNumber(getFullUrl(constants.ADD_PRESENTER_URL), companyNumber);
 
         return {
             templateName: constants.CHECK_PRESENTER_PAGE,

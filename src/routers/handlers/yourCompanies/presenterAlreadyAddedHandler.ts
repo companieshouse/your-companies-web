@@ -4,7 +4,7 @@ import { ViewData } from "../../../types/util-types";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
-import { getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { getFullUrl, getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
 
 export class PresenterAlreadyAddedHandler extends GenericHandler {
 
@@ -19,7 +19,7 @@ export class PresenterAlreadyAddedHandler extends GenericHandler {
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const emailAddress = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
-        const backLinkHref = getUrlWithCompanyNumber(constants.YOUR_COMPANIES_CHECK_PRESENTER_URL, companyNumber);
+        const backLinkHref = getUrlWithCompanyNumber(getFullUrl(constants.CHECK_PRESENTER_URL), companyNumber);
         return {
             templateName: constants.PRESENTER_ALREADY_ADDED_PAGE,
             lang: translations,

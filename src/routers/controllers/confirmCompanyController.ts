@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmCorrectCompanyHandler";
 import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
-import * as urlUtils from "../../lib/utils/urlUtils";
 import { CompanyNameAndNumber } from "../../types/util-types";
+import { getFullUrl, getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const companyProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
@@ -23,7 +23,7 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
         companyName: company.companyName
     };
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
-    const nextPageUrl = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, company.companyNumber);
+    const nextPageUrl = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_PATH), company.companyNumber);
 
     return res.redirect(nextPageUrl);
 };

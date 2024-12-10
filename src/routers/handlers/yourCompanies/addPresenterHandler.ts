@@ -5,6 +5,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
 import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
 
 export class AddPresenterHandler extends GenericHandler {
 
@@ -51,7 +52,7 @@ export class AddPresenterHandler extends GenericHandler {
 
     private async getViewData (req: Request, companyNumber: string, companyName: string): Promise<ViewData> {
         const translations = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
-        const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        const href = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
 
         return {
             templateName: constants.ADD_PRESENTER_PAGE,

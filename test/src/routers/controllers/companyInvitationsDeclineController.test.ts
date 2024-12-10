@@ -7,6 +7,7 @@ import { updateAssociationStatus } from "../../../../src/services/associationsSe
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
+import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
 jest.mock("../../../../src/services/associationsService");
 
@@ -86,7 +87,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         const langVersion = "&lang=cy";
         redirectPageSpy.mockReturnValue(false);
         getExtraDataSpy.mockReturnValue(constants.TRUE);
-        const urlPath = constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL;
+        const urlPath = getFullUrl(constants.COMPANY_INVITATIONS_URL);
         // When
         const result = await router.get(`${url}${langVersion}`);
         // Then
@@ -98,7 +99,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         // Given
         const langVersion = "&lang=en";
         const fullUrl = `${url}${langVersion}`;
-        const referrerUrl = `http://localhost${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_DECLINE_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
+        const referrerUrl = `http://localhost${getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL).replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
         getExtraDataSpy.mockReturnValue(constants.TRUE);
         // When
         const result = await router

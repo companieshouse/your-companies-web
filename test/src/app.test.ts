@@ -4,11 +4,11 @@ import supertest from "supertest";
 import app from "../../src/app";
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../src/constants";
-import * as urlUtils from "../../src/lib/utils/urlUtils";
+import { getFullUrl, getUrlWithCompanyNumber } from "../../src/lib/utils/urlUtils";
 
 const router = supertest(app);
 const companyNumber = "12345678";
-const url = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, companyNumber);
+const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_PATH), companyNumber);
 
 describe("process.on", () => {
 

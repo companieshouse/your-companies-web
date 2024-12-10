@@ -8,6 +8,7 @@ import logger from "../../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { AssociationState } from "../../../types/associations";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
 
 export class RemoveCompanyHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<ViewData | void> {
@@ -89,7 +90,7 @@ export class RemoveCompanyHandler extends GenericHandler {
         setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME, companyName);
         setExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER, companyNumber);
 
-        res.redirect(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
+        res.redirect(getFullUrl(constants.REMOVE_COMPANY_CONFIRMED_URL));
     }
 
     private renderErrorPage (res: Response, errorMessage: string): ViewData {

@@ -10,15 +10,15 @@ import { isOrWasCompanyAssociatedWithUser } from "../../../services/associations
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewData } from "../../../types/util-types";
 import { validateClearForm } from "../../../lib/validation/generic";
-
 import { AssociationState, AssociationStateResponse } from "../../../types/associations";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
 
 export class AddCompanyHandler extends GenericHandler {
 
     async execute (req: Request, res: Response, method: string): Promise<ViewData> {
 
         const referrer: string | undefined = req.get("Referrer");
-        const hrefB = constants.YOUR_COMPANIES_ADD_COMPANY_URL;
+        const hrefB = getFullUrl(constants.ADD_COMPANY_URL);
 
         logger.info(`${method} request to add company to user account`);
         // ...process request here and return data for the view

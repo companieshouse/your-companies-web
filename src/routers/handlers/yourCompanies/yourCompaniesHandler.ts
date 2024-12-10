@@ -15,6 +15,7 @@ import {
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 import { i18nCh } from "@companieshouse/ch-node-utils";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
 
 export class YourCompaniesHandler extends GenericHandler {
 
@@ -96,9 +97,9 @@ export class YourCompaniesHandler extends GenericHandler {
     private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
         const viewData: AnyRecord = {
             templateName: constants.YOUR_COMPANIES_PAGE,
-            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
+            buttonHref: getFullUrl(constants.ADD_COMPANY_URL) + constants.CLEAR_FORM_TRUE,
             numberOfInvitations: invitationList.totalResults,
-            viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL,
+            viewInvitationsPageUrl: getFullUrl(constants.COMPANY_INVITATIONS_URL),
             cancelSearchHref: constants.LANDING_URL,
             matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
         };
@@ -112,8 +113,8 @@ export class YourCompaniesHandler extends GenericHandler {
 
             viewData.associationData = associationData;
             viewData.userHasCompanies = constants.TRUE;
-            viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
-            viewData.removeCompanyUrl = constants.YOUR_COMPANIES_REMOVE_COMPANY_URL;
+            viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
+            viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
         }
 
         return { ...viewData, lang: lang };

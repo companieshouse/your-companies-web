@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
+import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl, getFullUrl } from "../../../lib/utils/urlUtils";
 import { AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
@@ -69,7 +69,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.numberOfPages = companyAssociations.totalPages;
         }
 
-        const href = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        const href = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
@@ -91,10 +91,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
             lang: lang,
             backLinkHref: constants.LANDING_URL,
-            buttonHref: getUrlWithCompanyNumber(constants.YOUR_COMPANIES_ADD_PRESENTER_URL, companyNumber) + constants.CLEAR_FORM_TRUE,
-            cancelUrl: constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(`:${constants.COMPANY_NUMBER}`, companyNumber),
-            resendEmailUrl: constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
-            removeUrl: constants.YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL,
+            buttonHref: getUrlWithCompanyNumber(getFullUrl(constants.ADD_PRESENTER_URL), companyNumber) + constants.CLEAR_FORM_TRUE,
+            cancelUrl: getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber),
+            resendEmailUrl: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL),
+            removeUrl: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL),
             matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID
         };
     }

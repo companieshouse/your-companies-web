@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 export const removedThemselvesNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
@@ -11,7 +12,7 @@ export const removedThemselvesNavigation = async (req: Request, res: Response, n
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    if (redirectPage(referrer, hrefA, constants.YOUR_COMPANIES_REMOVED_THEMSELVES_URL, pageIndicator)) {
+    if (redirectPage(referrer, hrefA, getFullUrl(constants.REMOVED_THEMSELVES_URL), pageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
