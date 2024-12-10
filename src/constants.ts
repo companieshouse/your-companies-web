@@ -157,7 +157,7 @@ export const CHS_URL = getEnvironmentValue("CHS_URL");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
-export const COOKIE_SECURE_ONLY = getEnvironmentValue("COOKIE_SECURE_ONLY");
+export const ENV_NAME = getEnvironmentValue("ENV_NAME");
 
 export const SERVICE_NAME = "Your companies";
 
