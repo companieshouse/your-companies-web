@@ -3,6 +3,7 @@ import * as constants from "../../constants";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger from "../../lib/Logger";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 export const manageAuthorisedPeopleNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -12,7 +13,7 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
     const manageAuthUrl = constants.MANAGE_AUTHORISED_PEOPLE_URL.replace(":companyNumber", companyNumber);
 
     const allowedEmailResentUrls: string[] = [
-        constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(":companyNumber", companyNumber),
+        getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL).replace(":companyNumber", companyNumber),
         constants.CONFIRMATION_PERSON_REMOVED_URL,
         constants.CONFIRMATION_CANCEL_PERSON_URL
     ];
@@ -24,8 +25,8 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
 
     if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED) &&
         redirectPage(referrer,
-            constants.YOUR_COMPANIES_CHECK_PRESENTER_URL.replace(":companyNumber", companyNumber),
-            constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(":companyNumber", companyNumber), pageIndicator)) {
+            getFullUrl(constants.CHECK_PRESENTER_URL).replace(":companyNumber", companyNumber),
+            getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL).replace(":companyNumber", companyNumber), pageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) &&
         redirectPage(referrer, removePageUrl, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
@@ -37,7 +38,7 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
         res.redirect(constants.LANDING_URL);
     } else if (req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL) &&
 
-    redirectPage(referrer, manageAuthUrl, constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL.replace(":companyNumber", companyNumber), pageIndicator, allowedEmailResentUrls)) {
+        redirectPage(referrer, manageAuthUrl, constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL.replace(":companyNumber", companyNumber), pageIndicator, allowedEmailResentUrls)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();

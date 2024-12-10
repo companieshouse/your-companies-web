@@ -9,6 +9,7 @@ import logger from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import { CompanyNameAndNumber } from "../../types/util-types";
 import { validateRemoveAssociation } from "../../lib/validation/validateRemoveAssociation";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 /**
  * This controller handles the removeUserFromCompanyAssociations (updateAssociationStatus) api call which
@@ -42,9 +43,9 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
             companyNumber: associationToBeRemoved.companyNumber
         } as CompanyNameAndNumber);
 
-        return res.redirect(constants.YOUR_COMPANIES_REMOVED_THEMSELVES_URL);
+        return res.redirect(getFullUrl(constants.REMOVED_THEMSELVES_URL));
     } else {
         logger.info(`Association id ${associationToBeRemoved.id} status updated`);
-        return res.redirect(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL.replace(`:${constants.COMPANY_NUMBER}`, removal.companyNumber));
+        return res.redirect(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL).replace(`:${constants.COMPANY_NUMBER}`, removal.companyNumber));
     }
 };

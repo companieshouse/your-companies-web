@@ -12,6 +12,7 @@ import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../../src/services/companyProfileService";
 import * as associationsService from "../../../../src/services/associationsService";
+import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
 const router = supertest(app);
 const companyNumber = "123456";
@@ -198,7 +199,7 @@ describe("POST /your-companies/remove-company", () => {
 
         // Then
         expect(response.status).toBe(302);
-        expect(response.header.location).toBe(constants.REMOVE_COMPANY_CONFIRMED_FULL_URL);
+        expect(response.header.location).toBe(getFullUrl(constants.REMOVE_COMPANY_CONFIRMED_URL));
         expect(associationsService.isOrWasCompanyAssociatedWithUser).toHaveBeenCalledWith(
             expect.anything(),
             companyNumber

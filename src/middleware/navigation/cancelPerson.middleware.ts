@@ -3,7 +3,7 @@ import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import logger from "../../lib/Logger";
-import { isReferrerIncludes } from "../../lib/utils/urlUtils";
+import { getFullUrl, isReferrerIncludes } from "../../lib/utils/urlUtils";
 
 export const cancelPersonNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -11,7 +11,7 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
     const userEmail = req.params[constants.USER_EMAIL];
     const companyNumber = req.params[constants.COMPANY_NUMBER];
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-    const cancelPageUrl = (constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(":companyNumber", companyNumber)).replace(":userEmail", userEmail);
+    const cancelPageUrl = (getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL).replace(":companyNumber", companyNumber)).replace(":userEmail", userEmail);
     const userEmails = getExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
     let checkedReferrer;

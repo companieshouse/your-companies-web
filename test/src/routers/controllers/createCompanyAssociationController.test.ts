@@ -4,17 +4,17 @@ import * as constants from "../../../../src/constants";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
-import * as urlUtils from "../../../../src/lib/utils/urlUtils";
 import * as associationsService from "../../../../src/services/associationsService";
 import { Session } from "@companieshouse/node-session-handler";
 import { CompanyNameAndNumber } from "../../../../src/types/util-types";
 import { StatusCodes } from "http-status-codes";
 import createError from "http-errors";
+import { getFullUrl, getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 
 const router = supertest(app);
 const session: Session = new Session();
 const companyNumber = "12345678";
-const url = urlUtils.getUrlWithCompanyNumber(constants.CREATE_COMPANY_ASSOCIATION_PATH_FULL, companyNumber);
+const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_PATH), companyNumber);
 const PAGE_HEADING = "Found. Redirecting to /your-companies/confirmation-company-added";
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {

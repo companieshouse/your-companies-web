@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
-import { getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
+import { getFullUrl, getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
 import { AddPresenterHandler } from "../handlers/yourCompanies/addPresenterHandler";
 
 export const addPresenterControllerGet = async (req: Request, res: Response): Promise<void> => {
@@ -15,7 +15,7 @@ export const addPresenterControllerPost = async (req: Request, res: Response): P
 
     if (!viewData.errors) {
         const url = getUrlWithCompanyNumber(
-            constants.YOUR_COMPANIES_CHECK_PRESENTER_URL,
+            getFullUrl(constants.CHECK_PRESENTER_URL),
             viewData.companyNumber as string
         );
         res.redirect(url);

@@ -5,6 +5,7 @@ import { formatForDisplay, buildAddress } from "../../../lib/utils/confirmCompan
 import { AnyRecord, ViewData } from "../../../types/util-types";
 import { i18nCh } from "@companieshouse/ch-node-utils";
 import { getTranslationsForView } from "../../../lib/utils/translations";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
 
 export class ConfirmCorrectCompanyHandler extends GenericHandler {
     async execute (lang: string, companyProfile: CompanyProfile): Promise<Record<string, unknown>> {
@@ -27,9 +28,9 @@ export class ConfirmCorrectCompanyHandler extends GenericHandler {
             ...formattedCompanyProfile,
             templateName: constants.CONFIRM_COMPANY_PAGE,
             registeredOfficeAddress: buildAddress(formattedCompanyProfile),
-            backLinkHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL,
-            backLinkWithClearForm: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
-            feedbackSource: constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL,
+            backLinkHref: getFullUrl(constants.ADD_COMPANY_URL),
+            backLinkWithClearForm: getFullUrl(constants.ADD_COMPANY_URL) + constants.CLEAR_FORM_TRUE,
+            feedbackSource: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL),
             lang: translations
         };
     }

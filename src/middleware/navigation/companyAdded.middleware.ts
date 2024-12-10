@@ -3,6 +3,7 @@ import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import { getExtraData } from "../../lib/utils/sessionUtils";
 import logger from "../../lib/Logger";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 export const companyAddedNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
@@ -11,7 +12,7 @@ export const companyAddedNavigation = async (req: Request, res: Response, next: 
 
     logger.debug(`companyAddedNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(referrer, constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL, constants.COMPANY_ADDED_SUCCESS_URL, companyDetailsIndicator)) {
+    if (redirectPage(referrer, getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL), constants.COMPANY_ADDED_SUCCESS_URL, companyDetailsIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
