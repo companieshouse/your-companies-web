@@ -94,8 +94,7 @@ export const REMOVE_COMPANY_URL = `/${REMOVE_COMPANY_PAGE}/:${COMPANY_NUMBER}`;
 export const REMOVED_THEMSELVES_URL = `/${REMOVED_THEMSELVES}`;
 export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";
 export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
-
-export const HEALTHCHECK = "/healthcheck";
+export const HEALTHCHECK_URL = "/healthcheck";
 
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";

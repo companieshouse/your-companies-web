@@ -2,7 +2,7 @@ import * as constants from "../../constants";
 import { sanitizeUrl } from "@braintree/sanitize-url";
 
 const WHITELISTED_URLS: string[] = [
-    constants.LANDING_URL + constants.HEALTHCHECK
+    constants.LANDING_URL + constants.HEALTHCHECK_URL
 ];
 
 export const isWhitelistedUrl = (url: string): boolean => WHITELISTED_URLS.includes(url);
