@@ -39,7 +39,7 @@ import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/c
 
 const router: Router = Router();
 
-router.get(constants.HEALTHCHECK, healthCheckController);
+router.get(constants.HEALTHCHECK_URL, healthCheckController);
 
 router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
 router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as RequestHandler);

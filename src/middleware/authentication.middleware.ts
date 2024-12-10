@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
-import { CHS_URL, LANDING_URL, HEALTHCHECK } from "../constants";
+import { CHS_URL, HEALTHCHECK_URL } from "../constants";
 import logger from "../lib/Logger";
+import { getFullUrl } from "../lib/utils/urlUtils";
 
 const WHITELISTED_URLS: string[] = [
-    LANDING_URL + HEALTHCHECK
+    getFullUrl(HEALTHCHECK_URL)
 ];
 
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
