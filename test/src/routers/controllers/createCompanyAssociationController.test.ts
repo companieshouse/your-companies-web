@@ -14,7 +14,7 @@ import { getFullUrl, getUrlWithCompanyNumber } from "../../../../src/lib/utils/u
 const router = supertest(app);
 const session: Session = new Session();
 const companyNumber = "12345678";
-const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_PATH), companyNumber);
+const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), companyNumber);
 const PAGE_HEADING = "Found. Redirecting to /your-companies/confirmation-company-added";
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {

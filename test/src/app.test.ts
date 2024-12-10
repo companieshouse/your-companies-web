@@ -8,7 +8,7 @@ import { getFullUrl, getUrlWithCompanyNumber } from "../../src/lib/utils/urlUtil
 
 const router = supertest(app);
 const companyNumber = "12345678";
-const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_PATH), companyNumber);
+const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), companyNumber);
 
 describe("process.on", () => {
 

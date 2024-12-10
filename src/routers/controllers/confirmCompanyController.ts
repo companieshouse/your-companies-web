@@ -23,7 +23,7 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
         companyName: company.companyName
     };
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
-    const nextPageUrl = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_PATH), company.companyNumber);
+    const nextPageUrl = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), company.companyNumber);
 
     return res.redirect(nextPageUrl);
 };
