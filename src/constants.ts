@@ -96,6 +96,9 @@ export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";
 export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
 export const HEALTHCHECK_URL = "/healthcheck";
 
+// External URLs
+export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
+
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
 export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";

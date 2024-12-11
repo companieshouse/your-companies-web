@@ -1,18 +1,38 @@
 import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
-import { ViewData } from "../../../types/util-types";
+import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/util-types";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
 import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
 
-export class AddPresenterHandler extends GenericHandler {
+interface AddPresenterViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
+    authPersonEmail: string | undefined;
+}
 
-    async execute (req: Request, method: string): Promise<ViewData> {
+export class AddPresenterHandler extends GenericHandler {
+    viewData: AddPresenterViewData;
+
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.ADD_PRESENTER_PAGE,
+            backLinkHref: "",
+            lang: {},
+            authPersonEmail: undefined,
+            companyName: "",
+            companyNumber: ""
+        };
+    }
+
+    async execute (req: Request, method: string): Promise<AddPresenterViewData> {
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
-        this.viewData = await this.getViewData(req, companyNumber, companyName);
+        this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
+        this.viewData.backLinkHref = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        this.viewData.companyName = companyName;
+        this.viewData.companyNumber = companyNumber;
 
         const clearForm = req.query.cf as string;
         if (validateClearForm(clearForm)) {
@@ -22,7 +42,7 @@ export class AddPresenterHandler extends GenericHandler {
 
         if (method === constants.POST) {
             const email = req.body.email.trim();
-            await this.validateEmail(req, email);
+            await this.validateEmail(email);
             if (!this.viewData.errors) {
                 setExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL, email);
                 deleteExtraData(req.session, constants.PROPOSED_EMAIL);
@@ -40,7 +60,7 @@ export class AddPresenterHandler extends GenericHandler {
             const validatedEmail = getExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
             // display any errors with the current input
             if (typeof invalidProposedEmail === "string") {
-                await this.validateEmail(req, invalidProposedEmail);
+                await this.validateEmail(invalidProposedEmail);
                 this.viewData.authPersonEmail = invalidProposedEmail;
             } else if (typeof validatedEmail === "string") {
                 this.viewData.authPersonEmail = validatedEmail;
@@ -50,20 +70,7 @@ export class AddPresenterHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private async getViewData (req: Request, companyNumber: string, companyName: string): Promise<ViewData> {
-        const translations = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
-        const href = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
-
-        return {
-            templateName: constants.ADD_PRESENTER_PAGE,
-            lang: translations,
-            companyName,
-            companyNumber,
-            backLinkHref: href
-        };
-    }
-
-    private async validateEmail (req: Request, email: string) {
+    private async validateEmail (email: string) {
         if (!email) {
             this.setError(constants.ERRORS_EMAIL_REQUIRED);
         } else if (!validateEmailString(email)) {
@@ -71,11 +78,11 @@ export class AddPresenterHandler extends GenericHandler {
         }
     }
 
-    private setError = (errProp: string) => {
+    private setError (errProp: string) {
         this.viewData.errors = {
             email: {
                 text: errProp
             }
         };
-    };
+    }
 }

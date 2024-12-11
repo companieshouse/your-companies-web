@@ -4,13 +4,34 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Removal } from "../../../types/removal";
-import { ViewData } from "../../../types/util-types";
+import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/util-types";
+
+interface RemoveAuthorisedPersonViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
+    userEmail: string;
+    userName: string;
+    cancelLinkHref: string;
+}
 
 export class RemoveAuthorisedPersonHandler extends GenericHandler {
+    viewData: RemoveAuthorisedPersonViewData;
 
-    async execute (req: Request, method: string): Promise<ViewData> {
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.REMOVE_AUTHORISED_PERSON_PAGE,
+            backLinkHref: "",
+            lang: {},
+            companyName: "",
+            companyNumber: "",
+            userEmail: "",
+            userName: "",
+            cancelLinkHref: ""
+        };
+    }
+
+    async execute (req: Request, method: string): Promise<RemoveAuthorisedPersonViewData> {
         deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
-        this.viewData = this.getViewData(req);
+        this.getViewData(req);
         const error = getExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
         if (error) {
             this.viewData.errors = error;
@@ -36,18 +57,15 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (req: Request): ViewData {
-        const lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
-        return {
-            templateName: constants.REMOVE_AUTHORISED_PERSON_PAGE,
-            lang: lang,
-            companyNumber: req.params[constants.COMPANY_NUMBER],
-            cancelLinkHref: getExtraData(req.session, constants.REFERER_URL),
-            backLinkHref: getExtraData(req.session, constants.REFERER_URL),
-            companyName: getExtraData(req.session, constants.COMPANY_NAME),
-            userEmail: req.params[constants.USER_EMAIL],
-            userName: req.query[constants.USER_NAME]
-        };
+    private getViewData (req: Request): void {
+        this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
+        this.viewData.companyNumber = req.params[constants.COMPANY_NUMBER];
+        this.viewData.cancelLinkHref = getExtraData(req.session, constants.REFERER_URL);
+        this.viewData.backLinkHref = getExtraData(req.session, constants.REFERER_URL);
+        this.viewData.companyName = getExtraData(req.session, constants.COMPANY_NAME);
+        this.viewData.userEmail = req.params[constants.USER_EMAIL];
+        this.viewData.userName = req.query[constants.USER_NAME] as string;
+
     }
 
 }

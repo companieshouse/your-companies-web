@@ -1,21 +1,16 @@
 export type AnyRecord = Record<string, unknown>;
 
-export type ViewData = {
+export interface BaseViewData {
     lang: AnyRecord;
-    errors?:
-    | {
-        [key: string]: {
-            text: string;
-        };
-    }
-    | unknown;
-    companyNumber?: string;
-    companyName?: string;
-    backLinkHref?: string;
-    [key: string]: unknown;
-};
+    templateName: string;
+    errors?: unknown;
+}
 
-export type CompanyNameAndNumber = {
+export interface ViewDataWithBackLink extends BaseViewData {
+    backLinkHref: string;
+}
+
+export interface CompanyNameAndNumber {
     companyName: string;
     companyNumber: string;
 }

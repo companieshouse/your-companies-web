@@ -3,28 +3,45 @@ import { GenericHandler } from "../../handlers/genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
-import { ViewData } from "../../../types/util-types";
+import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/util-types";
 import logger from "../../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { AssociationState } from "../../../types/associations";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
 
+interface RemoveCompanyViewData extends ViewDataWithBackLink, CompanyNameAndNumber { }
+
 export class RemoveCompanyHandler extends GenericHandler {
-    async execute (req: Request, res: Response, method: string): Promise<ViewData | void> {
+    viewData: RemoveCompanyViewData;
+
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.REMOVE_COMPANY_PAGE,
+            backLinkHref: getFullUrl(constants.LANDING_URL),
+            lang: {},
+            companyName: "",
+            companyNumber: ""
+        };
+    }
+
+    async execute (req: Request, res: Response, method: string): Promise<RemoveCompanyViewData | void> {
+        const companyNumber = req.params[constants.COMPANY_NUMBER];
+        this.viewData.companyNumber = companyNumber;
+        this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_COMPANY_PAGE);
+
         if (method === constants.GET) {
-            const companyNumber = req.params[constants.COMPANY_NUMBER];
             const error = getExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION
             );
 
             try {
                 const companyProfile = await getCompanyProfile(companyNumber);
                 setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
+                this.viewData.companyName = companyProfile.companyName;
             } catch (error) {
                 logger.error(`Error fetching company profile for ${companyNumber}: ${error}`);
             }
-
-            this.viewData = await this.getViewData(req);
 
             if (error) {
                 this.viewData.errors = {
@@ -36,7 +53,7 @@ export class RemoveCompanyHandler extends GenericHandler {
 
             return this.viewData;
         } else if (method === constants.POST) {
-            this.viewData = await this.getViewData(req);
+            this.viewData.companyName = getExtraData(req.session, constants.COMPANY_NAME);
             const selectedOption = req.body.confirmRemoval;
 
             if (!selectedOption) {
@@ -59,18 +76,7 @@ export class RemoveCompanyHandler extends GenericHandler {
         }
     }
 
-    private async getViewData (req: Request): Promise<ViewData> {
-        const lang = getTranslationsForView((req as any).lang, constants.REMOVE_COMPANY_PAGE);
-        return {
-            templateName: constants.REMOVE_COMPANY_PAGE,
-            lang: lang,
-            companyNumber: req.params[constants.COMPANY_NUMBER],
-            companyName: getExtraData(req.session, constants.COMPANY_NAME),
-            backLinkHref: constants.LANDING_URL
-        };
-    }
-
-    private async handleCompanyRemoval (req: Request, res: Response): Promise<ViewData | void> {
+    private async handleCompanyRemoval (req: Request, res: Response): Promise<RemoveCompanyViewData | void> {
         const companyNumber = req.params[constants.COMPANY_NUMBER];
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
 
@@ -93,7 +99,7 @@ export class RemoveCompanyHandler extends GenericHandler {
         res.redirect(getFullUrl(constants.REMOVE_COMPANY_CONFIRMED_URL));
     }
 
-    private renderErrorPage (res: Response, errorMessage: string): ViewData {
+    private renderErrorPage (res: Response, errorMessage: string): RemoveCompanyViewData {
         logger.error(errorMessage);
         this.viewData.errors = {
             generic: {

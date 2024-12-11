@@ -4,27 +4,39 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { Invitation, AssociationList, InvitationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
-import { AnyRecord, ViewData } from "../../../types/util-types";
+import { AnyRecord, ViewDataWithBackLink } from "../../../types/util-types";
 import { InvitationWithCompanyDetail, Invitations } from "../../../types/invitations";
-
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { PaginationData } from "../../../types/pagination";
+
+interface CompanyInvitationsViewData extends ViewDataWithBackLink {
+    pagination: PaginationData | undefined;
+    pageNumber: number;
+    numberOfPages: number;
+    rowsData: ({ text: string } | { html: string })[][];
+}
 
 export class CompanyInvitationsHandler extends GenericHandler {
-    async execute (req: Request): Promise<ViewData> {
-        this.viewData = await this.getViewData(req);
-        this.viewData.templateName = constants.COMPANY_INVITATIONS_PAGE;
-        return Promise.resolve(this.viewData);
+    viewData: CompanyInvitationsViewData;
+
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.COMPANY_INVITATIONS_PAGE,
+            backLinkHref: getFullUrl(constants.LANDING_URL),
+            lang: {},
+            pagination: undefined,
+            pageNumber: 0,
+            numberOfPages: 0,
+            rowsData: []
+        };
     }
 
-    private async getViewData (req: Request): Promise<ViewData> {
+    async execute (req: Request): Promise<CompanyInvitationsViewData> {
         const translations = getTranslationsForView(req.lang, constants.COMPANY_INVITATIONS_PAGE);
-        const viewData: ViewData = {
-            lang: translations,
-            backLinkHref: constants.LANDING_URL
-        };
-
+        this.viewData.lang = translations;
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
         let userInvites: InvitationList = await getInvitations(req, pageNumber - 1);
@@ -33,25 +45,25 @@ export class CompanyInvitationsHandler extends GenericHandler {
             pageNumber = 1;
             userInvites = await getInvitations(req, pageNumber - 1);
         }
+
         const invitesWithCompanyDetail: InvitationWithCompanyDetail[] = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
 
         if (userInvites.totalPages > 1) {
             const urlPrefix = getFullUrl(constants.COMPANY_INVITATIONS_URL);
             const pagination = buildPaginationElement(pageNumber, userInvites.totalPages, urlPrefix, "");
             setLangForPagination(pagination, translations);
-            viewData.pagination = pagination;
-            viewData.pageNumber = pageNumber;
-            viewData.numberOfPages = userInvites.totalPages;
+            this.viewData.pagination = pagination;
+            this.viewData.pageNumber = pageNumber;
+            this.viewData.numberOfPages = userInvites.totalPages;
         }
 
         const { rows } = await this.getRowsData(invitesWithCompanyDetail, translations);
-        viewData.rowsData = rows;
+        this.viewData.rowsData = rows;
 
-        return viewData;
+        return Promise.resolve(this.viewData);
     }
 
     private async getRowsData (invites: InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
-
         const rows: ({ text: string } | { html: string })[][] = [];
         if (invites?.length) {
             for (const invite of invites) {

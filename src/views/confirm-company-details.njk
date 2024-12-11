@@ -20,7 +20,7 @@
                             text: lang.company_name
                         },
                         value: {
-                            text: companyName
+                            text: companyProfile.companyName
                         }
                     },
                     {
@@ -28,7 +28,7 @@
                             text: lang.company_number
                         },
                         value: {
-                            text: companyNumber
+                            text: companyProfile.companyNumber
                         }
                     },
                     {
@@ -36,7 +36,7 @@
                             text: lang.status
                         },
                         value: {
-                            text: lang["company-status-" + companyStatus]
+                            text: lang["company-status-" + companyProfile.companyStatus]
                         }
                     },
                     {
@@ -44,7 +44,7 @@
                             text: lang.incorporation_date 
                         },
                         value: {
-                            html: dateOfCreation
+                            html: companyProfile.dateOfCreation
                         }
                     },
                     {
@@ -52,7 +52,7 @@
                             text: lang.company_type
                         },
                         value: {
-                            text: lang["company-type-" + type]
+                            text: lang["company-type-" + companyProfile.type]
                         }
                     },
                     {

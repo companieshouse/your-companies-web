@@ -3,24 +3,29 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
-import { ViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/util-types";
+
+interface CompanyAddSuccessViewData extends BaseViewData {
+    companyName: string;
+}
 
 export class CompanyAddSuccessHandler extends GenericHandler {
-    async execute (req: Request): Promise<ViewData> {
-        this.viewData = await this.getViewData(req);
-        this.viewData.lang = getTranslationsForView(
-            req.lang,
-            constants.COMPANY_ADD_SUCCESS_PAGE
-        );
-        this.viewData.templateName = constants.COMPANY_ADD_SUCCESS_PAGE;
-        return Promise.resolve(this.viewData);
+    viewData: CompanyAddSuccessViewData;
+
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.COMPANY_ADD_SUCCESS_PAGE,
+            lang: {},
+            companyName: ""
+        };
     }
 
-    private async getViewData (req: Request): Promise<ViewData> {
+    async execute (req: Request): Promise<CompanyAddSuccessViewData> {
         const companyNowAssociated = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
-        return Promise.resolve({
-            companyName: companyNowAssociated.companyName
-        } as ViewData);
+        this.viewData.companyName = companyNowAssociated.companyName;
+        this.viewData.lang = getTranslationsForView(req.lang, constants.COMPANY_ADD_SUCCESS_PAGE);
+        return Promise.resolve(this.viewData);
     }
 
 }
