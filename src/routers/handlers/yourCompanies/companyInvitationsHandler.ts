@@ -8,7 +8,7 @@ import { AnyRecord, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { InvitationWithCompanyDetail, Invitations } from "../../../types/invitations";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
-import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { getCompanyInvitationsAcceptFullUrl, getCompanyInvitationsDeclineFullUrl, getFullUrl } from "../../../lib/utils/urlUtils";
 import { Pagination } from "../../../types/pagination";
 
 interface CompanyInvitationsViewData extends ViewDataWithBackLink, Pagination {
@@ -64,8 +64,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
         const rows: ({ text: string } | { html: string })[][] = [];
         if (invites?.length) {
             for (const invite of invites) {
-                const acceptPath = getFullUrl(constants.COMPANY_INVITATIONS_ACCEPT_URL).replace(`:${constants.ASSOCIATIONS_ID}`, invite.associationId);
-                const declinePath = getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL).replace(`:${constants.ASSOCIATIONS_ID}`, invite.associationId);
+                const acceptPath = getCompanyInvitationsAcceptFullUrl(invite.associationId);
+                const declinePath = getCompanyInvitationsDeclineFullUrl(invite.associationId);
                 const companyNameQueryParam = `?${constants.COMPANY_NAME}=${invite.companyName.replace(/ /g, "+")}`;
 
                 rows.push([

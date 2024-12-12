@@ -3,12 +3,9 @@ import mockCsrfProtectionMiddleware from "../mocks/csrf.protection.middleware.mo
 import supertest from "supertest";
 import app from "../../src/app";
 import { NextFunction, Request, Response } from "express";
-import * as constants from "../../src/constants";
-import { getFullUrl, getUrlWithCompanyNumber } from "../../src/lib/utils/urlUtils";
 
 const router = supertest(app);
-const companyNumber = "12345678";
-const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), companyNumber);
+const url = "/your-companies/company/12345678/create-company-association";
 
 describe("process.on", () => {
 

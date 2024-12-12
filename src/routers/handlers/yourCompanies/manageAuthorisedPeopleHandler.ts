@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getUrlWithCompanyNumber, getManageAuthorisedPeopleFullUrl, getFullUrl } from "../../../lib/utils/urlUtils";
+import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
 import { AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
@@ -77,7 +77,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         const lang = getTranslationsForView(req.lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData.lang = lang;
-        this.viewData.buttonHref = getUrlWithCompanyNumber(getFullUrl(constants.ADD_PRESENTER_URL), companyNumber) + constants.CLEAR_FORM_TRUE;
+        this.viewData.buttonHref = getAddPresenterFullUrl(companyNumber) + constants.CLEAR_FORM_TRUE;
         this.viewData.cancelUrl = getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
@@ -116,7 +116,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.numberOfPages = companyAssociations.totalPages;
         }
 
-        const href = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        const href = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);

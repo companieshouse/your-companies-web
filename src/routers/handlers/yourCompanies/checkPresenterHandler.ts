@@ -4,7 +4,7 @@ import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilT
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
-import { getFullUrl, getUrlWithCompanyNumber } from "../../../lib/utils/urlUtils";
+import { getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "types/associations";
 
@@ -57,7 +57,7 @@ export class CheckPresenterHandler extends GenericHandler {
 
     private getViewData (req: Request, companyNumber: string, companyName: string, emailAddress: string): void {
         this.viewData.lang = getTranslationsForView(req.lang, constants.CHECK_PRESENTER_PAGE);
-        const url = getUrlWithCompanyNumber(getFullUrl(constants.ADD_PRESENTER_URL), companyNumber);
+        const url = getAddPresenterFullUrl(companyNumber);
         this.viewData.backLinkHref = url;
         this.viewData.backLinkWithClearForm = url + constants.CLEAR_FORM_TRUE;
         this.viewData.companyName = companyName;

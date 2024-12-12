@@ -7,9 +7,6 @@ const WHITELISTED_URLS: string[] = [
 
 export const isWhitelistedUrl = (url: string): boolean => WHITELISTED_URLS.includes(url);
 
-export const getUrlWithCompanyNumber = (url: string, companyNumber: string): string =>
-    url.replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
-
 export const addLangToUrl = (url: string, lang: string | undefined): string => {
     let sanitizedUrl = sanitizeUrl(url);
     if (sanitizedUrl.includes("cf=true")) {
@@ -63,3 +60,18 @@ export const isReferrerIncludes = (referrer: string): boolean => referrer.includ
     referrer.includes(constants.AUTHORISATION_EMAIL_RESENT_URL);
 
 export const getFullUrl = (url: string): string => `${constants.LANDING_URL}${url}`;
+
+export const getAddPresenterFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`);
+
+export const getCompanyInvitationsAcceptFullUrl = (associatonId: string): string =>
+    getFullUrl(`/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/${associatonId}`);
+
+export const getCompanyInvitationsDeclineFullUrl = (associatonId: string): string =>
+    getFullUrl(`/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associatonId}`);
+
+export const getCheckPresenterFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/${constants.CHECK_PRESENTER_PAGE}/${companyNumber}`);
+
+export const getCreateCompanyAssociationFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/company/${companyNumber}/create-company-association`);

@@ -1,9 +1,16 @@
 import {
     addLangToUrl,
+    getAddPresenterFullUrl,
+    getCheckPresenterFullUrl,
+    getCompanyInvitationsAcceptFullUrl,
+    getCompanyInvitationsDeclineFullUrl,
+    getCreateCompanyAssociationFullUrl,
+    getFullUrl,
     getManageAuthorisedPeopleFullUrl,
     isReferrerIncludes,
     isWhitelistedUrl
 } from "../../../../src/lib/utils/urlUtils";
+import * as constants from "../../../../src/constants";
 
 describe("addLangToUrl", () => {
     it.each([
@@ -78,4 +85,23 @@ describe("isWhitelistedUrl", () => {
         // Then
         expect(result).toBeFalsy();
     });
+});
+
+describe("URL generation function", () => {
+
+    test.each([
+        // Given
+        ["getFullUrl", `${constants.LANDING_URL}/test/path`, "/test/path", getFullUrl],
+        ["getAddPresenterFullUrl", `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/12345`, "12345", getAddPresenterFullUrl],
+        ["getCompanyInvitationsAcceptFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/abc123`, "abc123", getCompanyInvitationsAcceptFullUrl],
+        ["getCompanyInvitationsDeclineFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/abc123`, "abc123", getCompanyInvitationsDeclineFullUrl],
+        ["getCheckPresenterFullUrl", `${constants.LANDING_URL}/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterFullUrl],
+        ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl]
+    ])("%s should generate URL: '%s'",
+        (_functionName, expectedFullUrl, argument, testedFunction) => {
+            // When
+            const result = testedFunction(argument);
+            // Then
+            expect(result).toEqual(expectedFullUrl);
+        });
 });

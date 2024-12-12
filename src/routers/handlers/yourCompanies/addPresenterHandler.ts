@@ -5,7 +5,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
 import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
-import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 
 interface AddPresenterViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
     authPersonEmail: string | undefined;
@@ -30,7 +30,7 @@ export class AddPresenterHandler extends GenericHandler {
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
         this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
-        this.viewData.backLinkHref = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
         this.viewData.companyName = companyName;
         this.viewData.companyNumber = companyNumber;
 

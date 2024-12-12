@@ -9,12 +9,11 @@ import { Session } from "@companieshouse/node-session-handler";
 import { CompanyNameAndNumber } from "../../../../src/types/utilTypes";
 import { StatusCodes } from "http-status-codes";
 import createError from "http-errors";
-import { getFullUrl, getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 
 const router = supertest(app);
 const session: Session = new Session();
 const companyNumber = "12345678";
-const url = getUrlWithCompanyNumber(getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), companyNumber);
+const url = "/your-companies/company/12345678/create-company-association";
 const PAGE_HEADING = "Found. Redirecting to /your-companies/confirmation-company-added";
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {

@@ -1,7 +1,6 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import { getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as en from "../../../../locales/en/add-presenter.json";
 import * as cy from "../../../../locales/cy/add-presenter.json";
@@ -13,9 +12,7 @@ import { Session } from "@companieshouse/node-session-handler";
 jest.mock("../../../../src/services/companyProfileService");
 
 const router = supertest(app);
-const companyNumber = "12345678";
-const urlwithCompNum = "/your-companies/add-presenter/:companyNumber";
-const url = getUrlWithCompanyNumber(urlwithCompNum, companyNumber);
+const url = "/your-companies/add-presenter/12345678";
 const session: Session = new Session();
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {

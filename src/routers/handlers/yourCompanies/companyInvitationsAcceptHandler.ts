@@ -6,7 +6,7 @@ import { BaseViewData } from "../../../types/utilTypes";
 import { updateAssociationStatus } from "../../../services/associationsService";
 import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
-import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { getCompanyInvitationsAcceptFullUrl } from "../../../lib/utils/urlUtils";
 
 interface CompanyInvitationsAcceptViewData extends BaseViewData {
     yourCompaniesUrl: string;
@@ -33,7 +33,7 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         const associationStateChanged = getExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId) === constants.TRUE;
         const referrer: string | undefined = req.get("Referrer");
         const companyName = req.query[constants.COMPANY_NAME] as string;
-        const hrefB = `${getFullUrl(constants.COMPANY_INVITATIONS_ACCEPT_URL).replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
+        const hrefB = `${getCompanyInvitationsAcceptFullUrl(associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
         this.viewData.companyName = req.query[constants.COMPANY_NAME] as string;
 
         if (!associationStateChanged) {
