@@ -2,7 +2,7 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from "http-status-codes";
-import { FormattedCompanyProfile, OfficeAddress } from "../../src/types/util-types";
+import { FormattedCompanyProfile, OfficeAddress } from "../../src/types/utilTypes";
 
 jest.mock("../../src/services/companyProfileService");
 

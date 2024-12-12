@@ -1,4 +1,4 @@
-import { AnyRecord } from "../../types/util-types";
+import { AnyRecord } from "../../types/utilTypes";
 import * as constants from "../../constants";
 import {
     SHARED_NUNJUCKS_TRANSLATION_NAMESPACES

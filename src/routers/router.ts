@@ -39,7 +39,7 @@ import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/c
 
 const router: Router = Router();
 
-router.get(constants.HEALTHCHECK, healthCheckController);
+router.get(constants.HEALTHCHECK_URL, healthCheckController);
 
 router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
 router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as RequestHandler);
@@ -67,7 +67,7 @@ router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthentic
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyNavigation, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
-router.get(constants.CREATE_COMPANY_ASSOCIATION_PATH, companyAuthenticationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
+router.get(constants.CREATE_COMPANY_ASSOCIATION_URL, companyAuthenticationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAddedNavigation, companyAddedControllerGet as RequestHandler);
 
 router.get(constants.ADD_PRESENTER_URL, addPresenterNavigation, addPresenterControllerGet as RequestHandler);

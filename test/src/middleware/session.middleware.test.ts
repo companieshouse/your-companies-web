@@ -5,7 +5,7 @@ jest.mock("@companieshouse/node-session-handler");
 import { SessionMiddleware, EnsureSessionCookiePresentMiddleware, CookieConfig } from "@companieshouse/node-session-handler";
 import { Request, Response } from "express";
 import { sessionMiddleware, ensureSessionCookiePresentMiddleware } from "../../../src/middleware/session.middleware";
-import { LANDING_URL, HEALTHCHECK } from "../../../src/constants";
+import { LANDING_URL, HEALTHCHECK_URL } from "../../../src/constants";
 
 // get handle on mocked function and create mock function to be returned from calling sessionMiddleware
 const mockSessionMiddleware = SessionMiddleware as jest.Mock;
@@ -48,7 +48,7 @@ describe("session middleware tests", () => {
     });
 
     it("should call next if url is on the whitelist", () => {
-        req.originalUrl = LANDING_URL + HEALTHCHECK;
+        req.originalUrl = LANDING_URL + HEALTHCHECK_URL;
         sessionMiddleware(req, res, next);
         expect(mockSessionMiddleware).not.toHaveBeenCalled();
         expect(next).toHaveBeenCalled();
@@ -68,7 +68,7 @@ describe("ensure session cookie present middleware tests", () => {
     });
 
     it("should call next if url is on the whitelist", () => {
-        req.originalUrl = LANDING_URL + HEALTHCHECK;
+        req.originalUrl = LANDING_URL + HEALTHCHECK_URL;
         ensureSessionCookiePresentMiddleware(req, res, next);
         expect(mockEnsureSessionCookiePresentMiddleware).not.toHaveBeenCalled();
         expect(next).toHaveBeenCalled();

@@ -10,6 +10,7 @@ import { authMiddleware } from "@companieshouse/web-security-node";
 import request from "supertest";
 import app from "../../../src/app";
 import * as constants from "../../../src/constants";
+import { getFullUrl } from "../../../src/lib/utils/urlUtils";
 
 // get handle on mocked function and create mock function to be returned from calling companyAuthMiddleware
 const mockCompanyAuthMiddleware = authMiddleware as jest.Mock;
@@ -30,7 +31,7 @@ describe("company authentication middleware tests", () => {
     });
 
     it("should call CH company authentication library when removing an authorised person", async () => {
-        const URL = constants.YOUR_COMPANIES_AUTHENTICATION_CODE_REMOVE_URL.replace(":companyNumber", "12345678");
+        const URL = getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL).replace(":companyNumber", "12345678");
         await request(app).get(URL);
 
         expect(mockCompanyAuthMiddleware).toHaveBeenCalledWith({
@@ -43,7 +44,7 @@ describe("company authentication middleware tests", () => {
     });
 
     it("should call CH company authentication library when cancelling an authorised person", async () => {
-        const URL = constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(":companyNumber", "12345678");
+        const URL = getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL).replace(":companyNumber", "12345678");
 
         await request(app).get(URL);
 

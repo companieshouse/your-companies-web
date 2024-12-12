@@ -1,4 +1,4 @@
-import { AnyRecord } from "./util-types";
+import { AnyRecord } from "./utilTypes";
 
 export interface PageItem {
     number?: number;
@@ -18,4 +18,10 @@ export interface PaginationData {
     previous?: PaginationPreviousNext;
     next?: PaginationPreviousNext;
     items: PageItem[];
+}
+
+export interface Pagination {
+    pagination: PaginationData | undefined;
+    pageNumber: number;
+    numberOfPages: number;
 }

@@ -4,6 +4,7 @@ import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import logger from "../../lib/Logger";
 import { validateEmailString } from "../../lib/validation/generic";
 import { createAssociation } from "../../services/associationsService";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 export const resendEmailController = async (req: Request, res: Response): Promise<void> => {
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
@@ -20,7 +21,7 @@ export const resendEmailController = async (req: Request, res: Response): Promis
             setExtraData(req.session, constants.RESENT_SUCCESS_EMAIL, email);
 
             return res.redirect(
-                constants.YOUR_COMPANIES_CONFIRMATION_EMAIL_RESENT_URL.replace(
+                getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL).replace(
                     `:${constants.COMPANY_NUMBER}`,
                     companyNumber
                 )

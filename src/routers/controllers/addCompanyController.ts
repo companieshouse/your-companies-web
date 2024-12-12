@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
 import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
@@ -21,6 +22,6 @@ export const addCompanyControllerPost = async (req: Request, res: Response): Pro
             ...viewData
         });
     } else {
-        res.redirect(constants.YOUR_COMPANIES_CONFIRM_COMPANY_DETAILS_URL);
+        res.redirect(getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL));
     }
 };

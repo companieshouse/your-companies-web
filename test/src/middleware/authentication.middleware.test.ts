@@ -5,7 +5,7 @@ jest.mock("@companieshouse/web-security-node");
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import { Request, Response } from "express";
 import { authenticationMiddleware } from "../../../src/middleware/authentication.middleware";
-import { LANDING_URL, HEALTHCHECK } from "../../../src/constants";
+import { LANDING_URL, HEALTHCHECK_URL } from "../../../src/constants";
 
 // get handle on mocked function and create mock function to be returned from calling authMiddleware
 const mockAuthMiddleware = authMiddleware as jest.Mock;
@@ -37,7 +37,7 @@ describe("authentication middleware tests", () => {
     });
 
     it("should not redirect to sign in when url is on whitelist", () => {
-        req.originalUrl = LANDING_URL + HEALTHCHECK;
+        req.originalUrl = LANDING_URL + HEALTHCHECK_URL;
         authenticationMiddleware(req, res, next);
         expect(mockAuthMiddleware).not.toHaveBeenCalled();
         expect(next).toHaveBeenCalled();

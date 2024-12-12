@@ -8,6 +8,7 @@ import { csrfErrorHandler, httpErrorHandler } from "../../../../src/routers/cont
 import { StatusCodes } from "http-status-codes";
 import createError from "http-errors";
 import * as constants from "../../../../src/constants";
+import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
 const mockGetTranslationsForView: jest.SpyInstance = jest.spyOn(getTranslationsForView, "getTranslationsForView");
 
@@ -45,7 +46,7 @@ describe("csrfErrorHandler", () => {
         csrfErrorHandler(err, request, response, mockNext);
         // Then
         expect(response.status).toHaveBeenCalledWith(403);
-        expect(response.redirect).toHaveBeenCalledWith(constants.YOUR_COMPANIES_SOMETHING_WENT_WRONG_URL);
+        expect(response.redirect).toHaveBeenCalledWith(getFullUrl(constants.SOMETHING_WENT_WRONG_URL));
         expect(logger.error).toHaveBeenCalledTimes(1);
         expect(logger.error).toHaveBeenCalledWith(
             expect.stringContaining("CSRF Error occured")
