@@ -23,7 +23,7 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
 
     logger.debug(`manageAuthorisedPeopleNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED) &&
+    if (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL) &&
         redirectPage(referrer,
             getFullUrl(constants.CHECK_PRESENTER_URL).replace(":companyNumber", companyNumber),
             getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL).replace(":companyNumber", companyNumber), pageIndicator)) {

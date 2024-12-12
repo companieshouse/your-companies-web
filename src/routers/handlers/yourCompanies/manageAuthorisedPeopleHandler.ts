@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getUrlWithCompanyNumber, getManageAuthorisedPeopleUrl, getFullUrl } from "../../../lib/utils/urlUtils";
+import { getUrlWithCompanyNumber, getManageAuthorisedPeopleFullUrl, getFullUrl } from "../../../lib/utils/urlUtils";
 import { AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
@@ -108,7 +108,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.companyAssociations = companyAssociations;
 
         if (companyAssociations.totalPages > 1) {
-            const urlPrefix = getManageAuthorisedPeopleUrl(req.originalUrl, companyNumber);
+            const urlPrefix = getManageAuthorisedPeopleFullUrl(req.originalUrl, companyNumber);
             const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;
@@ -175,7 +175,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
     private handleConfirmationPersonAdded (req: Request) {
         const authorisedPerson: AuthorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
-        if (authorisedPerson && req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED)) {
+        if (authorisedPerson && req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL)) {
             this.viewData.authorisedPersonSuccess = true;
             this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;
             this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;

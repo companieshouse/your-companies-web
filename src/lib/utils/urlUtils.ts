@@ -35,30 +35,31 @@ export const addLangToUrl = (url: string, lang: string | undefined): string => {
     }
 };
 
-export const getManageAuthorisedPeopleUrl = (url: string, companyNumber: string): string => {
+export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: string): string => {
+    const baseUrl = getFullUrl(`/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`);
+
     if (url.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
-        return getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber) +
-            constants.CONFIRMATION_CANCEL_PERSON_URL;
+        return baseUrl + constants.CONFIRMATION_CANCEL_PERSON_URL;
     }
 
     if (url.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-        return getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        return baseUrl + constants.CONFIRMATION_PERSON_REMOVED_URL;
     }
 
     if (url.includes(constants.AUTHORISATION_EMAIL_RESENT_URL)) {
-        return getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+        return baseUrl + constants.AUTHORISATION_EMAIL_RESENT_URL;
     }
 
-    if (url.includes(constants.CONFIRMATION_PERSON_ADDED)) {
-        return getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+    if (url.includes(constants.CONFIRMATION_PERSON_ADDED_URL)) {
+        return baseUrl + constants.CONFIRMATION_PERSON_ADDED_URL;
     }
 
-    return getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+    return baseUrl;
 };
 
 export const isReferrerIncludes = (referrer: string): boolean => referrer.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) ||
     referrer.includes(constants.CONFIRMATION_CANCEL_PERSON_URL) ||
-    referrer.includes(constants.CONFIRMATION_PERSON_ADDED) ||
+    referrer.includes(constants.CONFIRMATION_PERSON_ADDED_URL) ||
     referrer.includes(constants.AUTHORISATION_EMAIL_RESENT_URL);
 
 export const getFullUrl = (url: string): string => `${constants.LANDING_URL}${url}`;
