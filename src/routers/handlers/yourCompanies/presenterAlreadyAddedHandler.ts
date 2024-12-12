@@ -18,7 +18,7 @@ export class PresenterAlreadyAddedHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.PRESENTER_ALREADY_ADDED_PAGE,
-            landingPageUrl: getFullUrl(constants.LANDING_URL),
+            landingPageUrl: constants.LANDING_URL,
             lang: {},
             companyName: "",
             companyNumber: "",

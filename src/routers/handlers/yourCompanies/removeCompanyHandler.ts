@@ -19,7 +19,7 @@ export class RemoveCompanyHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.REMOVE_COMPANY_PAGE,
-            backLinkHref: getFullUrl(constants.LANDING_URL),
+            backLinkHref: constants.LANDING_URL,
             lang: {},
             companyName: "",
             companyNumber: ""

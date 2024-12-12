@@ -4,7 +4,6 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber, BaseViewData } from "../../../types/util-types";
-import { getFullUrl } from "../../../lib/utils/urlUtils";
 
 interface RemoveCompanyConfirmedViewData extends BaseViewData, CompanyNameAndNumber {
     buttonHref: string;
@@ -17,7 +16,7 @@ export class RemoveCompanyConfirmedHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.REMOVE_COMPANY_CONFIRMED,
-            buttonHref: getFullUrl(constants.LANDING_URL),
+            buttonHref: constants.LANDING_URL,
             lang: {},
             companyName: "",
             companyNumber: ""

@@ -21,7 +21,7 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.COMPANY_INVITATIONS_ACCEPT_PAGE,
-            yourCompaniesUrl: getFullUrl(constants.LANDING_URL),
+            yourCompaniesUrl: constants.LANDING_URL,
             lang: {},
             associationStateChanged: undefined,
             companyName: ""

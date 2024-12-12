@@ -24,7 +24,7 @@ export class AddCompanyHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.ADD_COMPANY_PAGE,
-            backLinkHref: getFullUrl(constants.LANDING_URL),
+            backLinkHref: constants.LANDING_URL,
             lang: {},
             proposedCompanyNumber: undefined
         };

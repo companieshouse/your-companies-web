@@ -21,7 +21,7 @@ export class CompanyInvitationsDeclineHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.COMPANY_INVITATIONS_DECLINE_PAGE,
-            buttonLinkHref: getFullUrl(constants.LANDING_URL),
+            buttonLinkHref: constants.LANDING_URL,
             lang: {},
             associationStateChanged: undefined,
             companyName: ""

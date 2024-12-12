@@ -25,7 +25,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.COMPANY_INVITATIONS_PAGE,
-            backLinkHref: getFullUrl(constants.LANDING_URL),
+            backLinkHref: constants.LANDING_URL,
             lang: {},
             pagination: undefined,
             pageNumber: 0,

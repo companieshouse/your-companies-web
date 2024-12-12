@@ -44,7 +44,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
-            backLinkHref: getFullUrl(constants.LANDING_URL),
+            backLinkHref: constants.LANDING_URL,
             lang: {},
             buttonHref: "",
             cancelUrl: "",
