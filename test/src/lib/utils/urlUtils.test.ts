@@ -1,12 +1,22 @@
 import {
     addLangToUrl,
     getAddPresenterFullUrl,
+    getAddPresenterUrl,
+    getAuthenticationCodeRemoveUrl,
+    getAuthorisedPersonAddedFullUrl,
+    getCancelPersonUrl,
     getCheckPresenterFullUrl,
+    getCheckPresenterUrl,
+    getCompanyAuthProtectedAuthenticationCodeRemoveUrl,
+    getCompanyAuthProtectedCancelPersonFullUrl,
     getCompanyInvitationsAcceptFullUrl,
     getCompanyInvitationsDeclineFullUrl,
     getCreateCompanyAssociationFullUrl,
     getFullUrl,
+    getManageAuthorisedPeopleConfirmationEmailResentUrl,
     getManageAuthorisedPeopleFullUrl,
+    getPresenterAlreadyAddedUrl,
+    getRemoveCompanyUrl,
     isReferrerIncludes,
     isWhitelistedUrl
 } from "../../../../src/lib/utils/urlUtils";
@@ -92,15 +102,35 @@ describe("URL generation function", () => {
     test.each([
         // Given
         ["getFullUrl", `${constants.LANDING_URL}/test/path`, "/test/path", getFullUrl],
+        ["getAddPresenterUrl", `/${constants.ADD_PRESENTER_PAGE}/12345`, "12345", getAddPresenterUrl],
         ["getAddPresenterFullUrl", `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/12345`, "12345", getAddPresenterFullUrl],
         ["getCompanyInvitationsAcceptFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/abc123`, "abc123", getCompanyInvitationsAcceptFullUrl],
         ["getCompanyInvitationsDeclineFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/abc123`, "abc123", getCompanyInvitationsDeclineFullUrl],
+        ["getCheckPresenterUrl", `/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterUrl],
         ["getCheckPresenterFullUrl", `${constants.LANDING_URL}/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterFullUrl],
-        ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl]
+        ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl],
+        ["getPresenterAlreadyAddedUrl", `/${constants.PRESENTER_ALREADY_ADDED_PAGE}/abc123`, "abc123", getPresenterAlreadyAddedUrl],
+        ["getAuthorisedPersonAddedFullUrl", `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.CONFIRMATION_PERSON_ADDED_URL}`, "abc123", getAuthorisedPersonAddedFullUrl],
+        ["getCancelPersonUrl", `/${constants.CANCEL_PERSON_PAGE}/test@test.com`, "test@test.com", getCancelPersonUrl],
+        ["getManageAuthorisedPeopleConfirmationEmailResentUrl", `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`, "abc123", getManageAuthorisedPeopleConfirmationEmailResentUrl],
+        ["getAuthenticationCodeRemoveUrl", `/authentication-code-remove/test@test.com`, "test@test.com", getAuthenticationCodeRemoveUrl],
+        ["getRemoveCompanyUrl", `/${constants.REMOVE_COMPANY_PAGE}/abc123`, "abc123", getRemoveCompanyUrl]
     ])("%s should generate URL: '%s'",
         (_functionName, expectedFullUrl, argument, testedFunction) => {
             // When
             const result = testedFunction(argument);
+            // Then
+            expect(result).toEqual(expectedFullUrl);
+        });
+
+    test.each([
+        // Given
+        ["getCompanyAuthProtectedCancelPersonFullUrl", `${constants.LANDING_URL}/company/abc123/${constants.CANCEL_PERSON_PAGE}/test@test.com`, "abc123", "test@test.com", getCompanyAuthProtectedCancelPersonFullUrl],
+        ["getCompanyAuthProtectedAuthenticationCodeRemoveUrl", `/company/12345/authentication-code-remove/test@test.com`, "12345", "test@test.com", getCompanyAuthProtectedAuthenticationCodeRemoveUrl]
+    ])("%s should generate URL: '%s'",
+        (_functionName, expectedFullUrl, companyNumber, userEmail, testedFunction) => {
+            // When
+            const result = testedFunction(companyNumber, userEmail);
             // Then
             expect(result).toEqual(expectedFullUrl);
         });

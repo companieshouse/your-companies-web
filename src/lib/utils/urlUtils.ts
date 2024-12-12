@@ -32,8 +32,11 @@ export const addLangToUrl = (url: string, lang: string | undefined): string => {
     }
 };
 
+export const getManageAuthorisedPeopleUrl = (companyNumber: string): string =>
+    `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
+
 export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: string): string => {
-    const baseUrl = getFullUrl(`/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`);
+    const baseUrl = getFullUrl(getManageAuthorisedPeopleUrl(companyNumber));
 
     if (url.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
         return baseUrl + constants.CONFIRMATION_CANCEL_PERSON_URL;
@@ -61,8 +64,11 @@ export const isReferrerIncludes = (referrer: string): boolean => referrer.includ
 
 export const getFullUrl = (url: string): string => `${constants.LANDING_URL}${url}`;
 
+export const getAddPresenterUrl = (companyNumber: string): string =>
+    `/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
+
 export const getAddPresenterFullUrl = (companyNumber: string): string =>
-    getFullUrl(`/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`);
+    getFullUrl(getAddPresenterUrl(companyNumber));
 
 export const getCompanyInvitationsAcceptFullUrl = (associatonId: string): string =>
     getFullUrl(`/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/${associatonId}`);
@@ -70,8 +76,35 @@ export const getCompanyInvitationsAcceptFullUrl = (associatonId: string): string
 export const getCompanyInvitationsDeclineFullUrl = (associatonId: string): string =>
     getFullUrl(`/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associatonId}`);
 
+export const getCheckPresenterUrl = (companyNumber: string): string =>
+    `/${constants.CHECK_PRESENTER_PAGE}/${companyNumber}`;
+
 export const getCheckPresenterFullUrl = (companyNumber: string): string =>
-    getFullUrl(`/${constants.CHECK_PRESENTER_PAGE}/${companyNumber}`);
+    getFullUrl(getCheckPresenterUrl(companyNumber));
 
 export const getCreateCompanyAssociationFullUrl = (companyNumber: string): string =>
     getFullUrl(`/company/${companyNumber}/create-company-association`);
+
+export const getPresenterAlreadyAddedUrl = (companyNumber: string): string =>
+    `/${constants.PRESENTER_ALREADY_ADDED_PAGE}/${companyNumber}`;
+
+export const getAuthorisedPersonAddedFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}${constants.CONFIRMATION_PERSON_ADDED_URL}`);
+
+export const getCancelPersonUrl = (userEmail: string): string =>
+    `/${constants.CANCEL_PERSON_PAGE}/${userEmail}`;
+
+export const getCompanyAuthProtectedCancelPersonFullUrl = (companyNumber: string, userEmail: string): string =>
+    getFullUrl(`/company/${companyNumber}${getCancelPersonUrl(userEmail)}`);
+
+export const getManageAuthorisedPeopleConfirmationEmailResentUrl = (companyNumber: string): string =>
+    `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}${constants.AUTHORISATION_EMAIL_RESENT_URL}`;
+
+export const getAuthenticationCodeRemoveUrl = (userEmail: string): string =>
+    `/authentication-code-remove/${userEmail}`;
+
+export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber: string, userEmail: string): string =>
+    `/company/${companyNumber}${getAuthenticationCodeRemoveUrl(userEmail)}`;
+
+export const getRemoveCompanyUrl = (companyNumber: string): string =>
+    `/${constants.REMOVE_COMPANY_PAGE}/${companyNumber}`;
