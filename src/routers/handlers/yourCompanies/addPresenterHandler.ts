@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
-import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/util-types";
+import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";

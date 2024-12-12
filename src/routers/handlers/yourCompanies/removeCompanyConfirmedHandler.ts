@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
-import { CompanyNameAndNumber, BaseViewData } from "../../../types/util-types";
+import { CompanyNameAndNumber, BaseViewData } from "../../../types/utilTypes";
 
 interface RemoveCompanyConfirmedViewData extends BaseViewData, CompanyNameAndNumber {
     buttonHref: string;

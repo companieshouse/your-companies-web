@@ -4,7 +4,7 @@ import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
-import { ViewDataWithBackLink } from "../../../types/util-types";
+import { ViewDataWithBackLink } from "../../../types/utilTypes";
 
 interface CancelPersonViewData extends ViewDataWithBackLink {
     companyName: string;

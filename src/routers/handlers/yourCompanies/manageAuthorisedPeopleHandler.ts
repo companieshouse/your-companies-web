@@ -8,25 +8,22 @@ import { AssociationList } from "private-api-sdk-node/dist/services/associations
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Cancellation } from "../../../types/cancellation";
-import { ViewDataWithBackLink } from "../../../types/util-types";
+import { ViewDataWithBackLink } from "../../../types/utilTypes";
 import { Removal } from "../../../types/removal";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
 import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../types/associations";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
-import { PaginationData } from "types/pagination";
+import { Pagination } from "../../../types/pagination";
 
-interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink {
+interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Pagination {
     buttonHref: string;
     cancelUrl: string;
     resendEmailUrl: string;
     removeUrl: string;
     matomoAddNewAuthorisedPersonGoalId: string;
     companyAssociations: AssociationList | undefined;
-    pagination: PaginationData | undefined;
-    pageNumber: number;
-    numberOfPages: number;
     cancelledPerson: string;
     removedPerson: string;
     changeCompanyAuthCodeUrl: string | undefined;

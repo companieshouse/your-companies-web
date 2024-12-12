@@ -4,7 +4,7 @@ import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData } from "../../../lib/utils/sessionUtils";
-import { BaseViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/utilTypes";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AssociationList, AssociationStatus, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import {
@@ -16,18 +16,15 @@ import {
 import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 import { i18nCh } from "@companieshouse/ch-node-utils";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
-import { PaginationData } from "types/pagination";
+import { Pagination } from "../../../types/pagination";
 
-interface YourCompaniesViewData extends BaseViewData {
+interface YourCompaniesViewData extends BaseViewData, Pagination {
     buttonHref: string;
     search: string;
     displaySearchForm: boolean;
     showNumOfMatches: boolean;
     numOfMatches: number;
     userHasCompanies: string;
-    pagination: PaginationData | undefined;
-    pageNumber: number;
-    numberOfPages: number;
     numberOfInvitations: number;
     viewInvitationsPageUrl: string;
     cancelSearchHref: string;

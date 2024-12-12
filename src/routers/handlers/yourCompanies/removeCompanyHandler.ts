@@ -3,7 +3,7 @@ import { GenericHandler } from "../../handlers/genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
-import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/util-types";
+import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 import logger from "../../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { getCompanyProfile } from "../../../services/companyProfileService";

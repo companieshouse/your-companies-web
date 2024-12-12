@@ -2,7 +2,7 @@ import { Request } from "express";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
-import { BaseViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/utilTypes";
 import { updateAssociationStatus } from "../../../services/associationsService";
 import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";

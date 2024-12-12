@@ -7,7 +7,7 @@ import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../..
 import { AssociationList } from "private-api-sdk-node/dist/services/associations/types";
 import logger from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
-import { CompanyNameAndNumber } from "../../types/util-types";
+import { CompanyNameAndNumber } from "../../types/utilTypes";
 import { validateRemoveAssociation } from "../../lib/validation/validateRemoveAssociation";
 import { getFullUrl } from "../../lib/utils/urlUtils";
 

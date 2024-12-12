@@ -4,17 +4,14 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { Invitation, AssociationList, InvitationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
-import { AnyRecord, ViewDataWithBackLink } from "../../../types/util-types";
+import { AnyRecord, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { InvitationWithCompanyDetail, Invitations } from "../../../types/invitations";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validatePageNumber } from "../../../lib/validation/generic";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
-import { PaginationData } from "../../../types/pagination";
+import { Pagination } from "../../../types/pagination";
 
-interface CompanyInvitationsViewData extends ViewDataWithBackLink {
-    pagination: PaginationData | undefined;
-    pageNumber: number;
-    numberOfPages: number;
+interface CompanyInvitationsViewData extends ViewDataWithBackLink, Pagination {
     rowsData: ({ text: string } | { html: string })[][];
 }
 

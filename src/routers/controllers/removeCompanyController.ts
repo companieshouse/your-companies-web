@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { RemoveCompanyHandler } from "../handlers/yourCompanies/removeCompanyHandler";
 import * as constants from "../../constants";
-import { BaseViewData } from "../../types/util-types";
+import { BaseViewData } from "../../types/utilTypes";
 
 export const removeCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveCompanyHandler();

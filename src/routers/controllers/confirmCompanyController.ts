@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmCorrectCompanyHandler";
 import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
-import { CompanyNameAndNumber } from "../../types/util-types";
+import { CompanyNameAndNumber } from "../../types/utilTypes";
 import { getFullUrl, getUrlWithCompanyNumber } from "../../lib/utils/urlUtils";
 
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {

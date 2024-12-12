@@ -4,7 +4,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { Removal } from "../../../types/removal";
-import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/util-types";
+import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 
 interface RemoveAuthorisedPersonViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
     userEmail: string;

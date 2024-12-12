@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import * as constants from "../../../constants";
-import { BaseViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/utilTypes";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 
 interface SomethingWentWrongViewData extends BaseViewData {

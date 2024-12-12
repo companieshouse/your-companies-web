@@ -8,7 +8,7 @@ import { StatusCodes } from "http-status-codes";
 import { setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { ViewDataWithBackLink } from "../../../types/util-types";
+import { ViewDataWithBackLink } from "../../../types/utilTypes";
 import { validateClearForm } from "../../../lib/validation/generic";
 import { AssociationState, AssociationStateResponse } from "../../../types/associations";
 import { getFullUrl } from "../../../lib/utils/urlUtils";

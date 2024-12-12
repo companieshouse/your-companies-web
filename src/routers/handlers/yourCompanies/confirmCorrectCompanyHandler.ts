@@ -2,7 +2,7 @@ import { GenericHandler } from "../genericHandler";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as constants from "../../../constants";
 import { formatForDisplay, buildAddress } from "../../../lib/utils/confirmCompanyUtils";
-import { FormattedCompanyProfile, ViewDataWithBackLink } from "../../../types/util-types";
+import { FormattedCompanyProfile, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { i18nCh } from "@companieshouse/ch-node-utils";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getFullUrl } from "../../../lib/utils/urlUtils";

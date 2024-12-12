@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
-import { BaseViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/utilTypes";
 
 interface CompanyAddSuccessViewData extends BaseViewData {
     companyName: string;

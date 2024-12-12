@@ -6,7 +6,7 @@ import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import * as associationsService from "../../../../src/services/associationsService";
 import { Session } from "@companieshouse/node-session-handler";
-import { CompanyNameAndNumber } from "../../../../src/types/util-types";
+import { CompanyNameAndNumber } from "../../../../src/types/utilTypes";
 import { StatusCodes } from "http-status-codes";
 import createError from "http-errors";
 import { getFullUrl, getUrlWithCompanyNumber } from "../../../../src/lib/utils/urlUtils";
