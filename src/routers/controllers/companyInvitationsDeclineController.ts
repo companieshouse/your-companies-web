@@ -8,7 +8,7 @@ export const companyInvitationsDeclineControllerGet = async (req: Request, res: 
     const handler = new CompanyInvitationsDeclineHandler();
     const viewData = await handler.execute(req);
     if (viewData.associationStateChanged) {
-        deleteExtraData(req.session, viewData.associationStateChanged as string);
+        deleteExtraData(req.session, viewData.associationStateChanged);
         res.redirect(getFullUrl(constants.COMPANY_INVITATIONS_URL));
     } else {
         res.render(constants.COMPANY_INVITATIONS_DECLINE_PAGE, {

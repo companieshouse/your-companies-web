@@ -8,7 +8,7 @@ export const companyInvitationsAcceptControllerGet = async (req: Request, res: R
     const handler = new CompanyInvitationsAcceptHandler();
     const viewData = await handler.execute(req);
     if (viewData.associationStateChanged) {
-        deleteExtraData(req.session, viewData.associationStateChanged as string);
+        deleteExtraData(req.session, viewData.associationStateChanged);
         res.redirect(getFullUrl(constants.COMPANY_INVITATIONS_URL));
     } else {
         res.render(constants.COMPANY_INVITATIONS_ACCEPT_PAGE, {

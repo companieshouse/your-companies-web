@@ -18,12 +18,12 @@ export const checkPresenterControllerPost: RequestHandler = async (req: Request,
         if (viewData.associationAlreadyExist) {
             res.redirect(getFullUrl(constants.PRESENTER_ALREADY_ADDED_URL).replace(
                 `:${constants.COMPANY_NUMBER}`,
-                viewData.companyNumber as string
+                viewData.companyNumber
             ));
         } else {
             res.redirect(getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL).replace(
                 `:${constants.COMPANY_NUMBER}`,
-                viewData.companyNumber as string
+                viewData.companyNumber
             ));
         }
     }
