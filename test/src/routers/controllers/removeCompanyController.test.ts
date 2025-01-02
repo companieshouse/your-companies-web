@@ -13,6 +13,7 @@ import { setExtraData, getExtraData } from "../../../../src/lib/utils/sessionUti
 import { getCompanyProfile } from "../../../../src/services/companyProfileService";
 import * as associationsService from "../../../../src/services/associationsService";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
+import { error } from "console";
 
 const router = supertest(app);
 const companyNumber = "123456";
@@ -124,6 +125,7 @@ describe("GET /your-companies/remove-company", () => {
         // Given
         setExtraData(session, constants.YOU_MUST_SELECT_AN_OPTION, en.you_must_select_an_option);
         const request = router.get(url);
+        (getCompanyProfile as jest.Mock).mockRejectedValue({ error: "Error" });
 
         // When
         const response = await request;
