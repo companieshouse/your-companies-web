@@ -1,5 +1,5 @@
 import { PageItem, PaginationData } from "../../types/pagination";
-import { AnyRecord } from "../../types/util-types";
+import { AnyRecord } from "../../types/utilTypes";
 
 export const buildPaginationElement = (
     currentPageNumber: number,
@@ -157,6 +157,6 @@ export const getSearchQuery = (searchString: string): string => {
     return searchString ? "&search=" + searchString : "";
 };
 
-export const stringToPositiveInteger = (page:string): number => {
+export const stringToPositiveInteger = (page: string): number => {
     return isNaN(parseInt(page)) || parseInt(page) < 1 ? 1 : parseInt(page);
 };

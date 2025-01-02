@@ -22,6 +22,7 @@ import * as cyCommon from "../../../../locales/cy/common.json";
 import { Session } from "@companieshouse/node-session-handler";
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -147,7 +148,7 @@ describe("GET /your-companies/add-company", () => {
 
         mocks.mockSessionMiddleware.mockImplementationOnce((req, res, next) => {
             req.session = session;
-            req.headers = { referer: constants.YOUR_COMPANIES_ADD_COMPANY_URL };
+            req.headers = { referer: getFullUrl(constants.ADD_COMPANY_URL) };
             next();
         });
 

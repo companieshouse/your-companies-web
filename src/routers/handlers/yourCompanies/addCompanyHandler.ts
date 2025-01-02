@@ -8,24 +8,37 @@ import { StatusCodes } from "http-status-codes";
 import { setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
 import { isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { ViewData } from "../../../types/util-types";
+import { ViewDataWithBackLink } from "../../../types/utilTypes";
 import { validateClearForm } from "../../../lib/validation/generic";
-
 import { AssociationState, AssociationStateResponse } from "../../../types/associations";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
+
+interface AddCompanyViewData extends ViewDataWithBackLink {
+    proposedCompanyNumber: string | undefined;
+}
 
 export class AddCompanyHandler extends GenericHandler {
+    viewData: AddCompanyViewData;
 
-    async execute (req: Request, res: Response, method: string): Promise<ViewData> {
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.ADD_COMPANY_PAGE,
+            backLinkHref: constants.LANDING_URL,
+            lang: {},
+            proposedCompanyNumber: undefined
+        };
+    }
+
+    async execute (req: Request, res: Response, method: string): Promise<AddCompanyViewData> {
 
         const referrer: string | undefined = req.get("Referrer");
-        const hrefB = constants.YOUR_COMPANIES_ADD_COMPANY_URL;
+        const hrefB = getFullUrl(constants.ADD_COMPANY_URL);
 
         logger.info(`${method} request to add company to user account`);
         // ...process request here and return data for the view
         try {
-            this.viewData = this.getViewData();
             this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_COMPANY_PAGE);
-            this.viewData.templateName = constants.ADD_COMPANY_PAGE;
 
             // we delete the form values when the journey begins again (cf param in url is true)
             const clearForm = req.query[constants.CLEAR_FORM] as string;
@@ -114,11 +127,5 @@ export class AddCompanyHandler extends GenericHandler {
         } else {
             setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
         }
-    }
-
-    private getViewData (): ViewData {
-        return {
-            backLinkHref: constants.LANDING_URL
-        } as ViewData;
     }
 }

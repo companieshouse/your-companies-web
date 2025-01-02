@@ -4,7 +4,7 @@ import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData } from "../../../lib/utils/sessionUtils";
-import { AnyRecord, ViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/utilTypes";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AssociationList, AssociationStatus, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import {
@@ -15,10 +15,57 @@ import {
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validateCompanyNumberSearchString, validatePageNumber } from "../../../lib/validation/generic";
 import { i18nCh } from "@companieshouse/ch-node-utils";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { Pagination } from "../../../types/pagination";
+
+interface YourCompaniesViewData extends BaseViewData, Pagination {
+    buttonHref: string;
+    search: string;
+    displaySearchForm: boolean;
+    showNumOfMatches: boolean;
+    numOfMatches: number;
+    userHasCompanies: string;
+    numberOfInvitations: number;
+    viewInvitationsPageUrl: string;
+    cancelSearchHref: string;
+    matomoAddCompanyGoalId: string;
+    associationData: {
+        "company_name": string;
+        "company_number": string;
+        "company_status": string;
+    }[],
+    viewAndManageUrl: string;
+    removeCompanyUrl: string;
+}
 
 export class YourCompaniesHandler extends GenericHandler {
+    viewData: YourCompaniesViewData;
 
-    async execute (req: Request): Promise<Record<string, unknown>> {
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.YOUR_COMPANIES_PAGE,
+            buttonHref: getFullUrl(constants.ADD_COMPANY_URL) + constants.CLEAR_FORM_TRUE,
+            lang: {},
+            viewInvitationsPageUrl: getFullUrl(constants.COMPANY_INVITATIONS_URL),
+            cancelSearchHref: constants.LANDING_URL,
+            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
+            search: "",
+            displaySearchForm: false,
+            showNumOfMatches: false,
+            numOfMatches: 0,
+            userHasCompanies: "",
+            pagination: undefined,
+            pageNumber: 0,
+            numberOfPages: 0,
+            numberOfInvitations: 0,
+            associationData: [],
+            viewAndManageUrl: "",
+            removeCompanyUrl: ""
+        };
+    }
+
+    async execute (req: Request): Promise<YourCompaniesViewData> {
         logger.info(`GET request to serve Your Companies landing page`);
         // ...process request here and return data for the view
         const search = req.query.search as string;
@@ -56,8 +103,9 @@ export class YourCompaniesHandler extends GenericHandler {
             ...getTranslationsForView(req.lang, constants.YOUR_COMPANIES_PAGE),
             ...localesServicei18nCh.getResourceBundle(req.lang, constants.COMPANY_STATUS)
         };
+        this.viewData.lang = lang;
 
-        this.viewData = this.getViewData(confirmedUserAssociations, invites, lang);
+        this.getViewData(confirmedUserAssociations, invites);
         this.viewData.search = search;
         if (errorMassage) {
             this.viewData.errors = {
@@ -93,15 +141,8 @@ export class YourCompaniesHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList, lang: AnyRecord): ViewData {
-        const viewData: AnyRecord = {
-            templateName: constants.YOUR_COMPANIES_PAGE,
-            buttonHref: constants.YOUR_COMPANIES_ADD_COMPANY_URL + constants.CLEAR_FORM_TRUE,
-            numberOfInvitations: invitationList.totalResults,
-            viewInvitationsPageUrl: constants.YOUR_COMPANIES_COMPANY_INVITATIONS_URL,
-            cancelSearchHref: constants.LANDING_URL,
-            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID
-        };
+    private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList): void {
+        this.viewData.numberOfInvitations = invitationList.totalResults;
 
         if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
             const associationData = confirmedUserAssociations.items.map(item => ({
@@ -110,13 +151,10 @@ export class YourCompaniesHandler extends GenericHandler {
                 company_status: item.companyStatus
             }));
 
-            viewData.associationData = associationData;
-            viewData.userHasCompanies = constants.TRUE;
-            viewData.viewAndManageUrl = constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL;
-            viewData.removeCompanyUrl = constants.YOUR_COMPANIES_REMOVE_COMPANY_URL;
+            this.viewData.associationData = associationData;
+            this.viewData.userHasCompanies = constants.TRUE;
+            this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
+            this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
         }
-
-        return { ...viewData, lang: lang };
-
     }
 }

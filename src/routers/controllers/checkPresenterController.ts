@@ -1,6 +1,7 @@
 import { Request, RequestHandler, Response } from "express";
 import * as constants from "../../constants";
 import { CheckPresenterHandler } from "../handlers/yourCompanies/checkPresenterHandler";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
 export const checkPresenterControllerGet: RequestHandler = async (req: Request, res: Response): Promise<void> => {
     const handler = new CheckPresenterHandler();
@@ -15,12 +16,12 @@ export const checkPresenterControllerPost: RequestHandler = async (req: Request,
         res.render(constants.CHECK_PRESENTER_PAGE, viewData);
     } else {
         if (viewData.associationAlreadyExist) {
-            res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PRESENTER_ALREADY_ADDED_URL.replace(
+            res.redirect(getFullUrl(constants.PRESENTER_ALREADY_ADDED_URL).replace(
                 `:${constants.COMPANY_NUMBER}`,
                 viewData.companyNumber as string
             ));
         } else {
-            res.redirect(constants.YOUR_COMPANIES_AUTHORISED_PERSON_ADDED_URL.replace(
+            res.redirect(getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL).replace(
                 `:${constants.COMPANY_NUMBER}`,
                 viewData.companyNumber as string
             ));

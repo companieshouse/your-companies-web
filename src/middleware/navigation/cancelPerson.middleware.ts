@@ -1,9 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import {
+    deleteExtraData,
+    getExtraData,
+    setExtraData
+} from "../../lib/utils/sessionUtils";
 import logger from "../../lib/Logger";
-import { isReferrerIncludes } from "../../lib/utils/urlUtils";
+import {
+    getCancelPersonUrl,
+    getCompanyAuthProtectedCancelPersonFullUrl,
+    isReferrerIncludes
+} from "../../lib/utils/urlUtils";
 
 export const cancelPersonNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -11,7 +19,7 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
     const userEmail = req.params[constants.USER_EMAIL];
     const companyNumber = req.params[constants.COMPANY_NUMBER];
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-    const cancelPageUrl = (constants.YOUR_COMPANIES_COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL.replace(":companyNumber", companyNumber)).replace(":userEmail", userEmail);
+    const cancelPageUrl = getCompanyAuthProtectedCancelPersonFullUrl(companyNumber, userEmail);
     const userEmails = getExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
     let checkedReferrer;
@@ -34,7 +42,7 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
 
     logger.debug(`cancelPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(checkedReferrer, hrefA, constants.CANCEL_PERSON_URL.replace(":userEmail", userEmail), newPageIndicator)) {
+    if (redirectPage(checkedReferrer, hrefA, getCancelPersonUrl(userEmail), newPageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();

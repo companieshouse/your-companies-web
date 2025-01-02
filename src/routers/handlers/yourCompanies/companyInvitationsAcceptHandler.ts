@@ -2,40 +2,50 @@ import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { ViewData } from "../../../types/util-types";
+import { BaseViewData } from "../../../types/utilTypes";
 import { updateAssociationStatus } from "../../../services/associationsService";
 import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { getCompanyInvitationsAcceptFullUrl } from "../../../lib/utils/urlUtils";
+
+interface CompanyInvitationsAcceptViewData extends BaseViewData {
+    yourCompaniesUrl: string;
+    companyName: string;
+    associationStateChanged: string | undefined;
+}
 
 export class CompanyInvitationsAcceptHandler extends GenericHandler {
-    async execute (req: Request): Promise<ViewData> {
+    viewData: CompanyInvitationsAcceptViewData;
+
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.COMPANY_INVITATIONS_ACCEPT_PAGE,
+            yourCompaniesUrl: constants.LANDING_URL,
+            lang: {},
+            associationStateChanged: undefined,
+            companyName: ""
+        };
+    }
+
+    async execute (req: Request): Promise<CompanyInvitationsAcceptViewData> {
         const associationId = req.params[constants.ASSOCIATIONS_ID];
         const associationStateChanged = getExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId) === constants.TRUE;
         const referrer: string | undefined = req.get("Referrer");
         const companyName = req.query[constants.COMPANY_NAME] as string;
-        const hrefB = `${constants.YOUR_COMPANIES_COMPANY_INVITATIONS_ACCEPT_URL.replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
+        const hrefB = `${getCompanyInvitationsAcceptFullUrl(associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
+        this.viewData.companyName = req.query[constants.COMPANY_NAME] as string;
 
         if (!associationStateChanged) {
             await updateAssociationStatus(req, associationId, AssociationStatus.CONFIRMED);
             setExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, constants.TRUE);
-            this.viewData = this.getViewData(req);
-        } else if (associationStateChanged && referrer?.includes(hrefB)) {
-            this.viewData = this.getViewData(req);
+            this.viewData.lang = getTranslationsForView(req.lang, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
+        } else if (!referrer?.includes(hrefB)) {
+            this.viewData.associationStateChanged = constants.ASSOCIATION_STATE_CHANGED_FOR + associationId;
         } else {
-            this.viewData = { associationStateChanged: constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, lang: {} };
+            this.viewData.lang = getTranslationsForView(req.lang, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
         }
 
         return Promise.resolve(this.viewData);
-    }
-
-    private getViewData (req: Request): ViewData {
-        const translations = getTranslationsForView(req.lang, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
-        const companyName = req.query[constants.COMPANY_NAME] as string;
-        return {
-            templateName: constants.COMPANY_INVITATIONS_ACCEPT_PAGE,
-            lang: translations,
-            yourCompaniesUrl: constants.LANDING_URL,
-            companyName
-        };
     }
 }

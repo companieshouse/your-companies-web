@@ -3,7 +3,11 @@ import * as constants from "../../constants";
 import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger from "../../lib/Logger";
-import { isReferrerIncludes } from "../../lib/utils/urlUtils";
+import {
+    getAuthenticationCodeRemoveUrl,
+    getCompanyAuthProtectedAuthenticationCodeRemoveUrl,
+    isReferrerIncludes
+} from "../../lib/utils/urlUtils";
 
 export const removeAuthorisedPersonNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
@@ -11,7 +15,7 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
     const userEmail = req.params[constants.USER_EMAIL];
     const companyNumber = req.params[constants.COMPANY_NUMBER];
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-    const removePageUrl = (constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL.replace(":companyNumber", companyNumber)).replace(":userEmail", userEmail);
+    const removePageUrl = getCompanyAuthProtectedAuthenticationCodeRemoveUrl(companyNumber, userEmail);
     const userEmails = getExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
     let checkedReferrer;
@@ -34,7 +38,7 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
 
     logger.debug(`removeAuthorisedPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(checkedReferrer, hrefA, constants.AUTHENTICATION_CODE_REMOVE_URL.replace(":userEmail", userEmail), newPageIndicator)) {
+    if (redirectPage(checkedReferrer, hrefA, getAuthenticationCodeRemoveUrl(userEmail), newPageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();

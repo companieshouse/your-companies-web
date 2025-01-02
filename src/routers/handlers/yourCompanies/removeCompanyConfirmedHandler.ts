@@ -3,27 +3,31 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
-import { ViewData } from "../../../types/util-types";
+import { CompanyNameAndNumber, BaseViewData } from "../../../types/utilTypes";
+
+interface RemoveCompanyConfirmedViewData extends BaseViewData, CompanyNameAndNumber {
+    buttonHref: string;
+}
 
 export class RemoveCompanyConfirmedHandler extends GenericHandler {
-    async execute (req: Request): Promise<ViewData> {
-        this.viewData = await this.getViewData(req);
-        this.viewData.lang = getTranslationsForView(
-            req.lang,
-            constants.REMOVE_COMPANY_CONFIRMED
-        );
-        this.viewData.templateName = constants.REMOVE_COMPANY_CONFIRMED;
-        this.viewData.buttonHref = constants.LANDING_URL;
-        return Promise.resolve(this.viewData);
+    viewData: RemoveCompanyConfirmedViewData;
+
+    constructor () {
+        super();
+        this.viewData = {
+            templateName: constants.REMOVE_COMPANY_CONFIRMED,
+            buttonHref: constants.LANDING_URL,
+            lang: {},
+            companyName: "",
+            companyNumber: ""
+        };
     }
 
-    private async getViewData (req: Request): Promise<ViewData> {
-        const companyName = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
-        const companyNumber = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
+    async execute (req: Request): Promise<RemoveCompanyConfirmedViewData> {
+        this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_COMPANY_CONFIRMED);
+        this.viewData.companyName = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
+        this.viewData.companyNumber = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
 
-        return Promise.resolve({
-            companyName,
-            companyNumber
-        } as ViewData);
+        return Promise.resolve(this.viewData);
     }
 }

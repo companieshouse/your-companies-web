@@ -1,6 +1,6 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { toReadableFormat } from "./date";
-import { FormattedCompanyProfile, OfficeAddress } from "../../types/util-types";
+import { FormattedCompanyProfile, OfficeAddress } from "../../types/utilTypes";
 
 export const formatForDisplay = (companyProfile: CompanyProfile, lang: string): FormattedCompanyProfile => {
     const registeredOfficeAddress: OfficeAddress = {

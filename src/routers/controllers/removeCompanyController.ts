@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { RemoveCompanyHandler } from "../handlers/yourCompanies/removeCompanyHandler";
 import * as constants from "../../constants";
-import { ViewData } from "../../types/util-types";
+import { BaseViewData } from "../../types/utilTypes";
 
 export const removeCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveCompanyHandler();
     const viewData = await handler.execute(req, res, constants.GET);
-    res.render(constants.REMOVE_COMPANY_PAGE, viewData as ViewData);
+    res.render(constants.REMOVE_COMPANY_PAGE, viewData as BaseViewData);
 };
 
 export const removeCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {

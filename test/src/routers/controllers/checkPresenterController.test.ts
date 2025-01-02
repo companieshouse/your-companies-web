@@ -8,6 +8,7 @@ import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import * as en from "../../../../locales/en/add-presenter-check-details.json";
 import * as cy from "../../../../locales/cy/add-presenter-check-details.json";
+import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
 jest.mock("../../../../src/services/companyProfileService");
 const session: Session = new Session();
@@ -94,7 +95,7 @@ describe(`POST ${url}`, () => {
         const response = await router.post(url);
         // Then
         expect(response.status).toEqual(302);
-        expect(response.header.location).toContain(constants.YOUR_COMPANIES_MANAGE_AUTHORISED_PEOPLE_URL.replace(
+        expect(response.header.location).toContain(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(
             `:${constants.COMPANY_NUMBER}`, "12345678"
         ));
     });
