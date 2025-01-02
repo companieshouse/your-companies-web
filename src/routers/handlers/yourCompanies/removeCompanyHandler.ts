@@ -39,8 +39,8 @@ export class RemoveCompanyHandler extends GenericHandler {
                 const companyProfile = await getCompanyProfile(companyNumber);
                 setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
                 this.viewData.companyName = companyProfile.companyName;
-            } catch (error) {
-                logger.error(`Error fetching company profile for ${companyNumber}: ${error}`);
+            } catch (err) {
+                logger.error(`Error fetching company profile for ${companyNumber}: ${err}`);
             }
 
             if (error) {
