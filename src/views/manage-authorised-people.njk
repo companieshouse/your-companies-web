@@ -72,7 +72,7 @@
 
     {% if removedPerson %}
         {% set removed_person_header = removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName + "."%}
-        {% set heading_text = lang.nid_yw_welsh_only + removed_person_header if locale == "cy" else removed_person_header %}
+        {% set heading_text = lang.nid_yw + removed_person_header %}
 
         {% set successHtml %}
             <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>

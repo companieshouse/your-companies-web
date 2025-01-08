@@ -11,15 +11,6 @@ const englishTranslationFilesExcludeCommon = englishTranslationFiles.filter(str 
 const welshTranslationFiles = fs.readdirSync(path.resolve(__dirname, welshDirectory));
 const welshTranslationFilesExcludeCommon = welshTranslationFiles.filter(str => str !== "common.json");
 
-const welshOrEnglishOnlyKeys: string[] = [
-    "what_happens_now_youve_declined_title",
-    "nid_yw_welsh_only",
-    "bydd_welsh_only",
-    "you_may_wish_to_change_the_auth_code_welsh_version",
-    "digital_authorisation",
-    "you_may_wish_to_change_the_auth_code"
-];
-
 const findMissingKeys = function (
     original: Record<string, unknown>,
     toCheck: Record<string, unknown>,
@@ -32,10 +23,10 @@ const findMissingKeys = function (
         if (typeof original[key] === "object") {
             if (toCheck !== undefined) {
                 findMissingKeys(
-          original[key] as Record<string, unknown>,
-          toCheck[key] as Record<string, unknown>,
-          currentPath,
-          output
+                    original[key] as Record<string, unknown>,
+                    toCheck[key] as Record<string, unknown>,
+                    currentPath,
+                    output
                 );
             } else {
                 findMissingKeys(original[key] as Record<string, unknown>, {}, currentPath, output);
@@ -43,14 +34,15 @@ const findMissingKeys = function (
         } else {
 
             if (toCheck === undefined || toCheck[key] === undefined) {
-                if (!welshOrEnglishOnlyKeys.includes(key)) output.push(`No match for: ${currentPath}`);
+                output.push(`No match for: ${currentPath}`);
             }
         }
+
     }
     return output;
 };
 
-function haveAnyMatchingKeys (obj1:Record<string, unknown>, obj2:Record<string, unknown>) {
+function haveAnyMatchingKeys (obj1: Record<string, unknown>, obj2: Record<string, unknown>) {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
     const matchingKeys = keys1.filter(key => keys2.includes(key));
@@ -73,9 +65,9 @@ function haveSameValueForAnyKey (
             if (obj2.hasOwnProperty(key)) {
                 if (
                     typeof obj1[key] === "object" &&
-            obj1[key] !== null &&
-            typeof obj2[key] === "object" &&
-            obj2[key] !== null
+                    obj1[key] !== null &&
+                    typeof obj2[key] === "object" &&
+                    obj2[key] !== null
                 ) {
                     if (haveSameValueForAnyKey(obj1[key], obj2[key], newPath)) {
                         return true;
