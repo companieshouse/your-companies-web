@@ -10,6 +10,8 @@ import * as cyCommon from "../../../../locales/cy/common.json";
 import * as enCommon from "../../../../locales/en/common.json";
 jest.mock("../../../../src/services/associationsService");
 
+jest.mock("../../../../src/lib/Logger");
+
 const router = supertest(app);
 
 const mockGetUserAssociations = getUserAssociations as jest.Mock;
