@@ -25,6 +25,7 @@ describe("Csrf middleware tests", () => {
 
     it("should call web security node csrfProtectionMiddleware middleware", () => {
         csrfProtectionMiddleware(req, res, next);
+        expect(next).not.toHaveBeenCalled();
         expect(mockCsrfMiddleware).toHaveBeenCalled();
         expect(mockCsrfReturnedFunction).toHaveBeenCalledWith(req, res, next);
     });
