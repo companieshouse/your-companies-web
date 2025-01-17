@@ -5,11 +5,11 @@ import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./routerDispatch";
 import cookieParser from "cookie-parser";
-import { sessionMiddleware, sessionStore, ensureSessionCookiePresentMiddleware } from "./middleware/session.middleware";
+import { sessionMiddleware, ensureSessionCookiePresentMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import * as constants from "./constants";
 import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
-import { addLangToUrl, isWhitelistedUrl } from "./lib/utils/urlUtils";
+import { addLangToUrl } from "./lib/utils/urlUtils";
 import * as errorHandler from "./routers/controllers/errorController";
 import { getTranslationsForView } from "./lib/utils/translations";
 import { LocalesMiddleware, LocalesService } from "@companieshouse/ch-node-utils";
@@ -17,7 +17,7 @@ import helmet from "helmet";
 import { v4 as uuidv4 } from "uuid";
 import { prepareCSPConfig } from "./middleware/content.security.policy.middleware.config";
 import nocache from "nocache";
-import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import { csrfProtectionMiddleware } from "./middleware/csrf.protection.middleware";
 
 const app = express();
 
@@ -75,18 +75,6 @@ app.use(helmet(prepareCSPConfig(nonce)));
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
 app.use(`${constants.LANDING_URL}*`, ensureSessionCookiePresentMiddleware);
-
-export const csrfProtectionMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
-    if (isWhitelistedUrl(req.originalUrl)) {
-        return next();
-    }
-
-    return CsrfProtectionMiddleware({
-        sessionStore,
-        enabled: true,
-        sessionCookieName: constants.COOKIE_NAME
-    })(req, res, next);
-};
 
 app.use(`${constants.LANDING_URL}*`, csrfProtectionMiddleware);
 app.use(`${constants.LANDING_URL}*`, authenticationMiddleware);

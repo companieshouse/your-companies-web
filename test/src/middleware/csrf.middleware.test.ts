@@ -4,7 +4,7 @@ jest.mock("ioredis");
 
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { Request, Response } from "express";
-import { csrfProtectionMiddleware } from "../../../src/app";
+import { csrfProtectionMiddleware } from "../../../src/middleware/csrf.protection.middleware";
 import * as constants from "../../../src/constants";
 
 const mockCsrfMiddleware = CsrfProtectionMiddleware as jest.Mock;
