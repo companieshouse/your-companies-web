@@ -1,18 +1,18 @@
 {
-    "remove": "Dileu awdurdodiad ",
     "authorisation_to_file_online": " i ffeilio ar-lein ar gyfer y cwmni hwn",
-    "if_you_remove": "Os ydych yn dileu awdurdodiad digidol  ",
+    "digital_authorisation": ".",
     "digital_authorisation_this_means_they": ", mae hyn yn golygu na fyddant bellach yn gallu ffeilio ar-lein ar gyfer ",
-    "without_a_current_auth_code": " heb god dilysu cyfredol. Byddwn yn anfon e-bost at ",
-    "to_let_them_know_you_have_removed": " i roi gwybod iddynt eich bod wedi dileu ei awdurdodiad digidol.",
-    "bydd": "Bydd ",
-    "will_still_be_able_to_file": " yn dal i allu ffeilio ar-lein ar gyfer y cwmni hwn os oes ganddynt fynediad at y cod dilysu cyfredol.",
-    "you_may_wish_to_change_the_auth_code": "Efallai yr hoffech newid y cod dilysu ar gyfer y cwmni hwn cyn gynted â phosibl ar ôl i chi ddileu awdurdodiad digidol ",
-    "if": "Os penodir ",
-    "is_appointed_as_an_officer": " yn swyddog i’r cwmni, fel cyfarwyddwr neu ysgrifennydd, nid yw dileu ei awdurdodiad digidol i ffeilio ar-lein yn dileu ei penodiad.",
     "i_confirm_that_i_have_read": "Rwy’n cadarnhau fy mod wedi darllen a deall y wybodaeth hon.",
+    "if": "Os penodir ",
+    "if_you_remove": "Os ydych yn dileu awdurdodiad digidol  ",
+    "is_appointed_as_an_officer": " yn swyddog i’r cwmni, fel cyfarwyddwr neu ysgrifennydd, nid yw dileu ei awdurdodiad digidol i ffeilio ar-lein yn dileu ei penodiad.",
+    "remove": "Dileu awdurdodiad ",
     "remove_authorisation": "Dileu awdurdodiad",
+    "remove_person_summary_start": "Bydd ",
     "select_if_you_confirm_that_you_have_read": "Dewiswch os ydych yn cadarnhau eich bod wedi darllen a deall y wybodaeth hon",
     "title_remove_authorised_person": "Dileu awdurdodiad i ffeilio ar-lein ar gyfer y cwmni hwn - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "digital_authorisation": "."
+    "to_let_them_know_you_have_removed": " i roi gwybod iddynt eich bod wedi dileu ei awdurdodiad digidol.",
+    "will_still_be_able_to_file": " yn dal i allu ffeilio ar-lein ar gyfer y cwmni hwn os oes ganddynt fynediad at y cod dilysu cyfredol.",
+    "without_a_current_auth_code": " heb god dilysu cyfredol. Byddwn yn anfon e-bost at ",
+    "you_may_wish_to_change_the_auth_code": "Efallai yr hoffech newid y cod dilysu ar gyfer y cwmni hwn cyn gynted â phosibl ar ôl i chi ddileu awdurdodiad digidol "
 }
