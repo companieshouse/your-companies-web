@@ -11,6 +11,7 @@ import * as constants from "../../../../src/constants";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
+jest.mock("../../../../src/lib/Logger");
 jest.mock("../../../../src/services/associationsService");
 
 const router = supertest(app);

@@ -10,6 +10,8 @@ import * as en from "../../../../locales/en/add-presenter-check-details.json";
 import * as cy from "../../../../locales/cy/add-presenter-check-details.json";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
+jest.mock("../../../../src/lib/Logger");
+
 jest.mock("../../../../src/services/companyProfileService");
 const session: Session = new Session();
 
