@@ -99,9 +99,9 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(`${cy.digital_authorisation_this_means_they}${expectedCompanyName}`);
         expect(response.text).toContain(cy.without_a_current_auth_code);
         expect(response.text).toContain(`${userEmail}${cy.to_let_them_know_you_have_removed}`);
-        expect(response.text).toContain(`${cy.bydd_welsh_only}${userEmail}`);
+        expect(response.text).toContain(`${cy.remove_person_summary_start}${userEmail}`);
         expect(response.text).toContain(`${userEmail}${cy.will_still_be_able_to_file}`);
-        expect(response.text).toContain(`${cy.you_may_wish_to_change_the_auth_code_welsh_version}${userEmail}`);
+        expect(response.text).toContain(`${cy.you_may_wish_to_change_the_auth_code}${userEmail}`);
         expect(response.text).toContain(`${cy.if}${userEmail}`);
         expect(response.text).toContain(cy.is_appointed_as_an_officer);
         expect(response.text).toContain(cy.i_confirm_that_i_have_read);
@@ -160,9 +160,9 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         expect(response.text).toContain(`${cy.digital_authorisation_this_means_they}${expectedCompanyName}`);
         expect(response.text).toContain(`${cy.without_a_current_auth_code}${userName}`);
         expect(response.text).toContain(cy.to_let_them_know_you_have_removed);
-        expect(response.text).toContain(`${cy.bydd_welsh_only}${userName}`);
+        expect(response.text).toContain(`${cy.remove_person_summary_start}${userName}`);
         expect(response.text).toContain(`${userName}${cy.will_still_be_able_to_file}`);
-        expect(response.text).toContain(`${cy.you_may_wish_to_change_the_auth_code_welsh_version}${userName}`);
+        expect(response.text).toContain(`${cy.you_may_wish_to_change_the_auth_code}${userName}`);
         expect(response.text).toContain(`${cy.if}${userName}`);
         expect(response.text).toContain(cy.is_appointed_as_an_officer);
         expect(response.text).toContain(cy.i_confirm_that_i_have_read);
