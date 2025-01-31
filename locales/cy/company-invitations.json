@@ -1,18 +1,18 @@
 {
-    "title_company_invitations":"Gwahoddiadau i gael eich awdurdodi'n ddigidol - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "title_company_invitations_start":"Gwahoddiadau i gael eich awdurdodi'n ddigidol (tudalen ",
-    "title_company_invitations_middle":" o ",
-    "title_company_invitations_finish":") - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "h1":"Gwahoddiadau i gael eich awdurdodi’n ddigidol",
-    "company_name": "Enw’r cwmni",
-    "company_number": "Rhif y cwmni",
-    "invited_by": "Gwahoddwyd gan",
     "accept": "Derbyn",
-    "decline": "Gwrthod",
     "accept_an_invitation": "[CY] Accept invitation to be digitally authorised",
     "accept_an_invitation_from": "[CY] Accept invitation to be digitally authorised for ",
+    "company_name": "Enw’r cwmni",
+    "company_number": "Rhif y cwmni",
+    "decline": "Gwrthod",
     "decline_an_invitation": "[CY] Decline invitation to be digitally authorised",
     "decline_an_invitation_from": "[CY] Decline invitation to be digitally authorised for ",
+    "h1": "Gwahoddiadau i gael eich awdurdodi’n ddigidol",
     "invitations_to_be_digitally_authorised": "[CY] Invitations to be digitally authorised",
-    "no_pending_invitations": "Dim gwahoddiadau yn yr arfaeth."
+    "invited_by": "Gwahoddwyd gan",
+    "no_pending_invitations": "Dim gwahoddiadau yn yr arfaeth.",
+    "title_company_invitations": "Gwahoddiadau i gael eich awdurdodi'n ddigidol - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "title_company_invitations_finish": ") - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "title_company_invitations_middle": " o ",
+    "title_company_invitations_start": "Gwahoddiadau i gael eich awdurdodi'n ddigidol (tudalen "
 }
