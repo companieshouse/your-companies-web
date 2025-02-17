@@ -66,7 +66,7 @@ To login to the application enter the email: ``` demo@ch.gov.uk ```, and passwor
 
 ### Running the tests
 
-To run the tests, type the following command:
+To run the tests, type the following command in the terminal:
 
 ``` npm test ```
 
