@@ -19,8 +19,8 @@ import {
     getRemoveCompanyUrl,
     isReferrerIncludes,
     isWhitelistedUrl
-} from "../../../../src/lib/utils/urlUtils";
-import * as constants from "../../../../src/constants";
+} from "../../../../../src/lib/utils/urlUtils";
+import * as constants from "../../../../../src/constants";
 
 describe("addLangToUrl", () => {
     it.each([

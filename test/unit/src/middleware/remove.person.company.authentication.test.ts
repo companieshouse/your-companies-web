@@ -1,8 +1,8 @@
-import * as sessionUtils from "../../../src/lib/utils/sessionUtils";
-import { removeAuthorisedPersonCompanyAuth } from "../../../src/middleware/companyAuthentication/remove.person.company.authentication";
-import { mockRequest } from "../../mocks/request.mock";
-import { mockResponse } from "../../mocks/response.mock";
-import * as constants from "../../../src/constants";
+import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
+import { removeAuthorisedPersonCompanyAuth } from "../../../../src/middleware/companyAuthentication/remove.person.company.authentication";
+import { mockRequest } from "../../../mocks/request.mock";
+import { mockResponse } from "../../../mocks/response.mock";
+import * as constants from "../../../../src/constants";
 
 describe("removeAuthorisedPersonCompanyAuth", () => {
 

@@ -1,5 +1,5 @@
-import { buildPaginationElement, stringToPositiveInteger, setLangForPagination } from "../../../../src/lib/helpers/buildPaginationHelper";
-import { PaginationData } from "../../../../src/types/pagination";
+import { buildPaginationElement, stringToPositiveInteger, setLangForPagination } from "../../../../../src/lib/helpers/buildPaginationHelper";
+import { PaginationData } from "../../../../../src/types/pagination";
 
 const prefix = "prefix";
 const ellipsis = "...";

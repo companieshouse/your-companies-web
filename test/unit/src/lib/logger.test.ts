@@ -1,4 +1,4 @@
-import logger, { createAndLogError } from "../../../src/lib/Logger";
+import logger, { createAndLogError } from "../../../../src/lib/Logger";
 
 logger.error = jest.fn();
 

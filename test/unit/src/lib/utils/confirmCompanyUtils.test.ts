@@ -1,5 +1,5 @@
-import { formatterValidActiveCompanyProfile, validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
-import { buildAddress, formatForDisplay, formatTitleCase } from "../../../../src/lib/utils/confirmCompanyUtils";
+import { formatterValidActiveCompanyProfile, validActiveCompanyProfile } from "../../../../mocks/companyProfile.mock";
+import { buildAddress, formatForDisplay, formatTitleCase } from "../../../../../src/lib/utils/confirmCompanyUtils";
 
 describe("formatForDisplay", () => {
     it("should return company profile formatted for display", () => {
@@ -28,25 +28,34 @@ describe("formatForDisplay", () => {
 });
 
 describe("formatTitleCase", () => {
-    it("should return new string with upper case first letter if string provided", () => {
-        // Given
-        const text = "something";
-        const expectedText = "Something";
-        // When
-        const result = formatTitleCase(text);
-        // Then
-        expect(result).toEqual(expectedText);
-    });
 
-    it("should return empty string if string not provided", () => {
+    test.each([
         // Given
-        const text = undefined;
-        const expectedText = "";
-        // When
-        const result = formatTitleCase(text);
-        // Then
-        expect(result).toEqual(expectedText);
-    });
+        {
+            returnInfo: "new string with upper case first letter",
+            condition: "string provided",
+            text: "something",
+            expectedText: "Something"
+        },
+        {
+            returnInfo: "empty string",
+            condition: "string not provided",
+            text: undefined,
+            expectedText: ""
+        },
+        {
+            returnInfo: "empty string",
+            condition: "an empty string provided",
+            text: "",
+            expectedText: ""
+        }
+    ])("should return $returnInfo if $condition",
+        ({ text, expectedText }) => {
+            // When
+            const result = formatTitleCase(text);
+            // Then
+            expect(result).toEqual(expectedText);
+        });
 });
 
 describe("buildAddress", () => {

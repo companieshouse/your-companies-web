@@ -4,8 +4,8 @@ jest.mock("@companieshouse/node-session-handler");
 
 import { SessionMiddleware, EnsureSessionCookiePresentMiddleware, CookieConfig } from "@companieshouse/node-session-handler";
 import { Request, Response } from "express";
-import { sessionMiddleware, ensureSessionCookiePresentMiddleware } from "../../../src/middleware/session.middleware";
-import { LANDING_URL, HEALTHCHECK_URL } from "../../../src/constants";
+import { sessionMiddleware, ensureSessionCookiePresentMiddleware } from "../../../../src/middleware/session.middleware";
+import { LANDING_URL, HEALTHCHECK_URL } from "../../../../src/constants";
 
 // get handle on mocked function and create mock function to be returned from calling sessionMiddleware
 const mockSessionMiddleware = SessionMiddleware as jest.Mock;

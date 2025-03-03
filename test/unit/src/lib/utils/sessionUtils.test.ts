@@ -1,21 +1,36 @@
 import { Session } from "@companieshouse/node-session-handler";
-import { getSessionRequestWithPermission, userMail } from "../../../mocks/session.mock";
-import { deleteExtraData, getAccessToken, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../src/lib/utils/sessionUtils";
+import { getSessionRequestWithPermission, userMail } from "../../../../mocks/session.mock";
+import { deleteExtraData, getAccessToken, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
-        const testSessionWithPermission: Session = getSessionRequestWithPermission();
-        it("should return user email address if user is logged in", () => {
-            expect(getLoggedInUserEmail(testSessionWithPermission)).toEqual(userMail);
-        });
-
-        it("should return undefined instead of user email address if user is not logged in", () => {
-            expect(getLoggedInUserEmail(undefined)).toBeUndefined;
-        });
-
-        it("should return undefined instead of user email address if session data is missing", () => {
-            expect(getLoggedInUserEmail(new Session())).toBeUndefined;
-        });
+        test.each([
+            // Given
+            {
+                returnInfo: "email address",
+                condition: "user is logged in",
+                session: getSessionRequestWithPermission(),
+                expectedResult: userMail
+            },
+            {
+                returnInfo: "undefined instead of user email address",
+                condition: "user is not logged in",
+                session: undefined,
+                expectedResult: undefined
+            },
+            {
+                returnInfo: "undefined instead of user email address",
+                condition: "session data is missing",
+                session: new Session(),
+                expectedResult: undefined
+            }
+        ])("should return $returnInfo if $condition",
+            ({ session, expectedResult }) => {
+                // When
+                const result = getLoggedInUserEmail(session);
+                // Then
+                expect(result).toEqual(expectedResult);
+            });
     });
 
     describe("setExtraData", () => {

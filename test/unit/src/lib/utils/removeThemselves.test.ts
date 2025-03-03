@@ -1,6 +1,6 @@
 import { Session } from "@companieshouse/node-session-handler";
-import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
-import { isRemovingThemselves } from "../../../../src/lib/utils/removeThemselves";
+import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
+import { isRemovingThemselves } from "../../../../../src/lib/utils/removeThemselves";
 
 const getLoggedInUserEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getLoggedInUserEmail");
 const session = new Session();

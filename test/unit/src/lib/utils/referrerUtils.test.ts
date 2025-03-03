@@ -1,4 +1,4 @@
-import { redirectPage } from "../../../../src/lib/utils/referrerUtils";
+import { redirectPage } from "../../../../../src/lib/utils/referrerUtils";
 
 describe("redirectPage", () => {
     it.each([

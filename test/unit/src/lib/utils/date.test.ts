@@ -1,12 +1,11 @@
 /* eslint-disable import/first */
-
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../../src/lib/Logger");
 
 import {
     isOlderThan,
     toReadableFormat
-} from "../../../../src/lib/utils/date";
-import { createAndLogError } from "../../../../src/lib/Logger";
+} from "../../../../../src/lib/utils/date";
+import { createAndLogError } from "../../../../../src/lib/Logger";
 import { Settings as luxonSettings } from "luxon";
 
 const mockCreateAndLogError = createAndLogError as jest.Mock;
@@ -21,50 +20,47 @@ describe("Date tests", () => {
     });
 
     describe("toReadableFormat tests", () => {
-        it("Should return a human readable date from hyphanated-date string", () => {
+        test.each([
             // Given
-            const dateString = "2019-03-01";
-            // When
-            const date = toReadableFormat(dateString);
-            // Then
-            expect(date).toEqual("1 March 2019");
-        });
-
-        it("Should return a human readable date from local string", () => {
-            // Given
-            const dateString = "March 18, 2019";
-            // When
-            const date = toReadableFormat(dateString);
-            // Then
-            expect(date).toEqual("18 March 2019");
-        });
-
-        it("Should return empty string if date is undefined", () => {
-            // Given
-            const input = undefined as unknown as string;
-            // When
-            const date = toReadableFormat(input);
-            // Then
-            expect(date).toEqual("");
-        });
-
-        it("Should return empty string if date is null", () => {
-            // Given
-            const input = null as unknown as string;
-            // When
-            const date = toReadableFormat(input);
-            // Then
-            expect(date).toEqual("");
-        });
-
-        it("Should return empty string if date is empty string", () => {
-            // Given
-            const input = "";
-            // When
-            const date = toReadableFormat(input);
-            // Then
-            expect(date).toEqual("");
-        });
+            {
+                returnInfo: "a human readable date",
+                condition: "hyphanated-date string provided",
+                input: "2019-03-01",
+                expectedString: "1 March 2019"
+            },
+            {
+                returnInfo: "a human readable date",
+                condition: "local string provided",
+                input: "March 18, 2019",
+                expectedString: "18 March 2019"
+            },
+            {
+                returnInfo: "empty string",
+                condition: "date is undefined",
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                input: undefined!,
+                expectedString: ""
+            },
+            {
+                returnInfo: "empty string",
+                condition: "date is null",
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                input: null!,
+                expectedString: ""
+            },
+            {
+                returnInfo: "empty string",
+                condition: "date is empty string",
+                input: "",
+                expectedString: ""
+            }
+        ])("should return $returnInfo if $condition",
+            ({ input, expectedString }) => {
+                // When
+                const date = toReadableFormat(input);
+                // Then
+                expect(date).toEqual(expectedString);
+            });
 
         it("Should log and throw an error", () => {
             // Given

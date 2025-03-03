@@ -3,14 +3,14 @@
 jest.mock("ioredis");
 jest.mock("@companieshouse/web-security-node");
 
-import { mockEnsureSessionCookiePresentMiddleware, mockSessionMiddleware } from "../../mocks/session.middleware.mock";
-import mockCsrfProtectionMiddleware from "../../mocks/csrf.protection.middleware.mock";
-import mockAuthenticationMiddleware from "../../mocks/authentication.middleware.mock";
+import { mockEnsureSessionCookiePresentMiddleware, mockSessionMiddleware } from "../../../mocks/session.middleware.mock";
+import mockCsrfProtectionMiddleware from "../../../mocks/csrf.protection.middleware.mock";
+import mockAuthenticationMiddleware from "../../../mocks/authentication.middleware.mock";
 import { authMiddleware } from "@companieshouse/web-security-node";
 import request from "supertest";
-import app from "../../../src/app";
-import * as constants from "../../../src/constants";
-import { getFullUrl } from "../../../src/lib/utils/urlUtils";
+import app from "../../../../src/app";
+import * as constants from "../../../../src/constants";
+import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
 
 // get handle on mocked function and create mock function to be returned from calling companyAuthMiddleware
 const mockCompanyAuthMiddleware = authMiddleware as jest.Mock;
