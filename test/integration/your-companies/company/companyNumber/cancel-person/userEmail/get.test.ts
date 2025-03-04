@@ -85,94 +85,27 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
             expect(response.text).toContain(lang.no);
         });
 
-    it("should not redirect, and return status 200 if referrer is without confirmation ending", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com" };
-            req.session = session;
-            next();
+    test.each([
+        { condition: "is without confirmation ending", referrer: "testUrl.com" },
+        { condition: "contains confirmation-person-removed", referrer: "testUrl.com/confirmation-person-removed" },
+        { condition: "contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" },
+        { condition: "contains confirmation-cancel-person", referrer: "testUrl.com/confirmation-cancel-person" },
+        { condition: "contains manage-authorised-people", referrer: "testUrl.com/manage-authorised-people" }
+    ])("should not redirect, and return status 200 if referrer $condition",
+        async ({ referrer }) => {
+            // Given
+            mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+                req.headers = { referrer };
+                req.session = session;
+                next();
+            });
+            const hrefAValue = "testUrl.com";
+            setExtraData(session, constants.REFERER_URL, hrefAValue);
+            // When
+            const response = await router.get(url);
+            // Then
+            expect(response.status).toEqual(200);
         });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(url).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains confirmation-person-removed", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/confirmation-person-removed" };
-            req.session = session;
-            next();
-        });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        const response = await router.get(url);
-        expect(response.status).toEqual(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains confirmation-person-added", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/confirmation-person-added" };
-            req.session = session;
-            next();
-        });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(url).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains confirmation-cancel-person", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/confirmation-cancel-person" };
-            req.session = session;
-            next();
-        });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(url).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains manage-authorised-people", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/manage-authorised-people" };
-            req.session = session;
-            next();
-        });
-        const pageIndicator = true;
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        const response = await router.get(url);
-        expect(response.status).toEqual(200);
-
-    });
 
     it("should not redirect, and return status 200 if companyNumber equals pageIndicator and userEmail is included in userEmailsArray", async () => {
         // Given
@@ -195,49 +128,38 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
         expect(response.status).toEqual(200);
     });
 
-    it("should redirect, and return status 302 if companyNumber equals pageIndicator but userEmail is not included in userEmailsArray", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: undefined };
-            req.session = session;
-            next();
+    test.each([
+        {
+            condition: "companyNumber equals pageIndicator but userEmail is not included in userEmailsArray",
+            referrer: undefined,
+            userEmail: "test@test.com",
+            pageIndicator: "012345678",
+            userEmailsArray: ["firstEmail@test.com"]
+        },
+        {
+            condition: "companyNumber does not equal pageIndicator",
+            referrer: undefined,
+            userEmail: "test@test.com",
+            pageIndicator: "555555",
+            userEmailsArray: ["firstEmail@test.com"]
+        }
+    ])("should redirect, and return status 302 if $condition",
+        async ({ referrer, userEmail, pageIndicator, userEmailsArray }) => {
+            // Given
+            redirectPageSpy.mockReturnValue(true);
+            mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+                req.headers = { referrer };
+                req.session = session;
+                next();
+            });
+            setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
+            setExtraData(session, constants.USER_EMAIL, userEmail);
+            setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
+            // When
+            const response = await router.get(url);
+            // Then
+            expect(response.status).toEqual(302);
         });
-        const userEmail = "test@test.com";
-        const pageIndicator = "012345678";
-        const userEmailsArray = ["firstEmail@test.com"];
-
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-        setExtraData(session, constants.USER_EMAIL, userEmail);
-        setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
-        // When
-        const response = await router.get(url);
-
-        // Then
-        expect(response.status).toEqual(302);
-    });
-
-    it("should redirect, and return status 302 if companyNumber does not equal pageIndicator", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: undefined };
-            req.session = session;
-            next();
-        });
-        const userEmail = "test@test.com";
-        const pageIndicator = "555555";
-        const userEmailsArray = ["firstEmail@test.com"];
-
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-        setExtraData(session, constants.USER_EMAIL, userEmail);
-        setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
-        // When
-        const response = await router.get(url);
-
-        // Then
-        expect(response.status).toEqual(302);
-    });
 
     it("should redirect, and return status 302 if referrer is undefined and pageIndicator is true", async () => {
         // Given
@@ -247,9 +169,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
             req.session = session;
             next();
         });
-        const pageIndicator = true;
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-
+        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, true);
         // When
         const response = await router.get(url);
         // Then
@@ -257,15 +177,21 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
     });
 
     it("should return status 302 on page redirect", async () => {
+        // Given
         redirectPageSpy.mockReturnValue(true);
+        // When
         const response = await router.get(url);
+        // Then
         expect(response.status).toEqual(302);
     });
 
     it("should return correct response message including desired url path", async () => {
+        // Given
         const urlPath = constants.LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
+        // When
         const response = await router.get(url);
+        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 
