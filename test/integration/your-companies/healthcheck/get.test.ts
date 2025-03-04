@@ -15,17 +15,18 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-describe(`GET ${url}`, () => {
+describe("GET /your-companies/healthcheck", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    it("should check user auth before returning the response", async () => {
-        await router.get(url);
-        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-    });
-    it("should return status 200", async () => {
-        const response = await router.get(url).expect(200);
-        expect(response.status).toEqual(200);
-        expect(response.text).toContain("OK");
-    });
+
+    it("should check user auth before returning the response and return status 200",
+        async () => {
+            // When
+            const response = await router.get(url);
+            // Then
+            expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+            expect(response.status).toEqual(200);
+            expect(response.text).toContain("OK");
+        });
 });

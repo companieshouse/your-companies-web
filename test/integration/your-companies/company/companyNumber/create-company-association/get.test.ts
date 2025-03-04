@@ -1,12 +1,12 @@
 /* eslint-disable import/first */
-import mocks from "../../../mocks/all.middleware.mock";
-import * as constants from "../../../../src/constants";
-import app from "../../../../src/app";
+import mocks from "../../../../../mocks/all.middleware.mock";
+import * as constants from "../../../../../../src/constants";
+import app from "../../../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
-import * as associationsService from "../../../../src/services/associationsService";
+import * as associationsService from "../../../../../../src/services/associationsService";
 import { Session } from "@companieshouse/node-session-handler";
-import { CompanyNameAndNumber } from "../../../../src/types/utilTypes";
+import { CompanyNameAndNumber } from "../../../../../../src/types/utilTypes";
 import { StatusCodes } from "http-status-codes";
 import createError from "http-errors";
 
@@ -23,7 +23,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 
 const mockCreateCompanyAssociation: jest.SpyInstance = jest.spyOn(associationsService, "createAssociation");
 
-describe("create company association controller tests", () => {
+describe("GET /your-companies/company/:companyNumber/create-company-association", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
