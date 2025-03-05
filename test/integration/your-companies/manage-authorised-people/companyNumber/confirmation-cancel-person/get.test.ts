@@ -70,117 +70,79 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("should return expected English content if person cancelled and language version set to English", async () => {
-        // Given
-        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
-        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
-        // When
-        const response = await router.get(`${url}?lang=en`);
-        // Then
-        expect(response.text).toContain(enCommon.success);
-        expect(response.text).toContain(en.digital_authorisation_cancelled);
-        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_start);
-        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_end);
-        expect(response.text).toContain(en.weve_sent_an_email_to_the_company);
-        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
-        expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
-        expect(response.text).toContain(en.anyone_with_access_to_the_current_authentication);
-        expect(response.text).toContain(en.add_new_authorised_person);
-        expect(response.text).toContain(en.details_of_authorised_people);
-        expect(response.text).toContain(en.email_address);
-        expect(response.text).toContain(en.name);
-        expect(response.text).toContain(en.status);
-        expect(response.text).toContain(en.remove);
-        expect(response.text).toContain(enCommon.back_to_your_companies);
-        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
-    });
-
-    it("should return expected English content if person already cancelled and language version set to English", async () => {
-        // Given
-        getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations).mockReturnValueOnce(companyAssociations).mockReturnValueOnce(expectedCompanyAssociations);
-        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);
-        // When
-        const response = await router.get(`${url}?lang=en`);
-        // Then
-        expect(response.text).toContain(enCommon.success);
-        expect(response.text).toContain(en.digital_authorisation_cancelled);
-        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_start);
-        expect(response.text).toContain(en.you_have_successfully_cancelled_digital_authorisation_end);
-        expect(response.text).toContain(en.weve_sent_an_email_to_the_company);
-        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
-        expect(response.text).toContain(en.people_digitally_authorised_to_file_online);
-        expect(response.text).toContain(en.anyone_with_access_to_the_current_authentication);
-        expect(response.text).toContain(en.add_new_authorised_person);
-        expect(response.text).toContain(en.details_of_authorised_people);
-        expect(response.text).toContain(en.email_address);
-        expect(response.text).toContain(en.name);
-        expect(response.text).toContain(en.status);
-        expect(response.text).toContain(en.remove);
-        expect(response.text).toContain(enCommon.back_to_your_companies);
-        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
-    });
-
-    it("should return expected Welsh content if person cancelled and language version set to Welsh", async () => {
-        // Given
-        getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
-        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
-        // When
-        const response = await router.get(`${url}?lang=cy`);
-        // Then
-        expect(response.text).toContain(cyCommon.success);
-        expect(response.text).toContain(cy.digital_authorisation_cancelled);
-        expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_start);
-        expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_end);
-        expect(response.text).toContain(cy.weve_sent_an_email_to_the_company);
-        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
-        expect(response.text).toContain(cy.people_digitally_authorised_to_file_online);
-        expect(response.text).toContain(cy.anyone_with_access_to_the_current_authentication);
-        expect(response.text).toContain(cy.add_new_authorised_person);
-        expect(response.text).toContain(cy.details_of_authorised_people);
-        expect(response.text).toContain(cy.email_address);
-        expect(response.text).toContain(cy.name);
-        expect(response.text).toContain(cy.status);
-        expect(response.text).toContain(cy.remove);
-        expect(response.text).toContain(cyCommon.back_to_your_companies);
-        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
-    });
-
-    it("should return expected Welsh content if person cancelled and language version set to Welsh", async () => {
-        // Given
-        getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
-        when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(constants.TRUE);
-        // When
-        const response = await router.get(`${url}?lang=cy`);
-        // Then
-        expect(response.text).toContain(cyCommon.success);
-        expect(response.text).toContain(cy.digital_authorisation_cancelled);
-        expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_start);
-        expect(response.text).toContain(cy.you_have_successfully_cancelled_digital_authorisation_end);
-        expect(response.text).toContain(cy.weve_sent_an_email_to_the_company);
-        expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
-        expect(response.text).toContain(cy.people_digitally_authorised_to_file_online);
-        expect(response.text).toContain(cy.anyone_with_access_to_the_current_authentication);
-        expect(response.text).toContain(cy.add_new_authorised_person);
-        expect(response.text).toContain(cy.details_of_authorised_people);
-        expect(response.text).toContain(cy.email_address);
-        expect(response.text).toContain(cy.name);
-        expect(response.text).toContain(cy.status);
-        expect(response.text).toContain(cy.remove);
-        expect(response.text).toContain(cyCommon.back_to_your_companies);
-        expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-        expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
-    });
+    test.each([
+        {
+            langInfo: "English",
+            langVersion: "en",
+            lang: en,
+            langCommon: enCommon,
+            condition: "person cancelled",
+            companyAssociations1: companyAssociations,
+            companyAssociations2: companyAssociations,
+            companyAssociations3: expectedCompanyAssociations,
+            userRemovedFromCompanyAssociations: undefined
+        },
+        {
+            langInfo: "Welsh",
+            langVersion: "cy",
+            lang: cy,
+            langCommon: cyCommon,
+            condition: "person cancelled",
+            companyAssociations1: companyAssociations,
+            companyAssociations2: companyAssociations,
+            companyAssociations3: expectedCompanyAssociations,
+            userRemovedFromCompanyAssociations: undefined
+        },
+        {
+            langInfo: "English",
+            langVersion: "en",
+            lang: en,
+            langCommon: enCommon,
+            condition: "person already cancelled",
+            companyAssociations1: expectedCompanyAssociations,
+            companyAssociations2: expectedCompanyAssociations,
+            companyAssociations3: expectedCompanyAssociations,
+            userRemovedFromCompanyAssociations: constants.TRUE
+        },
+        {
+            langInfo: "Welsh",
+            langVersion: "cy",
+            lang: cy,
+            langCommon: cyCommon,
+            condition: "person already cancelled",
+            companyAssociations1: expectedCompanyAssociations,
+            companyAssociations2: expectedCompanyAssociations,
+            companyAssociations3: expectedCompanyAssociations,
+            userRemovedFromCompanyAssociations: constants.TRUE
+        }
+    ])("should return expected $langInfo content if $condition and language version set to $langVersion",
+        async ({ lang, langCommon, langVersion, companyAssociations1, companyAssociations2, companyAssociations3 }) => {
+            // Given
+            getCompanyAssociationsSpy.mockReturnValueOnce(companyAssociations1).mockReturnValueOnce(companyAssociations2).mockReturnValueOnce(companyAssociations3);
+            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(undefined);
+            // When
+            const response = await router.get(`${url}?lang=${langVersion}`);
+            // Then
+            expect(response.text).toContain(langCommon.success);
+            expect(response.text).toContain(lang.digital_authorisation_cancelled);
+            expect(response.text).toContain(lang.you_have_successfully_cancelled_digital_authorisation_start);
+            expect(response.text).toContain(lang.you_have_successfully_cancelled_digital_authorisation_end);
+            expect(response.text).toContain(lang.weve_sent_an_email_to_the_company);
+            expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
+            expect(response.text).toContain(lang.people_digitally_authorised_to_file_online);
+            expect(response.text).toContain(lang.anyone_with_access_to_the_current_authentication);
+            expect(response.text).toContain(lang.add_new_authorised_person);
+            expect(response.text).toContain(lang.details_of_authorised_people);
+            expect(response.text).toContain(lang.email_address);
+            expect(response.text).toContain(lang.name);
+            expect(response.text).toContain(lang.status);
+            expect(response.text).toContain(lang.remove);
+            expect(response.text).toContain(langCommon.back_to_your_companies);
+            expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
+            expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
+            expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
+            expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+        });
 
     it("should return status 302 on page redirect", async () => {
         // Given
@@ -196,9 +158,12 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     });
 
     it("should return correct response message including desired url path", async () => {
+        // Given
         const urlPath = constants.LANDING_URL;
         redirectPageSpy.mockReturnValue(true);
+        // When
         const response = await router.get(url);
+        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });
