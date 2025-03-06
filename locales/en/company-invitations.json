@@ -1,18 +1,18 @@
 {
-    "title_company_invitations":"Invitations to be digitally authorised - Find and update company information - GOV.UK",
-    "title_company_invitations_start":"Invitations to be digitally authorised (page ",
-    "title_company_invitations_middle":" of ",
-    "title_company_invitations_finish":") - Find and update company information - GOV.UK",
-    "h1":"Invitations to be digitally authorised",
-    "company_name": "Company name",
-    "company_number": "Company number",
-    "invited_by": "Invited by",
     "accept": "Accept",
-    "decline": "Decline",
     "accept_an_invitation": "Accept invitation to be digitally authorised",
     "accept_an_invitation_from": "Accept invitation to be digitally authorised for ",
+    "company_name": "Company name",
+    "company_number": "Company number",
+    "decline": "Decline",
     "decline_an_invitation": "Decline invitation to be digitally authorised",
     "decline_an_invitation_from": "Decline invitation to be digitally authorised for ",
+    "h1": "Invitations to be digitally authorised",
     "invitations_to_be_digitally_authorised": "Invitations to be digitally authorised",
-    "no_pending_invitations": "No pending invitations."
+    "invited_by": "Invited by",
+    "no_pending_invitations": "No pending invitations.",
+    "title_company_invitations": "Invitations to be digitally authorised - Find and update company information - GOV.UK",
+    "title_company_invitations_finish": ") - Find and update company information - GOV.UK",
+    "title_company_invitations_middle": " of ",
+    "title_company_invitations_start": "Invitations to be digitally authorised (page "
 }

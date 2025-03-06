@@ -1,10 +1,10 @@
 {
     "authorised_persons_email_address": "Beth yw cyfeiriad e-bost y person rydych am ei awdurdodi?",
-    "tell_us_the_email": "Dywedwch wrthym gyfeiriad e-bost y person rydych am ei awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn.",
-    "you_can_change_who": "Gallwch newid pwy sydd wedi’i awdurdodi’n ddigidol i ffeilio ar unrhyw adeg.",
     "email_address": "Cyfeiriad e-bost",
-    "well_send_them_an_email": "Byddwn yn anfon e-bost atynt sy’n cynnwys dolen.",
-    "errors_email_required": "Cofnodwch gyfeiriad e-bost y person awdurdodedig",
     "errors_email_invalid": "Cofnodwch gyfeiriad e-bost yn y fformat cywir, fel enw@enghraifft.com",
-    "title_add_presenter": "Beth yw cyfeiriad e-bost y person rydych chi am ei awdurdodi? - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
+    "errors_email_required": "Cofnodwch gyfeiriad e-bost y person awdurdodedig",
+    "tell_us_the_email": "Dywedwch wrthym gyfeiriad e-bost y person rydych am ei awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn.",
+    "title_add_presenter": "Beth yw cyfeiriad e-bost y person rydych chi am ei awdurdodi? - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "well_send_them_an_email": "Byddwn yn anfon e-bost atynt sy’n cynnwys dolen.",
+    "you_can_change_who": "Gallwch newid pwy sydd wedi’i awdurdodi’n ddigidol i ffeilio ar unrhyw adeg."
 }
