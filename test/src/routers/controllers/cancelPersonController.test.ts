@@ -58,7 +58,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
     it("should return expected English content if language version set to English", async () => {
         // Given
         const langVersion = "?lang=en";
-        const expectedHeader = `${en.are_you_sure_you_want_to_cancel_start}${userEmail}${en.are_you_sure_you_want_to_cancel_end}`;
+        const expectedHeader = `${en.are_you_sure_you_want_to_cancel_start}${userEmail}?`;
         const expectedCompanyName = "Doughnuts Limited";
         session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
         // When
@@ -75,7 +75,7 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
     it("should return expected Welsh content if language version set to Welsh", async () => {
         // Given
         const langVersion = "?lang=cy";
-        const expectedHeader = `${cy.are_you_sure_you_want_to_cancel_start}${userEmail}${cy.are_you_sure_you_want_to_cancel_end}`;
+        const expectedHeader = `${cy.are_you_sure_you_want_to_cancel_start}${userEmail}?`;
         const expectedCompanyName = "Doughnuts Limited";
         session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
         // When
