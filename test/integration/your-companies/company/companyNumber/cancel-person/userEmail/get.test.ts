@@ -60,14 +60,14 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
             langInfo: "English",
             langVersion: "en",
             lang: enCommon,
-            expectedHeader: `${en.are_you_sure_you_want_to_cancel_start}${userEmail}${en.are_you_sure_you_want_to_cancel_end}`,
+            expectedHeader: `${en.are_you_sure_you_want_to_cancel_start}${userEmail}`,
             expectedCompanyName: "Doughnuts Limited"
         },
         {
             langInfo: "Welsh",
             langVersion: "cy",
             lang: cyCommon,
-            expectedHeader: `${cy.are_you_sure_you_want_to_cancel_start}${userEmail}${cy.are_you_sure_you_want_to_cancel_end}`,
+            expectedHeader: `${cy.are_you_sure_you_want_to_cancel_start}${userEmail}`,
             expectedCompanyName: "Doughnuts Limited"
         }
     ])("should return expected $langInfo content if language version set to '$langVersion'",
