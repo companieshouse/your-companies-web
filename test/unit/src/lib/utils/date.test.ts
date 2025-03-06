@@ -65,16 +65,12 @@ describe("Date tests", () => {
         it("Should log and throw an error", () => {
             // Given
             const badDate = "12345/44/44";
+            // Then
+            expect(() => toReadableFormat(badDate)).toThrow(Error);
+            expect(mockCreateAndLogError).toHaveBeenCalledWith(
+                expect.stringContaining(badDate)
+            );
 
-            try {
-                // When
-                toReadableFormat(badDate);
-            } catch (e) {
-                // Then
-                expect(mockCreateAndLogError).toHaveBeenCalledWith(
-                    expect.stringContaining(badDate)
-                );
-            }
         });
     });
 
