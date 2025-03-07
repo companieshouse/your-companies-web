@@ -5,15 +5,18 @@ import * as en from "../../../../locales/en/service-unavailable.json";
 import * as cy from "../../../../locales/cy/service-unavailable.json";
 
 const router = supertest(app);
-const url = `/your-companies/something-went-wrong`;
 
 describe("GET /your-companies/something-went-wrong", () => {
+    const url = `/your-companies/something-went-wrong`;
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it("should check session and auth before returning the something went wrong page", async () => {
+        // When
         await router.get(url);
+        // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
