@@ -47,16 +47,6 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         redirectPageSpy.mockReturnValue(false);
     });
 
-    it("should check session and auth before returning the /your-companies/authentication-code-remove/:userEmail page", async () => {
-        await router.get(urlWithEmail);
-        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
-        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-    });
-
-    it("should return status 200 for authentication-code-remove/:userEmail page", async () => {
-        await router.get(urlWithEmail).expect(200);
-    });
-
     test.each([
         {
             langInfo: "English",
@@ -85,7 +75,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
             langCommon: enCommon,
             pathInfo: "authentication-code-remove/:userEmail?userName=:userName",
             includedText: userName,
-            excludedText: userEmail,
+            excludedText: undefined,
             url: urlWithName
         },
         {
@@ -95,10 +85,10 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
             langCommon: cyCommon,
             pathInfo: "authentication-code-remove/:userEmail?userName=:userName",
             includedText: userName,
-            excludedText: userEmail,
+            excludedText: undefined,
             url: urlWithName
         }
-    ])("should return expected $langInfo content if language version set to '$langVersion' for $pathInfo page",
+    ])("should check session and auth and return status 200 and expected $langInfo content if language version set to '$langVersion' for $pathInfo page",
         async ({ langVersion, lang, langCommon, includedText, excludedText, url }) => {
             // Given
             session.setExtraData(constants.COMPANY_NAME, companyName);
@@ -106,214 +96,56 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
             const langString = url === urlWithName ? "&lang=" : "?lang=";
             const response = await router.get(`${url}${langString}${langVersion}`);
             // Then
+            expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+            expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+            expect(response.status).toEqual(200);
+            expect(response.text).toContain(`${lang.remove}${includedText}`);
+            expect(response.text).toContain(lang.authorisation_to_file_online);
+            expect(response.text).toContain(`${lang.if_you_remove}${includedText}`);
+            expect(response.text).toContain(`${lang.digital_authorisation_this_means_they}${companyName}`);
+            expect(response.text).toContain(`${includedText}${lang.will_still_be_able_to_file}`);
+            expect(response.text).toContain(`${lang.if}${includedText}`);
+            expect(response.text).toContain(lang.is_appointed_as_an_officer);
+            expect(response.text).toContain(lang.i_confirm_that_i_have_read);
+            expect(response.text).toContain(lang.remove_authorisation);
+            expect(response.text).toContain(langCommon.cancel);
             if (url === urlWithEmail) {
-                expect(response.text).toContain(`${lang.remove}${includedText}`);
-                expect(response.text).toContain(lang.authorisation_to_file_online);
-                expect(response.text).toContain(`${lang.if_you_remove}${includedText}`);
-                expect(response.text).toContain(`${lang.digital_authorisation_this_means_they}${companyName}`);
                 expect(response.text).toContain(lang.without_a_current_auth_code);
                 expect(response.text).toContain(`${includedText}${lang.to_let_them_know_you_have_removed}`);
-                expect(response.text).toContain(`${includedText}${lang.will_still_be_able_to_file}`);
                 expect(response.text).toContain(lang.you_may_wish_to_change_the_auth_code);
                 expect(response.text).toContain(`${includedText}${lang.digital_authorisation}`);
-                expect(response.text).toContain(`${lang.if}${includedText}`);
-                expect(response.text).toContain(lang.is_appointed_as_an_officer);
-                expect(response.text).toContain(lang.i_confirm_that_i_have_read);
-                expect(response.text).toContain(lang.remove_authorisation);
-                expect(response.text).toContain(langCommon.cancel);
                 expect(response.text).not.toContain(excludedText);
             } else {
-                expect(response.text).toContain(`${lang.remove}${includedText}`);
-                expect(response.text).toContain(lang.authorisation_to_file_online);
-                expect(response.text).toContain(`${lang.if_you_remove}${includedText}`);
-                expect(response.text).toContain(`${lang.digital_authorisation_this_means_they}${companyName}`);
                 expect(response.text).toContain(`${lang.without_a_current_auth_code}${includedText}`);
                 expect(response.text).toContain(lang.to_let_them_know_you_have_removed);
-                expect(response.text).toContain(`${includedText}${lang.will_still_be_able_to_file}`);
                 expect(response.text).toContain(`${lang.you_may_wish_to_change_the_auth_code}${includedText}`);
                 expect(response.text).toContain(lang.digital_authorisation);
-                expect(response.text).toContain(`${lang.if}${includedText}`);
-                expect(response.text).toContain(lang.is_appointed_as_an_officer);
-                expect(response.text).toContain(lang.i_confirm_that_i_have_read);
-                expect(response.text).toContain(lang.remove_authorisation);
-                expect(response.text).toContain(langCommon.cancel);
             }
 
         });
 
-    it("should return expected Welsh content if language version set to Welsh for authentication-code-remove/:userEmail page", async () => {
-        // Given
-        const langVersion = "?lang=cy";
-        const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
+    test.each([
+        { condition: "referrer is without confirmation ending", referrer: "testUrl.com" },
+        { condition: "rreferrer contains confirmation-person-removed", referrer: "testUrl.com/confirmation-person-removed" },
+        { condition: "rreferrer contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" },
+        { condition: "rreferrer contains confirmation-cancel-person", referrer: "testUrl.com/confirmation-cancel-person" },
+        { condition: "rreferrer contains manage-authorised-people", referrer: "testUrl.com/manage-authorised-people" }
+    ])("should not redirect, and return status 200 if $condition",
+        async ({ referrer }) => {
+            // Given
+            mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+                req.headers = { referrer };
+                req.session = session;
+                next();
+            });
+            const hrefAValue = "testUrl.com";
+            setExtraData(session, constants.REFERER_URL, hrefAValue);
+            // When Then
+            const response = await router.get(urlWithEmail);
+            // Then
+            expect(response.status).toEqual(200);
 
-        // When
-        const response = await router.get(`${urlWithEmail}${langVersion}`);
-        // Then
-        expect(response.text).toContain(`${cy.remove}${userEmail}`);
-        expect(response.text).toContain(cy.authorisation_to_file_online);
-        expect(response.text).toContain(`${cy.if_you_remove}${userEmail}`);
-        expect(response.text).toContain(`${cy.digital_authorisation_this_means_they}${expectedCompanyName}`);
-        expect(response.text).toContain(cy.without_a_current_auth_code);
-        expect(response.text).toContain(`${userEmail}${cy.to_let_them_know_you_have_removed}`);
-        expect(response.text).toContain(`${cy.remove_person_summary_start}${userEmail}`);
-        expect(response.text).toContain(`${userEmail}${cy.will_still_be_able_to_file}`);
-        expect(response.text).toContain(`${cy.you_may_wish_to_change_the_auth_code}${userEmail}`);
-        expect(response.text).toContain(`${cy.if}${userEmail}`);
-        expect(response.text).toContain(cy.is_appointed_as_an_officer);
-        expect(response.text).toContain(cy.i_confirm_that_i_have_read);
-        expect(response.text).toContain(cy.remove_authorisation);
-        expect(response.text).toContain(cyCommon.cancel);
-        expect(response.text).not.toContain(userName);
-    });
-
-    it("should check session and auth before returning the /your-companies/authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        await router.get(urlWithName);
-        expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
-        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-    });
-
-    it("should return status 200 for authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        await router.get(urlWithName).expect(200);
-    });
-
-    it("should return expected English content if language version set to English for authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        // Given
-        const langVersion = "&lang=en";
-        const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
-
-        // When
-        const response = await router.get(`${urlWithName}${langVersion}`);
-        // Then
-        expect(response.text).toContain(`${en.remove}${userName}`);
-        expect(response.text).toContain(en.authorisation_to_file_online);
-        expect(response.text).toContain(`${en.if_you_remove}${userName}`);
-        expect(response.text).toContain(`${en.digital_authorisation_this_means_they}${expectedCompanyName}`);
-        expect(response.text).toContain(`${en.without_a_current_auth_code}${userName}`);
-        expect(response.text).toContain(en.to_let_them_know_you_have_removed);
-        expect(response.text).toContain(`${userName}${en.will_still_be_able_to_file}`);
-        expect(response.text).toContain(`${en.you_may_wish_to_change_the_auth_code}${userName}`);
-        expect(response.text).toContain(en.digital_authorisation);
-        expect(response.text).toContain(`${en.if}${userName}`);
-        expect(response.text).toContain(en.is_appointed_as_an_officer);
-        expect(response.text).toContain(en.i_confirm_that_i_have_read);
-        expect(response.text).toContain(en.remove_authorisation);
-        expect(response.text).toContain(enCommon.cancel);
-    });
-
-    it("should return expected Welsh content if language version set to Welsh authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        // Given
-        const langVersion = "&lang=cy";
-        const expectedCompanyName = "Doughnuts Limited";
-        session.setExtraData(constants.COMPANY_NAME, expectedCompanyName);
-
-        // When
-        const response = await router.get(`${urlWithName}${langVersion}`);
-        // Then
-        expect(response.text).toContain(`${cy.remove}${userName}`);
-        expect(response.text).toContain(cy.authorisation_to_file_online);
-        expect(response.text).toContain(`${cy.if_you_remove}${userName}`);
-        expect(response.text).toContain(`${cy.digital_authorisation_this_means_they}${expectedCompanyName}`);
-        expect(response.text).toContain(`${cy.without_a_current_auth_code}${userName}`);
-        expect(response.text).toContain(cy.to_let_them_know_you_have_removed);
-        expect(response.text).toContain(`${cy.remove_person_summary_start}${userName}`);
-        expect(response.text).toContain(`${userName}${cy.will_still_be_able_to_file}`);
-        expect(response.text).toContain(`${cy.you_may_wish_to_change_the_auth_code}${userName}`);
-        expect(response.text).toContain(`${cy.if}${userName}`);
-        expect(response.text).toContain(cy.is_appointed_as_an_officer);
-        expect(response.text).toContain(cy.i_confirm_that_i_have_read);
-        expect(response.text).toContain(cy.remove_authorisation);
-        expect(response.text).toContain(cyCommon.cancel);
-    });
-
-    it("should not redirect, and return status 200 if referrer is without confirmation ending", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com" };
-            req.session = session;
-            next();
         });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(urlWithEmail).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains confirmation-person-removed", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/confirmation-person-removed" };
-            req.session = session;
-            next();
-        });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(urlWithEmail).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains confirmation-person-added", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/confirmation-person-added" };
-            req.session = session;
-            next();
-        });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(urlWithEmail).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains confirmation-cancel-person", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/confirmation-cancel-person" };
-            req.session = session;
-            next();
-        });
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        await router.get(urlWithEmail).expect(200);
-
-    });
-
-    it("should not redirect, and return status 200 if referrer contains manage-authorised-people", async () => {
-
-        // Given
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: "testUrl.com/manage-authorised-people" };
-            req.session = session;
-            next();
-        });
-        const pageIndicator = true;
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-
-        const hrefAValue = "testUrl.com";
-        setExtraData(session, constants.REFERER_URL, hrefAValue);
-
-        // When Then
-        const response = await router.get(urlWithEmail);
-        expect(response.status).toEqual(200);
-
-    });
 
     it("should not redirect, and return status 200 if companyNumber equals pageIndicator and userEmail is included in userEmailsArray", async () => {
         // Given
@@ -331,7 +163,6 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
         // When
         const response = await router.get(urlWithEmail);
-
         // Then
         expect(response.status).toEqual(200);
     });
@@ -346,78 +177,54 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
         });
         const pageIndicator = true;
         setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-
         // When
         const response = await router.get(urlWithEmail);
         // Then
         expect(response.status).toEqual(302);
     });
-    it("should redirect, and return status 302 if companyNumber equals pageIndicator but userEmail is not included in userEmailsArray", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: undefined };
-            req.session = session;
-            next();
+
+    test.each([
+        {
+            condition: "companyNumber equals pageIndicator but userEmail is not included in userEmailsArray",
+            pageIndicator: "123456",
+            userEmailsArray: ["firstEmail@test.com"]
+        },
+        {
+            condition: "companyNumber does not equal pageIndicator",
+            pageIndicator: "555555",
+            userEmailsArray: ["test@test.com"]
+        }
+    ])("should redirect, and return status 302 if $condition",
+        async ({ pageIndicator, userEmailsArray }) => {
+            // Given
+            redirectPageSpy.mockReturnValue(true);
+            mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+                req.headers = { referrer: undefined };
+                req.session = session;
+                next();
+            });
+            const userEmail = "test@test.com";
+
+            setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
+            setExtraData(session, constants.USER_EMAIL, userEmail);
+            setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
+            // When
+            const response = await router.get(urlWithEmail);
+            // Then
+            expect(response.status).toEqual(302);
         });
-        const userEmail = "test@test.com";
-        const pageIndicator = "123456";
-        const userEmailsArray = ["firstEmail@test.com"];
 
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-        setExtraData(session, constants.USER_EMAIL, userEmail);
-        setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
-        // When
-        const response = await router.get(urlWithEmail);
-
-        // Then
-        expect(response.status).toEqual(302);
-    });
-
-    it("should redirect, and return status 302 if companyNumber does not equal pageIndicator", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-            req.headers = { referrer: undefined };
-            req.session = session;
-            next();
+    test.each([
+        { pathInfo: "authentication-code-remove/:userEmail", url: urlWithEmail },
+        { pathInfo: "authentication-code-remove/:userEmail?userName=:userName", url: urlWithName }
+    ])("should return status 302 and correct response message including desired url path for $pathInfo page",
+        async ({ url }) => {
+            // Given
+            redirectPageSpy.mockReturnValue(true);
+            // When
+            const response = await router.get(url);
+            // Then
+            expect(response.status).toEqual(302);
+            expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
         });
-        const userEmail = "test@test.com";
-        const pageIndicator = "555555";
-        const userEmailsArray = ["firstEmail@test.com"];
-
-        setExtraData(session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, pageIndicator);
-        setExtraData(session, constants.USER_EMAIL, userEmail);
-        setExtraData(session, constants.USER_EMAILS_ARRAY, userEmailsArray);
-        // When
-        const response = await router.get(urlWithEmail);
-
-        // Then
-        expect(response.status).toEqual(302);
-    });
-
-    it("should return status 302 on page redirect for authentication-code-remove/:userEmail page", async () => {
-        redirectPageSpy.mockReturnValue(true);
-        await router.get(urlWithEmail).expect(302);
-    });
-
-    it("should return correct response message including desired url path for authentication-code-remove/:userEmail page", async () => {
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        const response = await router.get(urlWithEmail);
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
-    });
-
-    it("should return status 302 on page redirect for authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        redirectPageSpy.mockReturnValue(true);
-        await router.get(urlWithEmail).expect(302);
-    });
-
-    it("should return correct response message including desired url path for authentication-code-remove/:userEmail?userName=:userName page", async () => {
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        const response = await router.get(urlWithEmail);
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
-    });
-
 });
