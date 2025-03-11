@@ -10,5 +10,6 @@ export const mockRequest = () => {
     req.params = {
         companyNumber: "1"
     };
+    req.get = jest.fn();
     return req;
 };
