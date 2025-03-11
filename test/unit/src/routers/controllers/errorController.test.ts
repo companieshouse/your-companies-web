@@ -34,7 +34,7 @@ describe("csrfErrorHandler", () => {
         jest.clearAllMocks();
     });
 
-    it("should detect a csrfError and render an error template", async () => {
+    it("should detect a csrfError and redirect to the something went wrong error page", async () => {
         // Given
         mockGetTranslationsForView.mockReturnValue({
             some_key: "some text",
