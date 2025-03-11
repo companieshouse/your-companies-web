@@ -1,9 +1,16 @@
 
-import * as associationsService from "../../../src/services/associationsService";
-import { demoUserGermanBreweryAssociation, demoUserPolishBreweryAssociation, demoUserScottishBreweryAssociation, emptyAssociations } from "../../mocks/associations.mock";
+import * as associationsService from "../../../../src/services/associationsService";
+import {
+    demoUserGermanBreweryAssociation,
+    demoUserPolishBreweryAssociation,
+    demoUserScottishBreweryAssociation,
+    emptyAssociations
+} from "../../../mocks/associations.mock";
 import { Request } from "express";
-import { AssociationState, AssociationStateResponse } from "../../../src/types/associations";
-jest.mock("../../../src/services/apiClientService");
+import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
+
+jest.mock("../../../../src/services/apiClientService");
+jest.mock("../../../../src/lib/Logger");
 
 const reqest = {} as Request;
 

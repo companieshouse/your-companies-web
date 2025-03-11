@@ -1,12 +1,14 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createOauthPrivateApiClient } from "../../../src/services/apiClientService";
-import { getInvitations } from "../../../src/services/associationsService";
+import { createOauthPrivateApiClient } from "../../../../src/services/apiClientService";
+import { getInvitations } from "../../../../src/services/associationsService";
 import { InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
-import { mockInvitationList } from "../../mocks/invitations.mock";
-import { mockRequest } from "../../mocks/request.mock";
+import { mockInvitationList } from "../../../mocks/invitations.mock";
+import { mockRequest } from "../../../mocks/request.mock";
 import { HttpError } from "http-errors";
-jest.mock("../../../src/services/apiClientService");
+
+jest.mock("../../../../src/services/apiClientService");
+jest.mock("../../../../src/lib/Logger");
 
 const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
 const mockInvitationsJestFn = jest.fn();

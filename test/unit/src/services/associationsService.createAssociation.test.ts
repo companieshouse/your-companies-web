@@ -1,12 +1,13 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createOauthPrivateApiClient } from "../../../src/services/apiClientService";
-import { createAssociation } from "../../../src/services/associationsService";
+import { createOauthPrivateApiClient } from "../../../../src/services/apiClientService";
+import { createAssociation } from "../../../../src/services/associationsService";
 import { Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { Request } from "express";
 import createError from "http-errors";
 
-jest.mock("../../../src/services/apiClientService");
+jest.mock("../../../../src/services/apiClientService");
+jest.mock("../../../../src/lib/Logger");
 
 const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
 const mockCreateAssociation = jest.fn();
