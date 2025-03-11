@@ -13,10 +13,10 @@ import * as commpanyProfileService from "../../../../src/services/companyProfile
 import * as constants from "../../../../src/constants";
 import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import * as en from "../../../../locales/en/add-company.json";
-import * as cy from "../../../../locales/cy/add-company.json";
-import * as enCommon from "../../../../locales/en/common.json";
-import * as cyCommon from "../../../../locales/cy/common.json";
+import en from "../../../../locales/en/add-company.json";
+import cy from "../../../../locales/cy/add-company.json";
+import enCommon from "../../../../locales/en/common.json";
+import cyCommon from "../../../../locales/cy/common.json";
 import { Session } from "@companieshouse/node-session-handler";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";

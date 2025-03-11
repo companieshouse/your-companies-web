@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import * as enCommon from "../../../locales/en/common.json";
-import * as cyCommon from "../../../locales/cy/common.json";
+import enCommon from "../../../locales/en/common.json";
+import cyCommon from "../../../locales/cy/common.json";
 
 const englishDirectory = "../../../locales/en/";
 const welshDirectory = "../../../locales/cy/";

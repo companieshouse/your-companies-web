@@ -1,8 +1,8 @@
 import mocks from "../../../../mocks/all.middleware.mock";
 import app from "../../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../../locales/en/add-presenter.json";
-import * as cy from "../../../../../locales/cy/add-presenter.json";
+import en from "../../../../../locales/en/add-presenter.json";
+import cy from "../../../../../locales/cy/add-presenter.json";
 import * as constants from "../../../../../src/constants";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";

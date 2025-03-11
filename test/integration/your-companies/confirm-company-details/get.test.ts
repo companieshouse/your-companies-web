@@ -6,14 +6,15 @@ import { NextFunction, Request, Response } from "express";
 import { badFormatCompanyProfile, validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
-import * as en from "../../../../locales/en/confirm-company-details.json";
-import * as cy from "../../../../locales/cy/confirm-company-details.json";
+import en from "../../../../locales/en/confirm-company-details.json";
+import cy from "../../../../locales/cy/confirm-company-details.json";
 
 const router = supertest(app);
 const url = "/your-companies/confirm-company-details";
 
 const session: Session = new Session();
 
+jest.mock("../../../../src/lib/Logger");
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
     return next();

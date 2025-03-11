@@ -5,8 +5,8 @@ import * as constants from "../../../../../src/constants";
 import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import * as en from "../../../../../locales/en/add-presenter-check-details.json";
-import * as cy from "../../../../../locales/cy/add-presenter-check-details.json";
+import en from "../../../../../locales/en/add-presenter-check-details.json";
+import cy from "../../../../../locales/cy/add-presenter-check-details.json";
 
 jest.mock("../../../../../src/lib/Logger");
 

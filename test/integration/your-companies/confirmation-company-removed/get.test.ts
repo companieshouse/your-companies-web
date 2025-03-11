@@ -3,10 +3,10 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import * as en from "../../../../locales/en/confirmation-company-removed.json";
-import * as cy from "../../../../locales/cy/confirmation-company-removed.json";
-import * as enCommon from "../../../../locales/en/common.json";
-import * as cyCommon from "../../../../locales/cy/common.json";
+import en from "../../../../locales/en/confirmation-company-removed.json";
+import cy from "../../../../locales/cy/confirmation-company-removed.json";
+import enCommon from "../../../../locales/en/common.json";
+import cyCommon from "../../../../locales/cy/common.json";
 import * as constants from "../../../../src/constants";
 import { deleteExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
@@ -18,6 +18,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     req.session = session;
     return next();
 });
+jest.mock("../../../../src/lib/Logger");
 
 const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 

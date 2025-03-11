@@ -6,12 +6,16 @@ import supertest from "supertest";
 import * as associationsService from "../../../src/services/associationsService";
 import {
     emptyAssociations,
+    oneConfirmedAssociation,
+    twentyConfirmedAssociations,
     userAssociations,
     userAssociationsWithNumberOfInvitations,
     userAssociationWithCompanyStatus
 } from "../../mocks/associations.mock";
-import * as en from "../../../locales/en/your-companies.json";
-import * as cy from "../../../locales/cy/your-companies.json";
+import en from "../../../locales/en/your-companies.json";
+import cy from "../../../locales/cy/your-companies.json";
+import enCommon from "../../../locales/en/common.json";
+import cyCommon from "../../../locales/cy/common.json";
 import { getExtraData, setExtraData } from "../../../src/lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
@@ -106,159 +110,183 @@ describe("GET /your-companies", () => {
             expect(response.text).not.toContain(expectedText);
         });
 
-    it("should display English version of a banner with information about number of invitations if language version set to English", async () => {
-        // Given
-        userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
-        getInvitationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
-        const expectedText = en.view_invitations + " " + "&#40;" +
-            userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
-        // When
-        const response = await router.get("/your-companies?lang=en");
-        // Then
-        expect(response.text).toContain(expectedText);
-    });
-
-    it("should display Welsh version of a banner with information about number of invitations if language version set to Welsh", async () => {
-        // Given
-        userAssociationsSpy.mockReturnValueOnce(userAssociations);
-        getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
-        const expectedText = cy.view_invitations + " " + "&#40;" +
-            userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
-        // When
-        const response = await router.get("/your-companies?lang=cy");
-        // Then
-        expect(response.text).toContain(expectedText);
-    });
-
-    it("should delete the manage authorised people page indicator in extraData on page load", async () => {
-        // Given
-        userAssociationsSpy.mockReturnValueOnce(userAssociations);
-        getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
-        const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
-        const value = true;
-        setExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR, value);
-        const data = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-
-        // When
-        await router.get("/your-companies");
-        const resultData = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-
-        // Then
-        expect(data).toBeTruthy();
-        expect(resultData).toBeUndefined();
-    });
-
-    it("should delete the confirm company details page indicator in extraData on page load", async () => {
-        // Given
-        userAssociationsSpy.mockReturnValueOnce(userAssociations);
-        getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
-        const CONFIRM_COMPANY_DETAILS_INDICATOR = "confirmCompanyDetailsIndicator";
-        const value = true;
-        setExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR, value);
-        const data = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
-
-        // When
-        await router.get("/your-companies");
-        const resultData = getExtraData(session, CONFIRM_COMPANY_DETAILS_INDICATOR);
-
-        // Then
-        expect(data).toBeTruthy();
-        expect(resultData).toBeUndefined();
-    });
-
-    it("should display company status for each company", async () => {
-        // Given
-        userAssociationsSpy.mockResolvedValue(userAssociations);
-        getInvitationsSpy.mockResolvedValue({ items: [] });
-
-        // When
-        const response = await router.get("/your-companies?lang=en");
-
-        // Then
-        userAssociations.items.forEach(() => {
-            expect(response.text).toContain("Active"); // Check for "Active" instead of AssociationStatus.CONFIRMED
+    test.each([
+        { langInfo: "English", langVersion: "en", lang: en },
+        { langInfo: "English", langVersion: undefined, lang: en },
+        { langInfo: "Welsh", langVersion: "cy", lang: cy }
+    ])("should display $langInfo version of a banner with information about number of invitations if language version set to '$langVersion'",
+        async ({ langVersion, lang }) => {
+            // Given
+            userAssociationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
+            getInvitationsSpy.mockReturnValue(userAssociationsWithNumberOfInvitations);
+            const expectedText = lang.view_invitations + " " + "&#40;" +
+                userAssociationsWithNumberOfInvitations.totalResults + "&#41;";
+            // When
+            const response = await router.get(`/your-companies?lang=${langVersion}`);
+            // Then
+            expect(response.text).toContain(expectedText);
         });
-    });
 
-    it("should include a remove company link for each company", async () => {
-        // Given
-        userAssociationsSpy.mockResolvedValue(userAssociations);
-        getInvitationsSpy.mockResolvedValue({ items: [] });
+    test.each([
+        { deletionInfo: "the manage authorised people page indicator", key: "manageAuthorisedPeopleIndicator" },
+        { deletionInfo: "the confirm company details page indicator", key: "confirmCompanyDetailsIndicator" }
+    ])("should delete $deletionInfo in extraData on page load",
+        async ({ key }) => {
+            // Given
+            userAssociationsSpy.mockReturnValueOnce(userAssociations);
+            getInvitationsSpy.mockReturnValueOnce(userAssociationsWithNumberOfInvitations);
+            const value = true;
+            setExtraData(session, key, value);
+            const data = getExtraData(session, key);
 
-        // When
-        const response = await router.get("/your-companies?lang=en");
+            // When
+            await router.get("/your-companies");
+            const resultData = getExtraData(session, key);
 
-        // Then
-        userAssociations.items.forEach(company => {
-            const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
-            expect(response.text).toContain(expectedLink);
-            expect(response.text).toContain(en.remove_company);
-
-            // Additional checks
-            expect(response.text).toContain(company.companyName);
-            expect(response.text).toContain(company.companyNumber);
+            // Then
+            expect(data).toBeTruthy();
+            expect(resultData).toBeUndefined();
         });
-    });
 
-    it("should display company status and remove company link in Welsh", async () => {
-        // Given
-        userAssociationsSpy.mockResolvedValue(userAssociations);
-        getInvitationsSpy.mockResolvedValue({ items: [] });
+    test.each([
+        { langInfo: "English", langVersion: "en", lang: en, statusActive: "Active" }, // Check for "Active" instead of AssociationStatus.CONFIRMED
+        { langInfo: "Welsh", langVersion: "cy", lang: cy, statusActive: "Gweithredol" }
+    ])("should display company status and remove company link in ",
+        async ({ statusActive, langVersion, lang }) => {
+            // Given
+            userAssociationsSpy.mockResolvedValue(userAssociations);
+            getInvitationsSpy.mockResolvedValue({ items: [] });
 
-        // When
-        const response = await router.get("/your-companies?lang=cy");
+            // When
+            const response = await router.get(`/your-companies?lang=${langVersion}`);
 
-        // Then
-        userAssociations.items.forEach(company => {
-            expect(response.text).toContain("Gweithredol"); // Gweithredol is active in Welsh
-            const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
-            expect(response.text).toContain(expectedLink);
-            expect(response.text).toContain(cy.remove_company);
+            // Then
+            userAssociations.items.forEach(company => {
+                expect(response.text).toContain(statusActive);
+                const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
+                expect(response.text).toContain(expectedLink);
+                expect(response.text).toContain(lang.remove_company);
+            });
         });
-    });
 
-    it("should display company status 'active' in Welsh", async () => {
-        // Given
-        userAssociationsSpy.mockResolvedValue(userAssociationWithCompanyStatus);
-        getInvitationsSpy.mockResolvedValue({ items: [] });
+    test.each([
+        {
+            companyStatusInfo: "active",
+            userAssociaton: userAssociationWithCompanyStatus,
+            expectedWelshText: "Gweithredol"
+        },
+        {
+            companyStatusInfo: "closed",
+            userAssociaton: {
+                ...userAssociationWithCompanyStatus,
+                items: [{
+                    ...userAssociationWithCompanyStatus.items[0],
+                    companyStatus: CompanyStatuses.CLOSED
+                }]
+            },
+            expectedWelshText: "Wedi cau"
+        },
+        {
+            companyStatusInfo: "insolvency-proceedings",
+            userAssociaton: {
+                ...userAssociationWithCompanyStatus,
+                items: [{
+                    ...userAssociationWithCompanyStatus.items[0],
+                    companyStatus: CompanyStatuses.INSOLVENCY_PROCEEDINGS
+                }]
+            },
+            expectedWelshText: "Trafodion Ansolfedd"
+        }
+    ])("should display company status '$companyStatusInfo' in Welsh when lang set to 'cy'",
+        async ({ userAssociaton, expectedWelshText }) => {
+            // Given
+            userAssociationsSpy.mockResolvedValue(userAssociaton);
+            getInvitationsSpy.mockResolvedValue({ items: [] });
+            // When
+            const response = await router.get("/your-companies?lang=cy");
+            // Then
+            expect(response.text).toContain(expectedWelshText);
+        });
+
+    test.each([
+        { langVersion: "en", lang: en, langCommon: enCommon },
+        { langVersion: undefined, lang: en, langCommon: enCommon },
+        { langVersion: "cy", lang: cy, langCommon: cyCommon }
+    ])("should return pagination if more than 15 companies returned and lang set to '$langVersion'",
+        async ({ langVersion, lang, langCommon }) => {
+            // Given
+            userAssociationsSpy.mockResolvedValue(twentyConfirmedAssociations);
+            getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
+            // When
+            const response = await router.get(`/your-companies?lang=${langVersion}`);
+            // Then
+            expect(response.text).toContain(lang.search);
+            expect(response.text).toContain(langCommon.next);
+        });
+
+    it("should return selected page", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(twentyConfirmedAssociations);
+        getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
+
         // When
-        const response = await router.get("/your-companies?lang=cy");
+        const response = await router.get("/your-companies?page=2&lang=en");
         // Then
-        expect(response.text).toContain("Gweithredol"); // Gweithredol is active in Welsh
+        expect(response.text).toContain(en.search);
+        expect(response.text).toContain(enCommon.previous);
+        expect(response.text).not.toContain(enCommon.next);
     });
 
-    it("should display company status 'closed' in Welsh", async () => {
-        // Given
-        const closedCompanyAssociation = {
-            ...userAssociationWithCompanyStatus,
-            items: [{
-                ...userAssociationWithCompanyStatus.items[0],
-                companyStatus: CompanyStatuses.CLOSED
-            }]
-        };
-        userAssociationsSpy.mockResolvedValue(closedCompanyAssociation);
-        getInvitationsSpy.mockResolvedValue({ items: [] });
+    it("should ignore incorrect page numbers", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(twentyConfirmedAssociations);
+        getInvitationsSpy.mockResolvedValue(twentyConfirmedAssociations);
         // When
-        const response = await router.get("/your-companies?lang=cy");
+        const response = await router.get("/your-companies?page=abc");
         // Then
-        expect(response.text).toContain("Wedi cau");
+        expect(response.text).toContain(en.search);
+        expect(response.text).toContain(enCommon.next);
+        expect(response.text).not.toContain(enCommon.previous);
     });
 
-    it("should display company status 'insolvency-proceedings' in Welsh", async () => {
-        // Given
-        const insolventCompanyAssociation = {
-            ...userAssociationWithCompanyStatus,
-            items: [{
-                ...userAssociationWithCompanyStatus.items[0],
-                companyStatus: CompanyStatuses.INSOLVENCY_PROCEEDINGS
-            }]
-        };
-        userAssociationsSpy.mockResolvedValue(insolventCompanyAssociation);
-        getInvitationsSpy.mockResolvedValue({ items: [] });
+    it("should display company when company number provided and match is found", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(oneConfirmedAssociation);
+        getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
         // When
-        const response = await router.get("/your-companies?lang=cy");
+        const response = await router.get("/your-companies?search=NI03837");
         // Then
-        expect(response.text).toContain("Trafodion Ansolfedd");
+        expect(response.text).toContain(en.search);
+        expect(response.text).toContain("match found for 'NI03837'");
+        expect(response.text).toContain("THE POLISH BREWERY");
+        expect(response.text).toContain("NI038379");
+        expect(response.text).not.toContain(enCommon.next);
     });
 
+    it("should display no matches when no matches found", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(emptyAssociations);
+        getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
+        // When
+        const response = await router.get("/your-companies?search=ABCDEF");
+        // Then
+        expect(response.text).toContain(en.search);
+        expect(response.text).toContain(en.no_results_found);
+    });
+
+    test.each([
+        { langVersion: "en", lang: en, langCommon: enCommon },
+        { langVersion: undefined, lang: en, langCommon: enCommon },
+        { langVersion: "cy", lang: cy, langCommon: cyCommon }
+    ])("shoud display $langInfo error message and default table of associations if search value not following company number format and language set to '$langVersion",
+        async ({ langVersion, lang, langCommon }) => {
+            // Give
+            userAssociationsSpy.mockResolvedValue(twentyConfirmedAssociations);
+            getInvitationsSpy.mockResolvedValue(twentyConfirmedAssociations);
+            // When
+            const response = await router.get(`/your-companies?lang=${langVersion}&search=kskkskskx`);
+            // Then
+            expect(response.text).toContain(lang.company_number_must_only_include);
+            expect(response.text).toContain(langCommon.next);
+        });
 });

@@ -16,6 +16,7 @@ const companyNumber = "12345678";
 const url = "/your-companies/company/12345678/create-company-association";
 const PAGE_HEADING = "Found. Redirecting to /your-companies/confirmation-company-added";
 
+jest.mock("../../../../../../src/lib/Logger");
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
     next();
@@ -66,5 +67,35 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
         const response = await router.get(url);
         // Then
         expect(response.status).toBe(400);
+    });
+
+    // Additional tests not particularly related to this route but to test if app.ts catches uncaught exceptions and unhandled rejections
+    it("catches uncaught exceptions", async () => {
+        // Given
+        mocks.mockCompanyAuthenticationMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+            process.emit("uncaughtException", new Error("test error"));
+            next();
+        });
+        const processExitMock = jest.spyOn(process, "exit").mockImplementation((number) => { throw new Error("process.exit: " + number); });
+        // When
+        await router.get(url);
+        // Then
+        expect(processExitMock).toHaveBeenCalledWith(1);
+    });
+
+    it("catches unhandled rejections", async () => {
+        // Given
+        mocks.mockCompanyAuthenticationMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+            const promise = new Promise<string>((resolve, reject) => {
+                return reject;
+            });
+            process.emit("unhandledRejection", "reason", promise);
+            next();
+        });
+        const processExitMock = jest.spyOn(process, "exit").mockImplementation((number) => { throw new Error("process.exit: " + number); });
+        // When
+        await router.get(url);
+        // Then
+        expect(processExitMock).toHaveBeenCalledWith(1);
     });
 });

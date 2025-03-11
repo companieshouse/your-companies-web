@@ -1,10 +1,12 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../locales/en/service-unavailable.json";
-import * as cy from "../../../../locales/cy/service-unavailable.json";
+import en from "../../../../locales/en/service-unavailable.json";
+import cy from "../../../../locales/cy/service-unavailable.json";
 
 const router = supertest(app);
+
+jest.mock("../../../../src/lib/Logger");
 
 describe("GET /your-companies/something-went-wrong", () => {
     const url = `/your-companies/something-went-wrong`;

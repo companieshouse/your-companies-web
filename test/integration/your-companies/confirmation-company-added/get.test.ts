@@ -5,10 +5,10 @@ import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../src/constants";
-import * as en from "../../../../locales/en/confirmation-company-added.json";
-import * as cy from "../../../../locales/cy/confirmation-company-added.json";
-import * as enCommon from "../../../../locales/en/common.json";
-import * as cyCommon from "../../../../locales/cy/common.json";
+import en from "../../../../locales/en/confirmation-company-added.json";
+import cy from "../../../../locales/cy/confirmation-company-added.json";
+import enCommon from "../../../../locales/en/common.json";
+import cyCommon from "../../../../locales/cy/common.json";
 
 const router = supertest(app);
 const url = "/your-companies/confirmation-company-added";
@@ -21,6 +21,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     req.session = session;
     return next();
 });
+jest.mock("../../../../src/lib/Logger");
 
 const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 

@@ -14,6 +14,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     req.session = session;
     return next();
 });
+jest.mock("../../../../src/lib/Logger");
 
 describe("POST /your-companies/confirm-company-details", () => {
 

@@ -1,8 +1,8 @@
 import mocks from "../../../../mocks/all.middleware.mock";
 import app from "../../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../../locales/en/company-invitations-decline.json";
-import * as cy from "../../../../../locales/cy/company-invitations-decline.json";
+import en from "../../../../../locales/en/company-invitations-decline.json";
+import cy from "../../../../../locales/cy/company-invitations-decline.json";
 import { updateAssociationStatus } from "../../../../../src/services/associationsService";
 import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../../src/constants";

@@ -8,8 +8,8 @@ import {
 import { mockInvitationList, getMockInvitationList, getPaginatedMockInvitationList, fifteenMockInvitations } from "../../../mocks/invitations.mock";
 import app from "../../../../src/app";
 import supertest from "supertest";
-import * as en from "../../../../locales/en/company-invitations.json";
-import * as cy from "../../../../locales/cy/company-invitations.json";
+import en from "../../../../locales/en/company-invitations.json";
+import cy from "../../../../locales/cy/company-invitations.json";
 import * as commonEn from "../../../../locales/en/common.json";
 import * as commonCy from "../../../../locales/cy/common.json";
 import * as associationsService from "../../../../src/services/associationsService";
@@ -17,6 +17,8 @@ import { AssociationStatus, AssociationList } from "private-api-sdk-node/dist/se
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations";
+
+jest.mock("../../../../src/lib/Logger");
 const userAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
 const invitationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getInvitations");
 

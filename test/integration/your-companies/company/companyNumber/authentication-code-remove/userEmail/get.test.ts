@@ -4,10 +4,10 @@ import supertest from "supertest";
 import * as constants from "../../../../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import * as en from "../../../../../../../locales/en/remove-authorised-person.json";
-import * as cy from "../../../../../../../locales/cy/remove-authorised-person.json";
-import * as enCommon from "../../../../../../../locales/en/common.json";
-import * as cyCommon from "../../../../../../../locales/cy/common.json";
+import en from "../../../../../../../locales/en/remove-authorised-person.json";
+import cy from "../../../../../../../locales/cy/remove-authorised-person.json";
+import enCommon from "../../../../../../../locales/en/common.json";
+import cyCommon from "../../../../../../../locales/cy/common.json";
 import * as referrerUtils from "../../../../../../../src/lib/utils/referrerUtils";
 import { setExtraData } from "../../../../../../../src/lib/utils/sessionUtils";
 

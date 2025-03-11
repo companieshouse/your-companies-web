@@ -4,8 +4,8 @@ import supertest from "supertest";
 import * as constants from "../../../../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import * as en from "../../../../../../../locales/en/remove-authorised-person.json";
-import * as cy from "../../../../../../../locales/cy/remove-authorised-person.json";
+import en from "../../../../../../../locales/en/remove-authorised-person.json";
+import cy from "../../../../../../../locales/cy/remove-authorised-person.json";
 
 const router = supertest(app);
 

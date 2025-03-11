@@ -5,10 +5,10 @@ import * as associationsService from "../../../../../../src/services/association
 import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
-import * as en from "../../../../../../locales/en/manage-authorised-people.json";
-import * as cy from "../../../../../../locales/cy/manage-authorised-people.json";
-import * as enCommon from "../../../../../../locales/en/common.json";
-import * as cyCommon from "../../../../../../locales/cy/common.json";
+import en from "../../../../../../locales/en/manage-authorised-people.json";
+import cy from "../../../../../../locales/cy/manage-authorised-people.json";
+import enCommon from "../../../../../../locales/en/common.json";
+import cyCommon from "../../../../../../locales/cy/common.json";
 import * as constants from "../../../../../../src/constants";
 import { when } from "jest-when";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
