@@ -1,4 +1,4 @@
-import { MONGODB_URI, NO_COMPANIES_TO_CREATE, NO_USERS_TO_CREATE } from "./config.js";
+import { MONGODB_URI, NO_COMPANIES_TO_CREATE, NO_USERS_TO_CREATE, USE_DIRECT_CONNECTION } from "./config.js";
 import { MongoClient } from "mongodb";
 import { createUsers } from "./functions/createUsersData.js";
 import { createCompanies } from "./functions/createCompaniesData.js";
@@ -6,7 +6,7 @@ import { createAssociations } from "./functions/CreateAssociationsData.js";
 import { createAuthCodes } from "./functions/createAuthCodes.js";
 
 async function main () {
-    const client = new MongoClient(MONGODB_URI, { directConnection: true });
+    const client = new MongoClient(MONGODB_URI, { directConnection: USE_DIRECT_CONNECTION });
 
     try {
         await client.connect();
