@@ -34,7 +34,7 @@ You can customize the script using these environment variables:
 - `MONGODB_URI`: Override the MongoDB connection string
 - `MONGODB_PASSWORD`: Set a custom default password for generated users (default: "password")
 - `NO_USERS_TO_CREATE`: Specify the number of users to generate (default: 50)
-- `NO_COMPANIES_TO_CREATE`: Specify the number of users to generate (default: 10)
+- `NO_COMPANIES_TO_CREATE`: Specify the number of companies to generate (default: 10)
 
 Example usage:
 ```bash
