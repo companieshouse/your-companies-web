@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "name": "seed-acsp-data-mongo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "mongodb": "^6.8.0"
+  }
+}
