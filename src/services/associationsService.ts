@@ -19,8 +19,9 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
     const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.searchAssociations(status, pageIndex, itemsPerPage, companyNumber);
 
     if (!sdkResponse) {
-        logger.error(`Associations API for status ${JSON.stringify(status)}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `No SDK Response returned from an associations API call for status ${JSON.stringify(status)}`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
@@ -29,8 +30,9 @@ export const getUserAssociations = async (req: Request, status: AssociationStatu
     }
 
     if (!sdkResponse.resource) {
-        logger.error(`Associations API returned no resource for associations with status ${JSON.stringify(status)}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Associations API returned no resource for associations with status ${JSON.stringify(status)}`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     logger.debug(`Received associations ${JSON.stringify(sdkResponse)}`);
@@ -65,8 +67,9 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
     const apiClient = createOauthPrivateApiClient(req);
     const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.getCompanyAssociations(companyNumber, includeRemoved, pageIndex, itemsPerPage, userEmail);
     if (!sdkResponse) {
-        logger.error(`Associations API for a company with company number ${companyNumber}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Associations API for a company with company number ${companyNumber}`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
@@ -75,8 +78,9 @@ export const getCompanyAssociations = async (req: Request, companyNumber: string
     }
 
     if (!sdkResponse.resource) {
-        logger.error(`Associations API returned no resource for associations for a company with company number ${companyNumber}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Associations API returned no resource for associations for a company with company number ${companyNumber}`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     logger.debug(`Received associations for a company with company number ${companyNumber}`);
@@ -89,8 +93,9 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
     const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(companyNumber, inviteeEmailAddress);
 
     if (!sdkResponse) {
-        logger.error(`Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
@@ -99,8 +104,9 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
     }
 
     if (!sdkResponse.resource) {
-        logger.error(`Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     logger.debug(`Received the new association id for a company with company number ${companyNumber}`);
@@ -114,8 +120,9 @@ export const updateAssociationStatus = async (req: Request, associationId: strin
     const sdkResponse: Resource<undefined | Errors> = await apiClient.associationsService.updateAssociationStatus(associationId, status);
 
     if (!sdkResponse) {
-        logger.error(`Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`);
-        return Promise.reject(sdkResponse);
+        const errorMessage = `Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`;
+        logger.error(errorMessage);
+        return Promise.reject(new Error(errorMessage));
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {

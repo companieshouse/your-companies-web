@@ -46,7 +46,7 @@ describe("associationsService", () => {
             mockGetCompanyAssociations.mockResolvedValueOnce(undefined);
 
             await expect(getCompanyAssociations(reqest, companyNumber))
-                .rejects.toBe(undefined);
+                .rejects.toThrow(`Associations API for a company with company number ${companyNumber}`);
         });
 
         it("should throw an error if status code other than 200", async () => {
@@ -66,7 +66,7 @@ describe("associationsService", () => {
             } as Resource<AssociationList>);
 
             await expect(getCompanyAssociations(reqest, companyNumber))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.OK });
+                .rejects.toThrow(`Associations API returned no resource for associations for a company with company number ${companyNumber}`);
         });
     });
 });

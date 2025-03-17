@@ -140,13 +140,13 @@ const createPageItem = (
 
 export const setLangForPagination = (pagination: PaginationData | undefined, lang: AnyRecord): void => {
     if (pagination?.next && lang.next) {
-        pagination.next.text = lang.next.toString();
+        pagination.next.text = String(lang.next);
         pagination.next.attributes = {
             "aria-label": lang.next_page
         };
     }
     if (pagination?.previous && lang.previous) {
-        pagination.previous.text = lang.previous.toString();
+        pagination.previous.text = String(lang.previous);
         pagination.previous.attributes = {
             "aria-label": lang.previous_page
         };

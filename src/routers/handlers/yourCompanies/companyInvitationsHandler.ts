@@ -101,8 +101,8 @@ export class CompanyInvitationsHandler extends GenericHandler {
                 const associationForThisInvite = userAssociations.items.find(assoc => assoc.id === invite.associationId);
                 return {
                     ...invite,
-                    companyName: associationForThisInvite?.companyName || "",
-                    companyNumber: associationForThisInvite?.companyNumber || ""
+                    companyName: associationForThisInvite?.companyName ?? "",
+                    companyNumber: associationForThisInvite?.companyNumber ?? ""
                 };
             });
         }

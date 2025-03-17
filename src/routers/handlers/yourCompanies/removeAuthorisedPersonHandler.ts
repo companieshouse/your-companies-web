@@ -38,7 +38,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         }
 
         if (method === constants.POST) {
-            const payload = Object.assign({}, req.body);
+            const payload = { ...req.body };
             if (!payload.confirmRemoval) {
                 this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
                 setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);

@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
@@ -10,7 +10,7 @@ import {
     getPresenterAlreadyAddedUrl
 } from "../../lib/utils/urlUtils";
 
-export const checkPresenterNavigation: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const checkPresenterNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer: string | undefined = req.get("Referrer");
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
