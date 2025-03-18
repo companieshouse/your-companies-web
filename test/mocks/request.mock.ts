@@ -1,6 +1,18 @@
 import { Request } from "express";
 
-export const mockRequest = () => {
+export const mockParametrisedRequest = (overrides: any) => {
+    const req = {
+        body: {},
+        params: {},
+        query: {},
+        headers: {},
+        get: jest.fn().mockReturnValue(""),
+        ...overrides
+    };
+    return req;
+};
+
+export const mockRequest = (): Request => {
     const req = {
         originalUrl: "",
         headers: {
