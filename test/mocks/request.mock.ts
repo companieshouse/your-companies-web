@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-export const mockParametrisedRequest = (overrides: any) => {
+export const mockParametrisedRequest = (overrides: any): Request => {
     const req = {
         body: {},
         params: {},
