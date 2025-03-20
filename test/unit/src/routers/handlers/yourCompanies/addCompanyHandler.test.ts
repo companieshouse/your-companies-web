@@ -25,11 +25,12 @@ const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData
 const res: Response = mockResponse();
 
 describe("AddCompanyHandler", () => {
-    const addCompanyHandler: AddCompanyHandler = new AddCompanyHandler();
+    let addCompanyHandler: AddCompanyHandler;
 
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
+        addCompanyHandler = new AddCompanyHandler();
     });
 
     test.each([
