@@ -28,8 +28,6 @@ describe("AddPresenterHandler", () => {
     test.each([
         {
             getExtraDataKeys: [
-                constants.COMPANY_NAME,
-                constants.COMPANY_NUMBER,
                 constants.PROPOSED_EMAIL,
                 constants.AUTHORISED_PERSON_EMAIL
             ],
@@ -47,8 +45,6 @@ describe("AddPresenterHandler", () => {
         },
         {
             getExtraDataKeys: [
-                constants.COMPANY_NAME,
-                constants.COMPANY_NUMBER,
                 constants.PROPOSED_EMAIL,
                 constants.AUTHORISED_PERSON_EMAIL
             ],
@@ -68,8 +64,6 @@ describe("AddPresenterHandler", () => {
         },
         {
             getExtraDataKeys: [
-                constants.COMPANY_NAME,
-                constants.COMPANY_NUMBER,
                 constants.PROPOSED_EMAIL,
                 constants.AUTHORISED_PERSON_EMAIL
             ],
@@ -85,10 +79,7 @@ describe("AddPresenterHandler", () => {
             condition: "authorised person email provided"
         },
         {
-            getExtraDataKeys: [
-                constants.COMPANY_NAME,
-                constants.COMPANY_NUMBER
-            ],
+            getExtraDataKeys: [],
             proposedEmail: "test@test.com",
             viewData: {},
             method: constants.POST,
@@ -97,10 +88,7 @@ describe("AddPresenterHandler", () => {
             condition: "there are no errors"
         },
         {
-            getExtraDataKeys: [
-                constants.COMPANY_NAME,
-                constants.COMPANY_NUMBER
-            ],
+            getExtraDataKeys: [],
             proposedEmail: "test@test@com",
             viewData: {
                 errors: {
@@ -123,6 +111,11 @@ describe("AddPresenterHandler", () => {
                 query: { cf },
                 body: { email: proposedEmail }
             });
+            const allGetExtraDataKeys = [
+                constants.COMPANY_NAME,
+                constants.COMPANY_NUMBER,
+                ...getExtraDataKeys
+            ];
             const translations = { key: "value" };
             getTranslationsForViewSpy.mockReturnValue(translations);
             const companyName = "Test Ltd.";
@@ -147,8 +140,8 @@ describe("AddPresenterHandler", () => {
             // When
             const response = await addPresenterHandler.execute(req, method);
             // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataKeys.length);
-            for (const key of getExtraDataKeys) {
+            expect(getExtraDataSpy).toHaveBeenCalledTimes(allGetExtraDataKeys.length);
+            for (const key of allGetExtraDataKeys) {
                 expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), key);
             }
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);

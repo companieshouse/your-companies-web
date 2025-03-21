@@ -25,11 +25,7 @@ describe("CancelPersonHandler", () => {
     test.each([
         {
             method: constants.GET,
-            getExtraDataKeys: [
-                constants.REFERER_URL,
-                constants.COMPANY_NAME,
-                constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION
-            ],
+            getExtraDataKeys: [],
             error: {
                 cancelPerson: {
                     text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION
@@ -47,22 +43,14 @@ describe("CancelPersonHandler", () => {
         },
         {
             method: constants.GET,
-            getExtraDataKeys: [
-                constants.REFERER_URL,
-                constants.COMPANY_NAME,
-                constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION
-            ],
+            getExtraDataKeys: [],
             viewData: {},
             return: "view data without error message",
             condition: "there are no errors"
         },
         {
             method: constants.POST,
-            getExtraDataKeys: [
-                constants.REFERER_URL,
-                constants.COMPANY_NAME,
-                constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION
-            ],
+            getExtraDataKeys: [],
             cancelPerson: undefined,
             viewData: {
                 errors: {
@@ -77,9 +65,6 @@ describe("CancelPersonHandler", () => {
         {
             method: constants.POST,
             getExtraDataKeys: [
-                constants.REFERER_URL,
-                constants.COMPANY_NAME,
-                constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION,
                 constants.COMPANY_NUMBER
             ],
             cancelPerson: "yes",
@@ -93,6 +78,12 @@ describe("CancelPersonHandler", () => {
             const lang = "en";
             const buttonHref = "/test/button-url";
             const userEmail = "test@test.com";
+            const allGetExtraDataKeys = [
+                constants.REFERER_URL,
+                constants.COMPANY_NAME,
+                constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION,
+                ...getExtraDataKeys
+            ];
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
                 lang,
@@ -124,8 +115,8 @@ describe("CancelPersonHandler", () => {
             // Then
             let deleteExtraDataCallCounter = 1;
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataKeys.length);
-            for (const key of getExtraDataKeys) {
+            expect(getExtraDataSpy).toHaveBeenCalledTimes(allGetExtraDataKeys.length);
+            for (const key of allGetExtraDataKeys) {
                 expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), key);
             }
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
