@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-export const mockResponse = () => {
+export const mockResponse = (): Response => {
     const res = {} as Response;
     res.redirect = jest.fn().mockReturnValue(res);
     res.status = jest.fn().mockReturnValue(res);

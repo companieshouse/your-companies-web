@@ -26,7 +26,7 @@ import { confirmCompanyNavigation } from "../middleware/navigation/confirmCompan
 import { manageAuthorisedPeopleNavigation } from "../middleware/navigation/manageAuthorisedPeople.middleware";
 import { removeAuthorisedPersonNavigation } from "../middleware/navigation/removeAuthorisedPerson.middleware";
 import { removeAuthorisedPersonRequestController } from "./controllers/removeAuthorisedPersonRequestController";
-import { removedThemselvesConfirmationControllerGet } from "./controllers/removeThemselvesConfirmationController";
+import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
 import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
 import { removedThemselvesNavigation } from "../middleware/navigation/personRemovedThemselves.middleware";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
