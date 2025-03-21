@@ -46,7 +46,7 @@ describe("associationsService", () => {
             mockUpdateAssociationStatus.mockResolvedValueOnce(undefined);
 
             await expect(updateAssociationStatus(reqest, associationId, status))
-                .rejects.toBe(undefined);
+                .rejects.toThrow(`Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`);
         });
 
         it("should throw an http error if status code other than 200", async () => {

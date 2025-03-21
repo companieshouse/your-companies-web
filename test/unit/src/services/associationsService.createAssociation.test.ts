@@ -63,14 +63,14 @@ describe("associationsService", () => {
             mockCreateAssociation.mockResolvedValueOnce(undefined);
 
             await expect(createAssociation(reqest, companyNumber))
-                .rejects.toBe(undefined);
+                .rejects.toThrow(`Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`);
         });
 
         it("should return an error if no response returned from SDK for invited person", async () => {
             mockCreateAssociation.mockResolvedValueOnce(undefined);
 
             await expect(createAssociation(reqest, companyNumber, inviteeEmailAddress))
-                .rejects.toBe(undefined);
+                .rejects.toThrow(`Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`);
         });
 
         it("should throw an error if status code other than 201", async () => {
@@ -103,7 +103,7 @@ describe("associationsService", () => {
             } as Resource<NewAssociationResponse>);
 
             await expect(createAssociation(reqest, companyNumber))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.CREATED });
+                .rejects.toThrow(`Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`);
         });
 
         it("Should throw an error if no response resource returned from SDK for invited person", async () => {
@@ -113,7 +113,7 @@ describe("associationsService", () => {
             } as Resource<NewAssociationResponse>);
 
             await expect(createAssociation(reqest, companyNumber, inviteeEmailAddress))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.CREATED });
+                .rejects.toThrow(`Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`);
         });
     });
 });

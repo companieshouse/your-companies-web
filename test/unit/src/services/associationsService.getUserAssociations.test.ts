@@ -46,7 +46,7 @@ describe("associationsService", () => {
             mockSearchAssociations.mockResolvedValueOnce(undefined);
 
             await expect(getUserAssociations(reqest, []))
-                .rejects.toBe(undefined);
+                .rejects.toThrow("No SDK Response returned from an associations API call for status []");
         });
 
         it("should throw an error if status code other than 200", async () => {
@@ -66,7 +66,7 @@ describe("associationsService", () => {
             } as Resource<AssociationList>);
 
             await expect(getUserAssociations(reqest, []))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.OK });
+                .rejects.toThrow("Associations API returned no resource for associations with status []");
         });
     });
 });

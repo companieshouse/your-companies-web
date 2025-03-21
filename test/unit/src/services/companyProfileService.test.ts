@@ -43,7 +43,7 @@ describe("Company profile service test", () => {
             mockGetCompanyProfile.mockResolvedValueOnce(undefined);
 
             await expect(getCompanyProfile(COMPANY_NUMBER))
-                .rejects.toBe(undefined);
+                .rejects.toThrow(`Company profile API for company number ${COMPANY_NUMBER}`);
         });
 
         it("Should throw an error if SERVICE UNAVAILABLE returned from SDK", async () => {
@@ -53,7 +53,7 @@ describe("Company profile service test", () => {
             } as Resource<CompanyProfile>);
 
             await expect(getCompanyProfile(COMPANY_NUMBER))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.SERVICE_UNAVAILABLE });
+                .rejects.toThrow(`Http status code ${StatusCodes.SERVICE_UNAVAILABLE} - Failed to get company profile for company number ${COMPANY_NUMBER}`);
         });
 
         it(`Should throw an error if status code >= ${StatusCodes.BAD_REQUEST}`, async () => {
@@ -63,7 +63,7 @@ describe("Company profile service test", () => {
             } as Resource<CompanyProfile>);
 
             await expect(getCompanyProfile(COMPANY_NUMBER))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.BAD_REQUEST });
+                .rejects.toThrow(`Http status code ${StatusCodes.BAD_REQUEST} - Failed to get company profile for company number ${COMPANY_NUMBER}`);
         });
 
         it("Should throw an error if no response resource returned from SDK", async () => {
@@ -73,7 +73,7 @@ describe("Company profile service test", () => {
             } as Resource<CompanyProfile>);
 
             await expect(getCompanyProfile(COMPANY_NUMBER))
-                .rejects.toEqual({ httpStatusCode: StatusCodes.OK });
+                .rejects.toThrow(`Company profile API returned no resource for company number ${COMPANY_NUMBER}`);
         });
     });
 });
