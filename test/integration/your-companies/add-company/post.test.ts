@@ -10,7 +10,7 @@ import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as commpanyProfileService from "../../../../src/services/companyProfileService";
+import * as companyProfileService from "../../../../src/services/companyProfileService";
 import * as constants from "../../../../src/constants";
 import en from "../../../../locales/en/add-company.json";
 import cy from "../../../../locales/cy/add-company.json";
@@ -42,7 +42,7 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
+const companyProfileSpy: jest.SpyInstance = jest.spyOn(companyProfileService, "getCompanyProfile");
 const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationService, "isOrWasCompanyAssociatedWithUser");
 
 describe("POST /your-companies/add-company", () => {
