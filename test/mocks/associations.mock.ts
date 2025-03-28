@@ -1,4 +1,10 @@
-import { AssociationList, AssociationStatus, Invitation, ApprovalRoute } from "private-api-sdk-node/dist/services/associations/types";
+import {
+    AssociationList,
+    AssociationStatus,
+    Invitation,
+    ApprovalRoute,
+    Association
+} from "private-api-sdk-node/dist/services/associations/types";
 import { CompanyStatuses } from "../../src/types/associations";
 
 export const userAssociations: AssociationList = {
@@ -1641,4 +1647,24 @@ export const userAssociationWithCompanyStatus: AssociationList = {
     pageNumber: 0,
     totalResults: 2,
     totalPages: 1
+};
+
+export const getAssociationList = (
+    items: Association[] = [],
+    itemsPerPage = 1,
+    pageNumber = 0,
+    totalResults = 0,
+    totalPages = 0
+): AssociationList => {
+    return {
+        items,
+        links: {
+            self: "",
+            next: ""
+        },
+        itemsPerPage,
+        pageNumber,
+        totalResults,
+        totalPages
+    };
 };
