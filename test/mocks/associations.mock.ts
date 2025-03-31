@@ -1650,21 +1650,19 @@ export const userAssociationWithCompanyStatus: AssociationList = {
 };
 
 export const getAssociationList = (
-    items: Association[] = [],
-    itemsPerPage = 1,
-    pageNumber = 0,
-    totalResults = 0,
-    totalPages = 0
-): AssociationList => {
-    return {
-        items,
-        links: {
-            self: "",
-            next: ""
-        },
-        itemsPerPage,
-        pageNumber,
-        totalResults,
-        totalPages
-    };
-};
+    items: Association[],
+    itemsPerPage: number,
+    pageNumber: number,
+    totalResults: number,
+    totalPages: number
+): AssociationList => ({
+    items,
+    links: {
+        self: "",
+        next: ""
+    },
+    itemsPerPage,
+    pageNumber,
+    totalResults,
+    totalPages
+});
