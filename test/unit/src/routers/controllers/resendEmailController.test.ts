@@ -40,17 +40,15 @@ describe("resendEmailController", () => {
             req.params = { [constants.USER_EMAIL]: email };
             const expectedMessage = `Email ${email} invalid or not on the authorisation list for company ${companyNumber}`;
             validateEmailStringSpy.mockReturnValue(false);
+            const expectedUrl = "your-companies/something-went-wrong";
+            getFullUrlSpy.mockReturnValue(expectedUrl);
             // When
             await resendEmailController(req as Request, res as Response);
             // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.COMPANY_NUMBER);
-            expect(validateEmailStringSpy).toHaveBeenCalledTimes(1);
             expect(validateEmailStringSpy).toHaveBeenCalledWith(email);
-            expect(logger.info).toHaveBeenCalledTimes(1);
             expect(logger.info).toHaveBeenCalledWith(expectedMessage);
-            expect(renderMock).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledWith(constants.SERVICE_UNAVAILABLE_TEMPLATE);
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.redirect).toHaveBeenCalledWith(expectedUrl);
         });
 
     it("should redirect to manage authorised people confirmation email resent page",

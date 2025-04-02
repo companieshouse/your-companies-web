@@ -17,16 +17,22 @@ export class SomethingWentWrongHandler extends GenericHandler {
         this.viewData = {
             templateName: constants.SERVICE_UNAVAILABLE,
             lang: {},
-            csrfErrors: true,
+            csrfErrors: false,
             title: ""
         };
     }
 
     async execute (req: Request): Promise<SomethingWentWrongViewData> {
         const translations = getTranslationsForView(req.lang || "en", constants.SERVICE_UNAVAILABLE);
+        const csrfError = this.isCsrfError(req);
         this.viewData.lang = translations;
+        this.viewData.csrfErrors = csrfError;
         this.viewData.title = `${translations.sorry_something_went_wrong}${translations.title_end}`;
 
         return Promise.resolve(this.viewData);
+    }
+
+    private isCsrfError (req: Request): boolean {
+        return Object.prototype.hasOwnProperty.call(req.query, constants.CSRF_ERRORS);
     }
 }

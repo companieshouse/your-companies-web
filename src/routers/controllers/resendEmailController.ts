@@ -15,6 +15,7 @@ export const resendEmailController = async (req: Request, res: Response): Promis
         logger.info(
             `Email ${email} invalid or not on the authorisation list for company ${companyNumber}`
         );
+        return res.status(400).redirect(getFullUrl(constants.SOMETHING_WENT_WRONG_URL));
     } else {
         const emailSendResponse: string = await createAssociation(req, companyNumber, email);
         if (emailSendResponse) {
@@ -28,5 +29,5 @@ export const resendEmailController = async (req: Request, res: Response): Promis
             );
         }
     }
-    return res.status(400).render(constants.SERVICE_UNAVAILABLE_TEMPLATE);
+    return res.status(400).redirect(getFullUrl(constants.SOMETHING_WENT_WRONG_URL));
 };

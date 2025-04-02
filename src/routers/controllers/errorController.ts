@@ -44,8 +44,7 @@ export const csrfErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         logger.error(
             `CSRF Error occured ${err.message}, Stack: ${err.stack}`
         );
-
-        res.status(403).redirect(getFullUrl(constants.SOMETHING_WENT_WRONG_URL));
+        res.status(403).redirect(`${getFullUrl(constants.SOMETHING_WENT_WRONG_URL)}?${constants.CSRF_ERRORS}`);
     } else {
         next(err);
     }

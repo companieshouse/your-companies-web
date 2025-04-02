@@ -19,7 +19,12 @@ describe("SomethingWentWrongHandler", () => {
     it("should return view data", async () => {
         // Given
         const lang = "en";
-        const req: Request = mockParametrisedRequest({ session: new Session(), lang });
+        const req: Request = mockParametrisedRequest({
+            session: new Session(),
+            lang,
+            query: { [constants.CSRF_ERRORS]: "" } // simulate ?csrfErrors
+        });
+
         const translations = {
             sorry_something_went_wrong: "Sorry something went wrong",
             title_end: " - title end"
