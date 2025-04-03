@@ -31,7 +31,7 @@ describe("resendEmailController", () => {
         jest.clearAllMocks();
     });
 
-    it("should render service unavailable page if provided email is invalid",
+    it("should redirect to something went wrong page if provided email is invalid",
         async () => {
             // Given
             const companyNumber = "12345";
