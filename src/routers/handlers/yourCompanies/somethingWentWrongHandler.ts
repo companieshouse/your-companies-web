@@ -33,6 +33,6 @@ export class SomethingWentWrongHandler extends GenericHandler {
     }
 
     private isCsrfError (req: Request): boolean {
-        return Object.prototype.hasOwnProperty.call(req.query, constants.CSRF_ERRORS);
+        return Object.hasOwn(req.query, constants.CSRF_ERRORS);
     }
 }
