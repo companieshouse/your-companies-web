@@ -8,11 +8,13 @@ import { YourCompaniesHandler } from "../../../../../../src/routers/handlers/you
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Session } from "@companieshouse/node-session-handler";
 import * as associationsService from "../../../../../../src/services/associationsService";
-import { userAssociations } from "../../../../../mocks/associations.mock";
+import { emptyAssociations, userAssociations } from "../../../../../mocks/associations.mock";
 import { i18nCh } from "@companieshouse/ch-node-utils";
 import { mockInvitationList } from "../../../../../mocks/invitations.mock";
 import * as paginationHelper from "../../../../../../src/lib/helpers/buildPaginationHelper";
-import { when } from "jest-when";
+import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+
+jest.mock("../../../../../../src/lib/Logger");
 
 const deleteExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "deleteExtraData");
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
@@ -30,140 +32,206 @@ const getFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getFullUrl");
 
 describe("YourCompaniesHandler", () => {
     let yourCompaniesHandler: YourCompaniesHandler;
+    const addCompanyUrl = `${constants.LANDING_URL}${constants.ADD_COMPANY_URL}`;
+    const viewInvitationsPageUrl = `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`;
 
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
+        getFullUrlSpy
+            .mockReturnValueOnce(addCompanyUrl)
+            .mockReturnValueOnce(viewInvitationsPageUrl);
         yourCompaniesHandler = new YourCompaniesHandler();
     });
 
-    const SearchStatus = {
-        VALID_SEARCH: "COMP123",
-        INVALID_SEARCH: "invalidSearch"
-    };
-
     test.each([
         {
-            getExtraDataKeys: [],
-            search: "",
-            pageNumber: 1,
-            errorMassage: {
+            query: {
+                search: undefined
+            },
+            pageNumber: userAssociations.pageNumber,
+            confirmedUserAssociations: emptyAssociations,
+            isValidPageNumber: true,
+            viewData: {
+                numberOfInvitations: mockInvitationList.totalResults,
+                associationData: [],
+                numOfMatches: 0,
+                displaySearchForm: false,
+                userHasCompanies: "",
+                removeCompanyUrl: "",
+                viewAndManageUrl: "",
+                showNumOfMatches: false
+            },
+            page: undefined,
+
+            return: "basic view data",
+            condition: "user has no confirmed associations and has invitations"
+        },
+        {
+            query: {
+                search: undefined
+            },
+            pageNumber: userAssociations.pageNumber,
+            confirmedUserAssociations: userAssociations,
+            isValidPageNumber: true,
+            viewData: {
+                numberOfInvitations: mockInvitationList.totalResults,
+                associationData: [{
+                    company_name: userAssociations.items[0].companyName,
+                    company_number: userAssociations.items[0].companyNumber,
+                    company_status: userAssociations.items[0].companyStatus
+                },
+                {
+                    company_name: userAssociations.items[1].companyName,
+                    company_number: userAssociations.items[1].companyNumber,
+                    company_status: userAssociations.items[1].companyStatus
+                }],
+                numOfMatches: userAssociations.totalResults,
+                numberOfPages: userAssociations.totalPages,
+                displaySearchForm: false,
+                userHasCompanies: constants.TRUE,
+                removeCompanyUrl: undefined,
+                viewAndManageUrl: undefined,
+                showNumOfMatches: false
+            },
+            page: undefined,
+            return: "basic view data",
+            condition: "user has confirmed associations and has invitations"
+        },
+        {
+            query: {
+                search: "invalidSearchString"
+            },
+            pageNumber: userAssociations.pageNumber,
+            confirmedUserAssociations: emptyAssociations,
+            isValidPageNumber: true,
+            viewData: {
+                numberOfInvitations: mockInvitationList.totalResults,
+                associationData: [],
+                numOfMatches: 0,
+                displaySearchForm: true,
+                userHasCompanies: constants.TRUE,
+                removeCompanyUrl: "",
+                viewAndManageUrl: "",
+                showNumOfMatches: false
+            },
+            errors: {
                 search: {
                     text: constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE
                 }
             },
-            viewData: {
-                search: SearchStatus.INVALID_SEARCH,
-                errors: {
-                    search: {
-                        text: constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE
-                    }
-                }
-            },
-            return: "view data with search error message",
-            condition: "there are errors with the search string"
+            page: undefined,
+            return: "view data containing search error message",
+            condition: "a search string exists, but is not valid"
         },
         {
-            getExtraDataKeys: [],
-            search: "COMP123",
-            errorMassage: [],
-            pageNumber: 1,
-            viewData: {
-                search: SearchStatus.VALID_SEARCH
+            query: {
+                search: "validSearchString"
             },
-            return: "view data without errors",
-            condition: "the search string is valid"
-        },
-        {
-            getExtraDataKeys: [],
-            search: "",
+            pageNumber: userAssociations.pageNumber,
+            confirmedUserAssociations: emptyAssociations,
+            isValidPageNumber: true,
             viewData: {
-                search: SearchStatus.VALID_SEARCH
+                numberOfInvitations: mockInvitationList.totalResults,
+                associationData: [],
+                numOfMatches: 0,
+                displaySearchForm: true,
+                userHasCompanies: constants.TRUE,
+                removeCompanyUrl: "",
+                viewAndManageUrl: "",
+                showNumOfMatches: true
             },
-            errorMassage: [],
-            pageNumber: 0,
-            return: "pageNumber = 1 and getUserAssociations triggers twice",
-            condition: "the pageNumber value is 0"
+            page: undefined,
+            return: "view data without search error message",
+            condition: "a search string exists, and is valid"
         }
     ])("should return $return when $condition",
-        async ({ getExtraDataKeys, errorMassage, pageNumber, viewData }) => {
+        async ({
+            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, page, errors
+        }) => {
 
             // Given
             const lang = "en";
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
                 lang,
-                query: viewData
+                query
             });
             const i18nChInstance = {
                 getResourceBundle: getResourceBundleMock
             };
 
-            const associationsArray = userAssociations.items.map(item => ({
-                company_name: item.companyName,
-                company_number: item.companyNumber,
-                company_status: item.companyStatus
-            }));
-
-            // console.log(associationsArray);
-
             const expectedViewData = {
-                templateName: constants.CANCEL_PERSON_PAGE,
-                lang: translations,
-                buttonHref: `${constants.LANDING_URL}${constants.ADD_COMPANY_URL}`,
-                // associationData: associationsArray,
+                templateName: constants.YOUR_COMPANIES_PAGE,
+                buttonHref: addCompanyUrl + constants.CLEAR_FORM_TRUE,
+                lang: {},
+                viewInvitationsPageUrl,
+                cancelSearchHref: constants.LANDING_URL,
+                matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
+                search: query.search,
+                errors: errors,
+                pagination: undefined,
+                pageNumber,
+                numberOfPages: 0,
                 ...viewData
             };
-            getUserAssociationsSpy.mockReturnValue(userAssociations);
-            validatePageNumberSpy.mockReturnValue(true);
+            getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
+            validatePageNumberSpy.mockReturnValue(isValidPageNumber);
             getInstanceSpy.mockReturnValue(i18nChInstance);
             getInvitationsSpy.mockReturnValue(mockInvitationList);
-            when(getFullUrlSpy).calledWith(constants.ADD_COMPANY_URL).mockReturnValue(`${constants.LANDING_URL}${constants.ADD_COMPANY_URL}${constants.CLEAR_FORM_TRUE}`);
-            when(getFullUrlSpy).calledWith(constants.COMPANY_INVITATIONS_URL).mockReturnValue(`${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`);
-            // when(getFullUrlSpy).calledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL).mockReturnValue(`${constants.LANDING_URL}${constants.MANAGE_AUTHORISED_PEOPLE_URL}`);
-            // when(getFullUrlSpy).calledWith(constants.REMOVE_COMPANY_URL).mockReturnValue(`${constants.LANDING_URL}${constants.REMOVE_COMPANY_URL}`);
-
-            if (viewData.search === SearchStatus.VALID_SEARCH) {
-                validateCompanyNumberSearchStringSpy.mockReturnValue(true);
-            } else {
-                validateCompanyNumberSearchStringSpy.mockReturnValue(false);
-            }
-
-            if (pageNumber === 0) {
-                validatePageNumberSpy.mockReturnValue(false);
-            } else {
-                validatePageNumberSpy.mockReturnValue(true);
-            }
-
+            stringToPositiveIntegerSpy.mockReturnValueOnce(pageNumber);
             getResourceBundleMock.mockReturnValue({});
-
+            if (query.search === "invalidSearchString") {
+                validateCompanyNumberSearchStringSpy.mockReturnValue(false);
+            } else {
+                validateCompanyNumberSearchStringSpy.mockReturnValue(true);
+            }
             // When
             const response = await yourCompaniesHandler.execute(req);
 
             // Then
-            expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledTimes(1);
-            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(9);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
-            expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
-            if (pageNumber === 0) {
-                expect(getUserAssociationsSpy).toHaveBeenCalledTimes(2);
-            } else {
-                expect(getUserAssociationsSpy).toHaveBeenCalledTimes(1);
+            expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
+
+            if (query.search) {
+                expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledTimes(1);
+                expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledWith(query.search);
             }
+
+            const getUserAssociationsCounter = 1;
+            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED], errors ? undefined : query.search, pageNumber - 1);
+            expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
+            expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
-            expect(getInstanceSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+            expect(getInvitationsSpy).toHaveBeenCalledWith(req);
+            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(9);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_URL_EXTRA);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CURRENT_COMPANY_NUM);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_COMPANY_URL_EXTRA);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NAME);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NUMBER);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
             expect(getResourceBundleMock).toHaveBeenCalled;
             expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
+            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.YOUR_COMPANIES_PAGE);
 
-            // WITHIN AN IF STATEMENT
-            expect(getSearchQuerySpy).toHaveBeenCalledTimes(1);
-            expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-            expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
+            let getFullUrlCounter = 2;
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.ADD_COMPANY_URL);
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
-            // expect(getFullUrlSpy).toHaveBeenCalledTimes(4);
-            // expect(response).toEqual(expectedViewData);
-            // console.log(response);
+            if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
+                getFullUrlCounter = 4;
+                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
+                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
+            }
+
+            expect(getUserAssociationsSpy).toHaveBeenCalledTimes(getUserAssociationsCounter);
+            expect(getFullUrlSpy).toHaveBeenCalledTimes(getFullUrlCounter);
+            expect(response).toEqual(expectedViewData);
         });
 
 });
