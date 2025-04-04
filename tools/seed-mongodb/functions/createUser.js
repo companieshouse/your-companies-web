@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { DEFAULT_PASSWORD } from "../config.js";
+import { DEFAULT_PASSWORD, EMAIL_DOMAIN } from "../config.js";
 
 export function createUser () {
     const user = {
@@ -10,7 +10,7 @@ export function createUser () {
     const forename = faker.person.firstName();
     const surname = faker.person.lastName();
     const displayNameOptions = [null, `${forename} ${surname}`];
-    user.email = faker.internet.email({ firstName: `inugami_test_data_${forename}`, lastName: surname }).toLowerCase();
+    user.email = faker.internet.email({ firstName: `inugami_test_data_${forename}`, lastName: surname, provider: EMAIL_DOMAIN }).toLowerCase();
     user.display_name = displayNameOptions[Math.floor(Math.random() * 2)];
 
     return user;
