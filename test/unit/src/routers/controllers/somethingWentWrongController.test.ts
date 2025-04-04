@@ -34,8 +34,12 @@ describe("somethingWentWrongControllerGet", () => {
     it("should render service unavailable page", async () => {
         // Given
         const expectedViewData = {
-            key: "value"
+            csrfErrors: true,
+            lang: {},
+            title: "",
+            templateName: constants.SERVICE_UNAVAILABLE_TEMPLATE
         };
+
         mockExecute.mockReturnValue(expectedViewData);
         // When
         await somethingWentWrongControllerGet(req as Request, res as Response);
@@ -46,4 +50,20 @@ describe("somethingWentWrongControllerGet", () => {
         expect(renderMock).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledWith(constants.SERVICE_UNAVAILABLE_TEMPLATE, expectedViewData);
     });
+
+    it("should render with status 500 if not a CSRF error", async () => {
+        const expectedViewData = {
+            csrfErrors: false,
+            lang: {},
+            title: "",
+            templateName: constants.SERVICE_UNAVAILABLE_TEMPLATE
+        };
+
+        mockExecute.mockReturnValue(expectedViewData);
+        await somethingWentWrongControllerGet(req as Request, res as Response);
+
+        expect(statusMock).toHaveBeenCalledWith(500);
+        expect(renderMock).toHaveBeenCalledWith(constants.SERVICE_UNAVAILABLE_TEMPLATE, expectedViewData);
+    });
+
 });

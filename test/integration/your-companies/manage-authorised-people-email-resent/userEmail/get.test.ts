@@ -38,9 +38,14 @@ describe("GET /your-companies/manage-authorised-people-email-resent/:userEmail",
     it("should reject invalid emails", async () => {
         // Given
         const url = "/your-companies/manage-authorised-people-email-resent/bob1bob.com";
+        const expectedRedirectUrl = "/your-companies/something-went-wrong";
+
         // When
         const response = await router.get(url);
+
         // Then
-        expect(response.statusCode).toEqual(400);
+        expect(response.statusCode).toEqual(302);
+        expect(response.header.location).toEqual(expectedRedirectUrl);
     });
+
 });

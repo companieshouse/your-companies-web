@@ -46,7 +46,10 @@ describe("csrfErrorHandler", () => {
         csrfErrorHandler(err, request, response, mockNext);
         // Then
         expect(response.status).toHaveBeenCalledWith(403);
-        expect(response.redirect).toHaveBeenCalledWith(getFullUrl(constants.SOMETHING_WENT_WRONG_URL));
+        expect(response.redirect).toHaveBeenCalledWith(
+            `${getFullUrl(constants.SOMETHING_WENT_WRONG_URL)}?${constants.CSRF_ERRORS}`
+        );
+
         expect(logger.error).toHaveBeenCalledTimes(1);
         expect(logger.error).toHaveBeenCalledWith(
             expect.stringContaining("CSRF Error occured")

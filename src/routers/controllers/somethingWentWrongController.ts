@@ -5,5 +5,7 @@ import { SomethingWentWrongHandler } from "../handlers/yourCompanies/somethingWe
 export const somethingWentWrongControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new SomethingWentWrongHandler();
     const viewData = await handler.execute(req);
-    res.status(403).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, viewData);
+    const statusCode = viewData.csrfErrors ? 403 : 500;
+
+    res.status(statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, viewData);
 };
