@@ -47,7 +47,8 @@ describe("YourCompaniesHandler", () => {
     test.each([
         {
             query: {
-                search: undefined
+                search: undefined,
+                page: undefined
             },
             pageNumber: userAssociations.pageNumber,
             confirmedUserAssociations: emptyAssociations,
@@ -62,14 +63,13 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false
             },
-            page: undefined,
-
             return: "basic view data",
             condition: "user has no confirmed associations and has invitations"
         },
         {
             query: {
-                search: undefined
+                search: undefined,
+                page: undefined
             },
             pageNumber: userAssociations.pageNumber,
             confirmedUserAssociations: userAssociations,
@@ -94,13 +94,13 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: undefined,
                 showNumOfMatches: false
             },
-            page: undefined,
             return: "basic view data",
             condition: "user has confirmed associations and has invitations"
         },
         {
             query: {
-                search: "invalidSearchString"
+                search: "invalidSearchString",
+                page: undefined
             },
             pageNumber: userAssociations.pageNumber,
             confirmedUserAssociations: emptyAssociations,
@@ -120,13 +120,13 @@ describe("YourCompaniesHandler", () => {
                     text: constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE
                 }
             },
-            page: undefined,
             return: "view data containing search error message",
             condition: "a search string exists, but is not valid"
         },
         {
             query: {
-                search: "validSearchString"
+                search: "validSearchString",
+                page: undefined
             },
             pageNumber: userAssociations.pageNumber,
             confirmedUserAssociations: emptyAssociations,
@@ -141,13 +141,12 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: true
             },
-            page: undefined,
             return: "view data without search error message",
             condition: "a search string exists, and is valid"
         }
     ])("should return $return when $condition",
         async ({
-            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, page, errors
+            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, errors
         }) => {
 
             // Given
@@ -191,7 +190,7 @@ describe("YourCompaniesHandler", () => {
 
             // Then
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
+            expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(query.page);
 
             if (query.search) {
                 expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledTimes(1);
