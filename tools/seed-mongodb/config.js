@@ -14,6 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI || (
         : connectionString.replace("phoenix_dev@", `phoenix_dev:${process.env.MONGODB_PASSWORD}@`)
 );
 
+export const EMAIL_DOMAIN = process.env.EMAIL_DOMAIN || "example.com";
 export const USE_DIRECT_CONNECTION = IS_LOCAL;
 export const DEFAULT_PASSWORD = process.env.DEFAULT_PASSWORD || "$2a$10$6a..eerV1kSiNW3sBlcYv.VmEXyI7ABWuoo3w7zKzcdh18YKyvPbm";
 export const AUTH_CODE = "$2a$10$uS7dsFz8iIuNvXQK6dG1v.F//uQajFz0BLc60/B8qrGqsdFrU77MO";

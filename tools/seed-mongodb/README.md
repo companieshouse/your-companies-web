@@ -35,6 +35,7 @@ You can customize the script using these environment variables:
 - `MONGODB_PASSWORD`: Set a custom default password for generated users (default: "password")
 - `NO_USERS_TO_CREATE`: Specify the number of users to generate (default: 50)
 - `NO_COMPANIES_TO_CREATE`: Specify the number of companies to generate (default: 10)
+- `EMAIL_DOMAIN`: Set a custom domain for email addresses (default: `example.com`). See also https://www.iana.org/help/example-domains
 
 Example usage:
 ```bash
@@ -46,6 +47,7 @@ export USE_ENV=phoenix
 export MONGODB_PASSWORD=custompass 
 export NO_USERS_TO_CREATE=10
 export NO_COMPANIES_TO_CREATE=5 
+export EMAIL_DOMAIN=example.org
 node index.js
 ```
 
