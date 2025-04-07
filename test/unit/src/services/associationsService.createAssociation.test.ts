@@ -29,10 +29,10 @@ describe("associationsService", () => {
             jest.clearAllMocks();
         });
 
-        it("should return a new association id when the association is created", async () => {
+        it("should return a new association link when the association is created", async () => {
             // Given
-            const associationId = "0123456789";
-            const newAssociationResponse: NewAssociationResponse = { associationId };
+            const associationLink = "/associations/0123456789";
+            const newAssociationResponse: NewAssociationResponse = { associationLink };
             const sdkResource: Resource<NewAssociationResponse> = {
                 httpStatusCode: StatusCodes.CREATED,
                 resource: newAssociationResponse
@@ -41,13 +41,13 @@ describe("associationsService", () => {
             // When
             const result = await createAssociation(reqest, companyNumber);
             // Then
-            expect(result).toEqual(associationId);
+            expect(result).toEqual(associationLink);
         });
 
-        it("should return a new association id when the association for invited person is created", async () => {
+        it("should return a new association link when the association for invited person is created", async () => {
             // Given
-            const associationId = "0123456789";
-            const newAssociationResponse: NewAssociationResponse = { associationId };
+            const associationLink = "/associations/0123456789";
+            const newAssociationResponse: NewAssociationResponse = { associationLink };
             const sdkResource: Resource<NewAssociationResponse> = {
                 httpStatusCode: StatusCodes.CREATED,
                 resource: newAssociationResponse
@@ -56,7 +56,7 @@ describe("associationsService", () => {
             // When
             const result = await createAssociation(reqest, companyNumber, inviteeEmailAddress);
             // Then
-            expect(result).toEqual(associationId);
+            expect(result).toEqual(associationLink);
         });
 
         it("should return an error if no response returned from SDK", async () => {
