@@ -29,10 +29,10 @@ describe("associationsService", () => {
             jest.clearAllMocks();
         });
 
-        it("should return a new association id when an invite is posted", async () => {
+        it("should return a new association link when an invite is posted", async () => {
             // Given
-            const associationId = "0123456789";
-            const newAssociationResponse: NewAssociationResponse = { associationId };
+            const associationLink = "/associations/0123456789";
+            const newAssociationResponse: NewAssociationResponse = { associationLink };
             const sdkResource: Resource<NewAssociationResponse> = {
                 httpStatusCode: StatusCodes.CREATED,
                 resource: newAssociationResponse
@@ -41,7 +41,7 @@ describe("associationsService", () => {
             // When
             const result = await postInvitation(request, companyNumber, inviteeEmailAddress);
             // Then
-            expect(result).toEqual(associationId);
+            expect(result).toEqual(associationLink);
         });
 
         it("should throw an error if no response returned from SDK", async () => {
