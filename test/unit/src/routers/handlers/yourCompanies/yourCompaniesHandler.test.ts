@@ -50,7 +50,7 @@ describe("YourCompaniesHandler", () => {
                 search: undefined,
                 page: undefined
             },
-            pageNumber: userAssociations.pageNumber,
+            pageNumber: emptyAssociations.pageNumber,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -61,15 +61,16 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: "",
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
-                showNumOfMatches: false
+                showNumOfMatches: false,
+                pagination: undefined
             },
             return: "basic view data",
             condition: "user has no confirmed associations and has invitations"
         },
         {
             query: {
-                search: undefined,
-                page: undefined
+                search: "validSearchString",
+                page: "1"
             },
             pageNumber: userAssociations.pageNumber,
             confirmedUserAssociations: userAssociations,
@@ -88,13 +89,18 @@ describe("YourCompaniesHandler", () => {
                 }],
                 numOfMatches: userAssociations.totalResults,
                 numberOfPages: userAssociations.totalPages,
-                displaySearchForm: false,
+                displaySearchForm: true,
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: undefined,
                 viewAndManageUrl: undefined,
-                showNumOfMatches: false
+                showNumOfMatches: true,
+                pagination: {
+                    previous: { href: "href" },
+                    items: []
+                }
             },
-            return: "basic view data",
+            searchQuery: "&search=validSearchString",
+            return: "basic view data with empty pagination object",
             condition: "user has confirmed associations and has invitations"
         },
         {
@@ -102,7 +108,7 @@ describe("YourCompaniesHandler", () => {
                 search: "invalidSearchString",
                 page: undefined
             },
-            pageNumber: userAssociations.pageNumber,
+            pageNumber: emptyAssociations.pageNumber,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -113,7 +119,8 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
-                showNumOfMatches: false
+                showNumOfMatches: false,
+                pagination: undefined
             },
             errors: {
                 search: {
@@ -128,7 +135,7 @@ describe("YourCompaniesHandler", () => {
                 search: "validSearchString",
                 page: undefined
             },
-            pageNumber: userAssociations.pageNumber,
+            pageNumber: emptyAssociations.pageNumber,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -139,18 +146,22 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
-                showNumOfMatches: true
+                showNumOfMatches: true,
+                pagination: undefined
             },
             return: "view data without search error message",
             condition: "a search string exists, and is valid"
         }
     ])("should return $return when $condition",
         async ({
-            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, errors
+            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
         }) => {
 
             // Given
-            const lang = "en";
+            const lang = {
+                0: "en",
+                1: {}
+            };
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
                 lang,
@@ -163,19 +174,19 @@ describe("YourCompaniesHandler", () => {
             const expectedViewData = {
                 templateName: constants.YOUR_COMPANIES_PAGE,
                 buttonHref: addCompanyUrl + constants.CLEAR_FORM_TRUE,
-                lang: {},
+                lang,
                 viewInvitationsPageUrl,
                 cancelSearchHref: constants.LANDING_URL,
                 matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
                 search: query.search,
                 errors: errors,
-                pagination: undefined,
                 pageNumber,
                 numberOfPages: 0,
                 ...viewData
             };
             getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
             validatePageNumberSpy.mockReturnValue(isValidPageNumber);
+            getTranslationsForViewSpy.mockReturnValue(lang);
             getInstanceSpy.mockReturnValue(i18nChInstance);
             getInvitationsSpy.mockReturnValue(mockInvitationList);
             stringToPositiveIntegerSpy.mockReturnValueOnce(pageNumber);
@@ -185,13 +196,15 @@ describe("YourCompaniesHandler", () => {
             } else {
                 validateCompanyNumberSearchStringSpy.mockReturnValue(true);
             }
+            getSearchQuerySpy.mockReturnValue(`&search=${query.search}`);
+            buildPaginationElementSpy.mockReturnValue(viewData.pagination);
+
             // When
             const response = await yourCompaniesHandler.execute(req);
 
             // Then
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(query.page);
-
             if (query.search) {
                 expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledTimes(1);
                 expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledWith(query.search);
@@ -217,6 +230,15 @@ describe("YourCompaniesHandler", () => {
             expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.YOUR_COMPANIES_PAGE);
+
+            if (confirmedUserAssociations.totalResults > 0) {
+                expect(getSearchQuerySpy).toHaveBeenCalledTimes(1);
+                expect(getSearchQuerySpy).toHaveBeenCalledWith(query.search);
+                expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
+                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery);
+                expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
+                expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, lang);
+            }
 
             let getFullUrlCounter = 2;
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.ADD_COMPANY_URL);
