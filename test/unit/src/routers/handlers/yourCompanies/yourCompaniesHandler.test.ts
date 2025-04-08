@@ -151,6 +151,55 @@ describe("YourCompaniesHandler", () => {
             },
             return: "view data without search error message",
             condition: "a search string exists, and is valid"
+        },
+        {
+            query: {
+                search: "invalidSearchString",
+                page: undefined
+            },
+            pageNumber: emptyAssociations.pageNumber,
+            confirmedUserAssociations: emptyAssociations,
+            isValidPageNumber: false,
+            viewData: {
+                numberOfInvitations: mockInvitationList.totalResults,
+                associationData: [],
+                numOfMatches: 0,
+                displaySearchForm: true,
+                userHasCompanies: constants.TRUE,
+                removeCompanyUrl: "",
+                viewAndManageUrl: "",
+                showNumOfMatches: false,
+                pagination: undefined
+            },
+            errors: {
+                search: {
+                    text: constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE
+                }
+            },
+            return: "expected view data",
+            condition: "isValidPageNumber is false and there are error messages"
+        },
+        {
+            query: {
+                search: "validSearchString",
+                page: undefined
+            },
+            pageNumber: emptyAssociations.pageNumber,
+            confirmedUserAssociations: emptyAssociations,
+            isValidPageNumber: false,
+            viewData: {
+                numberOfInvitations: mockInvitationList.totalResults,
+                associationData: [],
+                numOfMatches: 0,
+                displaySearchForm: true,
+                userHasCompanies: constants.TRUE,
+                removeCompanyUrl: "",
+                viewAndManageUrl: "",
+                showNumOfMatches: true,
+                pagination: undefined
+            },
+            return: "expected view data",
+            condition: "invalidPageNumber is false and there are no error messages"
         }
     ])("should return $return when $condition",
         async ({
@@ -210,10 +259,16 @@ describe("YourCompaniesHandler", () => {
                 expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledWith(query.search);
             }
 
-            const getUserAssociationsCounter = 1;
+            let getUserAssociationsCounter = 1;
             expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED], errors ? undefined : query.search, pageNumber - 1);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
+
+            if (!isValidPageNumber) {
+                getUserAssociationsCounter = 2;
+                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED], errors ? undefined : query.search, pageNumber - 1);
+            }
+
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
             expect(getInvitationsSpy).toHaveBeenCalledWith(req);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(9);
