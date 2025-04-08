@@ -3,12 +3,6 @@ export type AuthorisedPerson = {
     authorisedPersonEmailAddress: string,
 }
 
-export enum AssociationStatus {
-    CONFIRMED = "confirmed",
-    REMOVED = "removed",
-    AWAITING_APPROVAL = "awaiting-approval"
-}
-
 export enum AssociationState {
     COMPANY_ASSOCIATED_WITH_USER = "COMPANY_ASSOCIATED_WITH_USER",
     COMPANY_AWAITING_ASSOCIATION_WITH_USER = "COMPANY_AWAITING_ASSOCIATION_WITH_USER",
@@ -18,8 +12,8 @@ export enum AssociationState {
 
 export type AssociationStateWithId = {
     state: AssociationState.COMPANY_ASSOCIATED_WITH_USER |
-        AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER |
-        AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER;
+    AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER |
+    AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER;
     associationId: string;
 };
 
