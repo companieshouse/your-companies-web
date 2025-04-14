@@ -17,6 +17,9 @@ interface AddCompanyViewData extends ViewDataWithBackLink {
     proposedCompanyNumber: string | undefined;
 }
 
+/**
+ * Handler for adding a company to a user's account.
+ */
 export class AddCompanyHandler extends GenericHandler {
     viewData: AddCompanyViewData;
 
@@ -30,22 +33,28 @@ export class AddCompanyHandler extends GenericHandler {
         };
     }
 
+    /**
+     * Executes the handler logic for GET and POST requests.
+     * @param req - The HTTP request object.
+     * @param res - The HTTP response object.
+     * @param method - The HTTP method (GET or POST).
+     * @returns A promise resolving to the view data.
+     */
     async execute (req: Request, res: Response, method: string): Promise<AddCompanyViewData> {
-
         const referrer: string | undefined = req.get("Referrer");
         const hrefB = getFullUrl(constants.ADD_COMPANY_URL);
 
         logger.info(`${method} request to add company to user account`);
-        // ...process request here and return data for the view
+
         try {
             this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_COMPANY_PAGE);
 
-            // we delete the form values when the journey begins again (cf param in url is true)
             const clearForm = req.query[constants.CLEAR_FORM] as string;
             if (validateClearForm(clearForm)) {
                 deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
                 deleteExtraData(req.session, constants.COMPANY_PROFILE);
             }
+
             if (method === constants.POST) {
                 const { companyNumber } = req.body;
                 setExtraData(req.session, constants.CURRENT_COMPANY_NUM, companyNumber);
@@ -54,15 +63,14 @@ export class AddCompanyHandler extends GenericHandler {
                     setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, companyNumber);
                     deleteExtraData(req.session, constants.COMPANY_PROFILE);
                 }
-                // proposed company number is the value for the form input displayed in the view
+
                 this.viewData.proposedCompanyNumber = companyNumber;
                 await this.validateCompanyNumber(req, companyNumber);
             } else {
-                // GET request validation
                 const invalidCompanyNumber = getExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
                 const savedProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
                 const currentCompanyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM);
-                // display any errors with the current input
+
                 if (typeof invalidCompanyNumber === "string") {
                     this.viewData.proposedCompanyNumber = invalidCompanyNumber;
                     await this.validateCompanyNumber(req, invalidCompanyNumber);
@@ -75,9 +83,7 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             }
         } catch (err: any) {
-            if (err.httpStatusCode === StatusCodes.NOT_FOUND ||
-                err.httpStatusCode === StatusCodes.BAD_REQUEST ||
-                err.httpStatusCode === StatusCodes.FORBIDDEN) {
+            if ([StatusCodes.NOT_FOUND, StatusCodes.BAD_REQUEST, StatusCodes.FORBIDDEN].includes(err.httpStatusCode)) {
                 this.viewData.errors = {
                     companyNumber: {
                         text: constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
@@ -88,11 +94,16 @@ export class AddCompanyHandler extends GenericHandler {
                 this.viewData.errors = this.processHandlerException(err);
             }
         }
+
         return Promise.resolve(this.viewData);
     }
 
+    /**
+     * Validates the provided company number.
+     * @param req - The HTTP request object.
+     * @param companyNumber - The company number to validate.
+     */
     private async validateCompanyNumber (req: Request, companyNumber: string) {
-
         if (!companyNumber) {
             this.viewData.errors = {
                 companyNumber: {
@@ -113,6 +124,11 @@ export class AddCompanyHandler extends GenericHandler {
         }
     }
 
+    /**
+     * Handles the case where the company is active.
+     * @param req - The HTTP request object.
+     * @param companyProfile - The company profile object.
+     */
     private async handleActiveCompany (req: Request, companyProfile: CompanyProfile) {
         setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
         deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);

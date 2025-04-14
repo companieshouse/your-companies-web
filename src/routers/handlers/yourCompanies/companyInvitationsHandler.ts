@@ -15,6 +15,9 @@ interface CompanyInvitationsViewData extends ViewDataWithBackLink, Pagination {
     rowsData: ({ text: string } | { html: string })[][];
 }
 
+/**
+ * Handles the logic for displaying and managing company invitations.
+ */
 export class CompanyInvitationsHandler extends GenericHandler {
     viewData: CompanyInvitationsViewData;
 
@@ -31,9 +34,15 @@ export class CompanyInvitationsHandler extends GenericHandler {
         };
     }
 
+    /**
+     * Executes the handler logic to fetch and prepare data for the company invitations page.
+     * @param req - The HTTP request object.
+     * @returns A promise resolving to the view data for the company invitations page.
+     */
     async execute (req: Request): Promise<CompanyInvitationsViewData> {
         const translations = getTranslationsForView(req.lang, constants.COMPANY_INVITATIONS_PAGE);
         this.viewData.lang = translations;
+
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
         let userInvites: InvitationList = await getInvitations(req, pageNumber - 1);
@@ -43,7 +52,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
             userInvites = await getInvitations(req, pageNumber - 1);
         }
 
-        const invitesWithCompanyDetail: InvitationWithCompanyDetail[] = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
+        const invitesWithCompanyDetail = await this.addCompanyInfoToInvites(req, userInvites.items) || [];
 
         if (userInvites.totalPages > 1) {
             const urlPrefix = getFullUrl(constants.COMPANY_INVITATIONS_URL);
@@ -57,11 +66,18 @@ export class CompanyInvitationsHandler extends GenericHandler {
         const { rows } = await this.getRowsData(invitesWithCompanyDetail, translations);
         this.viewData.rowsData = rows;
 
-        return Promise.resolve(this.viewData);
+        return this.viewData;
     }
 
+    /**
+     * Generates the rows data for the invitations table.
+     * @param invites - The list of invitations with company details.
+     * @param translations - The translations for the current language.
+     * @returns A promise resolving to the rows data for the invitations table.
+     */
     private async getRowsData (invites: InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
         const rows: ({ text: string } | { html: string })[][] = [];
+
         if (invites?.length) {
             for (const invite of invites) {
                 const acceptPath = getCompanyInvitationsAcceptFullUrl(invite.associationId);
@@ -81,21 +97,38 @@ export class CompanyInvitationsHandler extends GenericHandler {
                 ]);
             }
         }
+
         return { rows };
     }
 
+    /**
+     * Generates an HTML link for accepting or declining an invitation.
+     * @param path - The URL path for the link.
+     * @param ariaLabel - The ARIA label for accessibility.
+     * @param text - The text to display for the link.
+     * @returns The HTML string for the link.
+     */
     private getLink (path: string, ariaLabel: string, text: string): string {
         let dataEventId = "";
+
         if (path.includes("accept")) {
             dataEventId = "accept-invite";
         } else if (path.includes("decline")) {
             dataEventId = "decline-invite";
         }
+
         return `<a href="${path}" class="govuk-link govuk-link--no-visited-state" aria-label="${ariaLabel}" data-event-id="${dataEventId}">${text}</a>`;
     }
 
+    /**
+     * Adds company information to the list of invitations.
+     * @param req - The HTTP request object.
+     * @param invites - The list of invitations.
+     * @returns A promise resolving to the list of invitations with company details.
+     */
     private async addCompanyInfoToInvites (req: Request, invites: Invitation[]): Promise<InvitationWithCompanyDetail[] | undefined> {
         const userAssociations: AssociationList = await getUserAssociations(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
+
         if (invites.length) {
             return invites.map(invite => {
                 const associationForThisInvite = userAssociations.items.find(assoc => assoc.id === invite.associationId);
