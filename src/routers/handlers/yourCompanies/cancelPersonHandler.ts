@@ -6,7 +6,7 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/
 import { Cancellation } from "../../../types/cancellation";
 import { ViewDataWithBackLink } from "../../../types/utilTypes";
 
-interface CancelPersonViewData extends ViewDataWithBackLink {
+export interface CancelPersonViewData extends ViewDataWithBackLink {
     companyName: string;
     userEmail: string;
     buttonHref: string;

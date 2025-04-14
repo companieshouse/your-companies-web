@@ -6,7 +6,7 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/
 import { Removal } from "../../../types/removal";
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 
-interface RemoveAuthorisedPersonViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
+export interface RemoveAuthorisedPersonViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
     userEmail: string;
     userName: string;
     cancelLinkHref: string;
