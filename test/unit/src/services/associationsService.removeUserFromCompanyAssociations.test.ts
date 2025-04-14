@@ -30,7 +30,7 @@ describe("associationsService", () => {
         it("should throw an error if associationId not provided", async () => {
             // Given
             const associationId = undefined;
-            const expectedError = createError(StatusCodes.BAD_REQUEST, "Error on removal/cancellation: associtionId not provided");
+            const expectedError = createError(StatusCodes.BAD_REQUEST, "Error on removal/cancellation: associationId not provided");
             // When / Then
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             await expect(associationsService.removeUserFromCompanyAssociations(reqest, associationId!))
