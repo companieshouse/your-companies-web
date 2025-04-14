@@ -9,6 +9,5 @@ import { getLoggedInUserEmail } from "./sessionUtils";
  * @returns A boolean indicating whether the user is removing their own email.
  */
 export const isRemovingThemselves = (session: Session, removalEmail: string): boolean => {
-    // Compare the email being removed with the logged-in user's email
     return removalEmail === getLoggedInUserEmail(session);
 };
