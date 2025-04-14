@@ -8,7 +8,7 @@ import { getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "types/associations";
 
-interface CheckPresenterViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
+export interface CheckPresenterViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
     associationAlreadyExist: boolean;
     emailAddress: string;
     backLinkWithClearForm: string;

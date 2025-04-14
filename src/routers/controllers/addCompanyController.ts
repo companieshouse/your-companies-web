@@ -4,6 +4,13 @@ import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
 
+/**
+ * Handles the GET request for adding a company.
+ * Executes the handler logic, cleans up session data, and renders the add company page.
+ *
+ * @param req - The HTTP request object.
+ * @param res - The HTTP response object.
+ */
 export const addCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, constants.GET);
@@ -14,9 +21,18 @@ export const addCompanyControllerGet = async (req: Request, res: Response): Prom
     });
 };
 
+/**
+ * Handles the POST request for adding a company.
+ * Executes the handler logic, validates the response, and either re-renders the page with errors
+ * or redirects to the confirm company details page.
+ *
+ * @param req - The HTTP request object.
+ * @param res - The HTTP response object.
+ */
 export const addCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, constants.POST);
+
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
         res.render(constants.ADD_COMPANY_PAGE, {
             ...viewData
