@@ -1,48 +1,79 @@
 import logger from "../Logger";
 
 /**
- * This function checks url parameters predefined in page handlers to see if a user has travelled to their current page via the expected route.
- * This is to prevent users bookmarking and accessing pages mid-way through the user journey, or urls that may no longer exist.
+ * Checks if the user has navigated to the current page via an expected route.
  *
- * @param referrer - redirect url - the url from which the user has arrived from to get to the current url
- *                 - is undefined if a user has bookmarked the page they wish to access
- * @param hrefA - expected previous page url - compared with referrer parameter to confirm if user has travelled from the page prior to the current page in the journey
- * @param hrefB - expected current page url - compared with referrer parameter to account for whether user has changed language on current page, changing the url
- * @param pageIndicator - for when the authentication system causes referrer paramater to be 'undefined'
- *                      - if true, page is not redirected as user has travelled from a valid page
- * @param hrefC - expected next page - compared with referrer parameter to account for whether a user has clicked 'back' to go to the previous page
- *              - optional as not all pages have a page that follows them
- * @returns true if referrer is undefined or not equal to the expected href parameters, false otherwise.
+ * @param referrer - The URL from which the user arrived at the current page.
+ * @param hrefA - Expected previous page URL.
+ * @param hrefB - Expected current page URL (to account for language changes).
+ * @param pageIndicator - Indicates if the page is valid despite an undefined referrer.
+ * @param hrefC - Optional: Expected next page URLs (to account for back navigation).
+ * @returns true if the user should be redirected, false otherwise.
  */
-export const redirectPage = (referrer: string | undefined, hrefA: string, hrefB: string, pageIndicator: boolean, hrefC?: string[]): boolean => {
-
-    if (referrer?.endsWith("/")) {
-        referrer = referrer.substring(0, referrer.length - 1);
-    }
-
-    if (pageIndicator === true) {
+export const redirectPage = (
+    referrer: string | undefined,
+    hrefA: string,
+    hrefB: string,
+    pageIndicator: boolean,
+    hrefC?: string[]
+): boolean => {
+    if (pageIndicator) {
         logger.debug(`pageIndicator is true, redirectPage returning false`);
         return false;
     }
-    if (referrer && (referrer.endsWith(hrefA) ||
-        referrer.includes(hrefA + "?") ||
-        referrer.includes(hrefA + "&") ||
-        referrer.endsWith(hrefB) ||
-        referrer.includes(hrefB + "?") ||
-        referrer.includes(hrefB + "&") ||
-        (hrefC !== undefined && (checkMultipleHrefs(referrer, hrefC) ||
-            referrer.includes(hrefC + "?") ||
-            referrer.includes(hrefC + "&"))))) {
 
+    referrer = sanitizeReferrer(referrer);
+
+    if (isValidReferrer(referrer, hrefA, hrefB, hrefC)) {
         logger.debug(`redirectPage is returning false`);
         return false;
-    } else {
-        logger.debug(`redirectPage is returning true, referrer is ${referrer}, hrefA: ${hrefA}, hrefB: ${hrefB}, pageIndicator ${pageIndicator}, hrefC ${JSON.stringify(hrefC)}`);
+    }
+
+    logger.debug(
+        `redirectPage is returning true, referrer: ${referrer}, hrefA: ${hrefA}, hrefB: ${hrefB}, pageIndicator: ${pageIndicator}, hrefC: ${JSON.stringify(hrefC)}`
+    );
+    return true;
+};
+
+/**
+ * Removes trailing slashes from the referrer URL.
+ *
+ * @param referrer - The referrer URL.
+ * @returns The sanitized referrer URL.
+ */
+const sanitizeReferrer = (referrer: string | undefined): string | undefined => {
+    return referrer?.endsWith("/") ? referrer.slice(0, -1) : referrer;
+};
+
+/**
+ * Checks if the referrer matches any of the expected URLs.
+ *
+ * @param referrer - The referrer URL.
+ * @param hrefA - Expected previous page URL.
+ * @param hrefB - Expected current page URL.
+ * @param hrefC - Optional: Expected next page URLs.
+ * @returns true if the referrer is valid, false otherwise.
+ */
+const isValidReferrer = (
+    referrer: string | undefined,
+    hrefA: string,
+    hrefB: string,
+    hrefC?: string[]
+): boolean => {
+    if (!referrer) return false;
+
+    const matchesHref = (href: string) =>
+        referrer.endsWith(href) ||
+        referrer.includes(`${href}?`) ||
+        referrer.includes(`${href}&`);
+
+    if (matchesHref(hrefA) || matchesHref(hrefB)) {
         return true;
     }
 
-};
+    if (hrefC && hrefC.some(matchesHref)) {
+        return true;
+    }
 
-const checkMultipleHrefs = (referrer: string, hrefs: string[]): boolean => {
-    return hrefs.some(href => referrer.includes(href));
+    return false;
 };

@@ -61,7 +61,7 @@ describe("formatTitleCase", () => {
 describe("buildAddress", () => {
     it("should return address string with <br> tags", () => {
         // Given
-        const expectedAddress = "123<br>premises<br>Line1<br>Line2<br>Locality<br>Region<br>Uk<br>POST CODE<br>";
+        const expectedAddress = "123<br>premises<br>Line1<br>Line2<br>Locality<br>Region<br>Uk<br>POST CODE";
         // When
         const result = buildAddress(formatterValidActiveCompanyProfile);
         // Then

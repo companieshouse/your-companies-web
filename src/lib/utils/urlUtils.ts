@@ -7,29 +7,22 @@ const WHITELISTED_URLS: string[] = [
 
 export const isWhitelistedUrl = (url: string): boolean => WHITELISTED_URLS.includes(url);
 
-export const addLangToUrl = (url: string, lang: string | undefined): string => {
+export const addLangToUrl = (url: string, lang?: string): string => {
     let sanitizedUrl = sanitizeUrl(url);
-    if (sanitizedUrl.includes("cf=true")) {
-        sanitizedUrl = sanitizedUrl.replace("cf=true", "cf=false");
-    }
 
-    if (lang === undefined || lang === "") {
+    sanitizedUrl = sanitizedUrl.replace("cf=true", "cf=false");
+
+    if (!lang) {
         return sanitizedUrl;
     }
 
-    if (sanitizedUrl.includes("lang=cy")) {
-        return sanitizedUrl.replace("lang=cy", "lang=" + lang);
+    const langParam = `lang=${lang}`;
+    if (sanitizedUrl.includes("lang=cy") || sanitizedUrl.includes("lang=en")) {
+        return sanitizedUrl.replace(/lang=(cy|en)/, langParam);
     }
 
-    if (sanitizedUrl.includes("lang=en")) {
-        return sanitizedUrl.replace("lang=en", "lang=" + lang);
-    }
-
-    if (sanitizedUrl.includes("?")) {
-        return sanitizedUrl + "&lang=" + lang;
-    } else {
-        return sanitizedUrl + "?lang=" + lang;
-    }
+    const separator = sanitizedUrl.includes("?") ? "&" : "?";
+    return `${sanitizedUrl}${separator}${langParam}`;
 };
 
 export const getManageAuthorisedPeopleUrl = (companyNumber: string): string =>
@@ -38,29 +31,31 @@ export const getManageAuthorisedPeopleUrl = (companyNumber: string): string =>
 export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: string): string => {
     const baseUrl = getFullUrl(getManageAuthorisedPeopleUrl(companyNumber));
 
-    if (url.includes(constants.CONFIRMATION_CANCEL_PERSON_URL)) {
-        return baseUrl + constants.CONFIRMATION_CANCEL_PERSON_URL;
-    }
+    const urlMappings: Record<string, string> = {
+        [constants.CONFIRMATION_CANCEL_PERSON_URL]: constants.CONFIRMATION_CANCEL_PERSON_URL,
+        [constants.CONFIRMATION_PERSON_REMOVED_URL]: constants.CONFIRMATION_PERSON_REMOVED_URL,
+        [constants.AUTHORISATION_EMAIL_RESENT_URL]: constants.AUTHORISATION_EMAIL_RESENT_URL,
+        [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL
+    };
 
-    if (url.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-        return baseUrl + constants.CONFIRMATION_PERSON_REMOVED_URL;
-    }
-
-    if (url.includes(constants.AUTHORISATION_EMAIL_RESENT_URL)) {
-        return baseUrl + constants.AUTHORISATION_EMAIL_RESENT_URL;
-    }
-
-    if (url.includes(constants.CONFIRMATION_PERSON_ADDED_URL)) {
-        return baseUrl + constants.CONFIRMATION_PERSON_ADDED_URL;
+    for (const [key, value] of Object.entries(urlMappings)) {
+        if (url.includes(key)) {
+            return baseUrl + value;
+        }
     }
 
     return baseUrl;
 };
 
-export const isReferrerIncludes = (referrer: string): boolean => referrer.includes(constants.CONFIRMATION_PERSON_REMOVED_URL) ||
-    referrer.includes(constants.CONFIRMATION_CANCEL_PERSON_URL) ||
-    referrer.includes(constants.CONFIRMATION_PERSON_ADDED_URL) ||
-    referrer.includes(constants.AUTHORISATION_EMAIL_RESENT_URL);
+const REFERRER_URLS = [
+    constants.CONFIRMATION_PERSON_REMOVED_URL,
+    constants.CONFIRMATION_CANCEL_PERSON_URL,
+    constants.CONFIRMATION_PERSON_ADDED_URL,
+    constants.AUTHORISATION_EMAIL_RESENT_URL
+];
+
+export const isReferrerIncludes = (referrer: string): boolean =>
+    REFERRER_URLS.some(url => referrer.includes(url));
 
 export const getFullUrl = (url: string): string => `${constants.LANDING_URL}${url}`;
 
