@@ -9,27 +9,48 @@ import {
     isReferrerIncludes
 } from "../../lib/utils/urlUtils";
 
+/**
+ * Middleware to handle navigation for adding a presenter.
+ * It checks the referrer, manages session data, and redirects the user
+ * to the appropriate page based on the navigation logic.
+ *
+ * @param req - The Express request object.
+ * @param res - The Express response object.
+ * @param next - The next middleware function in the stack.
+ */
 export const addPresenterNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const referrer: string | undefined = req.get("Referrer");
-    const hrefA = getExtraData(req.session, constants.REFERER_URL);
-    const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
-    const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+    try {
+        const referrer: string | undefined = req.get("Referrer");
+        const hrefA = getExtraData(req.session, constants.REFERER_URL);
+        const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
+        const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    let checkedReferrer;
+        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+        deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
-    deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-    deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
+        const checkedReferrer = referrer && isReferrerIncludes(referrer) ? hrefA : referrer;
 
-    if (referrer && isReferrerIncludes(referrer)) {
-        checkedReferrer = hrefA;
-    } else {
-        checkedReferrer = referrer;
-    }
-    logger.debug(`addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+        logger.debug(`addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(checkedReferrer, hrefA, getAddPresenterUrl(companyNumber), pageIndicator, [getCheckPresenterUrl(companyNumber)])) {
-        res.redirect(constants.LANDING_URL);
-    } else {
-        next();
+        const shouldRedirect = redirectPage(
+            checkedReferrer,
+            hrefA,
+            getAddPresenterUrl(companyNumber),
+            pageIndicator,
+            [getCheckPresenterUrl(companyNumber)]
+        );
+
+        if (shouldRedirect) {
+            res.redirect(constants.LANDING_URL);
+        } else {
+            next();
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            logger.error(`Error in addPresenterNavigation middleware: ${error.message}`);
+        } else {
+            logger.error("Error in addPresenterNavigation middleware: An unknown error occurred");
+        }
+        next(error);
     }
 };

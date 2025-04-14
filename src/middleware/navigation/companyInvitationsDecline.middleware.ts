@@ -5,18 +5,27 @@ import logger from "../../lib/Logger";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getCompanyInvitationsDeclineFullUrl, getFullUrl } from "../../lib/utils/urlUtils";
 
+/**
+ * Middleware to handle navigation for declining company invitations.
+ *
+ * @param req - The HTTP request object.
+ * @param res - The HTTP response object.
+ * @param next - The next middleware function in the stack.
+ */
 export const companyInvitationsDeclineNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const referrer: string | undefined = req.get("Referrer");
-    const pageIndicator = false;
+    const referrer = req.get("Referrer");
     const associationId = req.params[constants.ASSOCIATIONS_ID];
     const companyName = req.query[constants.COMPANY_NAME] as string;
-    const hrefB = `${getCompanyInvitationsDeclineFullUrl(associationId)}?${constants.COMPANY_NAME}=${(companyName.replace(/ /g, "+")).replace("'", "%27")}`;
+    const encodedCompanyName = encodeURIComponent(companyName.replace(/ /g, "+"));
+    const targetUrl = `${getCompanyInvitationsDeclineFullUrl(associationId)}?${constants.COMPANY_NAME}=${encodedCompanyName}`;
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
     logger.debug(`companyInvitationsDeclineNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(referrer, getFullUrl(constants.COMPANY_INVITATIONS_URL), hrefB, pageIndicator)) {
+    const shouldRedirect = redirectPage(referrer, getFullUrl(constants.COMPANY_INVITATIONS_URL), targetUrl, false);
+
+    if (shouldRedirect) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
