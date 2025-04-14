@@ -7,12 +7,12 @@ import * as constants from "../../constants";
  * @returns True if the email is valid, otherwise false.
  */
 export function validateEmailString (emailString: string): boolean {
-    const emailSchema = z.string().email(); // Define a schema for a valid email string.
+    const emailSchema = z.string().email();
     try {
-        emailSchema.parse(emailString); // Validate the email string against the schema.
+        emailSchema.parse(emailString);
         return true;
     } catch (e) {
-        return false; // Return false if validation fails.
+        return false;
     }
 }
 
@@ -22,12 +22,12 @@ export function validateEmailString (emailString: string): boolean {
  * @returns True if the string is "true", otherwise false.
  */
 export function validateClearForm (clearForm: string): boolean {
-    const clearFormSchema = z.literal("true"); // Define a schema for the literal string "true".
+    const clearFormSchema = z.literal("true");
     try {
-        clearFormSchema.parse(clearForm); // Validate the string against the schema.
+        clearFormSchema.parse(clearForm);
         return true;
     } catch (e) {
-        return false; // Return false if validation fails.
+        return false;
     }
 }
 
@@ -38,13 +38,13 @@ export function validateClearForm (clearForm: string): boolean {
  */
 export function validateCompanyNumberSearchString (str: string): boolean {
     const searchSchema = z.string()
-        .trim() // Remove leading and trailing whitespace.
-        .regex(constants.COMPANY_NUMBER_SEARCH_VALIDATION_REGEX); // Match against a predefined regex.
+        .trim()
+        .regex(constants.COMPANY_NUMBER_SEARCH_VALIDATION_REGEX);
     try {
-        searchSchema.parse(str); // Validate the string against the schema.
+        searchSchema.parse(str);
         return true;
     } catch (e) {
-        return false; // Return false if validation fails.
+        return false;
     }
 }
 
@@ -56,12 +56,12 @@ export function validateCompanyNumberSearchString (str: string): boolean {
  */
 export function validatePageNumber (pageNum: number, maxNumOfPages: number): boolean {
     const pageNoSchema = z.number()
-        .min(1) // Minimum page number is 1.
-        .max(maxNumOfPages); // Maximum page number is the provided maxNumOfPages.
+        .min(1)
+        .max(maxNumOfPages);
     try {
-        pageNoSchema.parse(pageNum); // Validate the page number against the schema.
+        pageNoSchema.parse(pageNum);
         return true;
     } catch (e) {
-        return false; // Return false if validation fails.
+        return false;
     }
 }

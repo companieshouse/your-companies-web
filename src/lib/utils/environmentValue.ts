@@ -7,7 +7,5 @@
  * @returns The value of the environment variable or the default value.
  */
 export const getEnvironmentValue = (key: string, defaultValue = ""): string => {
-    // Use the nullish coalescing operator (??) to return the environment variable value if it exists,
-    // otherwise return the provided default value.
     return process.env[key] ?? defaultValue;
 };
