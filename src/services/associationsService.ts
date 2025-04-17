@@ -109,10 +109,10 @@ export const createAssociation = async (req: Request, companyNumber: string, inv
         return Promise.reject(new Error(errorMessage));
     }
 
-    logger.debug(`Received the new association id for a company with company number ${companyNumber}`);
-    const associationId: string = (sdkResponse.resource as NewAssociationResponse).associationId;
+    logger.debug(`Received the new association link for a company with company number ${companyNumber}`);
+    const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
 
-    return Promise.resolve(associationId);
+    return Promise.resolve(associationLink);
 };
 
 export const updateAssociationStatus = async (req: Request, associationId: string, status: AssociationStatus): Promise<string> => {
@@ -182,11 +182,11 @@ export const postInvitation = async (req: Request, companyNumber: string, invite
     }
 
     logger.debug(`POST /associations/invitations success - company number ${companyNumber}`);
-    logger.debug(`Received id for posted invite ${JSON.stringify(sdkResponse)}`);
+    logger.debug(`Received link for posted invite ${JSON.stringify(sdkResponse)}`);
 
-    const associationId: string = (sdkResponse.resource as NewAssociationResponse).associationId;
+    const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
 
-    return Promise.resolve(associationId);
+    return Promise.resolve(associationLink);
 };
 
 export const removeUserFromCompanyAssociations = async (req: Request, associationId: string): Promise<string> => {
