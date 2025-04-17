@@ -29,7 +29,7 @@ describe("addLangToUrl", () => {
         ["return unmodified url if lang parameter is empty string", "website.com", "", "website.com"],
         ["replace Welsh language parameter in url to English if lang parameter is English", "website.com?lang=cy", "en", "website.com?lang=en"],
         ["replace English language parameter in url to Welsh if lang parameter is Welsh", "website.com?lang=en", "cy", "website.com?lang=cy"],
-        ["replace '?' parameter in url to '&' if url already contains a query parameter", "website.com?userName=Jimmy%20Spice", "en", "website.com?userName=Jimmy Spice&lang=en"],
+        ["replace '?' parameter in url to '&' if url already contains a query parameter", "website.com?userName=Jimmy%20Spice", "en", "website.com?userName=Jimmy%20Spice&lang=en"],
         ["add a language parameter to the url if the url doesn't already contain a query parameter", "website.com", "en", "website.com?lang=en"],
         ["change cf from true to false if included", "http://www.website.com/your-companies?cf=true", undefined, "http://www.website.com/your-companies?cf=false"]
     ])("should %s", (_testInfo, url, lang, expectedUrl) => {
