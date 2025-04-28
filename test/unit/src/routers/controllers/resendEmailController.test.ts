@@ -38,7 +38,7 @@ describe("resendEmailController", () => {
             const email = "test@test@com";
             getExtraDataSpy.mockReturnValue(companyNumber);
             req.params = { [constants.USER_EMAIL]: email };
-            const expectedMessage = `Email ${email} invalid or not on the authorisation list for company ${companyNumber}`;
+            const expectedMessage = `Invalid email ${email} for company ${companyNumber}`;
             validateEmailStringSpy.mockReturnValue(false);
             const expectedUrl = "your-companies/something-went-wrong";
             getFullUrlSpy.mockReturnValue(expectedUrl);
