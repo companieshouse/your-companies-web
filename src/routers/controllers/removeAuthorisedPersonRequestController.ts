@@ -37,10 +37,8 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
 
     if (associationToBeRemoved && isRemovingThemselves(req.session as Session, associationToBeRemoved.userEmail)) {
         handleSelfRemoval(req, res, associationToBeRemoved);
-    } else {
-        if (associationToBeRemoved) {
-            handleOtherUserRemoval(res, removal.companyNumber, associationToBeRemoved.id);
-        }
+    } else if (associationToBeRemoved) {
+        handleOtherUserRemoval(res, removal.companyNumber, associationToBeRemoved.id);
     }
 };
 

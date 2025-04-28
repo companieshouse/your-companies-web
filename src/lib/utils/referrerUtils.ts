@@ -71,7 +71,7 @@ const isValidReferrer = (
         return true;
     }
 
-    if (hrefC && hrefC.some(matchesHref)) {
+    if (hrefC?.some(matchesHref)) {
         return true;
     }
 
