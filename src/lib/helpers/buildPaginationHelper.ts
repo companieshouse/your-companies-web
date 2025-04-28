@@ -38,6 +38,21 @@ export const buildPaginationElement = (
     return pagination;
 };
 
+/**
+ * Generates an array of page items for pagination, including regular page items
+ * and ellipsis items where applicable.
+ *
+ * @param currentPageNumber - The current page number being viewed.
+ * @param numOfPages - The total number of pages available.
+ * @param urlPrefix - The URL prefix to be used for each page item.
+ * @param searchQuery - The search query string to be appended to the URL.
+ * @returns An array of `PageItem` objects representing the pagination structure.
+ *
+ * The function ensures the following:
+ * - Always includes the first and last page items.
+ * - Adds ellipsis items when there are gaps in the pagination.
+ * - Includes middle page items based on the current page and total number of pages.
+ */
 const getPageItems = (
     currentPageNumber: number,
     numOfPages: number,
