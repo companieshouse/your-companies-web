@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
-import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger from "../../lib/Logger";
 import {
     getAuthenticationCodeRemoveUrl,
-    getCompanyAuthProtectedAuthenticationCodeRemoveUrl,
-    isReferrerIncludes
+    getCompanyAuthProtectedAuthenticationCodeRemoveUrl
 } from "../../lib/utils/urlUtils";
+import { determineCheckedReferrer, determinePageIndicator } from "../../lib/utils/navigationUtils";
 
 /**
  * Middleware to handle navigation logic for removing an authorised person.
@@ -36,41 +36,5 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
         res.redirect(constants.LANDING_URL);
     } else {
         next();
-    }
-};
-
-/**
- * Determines the checked referrer based on the provided referrer and hrefA.
- *
- * @param referrer - The referrer URL from the request headers.
- * @param hrefA - The stored referrer URL from the session.
- * @returns The appropriate referrer URL to use.
- */
-const determineCheckedReferrer = (referrer: string | undefined, hrefA: string | undefined): string | undefined => {
-    return referrer && isReferrerIncludes(referrer) ? hrefA : referrer;
-};
-
-/**
- * Determines the new page indicator based on the company number, page indicator, user emails, and user email.
- *
- * @param companyNumber - The company number from the request parameters.
- * @param pageIndicator - The current page indicator from the session.
- * @param userEmails - The array of user emails from the session.
- * @param userEmail - The user email from the request parameters.
- * @param req - The Express request object.
- * @returns The updated page indicator value.
- */
-const determinePageIndicator = (
-    companyNumber: string,
-    pageIndicator: string | undefined,
-    userEmails: string[],
-    userEmail: string,
-    req: Request
-): boolean | string | undefined => {
-    if (companyNumber === pageIndicator && userEmails.includes(userEmail)) {
-        return true;
-    } else {
-        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        return pageIndicator;
     }
 };
