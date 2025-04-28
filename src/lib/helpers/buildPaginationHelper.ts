@@ -1,4 +1,3 @@
-import { get } from "http";
 import { PageItem, PaginationData } from "../../types/pagination";
 import { AnyRecord } from "../../types/utilTypes";
 
