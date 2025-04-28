@@ -1,3 +1,4 @@
+import { get } from "http";
 import { PageItem, PaginationData } from "../../types/pagination";
 import { AnyRecord } from "../../types/utilTypes";
 
@@ -16,7 +17,6 @@ export const buildPaginationElement = (
     searchQuery: string
 ): PaginationData => {
     const pagination: PaginationData = { items: [] };
-    const pageItems: PageItem[] = [];
 
     // Return empty pagination if there's only one page or the current page is invalid
     if (numOfPages <= 1 || currentPageNumber < 1) return pagination;
@@ -35,6 +35,17 @@ export const buildPaginationElement = (
         };
     }
 
+    pagination.items = getPageItems(currentPageNumber, numOfPages, urlPrefix, searchQuery);
+    return pagination;
+};
+
+const getPageItems = (
+    currentPageNumber: number,
+    numOfPages: number,
+    urlPrefix: string,
+    searchQuery: string
+): PageItem[] => {
+    const pageItems: PageItem[] = [];
     // Add the first page item
     pageItems.push(createRegularPageItem(1, currentPageNumber, urlPrefix, searchQuery));
 
@@ -69,9 +80,7 @@ export const buildPaginationElement = (
     if (numOfPages > 1) {
         pageItems.push(createRegularPageItem(numOfPages, currentPageNumber, urlPrefix, searchQuery));
     }
-
-    pagination.items = pageItems;
-    return pagination;
+    return pageItems;
 };
 
 // Creates an ellipsis page item
