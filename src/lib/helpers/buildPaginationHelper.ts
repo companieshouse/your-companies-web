@@ -36,67 +36,61 @@ export const buildPaginationElement = (
     }
 
     // Add the first page item
-    pageItems.push(createPageItem(1, currentPageNumber, false, urlPrefix, searchQuery));
+    pageItems.push(createRegularPageItem(1, currentPageNumber, urlPrefix, searchQuery));
 
     // Add the second page item, possibly with an ellipsis
     if (numOfPages >= 3) {
         const isEllipsis = numOfPages >= 5 && currentPageNumber >= 5;
-        pageItems.push(createPageItem(2, currentPageNumber, isEllipsis, urlPrefix, searchQuery));
+        pageItems.push(isEllipsis ? createEllipsisItem() : createRegularPageItem(2, currentPageNumber, urlPrefix, searchQuery));
     }
 
     // Add middle-left page item if applicable
     if (numOfPages >= 5 && currentPageNumber >= 4 && numOfPages - currentPageNumber >= 1) {
-        pageItems.push(createPageItem(currentPageNumber - 1, currentPageNumber, false, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(currentPageNumber - 1, currentPageNumber, urlPrefix, searchQuery));
     }
 
     // Add middle page item if applicable
     if (numOfPages >= 5 && currentPageNumber >= 3 && numOfPages - currentPageNumber >= 2) {
-        pageItems.push(createPageItem(currentPageNumber, currentPageNumber, false, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(currentPageNumber, currentPageNumber, urlPrefix, searchQuery));
     }
 
     // Add middle-right page item if applicable
     if (numOfPages >= 5 && currentPageNumber >= 2 && numOfPages - currentPageNumber >= 3) {
-        pageItems.push(createPageItem(currentPageNumber + 1, currentPageNumber, false, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(currentPageNumber + 1, currentPageNumber, urlPrefix, searchQuery));
     }
 
     // Add second-to-last page item, possibly with an ellipsis
     if (numOfPages >= 4) {
         const isEllipsis = numOfPages >= 5 && numOfPages - currentPageNumber >= 4;
-        pageItems.push(createPageItem(numOfPages - 1, currentPageNumber, isEllipsis, urlPrefix, searchQuery));
+        pageItems.push(isEllipsis ? createEllipsisItem() : createRegularPageItem(numOfPages - 1, currentPageNumber, urlPrefix, searchQuery));
     }
 
     // Add the last page item
     if (numOfPages > 1) {
-        pageItems.push(createPageItem(numOfPages, currentPageNumber, false, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(numOfPages, currentPageNumber, urlPrefix, searchQuery));
     }
 
     pagination.items = pageItems;
     return pagination;
 };
 
-/**
- * Creates a page item for the pagination.
- * @param pageNumber - The page number for the item.
- * @param currentPageNumber - The current page number.
- * @param isEllipsis - Whether the item should be an ellipsis.
- * @param prefix - The base URL for the page link.
- * @param searchQuery - Additional query string for search.
- * @returns A PageItem object.
- */
-const createPageItem = (
+// Creates an ellipsis page item
+const createEllipsisItem = (): PageItem => {
+    return { ellipsis: true };
+};
+
+// Creates a regular page item
+const createRegularPageItem = (
     pageNumber: number,
     currentPageNumber: number,
-    isEllipsis: boolean,
     prefix: string,
     searchQuery: string
 ): PageItem => {
-    return isEllipsis
-        ? { ellipsis: true }
-        : {
-            current: currentPageNumber === pageNumber,
-            number: pageNumber,
-            href: `${prefix}?page=${pageNumber}${searchQuery}`
-        };
+    return {
+        current: currentPageNumber === pageNumber,
+        number: pageNumber,
+        href: `${prefix}?page=${pageNumber}${searchQuery}`
+    };
 };
 
 /**
