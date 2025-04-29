@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import {
     getAuthenticationCodeRemoveUrl,
     getCompanyAuthProtectedAuthenticationCodeRemoveUrl
@@ -30,7 +30,7 @@ export const removeAuthorisedPersonNavigation = async (req: Request, res: Respon
 
     setExtraData(req.session, constants.REMOVE_URL_EXTRA, removePageUrl);
 
-    logger.debug(`removeAuthorisedPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+    logger.debug(createLogMessage(req.session, removeAuthorisedPersonNavigation.name, `request to ${req.originalUrl}, calling redirectPage fn`));
 
     if (redirectPage(checkedReferrer, hrefA, getAuthenticationCodeRemoveUrl(userEmail), !!newPageIndicator)) {
         res.redirect(constants.LANDING_URL);

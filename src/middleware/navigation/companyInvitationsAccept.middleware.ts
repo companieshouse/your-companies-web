@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getCompanyInvitationsAcceptFullUrl, getFullUrl } from "../../lib/utils/urlUtils";
 
@@ -26,7 +26,7 @@ export const companyInvitationsAcceptNavigation = async (
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    logger.debug(`companyInvitationsAcceptNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+    logger.debug(createLogMessage(req.session, companyInvitationsAcceptNavigation.name, `request to ${req.originalUrl}, calling redirectPage fn`));
 
     if (redirectPage(referrer, getFullUrl(constants.COMPANY_INVITATIONS_URL), targetUrl, pageIndicator)) {
         res.redirect(constants.LANDING_URL);

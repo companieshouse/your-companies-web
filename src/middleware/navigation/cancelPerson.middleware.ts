@@ -5,7 +5,7 @@ import {
     getExtraData,
     setExtraData
 } from "../../lib/utils/sessionUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import {
     getCancelPersonUrl,
     getCompanyAuthProtectedCancelPersonFullUrl
@@ -40,7 +40,7 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
         req
     );
 
-    logger.debug(`cancelPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+    logger.debug(createLogMessage(req.session, cancelPersonNavigation.name, `request to ${req.originalUrl}, calling redirectPage fn`));
 
     if (redirectPage(checkedReferrer, hrefA, getCancelPersonUrl(userEmail), !!newPageIndicator)) {
         res.redirect(constants.LANDING_URL);

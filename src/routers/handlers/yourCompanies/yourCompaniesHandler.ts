@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
-import logger from "../../../lib/Logger";
+import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData } from "../../../lib/utils/sessionUtils";
@@ -85,7 +85,7 @@ export class YourCompaniesHandler extends GenericHandler {
      * @returns {Promise<YourCompaniesViewData>} The prepared view data for rendering.
      */
     async execute (req: Request): Promise<YourCompaniesViewData> {
-        logger.info(`GET request to serve Your Companies landing page`);
+        logger.info(createLogMessage(req.session, `${YourCompaniesHandler.name}.${this.execute.name}`, `GET request to serve Your Companies landing page`));
 
         const search = req.query.search as string;
         const page = req.query.page as string;

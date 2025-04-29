@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import {
     getAddPresenterUrl,
     getCheckPresenterUrl,
@@ -30,7 +30,7 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
 
         const checkedReferrer = referrer && isReferrerIncludes(referrer) ? hrefA : referrer;
 
-        logger.debug(`addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+        logger.debug(createLogMessage(req.session, addPresenterNavigation.name, `addPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`));
 
         const shouldRedirect = redirectPage(
             checkedReferrer,
@@ -47,9 +47,9 @@ export const addPresenterNavigation = async (req: Request, res: Response, next: 
         }
     } catch (error) {
         if (error instanceof Error) {
-            logger.error(`Error in addPresenterNavigation middleware: ${error.message}`);
+            logger.error(createLogMessage(req.session, addPresenterNavigation.name, `Error in addPresenterNavigation middleware: ${error.message}`));
         } else {
-            logger.error("Error in addPresenterNavigation middleware: An unknown error occurred");
+            logger.error(createLogMessage(req.session, addPresenterNavigation.name, "Error in addPresenterNavigation middleware: An unknown error occurred"));
         }
         next(error);
     }

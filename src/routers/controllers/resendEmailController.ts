@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import { validateEmailString } from "../../lib/validation/generic";
 import { createAssociation } from "../../services/associationsService";
 import { getFullUrl } from "../../lib/utils/urlUtils";
@@ -27,7 +27,7 @@ export const resendEmailController = async (req: Request, res: Response): Promis
     const email = req.params[constants.USER_EMAIL];
 
     if (!isValidEmail(email)) {
-        logger.info(`Invalid email ${email} for company ${companyNumber}`);
+        logger.info(createLogMessage(req.session, resendEmailController.name, `Invalid email ${email} for company ${companyNumber}`));
         res.status(400).redirect(getFullUrl(constants.SOMETHING_WENT_WRONG_URL));
         return;
     }

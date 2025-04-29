@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import {
     getAuthorisedPersonAddedFullUrl,
     getCheckPresenterFullUrl,
@@ -34,7 +34,7 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    logger.debug(`manageAuthorisedPeopleNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+    logger.debug(createLogMessage(req.session, manageAuthorisedPeopleNavigation.name, `request to ${req.originalUrl}, calling redirectPage fn`));
 
     if (shouldRedirectToLanding(req.originalUrl, constants.CONFIRMATION_PERSON_ADDED_URL, referrer, getCheckPresenterFullUrl(companyNumber), getAuthorisedPersonAddedFullUrl(companyNumber), pageIndicator)) {
         res.redirect(constants.LANDING_URL);

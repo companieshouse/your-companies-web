@@ -5,7 +5,7 @@ import { isRemovingThemselves } from "../../lib/utils/removeThemselves";
 import { Removal } from "../../types/removal";
 import { getCompanyAssociations, removeUserFromCompanyAssociations } from "../../services/associationsService";
 import { AssociationList, Association } from "private-api-sdk-node/dist/services/associations/types";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import { validateRemoveAssociation } from "../../lib/validation/validateRemoveAssociation";
@@ -38,7 +38,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
     if (associationToBeRemoved && isRemovingThemselves(req.session as Session, associationToBeRemoved.userEmail)) {
         handleSelfRemoval(req, res, associationToBeRemoved);
     } else if (associationToBeRemoved) {
-        handleOtherUserRemoval(res, removal.companyNumber, associationToBeRemoved.id);
+        handleOtherUserRemoval(req, res, removal.companyNumber, associationToBeRemoved.id);
     }
 };
 
@@ -84,7 +84,7 @@ const validateRemovalRequest = (associationToBeRemoved: Association | undefined,
  * @param associationToBeRemoved - The association to be removed
  */
 const performAssociationRemoval = async (req: Request, associationToBeRemoved: Association): Promise<void> => {
-    logger.info(`Request to remove association ${associationToBeRemoved.id}, ${associationToBeRemoved.companyNumber}`);
+    logger.info(createLogMessage(req.session, performAssociationRemoval.name, `Request to remove association ${associationToBeRemoved.id}, ${associationToBeRemoved.companyNumber}`));
     await removeUserFromCompanyAssociations(req, associationToBeRemoved.id);
 };
 
@@ -96,7 +96,7 @@ const performAssociationRemoval = async (req: Request, associationToBeRemoved: A
  * @param associationToBeRemoved - The association to be removed
  */
 const handleSelfRemoval = (req: Request, res: Response, associationToBeRemoved: Association): void => {
-    logger.info(`Logged in user has removed themselves from ${associationToBeRemoved.companyNumber}`);
+    logger.info(createLogMessage(req.session, handleSelfRemoval.name, `Logged in user has removed themselves from ${associationToBeRemoved.companyNumber}`));
     setExtraData(req.session, constants.REMOVED_THEMSELVES_FROM_COMPANY, {
         companyName: associationToBeRemoved.companyName,
         companyNumber: associationToBeRemoved.companyNumber
@@ -107,11 +107,12 @@ const handleSelfRemoval = (req: Request, res: Response, associationToBeRemoved: 
 /**
  * Handles the scenario where the logged-in user removes another user from a company association.
  *
+ * @param req - The HTTP request object
  * @param res - The HTTP response object
  * @param companyNumber - The company number
  * @param associationId - The ID of the removed association
  */
-const handleOtherUserRemoval = (res: Response, companyNumber: string, associationId: string): void => {
-    logger.info(`Association id ${associationId} status updated`);
+const handleOtherUserRemoval = (req: Request, res: Response, companyNumber: string, associationId: string): void => {
+    logger.info(createLogMessage(req.session, handleOtherUserRemoval.name, `Association id ${associationId} status updated`));
     res.redirect(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber));
 };

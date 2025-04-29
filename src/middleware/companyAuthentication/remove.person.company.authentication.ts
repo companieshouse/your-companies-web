@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import { isRemovingThemselves } from "../../lib/utils/removeThemselves";
 import { companyAuthenticationMiddleware } from "../company.authentication";
 import { Session } from "@companieshouse/node-session-handler";
@@ -22,10 +22,10 @@ export const removeAuthorisedPersonCompanyAuth = (req: Request, res: Response, n
     const companyNumber = req.params[constants.COMPANY_NUMBER];
 
     if (isRemovingThemselves(req.session as Session, userEmail)) {
-        logger.debug(`User is removing themselves from company ${companyNumber}, company authentication not required.`);
+        logger.debug(createLogMessage(req.session, removeAuthorisedPersonCompanyAuth.name, `User is removing themselves from company ${companyNumber}, company authentication not required.`));
         return next();
     }
 
-    logger.debug(`Redirecting to company authentication, removing a user from company ${companyNumber}.`);
+    logger.debug(createLogMessage(req.session, removeAuthorisedPersonCompanyAuth.name, `Redirecting to company authentication, removing a user from company ${companyNumber}.`));
     return companyAuthenticationMiddleware(req, res, next);
 };

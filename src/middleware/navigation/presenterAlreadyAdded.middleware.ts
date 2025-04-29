@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import { getCheckPresenterUrl, getPresenterAlreadyAddedUrl } from "../../lib/utils/urlUtils";
 
 /**
@@ -25,7 +25,7 @@ export const presenterAlreadyAddedNavigation = async (
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
-    logger.debug(`presenterAlreadyAddedNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+    logger.debug(createLogMessage(req.session, presenterAlreadyAddedNavigation.name, `request to ${req.originalUrl}, calling redirectPage fn`));
 
     const shouldRedirect = redirectPage(
         referrer,

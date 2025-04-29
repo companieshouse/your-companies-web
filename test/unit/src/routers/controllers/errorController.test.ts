@@ -52,7 +52,7 @@ describe("csrfErrorHandler", () => {
 
         expect(logger.error).toHaveBeenCalledTimes(1);
         expect(logger.error).toHaveBeenCalledWith(
-            expect.stringContaining("CSRF Error occured")
+            expect.stringContaining("CSRF Error occurred")
         );
     });
 
@@ -89,7 +89,7 @@ describe("httpErrorHandler", () => {
         expect(response.render).toHaveBeenCalledWith("partials/service_unavailable", expect.anything());
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError error occurred when a POST request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a POST request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message: An error messsage, Stack:`)
         );
     });
     it("should ignore errors that are not from http-errors modules, and pass then to next", () => {
@@ -118,7 +118,7 @@ describe("httpErrorHandler", () => {
         expect(response.redirect).toHaveBeenCalledWith("/your-companies");
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message: An error messsage, Stack:`)
         );
     });
 
@@ -135,7 +135,7 @@ describe("httpErrorHandler", () => {
         expect(response.redirect).not.toHaveBeenCalled();
         expect(logger.errorRequest).toHaveBeenCalledTimes(1);
         expect(logger.errorRequest).toHaveBeenCalledWith(request,
-            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message:  + An error messsage, Stack:`)
+            expect.stringContaining(`A 401 UnauthorizedError error occurred when a GET request was made to /originalUrl. Re-routing to the error template page. Error name: UnauthorizedError, Error status: 401, Error message: An error messsage, Stack:`)
         );
     });
 });

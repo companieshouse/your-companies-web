@@ -10,7 +10,12 @@ import logger from "../../../../../src/lib/Logger";
 import * as associationService from "../../../../../src/services/associationsService";
 import * as urlUtils from "../../../../../src/lib/utils/urlUtils";
 
-jest.mock("../../../../../src/lib/Logger");
+jest.mock("../../../../../src/lib/Logger", () => ({
+    ...jest.requireActual("../../../../../src/lib/Logger"),
+    __esModule: true,
+    createAndLogError: jest.fn(),
+    default: jest.fn()
+}));
 const req: Request = mockRequest();
 req.session = new Session();
 const res: Response = mockResponse();
@@ -20,6 +25,7 @@ const redirectMock = jest.fn();
 res.redirect = redirectMock;
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
+const getLoggedInUserIdSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getLoggedInUserId");
 const validateEmailStringSpy: jest.SpyInstance = jest.spyOn(validator, "validateEmailString");
 const createAssociationSpy: jest.SpyInstance = jest.spyOn(associationService, "createAssociation");
 const getFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getFullUrl");
@@ -38,10 +44,11 @@ describe("resendEmailController", () => {
             const email = "test@test@com";
             getExtraDataSpy.mockReturnValue(companyNumber);
             req.params = { [constants.USER_EMAIL]: email };
-            const expectedMessage = `Invalid email ${email} for company ${companyNumber}`;
             validateEmailStringSpy.mockReturnValue(false);
             const expectedUrl = "your-companies/something-went-wrong";
             getFullUrlSpy.mockReturnValue(expectedUrl);
+            getLoggedInUserIdSpy.mockReturnValue("user-id");
+            const expectedMessage = `Function: resendEmailController, User ID: user-id, Message: Invalid email ${email} for company ${companyNumber}`;
             // When
             await resendEmailController(req as Request, res as Response);
             // Then

@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
-import logger from "../../../lib/Logger";
+import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
@@ -78,7 +78,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
      * @param req - The HTTP request object.
      */
     async execute (req: Request): Promise<ManageAuthorisedPeopleViewData> {
-        logger.info(`GET request to serve People Digitally Authorised To File Online For This Company page`);
+        logger.info(createLogMessage(req.session, `${ManageAuthorisedPeopleHandler.name}.${this.execute.name}`, `GET request to serve People Digitally Authorised To File Online For This Company page`));
 
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
