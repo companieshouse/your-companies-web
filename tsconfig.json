@@ -13,8 +13,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
-    "strict": true,
-    "noImplicitAny": true,
     "typeRoots": [
       "src/types/@types",
       "node_modules/@types"

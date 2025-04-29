@@ -1,6 +1,18 @@
 import { Session } from "@companieshouse/node-session-handler";
-import { getSessionRequestWithPermission, userMail } from "../../../../mocks/session.mock";
-import { deleteExtraData, getAccessToken, getExtraData, getLoggedInUserEmail, setExtraData } from "../../../../../src/lib/utils/sessionUtils";
+import {
+    getSessionRequestWithPermission,
+    standardUserSessionMock,
+    userMail
+} from "../../../../mocks/session.mock";
+import {
+    deleteExtraData,
+    getAccessToken,
+    getExtraData,
+    getLoggedInUserEmail,
+    getRefreshToken,
+    setAccessToken,
+    setExtraData
+} from "../../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
@@ -136,6 +148,42 @@ describe("Session Utils", () => {
             const result = getAccessToken(session);
             // Then
             expect(result).toEqual(accessToken);
+        });
+    });
+
+    describe("getRefreshToken", () => {
+        it("should get refresh token from the session", () => {
+            // Given
+            const expectedRefreshToken = standardUserSessionMock.data.signin_info?.access_token?.refresh_token;
+            // When
+            const refreshToken = getRefreshToken(standardUserSessionMock);
+            // Then
+            expect(refreshToken).toEqual(expectedRefreshToken);
+        });
+    });
+
+    describe("setAccessToken", () => {
+        it("should set access token in the session with the provided one", () => {
+            // Given
+            const session: Session = getSessionRequestWithPermission();
+            const expectedExistingAccessToken = session.data.signin_info?.access_token?.access_token;
+            const accessToken = "asdfgzxcv12345";
+            // When
+            const existingAccessToken = getAccessToken(session);
+            setAccessToken(session, accessToken);
+            const newAccessToken = getAccessToken(session);
+            // Then
+            expect(existingAccessToken).toEqual(expectedExistingAccessToken);
+            expect(newAccessToken).toEqual(accessToken);
+        });
+
+        it("throw an error if signInInfo not available in session", () => {
+            // Given
+            const session: Session = new Session();
+            const accessToken = "asdfgzxcv12345";
+            // Then
+            expect(() => setAccessToken(session, accessToken))
+                .toThrow("SignInInfo not present in the session");
         });
     });
 });

@@ -1,5 +1,4 @@
 import { Request } from "express";
-import { createOauthPrivateApiClient } from "./apiClientService";
 import { Resource } from "@companieshouse/api-sdk-node";
 import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
@@ -14,6 +13,10 @@ import {
 } from "private-api-sdk-node/dist/services/associations/types";
 import { AssociationState, AssociationStateResponse } from "../types/associations";
 import createError from "http-errors";
+import { makeApiCallWithRetry } from "./apiCallRetryService";
+import { Session } from "@companieshouse/node-session-handler";
+
+const ASSOCIATIONS_SERVICE = "associationsService";
 
 /**
  * Converts API errors into a JSON string for logging or error handling.
@@ -32,12 +35,18 @@ export const getUserAssociations = async (
     pageIndex?: number,
     itemsPerPage?: number
 ): Promise<AssociationList> => {
-    const apiClient = createOauthPrivateApiClient(req);
     logger.info(`Looking for associations with status ${JSON.stringify(status)}`);
 
-    const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.searchAssociations(
-        status, pageIndex, itemsPerPage, companyNumber
-    );
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "searchAssociations",
+        req,
+        req.session as Session,
+        status,
+        pageIndex,
+        itemsPerPage,
+        companyNumber
+    ) as Resource<AssociationList | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `No SDK Response returned from an associations API call for status ${JSON.stringify(status)}`;
@@ -99,10 +108,17 @@ export const getCompanyAssociations = async (
     pageIndex?: number,
     itemsPerPage?: number
 ): Promise<AssociationList> => {
-    const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<AssociationList | Errors> = await apiClient.associationsService.getCompanyAssociations(
-        companyNumber, includeRemoved, pageIndex, itemsPerPage, userEmail
-    );
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "getCompanyAssociations",
+        req,
+        req.session as Session,
+        companyNumber,
+        includeRemoved,
+        pageIndex,
+        itemsPerPage,
+        userEmail
+    ) as Resource<AssociationList | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}`;
@@ -133,10 +149,14 @@ export const createAssociation = async (
     companyNumber: string,
     inviteeEmailAddress?: string
 ): Promise<string> => {
-    const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.createAssociation(
-        companyNumber, inviteeEmailAddress
-    );
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "createAssociation",
+        req,
+        req.session as Session,
+        companyNumber,
+        inviteeEmailAddress
+    ) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
@@ -169,10 +189,14 @@ export const updateAssociationStatus = async (
     associationId: string,
     status: AssociationStatus
 ): Promise<string> => {
-    const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<undefined | Errors> = await apiClient.associationsService.updateAssociationStatus(
-        associationId, status
-    );
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "updateAssociationStatus",
+        req,
+        req.session as Session,
+        associationId,
+        status
+    ) as Resource<undefined | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`;
@@ -197,10 +221,14 @@ export const getInvitations = async (
     pageIndex?: number,
     itemsPerPage?: number
 ): Promise<InvitationList> => {
-    const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<InvitationList | Errors> = await apiClient.associationsService.getInvitations(
-        pageIndex, itemsPerPage
-    );
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "getInvitations",
+        req,
+        req.session as Session,
+        pageIndex,
+        itemsPerPage
+    ) as Resource<InvitationList | Errors>;
 
     if (!sdkResponse) {
         const errMsg = `No response from GET /associations/invitations`;
@@ -232,10 +260,14 @@ export const postInvitation = async (
     companyNumber: string,
     inviteeEmailAddress: string
 ): Promise<string> => {
-    const apiClient = createOauthPrivateApiClient(req);
-    const sdkResponse: Resource<NewAssociationResponse | Errors> = await apiClient.associationsService.postInvitation(
-        companyNumber, inviteeEmailAddress
-    );
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "postInvitation",
+        req,
+        req.session as Session,
+        companyNumber,
+        inviteeEmailAddress
+    ) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
         const errMsg = `No response from POST /associations/invitations`;
