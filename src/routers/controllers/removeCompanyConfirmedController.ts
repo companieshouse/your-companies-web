@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { RemoveCompanyConfirmedHandler } from "../handlers/yourCompanies/removeCompanyConfirmedHandler";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for the "Remove Company Confirmed" page.
@@ -16,5 +17,12 @@ export const removeCompanyConfirmedControllerGet = async (
 ): Promise<void> => {
     const handler = new RemoveCompanyConfirmedHandler();
     const viewData = await handler.execute(req);
+    logger.info(
+        createLogMessage(
+            req.session,
+            removeCompanyConfirmedControllerGet.name,
+            "Rendering remove company confirmed page"
+        )
+    );
     res.render(constants.REMOVE_COMPANY_CONFIRMED, viewData);
 };

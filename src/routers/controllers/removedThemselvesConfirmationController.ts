@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { RemoveThemselvesConfirmationHandler } from "../handlers/yourCompanies/removeThemselvesConfirmationHandler";
 import * as constants from "../../constants";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Controller for handling the GET request to confirm removal of a user.
@@ -16,5 +17,12 @@ export const removedThemselvesConfirmationControllerGet = async (
 ): Promise<void> => {
     const handler = new RemoveThemselvesConfirmationHandler();
     const viewData = await handler.execute(req);
+    logger.info(
+        createLogMessage(
+            req.session,
+            removedThemselvesConfirmationControllerGet.name,
+            "Rendering removed themselves confirmation page"
+        )
+    );
     res.render(constants.REMOVED_THEMSELVES, viewData);
 };

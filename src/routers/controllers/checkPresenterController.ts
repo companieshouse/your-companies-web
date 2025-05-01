@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { CheckPresenterHandler, CheckPresenterViewData } from "../handlers/yourCompanies/checkPresenterHandler";
 import { getFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for the Check Presenter page.
@@ -11,6 +12,7 @@ import { getFullUrl } from "../../lib/utils/urlUtils";
  * @param res - The HTTP response object.
  */
 export const checkPresenterControllerGet = async (req: Request, res: Response): Promise<void> => {
+    logger.info(createLogMessage(req.session, checkPresenterControllerGet.name, "Rendering Check Presenter page"));
     const viewData = await executeHandler(req, constants.GET);
     res.render(constants.CHECK_PRESENTER_PAGE, viewData);
 };
@@ -26,9 +28,11 @@ export const checkPresenterControllerPost = async (req: Request, res: Response):
     const viewData = await executeHandler(req, constants.POST);
 
     if (hasErrors(viewData)) {
+        logger.info(createLogMessage(req.session, checkPresenterControllerPost.name, "Rendering Check Presenter page with errors"));
         res.render(constants.CHECK_PRESENTER_PAGE, viewData);
     } else {
         const redirectUrl = determineRedirectUrl(viewData);
+        logger.info(createLogMessage(req.session, checkPresenterControllerPost.name, `Redirecting to ${redirectUrl}`));
         res.redirect(redirectUrl);
     }
 };

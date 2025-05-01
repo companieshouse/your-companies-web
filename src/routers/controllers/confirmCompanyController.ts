@@ -4,6 +4,7 @@ import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import { getCreateCompanyAssociationFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for confirming a company.
@@ -19,6 +20,7 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response): 
     setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, true);
 
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.lang, companyProfile);
+    logger.info(createLogMessage(req.session, confirmCompanyControllerGet.name, "Rendering confirm company page"));
     res.render(constants.CONFIRM_COMPANY_PAGE, viewData);
 };
 
@@ -40,5 +42,6 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
 
     const nextPageUrl = getCreateCompanyAssociationFullUrl(company.companyNumber);
+    logger.info(createLogMessage(req.session, confirmCompanyControllerPost.name, `Redirecting to ${nextPageUrl}`));
     res.redirect(nextPageUrl);
 };

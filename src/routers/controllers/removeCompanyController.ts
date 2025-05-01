@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { RemoveCompanyHandler } from "../handlers/yourCompanies/removeCompanyHandler";
 import * as constants from "../../constants";
 import { BaseViewData } from "../../types/utilTypes";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for removing a company.
@@ -13,6 +14,7 @@ import { BaseViewData } from "../../types/utilTypes";
 export const removeCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveCompanyHandler();
     const viewData = await handler.execute(req, res, constants.GET);
+    logger.info(createLogMessage(req.session, removeCompanyControllerGet.name, "Rendering remove company page"));
     res.render(constants.REMOVE_COMPANY_PAGE, viewData as BaseViewData);
 };
 
@@ -28,6 +30,7 @@ export const removeCompanyControllerPost = async (req: Request, res: Response): 
     const viewData = await handler.execute(req, res, constants.POST);
 
     if (viewData?.errors && Object.keys(viewData.errors).length > 0) {
+        logger.info(createLogMessage(req.session, removeCompanyControllerPost.name, "Rendering remove company page with errors"));
         return res.render(constants.REMOVE_COMPANY_PAGE, viewData);
     }
 };

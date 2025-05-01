@@ -3,7 +3,7 @@ import { Request } from "express";
 import { getAccessToken } from "../lib/utils/sessionUtils";
 import { createOauthPrivateApiClient } from "./apiClientService";
 import { refreshToken } from "./refreshTokenService";
-import logger from "../lib/Logger";
+import logger, { createLogMessage } from "../lib/Logger";
 
 /**
  * Calls API and if the response is unauthorized then it refreshes access token and retries the call to the API.
@@ -23,7 +23,7 @@ export const makeApiCallWithRetry = async (
     ...otherParams: any[]
 ): Promise<unknown> => {
 
-    logger.info(`${makeApiCallWithRetry.name}: Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`);
+    logger.info(createLogMessage(session, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`));
 
     let client = createOauthPrivateApiClient(req);
 
@@ -32,17 +32,17 @@ export const makeApiCallWithRetry = async (
     if (response?.httpStatusCode === 401) {
 
         const responseMsg = `Retrying ${fnName} call on ${serviceName} service after unauthorised response`;
-        logger.info(`${makeApiCallWithRetry.name}: ${responseMsg} - ${JSON.stringify(response)}`);
+        logger.info(createLogMessage(session, makeApiCallWithRetry.name, `${responseMsg} - ${JSON.stringify(response)}`));
 
         const accessToken = await refreshToken(req, session);
-        logger.info(`${makeApiCallWithRetry.name}: New access token: ${accessToken}`);
+        logger.info(createLogMessage(session, makeApiCallWithRetry.name, `New access token: ${accessToken}`));
 
         client = createOauthPrivateApiClient(req);
         response = await client[serviceName][fnName](...otherParams);
 
     }
 
-    logger.info(`${makeApiCallWithRetry.name}: Call successful.`);
+    logger.info(createLogMessage(session, makeApiCallWithRetry.name, `Call successful.`));
 
     return response;
 

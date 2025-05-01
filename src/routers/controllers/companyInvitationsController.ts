@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { CompanyInvitationsHandler } from "../handlers/yourCompanies/companyInvitationsHandler";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for the company invitations page.
@@ -14,5 +15,6 @@ import { CompanyInvitationsHandler } from "../handlers/yourCompanies/companyInvi
 export const companyInvitationsControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new CompanyInvitationsHandler();
     const viewData = await handler.execute(req);
+    logger.info(createLogMessage(req.session, companyInvitationsControllerGet.name, "Rendering company invitations page"));
     res.render(constants.COMPANY_INVITATIONS_PAGE, { ...viewData });
 };

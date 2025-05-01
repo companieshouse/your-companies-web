@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { getCheckPresenterFullUrl } from "../../lib/utils/urlUtils";
 import { AddPresenterHandler } from "../handlers/yourCompanies/addPresenterHandler";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for the Add Presenter page.
@@ -12,6 +13,7 @@ import { AddPresenterHandler } from "../handlers/yourCompanies/addPresenterHandl
  */
 export const addPresenterControllerGet = async (req: Request, res: Response): Promise<void> => {
     const viewData = await executeHandler(req, constants.GET);
+    logger.info(createLogMessage(req.session, addPresenterControllerGet.name, "Rendering add presenter page"));
     res.render(constants.ADD_PRESENTER_PAGE, viewData);
 };
 
@@ -26,8 +28,10 @@ export const addPresenterControllerPost = async (req: Request, res: Response): P
     const viewData = await executeHandler(req, constants.POST);
 
     if (!viewData.errors) {
+        logger.info(createLogMessage(req.session, addPresenterControllerPost.name, "Redirecting to check presenter page"));
         res.redirect(getCheckPresenterFullUrl(viewData.companyNumber));
     } else {
+        logger.info(createLogMessage(req.session, addPresenterControllerPost.name, "Rendering add presenter page"));
         res.render(constants.ADD_PRESENTER_PAGE, viewData);
     }
 };

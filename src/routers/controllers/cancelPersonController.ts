@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CancelPersonHandler, CancelPersonViewData } from "../handlers/yourCompanies/cancelPersonHandler";
 import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for the cancel person page.
@@ -15,6 +16,7 @@ export const cancelPersonControllerGet = async (req: Request, res: Response): Pr
     const viewData = await handler.execute(req, res, constants.GET);
 
     cleanUpSessionData(req);
+    logger.info(createLogMessage(req.session, cancelPersonControllerGet.name, "Rendering cancel person page"));
     res.render(constants.CANCEL_PERSON_PAGE, { ...viewData });
 };
 
@@ -30,8 +32,10 @@ export const cancelPersonControllerPost = async (req: Request, res: Response): P
     const viewData = await handler.execute(req, res, constants.POST);
 
     if (hasErrors(viewData)) {
+        logger.info(createLogMessage(req.session, cancelPersonControllerPost.name, "Rendering cancel person page"));
         res.render(constants.CANCEL_PERSON_PAGE, { ...viewData });
     } else {
+        logger.info(createLogMessage(req.session, cancelPersonControllerPost.name, "Redirecting to confirmation page"));
         res.redirect(`${viewData.backLinkHref}${constants.CONFIRMATION_CANCEL_PERSON_URL}`);
     }
 };

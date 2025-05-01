@@ -32,6 +32,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
     if (associationToBeRemoved) {
         await performAssociationRemoval(req, associationToBeRemoved);
     } else {
+        logger.error(createLogMessage(req.session, removeAuthorisedPersonRequestController.name, `Association to be removed is undefined`));
         throw new Error("Association to be removed is undefined");
     }
 

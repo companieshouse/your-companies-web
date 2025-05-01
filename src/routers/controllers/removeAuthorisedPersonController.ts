@@ -3,6 +3,7 @@ import { RemoveAuthorisedPersonHandler, RemoveAuthorisedPersonViewData } from ".
 import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for removing an authorised person.
@@ -16,6 +17,7 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
     const viewData: RemoveAuthorisedPersonViewData = await handler.execute(req, constants.GET);
 
     cleanUpSessionData(req);
+    logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerGet.name, "Rendering remove authorised person page"));
     res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
 };
 
@@ -32,8 +34,10 @@ export const removeAuthorisedPersonControllerPost = async (req: Request, res: Re
     const viewData: RemoveAuthorisedPersonViewData = await handler.execute(req, constants.POST);
 
     if (hasErrors(viewData)) {
+        logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerPost.name, "Rendering remove authorised person page with errors"));
         res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
     } else {
+        logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerPost.name, "Redirecting to remove association URL"));
         res.redirect(buildRedirectUrl(viewData.companyNumber));
     }
 };

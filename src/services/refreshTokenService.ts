@@ -4,7 +4,7 @@ import { getAccessToken, getRefreshToken, setAccessToken } from "../lib/utils/se
 import { Session } from "@companieshouse/node-session-handler";
 import { Request } from "express";
 import { OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REFRESH_TOKEN_GRANT_TYPE } from "../constants";
-import logger from "../lib/Logger";
+import logger, { createLogMessage } from "../lib/Logger";
 
 /**
  * Refreshes the access token by calling refreshToken service.
@@ -16,7 +16,7 @@ import logger from "../lib/Logger";
 export const refreshToken = async (req: Request, session: Session): Promise<string> => {
     const apiClient: ApiClient = createOAuthApiClient(session);
 
-    logger.info(`${refreshToken.name}: Making a POST request for refreshing access token ${getAccessToken(session)}`);
+    logger.info(createLogMessage(session, refreshToken.name, `Making a POST request for refreshing access token ${getAccessToken(session)}`));
 
     const refreshTokenData = await apiClient.refreshToken.refresh(
         getRefreshToken(session),
@@ -28,11 +28,11 @@ export const refreshToken = async (req: Request, session: Session): Promise<stri
 
     if (!accessToken) {
         const errorMessage = `Error on refresh token ${JSON.stringify(refreshTokenData)}`;
-        logger.error(`${refreshToken.name}: ${errorMessage}`);
+        logger.error(createLogMessage(session, refreshToken.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     setAccessToken(session, accessToken);
-
+    logger.info(createLogMessage(session, refreshToken.name, "Successfully refreshed access token"));
     return accessToken;
 };
