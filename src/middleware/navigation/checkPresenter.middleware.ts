@@ -10,19 +10,37 @@ import {
     getPresenterAlreadyAddedUrl
 } from "../../lib/utils/urlUtils";
 
+/**
+ * Middleware to handle navigation logic for presenter-related pages.
+ * Redirects the user to the landing page if certain conditions are met,
+ * otherwise proceeds to the next middleware.
+ *
+ * @param req - The Express request object
+ * @param res - The Express response object
+ * @param next - The next middleware function
+ */
 export const checkPresenterNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const referrer: string | undefined = req.get("Referrer");
+    const referrer = req.get("Referrer");
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     const pageIndicator = getExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-    const hrefC = [getAuthorisedPersonAddedFullUrl(companyNumber), getPresenterAlreadyAddedUrl(companyNumber)];
+    const redirectUrls = [
+        getAuthorisedPersonAddedFullUrl(companyNumber),
+        getPresenterAlreadyAddedUrl(companyNumber)
+    ];
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
 
     logger.debug(`checkPresenterNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(referrer, getAddPresenterUrl(companyNumber),
-        getCheckPresenterUrl(companyNumber), pageIndicator,
-        hrefC)) {
+    const shouldRedirect = redirectPage(
+        referrer,
+        getAddPresenterUrl(companyNumber),
+        getCheckPresenterUrl(companyNumber),
+        pageIndicator,
+        redirectUrls
+    );
+
+    if (shouldRedirect) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();

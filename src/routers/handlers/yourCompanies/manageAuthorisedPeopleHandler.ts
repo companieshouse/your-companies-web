@@ -34,12 +34,22 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     authorisedPersonCompanyName: string | undefined;
 }
 
+/**
+ * Handler for managing authorised people associated with a company.
+ */
 export class ManageAuthorisedPeopleHandler extends GenericHandler {
     viewData: ManageAuthorisedPeopleViewData;
 
     constructor () {
         super();
-        this.viewData = {
+        this.viewData = this.initializeViewData();
+    }
+
+    /**
+     * Initializes the default view data for the handler.
+     */
+    private initializeViewData (): ManageAuthorisedPeopleViewData {
+        return {
             templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
             backLinkHref: constants.LANDING_URL,
             lang: {},
@@ -63,24 +73,30 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         };
     }
 
+    /**
+     * Executes the handler logic to prepare data for the view.
+     * @param req - The HTTP request object.
+     */
     async execute (req: Request): Promise<ManageAuthorisedPeopleViewData> {
-        logger.info(`GET request to serve People Digitaly Authorised To File Online For This Company page`);
-        // ...process request here and return data for the view
+        logger.info(`GET request to serve People Digitally Authorised To File Online For This Company page`);
+
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
 
         deleteExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
         deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
-        const companyNumber: string = req.params[constants.COMPANY_NUMBER];
 
+        const companyNumber: string = req.params[constants.COMPANY_NUMBER];
         await this.preventUnauthorisedAccess(req, companyNumber);
 
         const lang = getTranslationsForView(req.lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData.lang = lang;
         this.viewData.buttonHref = getAddPresenterFullUrl(companyNumber) + constants.CLEAR_FORM_TRUE;
         this.viewData.cancelUrl = getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
+
         const cancellation: Cancellation = getExtraData(req.session, constants.CANCEL_PERSON);
         let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
             pageNumber = 1;
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
@@ -99,12 +115,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        const emailArray = [];
-
-        for (let i = 0; i < companyAssociations.items.length; i++) {
-            emailArray.push(companyAssociations?.items[i]?.userEmail);
-        }
-
+        const emailArray = companyAssociations.items.map(item => item?.userEmail);
         this.viewData.companyAssociations = companyAssociations;
 
         if (companyAssociations.totalPages > 1) {
@@ -121,9 +132,15 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
+
         return Promise.resolve(this.viewData);
     }
 
+    /**
+     * Prevents unauthorized access to the page by validating the user's association with the company.
+     * @param req - The HTTP request object.
+     * @param companyNumber - The company number.
+     */
     private async preventUnauthorisedAccess (req: Request, companyNumber: string) {
         const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
         if (isAssociated.state !== AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
@@ -133,12 +150,19 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         return Promise.resolve();
     }
 
+    /**
+     * Handles the cancellation of an authorised person.
+     * @param req - The HTTP request object.
+     * @param cancellation - The cancellation data.
+     * @param companyNumber - The company number.
+     */
     private async handleCancellation (req: Request, cancellation: Cancellation, companyNumber: string) {
         if (cancellation.cancelPerson === constants.YES) {
             const companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, undefined, 100000);
             const associationId = companyAssociations.items.find(
                 association => association.companyNumber === cancellation.companyNumber && association.userEmail === cancellation.userEmail
             )?.id as string;
+
             if (!this.isUserRemovedFromCompanyAssociations(req) && associationId) {
                 await this.callRemoveUserFromCompanyAssociations(req, associationId);
             }
@@ -146,6 +170,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
+    /**
+     * Handles the confirmation of a person being removed.
+     * @param req - The HTTP request object.
+     */
     private async handleRemoveConfirmation (req: Request) {
         const removal: Removal = getExtraData(req.session, constants.REMOVE_PERSON);
         if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
@@ -154,10 +182,19 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
+    /**
+     * Checks if the user has been removed from company associations.
+     * @param req - The HTTP request object.
+     */
     private isUserRemovedFromCompanyAssociations (req: Request): boolean {
         return getExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS) === constants.TRUE;
     }
 
+    /**
+     * Calls the service to remove a user from company associations.
+     * @param req - The HTTP request object.
+     * @param associationId - The association ID.
+     */
     private async callRemoveUserFromCompanyAssociations (req: Request, associationId: string) {
         const isUserRemovedFromCompanyAssociations = (await removeUserFromCompanyAssociations(req, associationId)) === constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
         if (isUserRemovedFromCompanyAssociations) {
@@ -165,6 +202,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
+    /**
+     * Handles the success message for a resent email.
+     * @param req - The HTTP request object.
+     */
     private handleResentSuccessEmail (req: Request) {
         const resentSuccessEmail: string = getExtraData(req.session, constants.RESENT_SUCCESS_EMAIL);
         if (resentSuccessEmail && req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL)) {
@@ -173,6 +214,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
+    /**
+     * Handles the confirmation of a person being added.
+     * @param req - The HTTP request object.
+     */
     private handleConfirmationPersonAdded (req: Request) {
         const authorisedPerson: AuthorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
         if (authorisedPerson && req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL)) {

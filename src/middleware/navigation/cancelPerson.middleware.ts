@@ -2,19 +2,26 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import {
-    deleteExtraData,
     getExtraData,
     setExtraData
 } from "../../lib/utils/sessionUtils";
 import logger from "../../lib/Logger";
 import {
     getCancelPersonUrl,
-    getCompanyAuthProtectedCancelPersonFullUrl,
-    isReferrerIncludes
+    getCompanyAuthProtectedCancelPersonFullUrl
 } from "../../lib/utils/urlUtils";
+import { determineCheckedReferrer, determinePageIndicator } from "../../lib/utils/navigationUtils";
 
+/**
+ * Middleware to handle navigation logic for canceling a person.
+ * It determines the appropriate redirection or continuation of the request based on session data and referrer.
+ *
+ * @param req - Express request object
+ * @param res - Express response object
+ * @param next - Express next function
+ */
 export const cancelPersonNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const referrer: string | undefined = req.get("Referrer");
+    const referrer = req.get("Referrer");
     const hrefA = getExtraData(req.session, constants.REFERER_URL);
     const userEmail = req.params[constants.USER_EMAIL];
     const companyNumber = req.params[constants.COMPANY_NUMBER];
@@ -22,27 +29,20 @@ export const cancelPersonNavigation = async (req: Request, res: Response, next: 
     const cancelPageUrl = getCompanyAuthProtectedCancelPersonFullUrl(companyNumber, userEmail);
     const userEmails = getExtraData(req.session, constants.USER_EMAILS_ARRAY);
 
-    let checkedReferrer;
-    let newPageIndicator;
-
     setExtraData(req.session, constants.CANCEL_URL_EXTRA, cancelPageUrl);
 
-    if (referrer && isReferrerIncludes(referrer)) {
-        checkedReferrer = hrefA;
-    } else {
-        checkedReferrer = referrer;
-    }
-
-    if (companyNumber === pageIndicator && userEmails.includes(userEmail)) {
-        newPageIndicator = true;
-    } else {
-        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        newPageIndicator = pageIndicator;
-    }
+    const checkedReferrer = determineCheckedReferrer(referrer, hrefA);
+    const newPageIndicator = determinePageIndicator(
+        companyNumber || "",
+        pageIndicator || "",
+        Array.isArray(userEmails) ? userEmails : [],
+        userEmail || "",
+        req
+    );
 
     logger.debug(`cancelPersonNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
 
-    if (redirectPage(checkedReferrer, hrefA, getCancelPersonUrl(userEmail), newPageIndicator)) {
+    if (redirectPage(checkedReferrer, hrefA, getCancelPersonUrl(userEmail), !!newPageIndicator)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();

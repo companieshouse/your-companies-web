@@ -4,7 +4,7 @@ import logger from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData } from "../../../lib/utils/sessionUtils";
-import { BaseViewData } from "../../../types/utilTypes";
+import { BaseViewData, AnyRecord } from "../../../types/utilTypes";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AssociationList, AssociationStatus, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
 import {
@@ -38,12 +38,24 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     removeCompanyUrl: string;
 }
 
+/**
+ * Handles the "Your Companies" page logic, including fetching user associations,
+ * managing pagination, and preparing data for rendering the view.
+ */
 export class YourCompaniesHandler extends GenericHandler {
     viewData: YourCompaniesViewData;
 
     constructor () {
         super();
-        this.viewData = {
+        this.viewData = this.initializeViewData();
+    }
+
+    /**
+     * Initializes the default view data for the "Your Companies" page.
+     * @returns {YourCompaniesViewData} The default view data object.
+     */
+    private initializeViewData (): YourCompaniesViewData {
+        return {
             templateName: constants.YOUR_COMPANIES_PAGE,
             buttonHref: getFullUrl(constants.ADD_COMPANY_URL) + constants.CLEAR_FORM_TRUE,
             lang: {},
@@ -65,12 +77,18 @@ export class YourCompaniesHandler extends GenericHandler {
         };
     }
 
+    /**
+     * Executes the handler logic for the "Your Companies" page.
+     * Fetches user associations, handles search and pagination, and prepares data for rendering.
+     *
+     * @param {Request} req - The HTTP request object.
+     * @returns {Promise<YourCompaniesViewData>} The prepared view data for rendering.
+     */
     async execute (req: Request): Promise<YourCompaniesViewData> {
         logger.info(`GET request to serve Your Companies landing page`);
-        // ...process request here and return data for the view
+
         const search = req.query.search as string;
         const page = req.query.page as string;
-
         let pageNumber = stringToPositiveInteger(page);
 
         let errorMassage;
@@ -78,48 +96,117 @@ export class YourCompaniesHandler extends GenericHandler {
             errorMassage = constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE;
         }
 
-        let confirmedUserAssociations: AssociationList = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
+        let confirmedUserAssociations: AssociationList = await getUserAssociations(
+            req,
+            [AssociationStatus.CONFIRMED],
+            errorMassage ? undefined : search,
+            pageNumber - 1
+        );
 
-        // validate the page number
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
-            confirmedUserAssociations = await getUserAssociations(req, [AssociationStatus.CONFIRMED], errorMassage ? undefined : search, pageNumber - 1);
+            confirmedUserAssociations = await getUserAssociations(
+                req,
+                [AssociationStatus.CONFIRMED],
+                errorMassage ? undefined : search,
+                pageNumber - 1
+            );
         }
 
         const invites: InvitationList = await getInvitations(req);
 
-        deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
-        deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
-        deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
-        deleteExtraData(req.session, constants.CURRENT_COMPANY_NUM);
-        deleteExtraData(req.session, constants.REMOVE_COMPANY_URL_EXTRA);
-        deleteExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
-        deleteExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
-        deleteExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION);
+        this.clearSessionData(req);
 
+        const lang = this.getLanguageData(req);
+        this.viewData.lang = lang;
+
+        this.populateViewData(confirmedUserAssociations, invites);
+        this.viewData.search = search;
+
+        if (errorMassage) {
+            this.viewData.errors = { search: { text: errorMassage } };
+        }
+
+        this.updateSearchAndPaginationData(search, confirmedUserAssociations, pageNumber, lang);
+
+        return Promise.resolve(this.viewData);
+    }
+
+    /**
+     * Clears unnecessary session data.
+     *
+     * @param {Request} req - The HTTP request object.
+     */
+    private clearSessionData (req: Request): void {
+        const sessionKeys = [
+            constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR,
+            constants.CONFIRM_COMPANY_DETAILS_INDICATOR,
+            constants.REMOVE_URL_EXTRA,
+            constants.USER_EMAILS_ARRAY,
+            constants.CURRENT_COMPANY_NUM,
+            constants.REMOVE_COMPANY_URL_EXTRA,
+            constants.LAST_REMOVED_COMPANY_NAME,
+            constants.LAST_REMOVED_COMPANY_NUMBER,
+            constants.YOU_MUST_SELECT_AN_OPTION
+        ];
+
+        sessionKeys.forEach(key => deleteExtraData(req.session, key));
+    }
+
+    /**
+     * Retrieves language data for the view.
+     *
+     * @param {Request} req - The HTTP request object.
+     * @returns {AnyRecord} The language data object.
+     */
+    private getLanguageData (req: Request): AnyRecord {
         const localesServicei18nCh = i18nCh.getInstance();
-        const lang = {
+        return {
             ...getTranslationsForView(req.lang, constants.YOUR_COMPANIES_PAGE),
             ...localesServicei18nCh.getResourceBundle(req.lang, constants.COMPANY_STATUS)
         };
-        this.viewData.lang = lang;
+    }
 
-        this.getViewData(confirmedUserAssociations, invites);
-        this.viewData.search = search;
-        if (errorMassage) {
-            this.viewData.errors = {
-                search: {
-                    text: errorMassage
-                }
-            };
+    /**
+     * Populates the view data with user associations and invitations.
+     *
+     * @param {AssociationList} confirmedUserAssociations - The list of confirmed user associations.
+     * @param {InvitationList} invitationList - The list of invitations.
+     */
+    private populateViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList): void {
+        this.viewData.numberOfInvitations = invitationList.totalResults;
+
+        if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
+            this.viewData.associationData = confirmedUserAssociations.items.map(item => ({
+                company_name: item.companyName,
+                company_number: item.companyNumber,
+                company_status: item.companyStatus
+            }));
+
+            this.viewData.userHasCompanies = constants.TRUE;
+            this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
+            this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
         }
+    }
 
+    /**
+     * Updates the view data with search and pagination information.
+     *
+     * @param {string} search - The search query string.
+     * @param {AssociationList} confirmedUserAssociations - The list of confirmed user associations.
+     * @param {number} pageNumber - The current page number.
+     * @param {AnyRecord} lang - The language data object.
+     */
+    private updateSearchAndPaginationData (
+        search: string,
+        confirmedUserAssociations: AssociationList,
+        pageNumber: number,
+        lang: AnyRecord
+    ): void {
         if (confirmedUserAssociations.totalPages > 1 || !!search?.length) {
             this.viewData.displaySearchForm = true;
         }
 
-        // toggles display for number of matches found
         this.viewData.showNumOfMatches = !!search?.length && !this.viewData.errors;
         this.viewData.numOfMatches = confirmedUserAssociations.totalResults;
 
@@ -129,32 +216,18 @@ export class YourCompaniesHandler extends GenericHandler {
 
         if (confirmedUserAssociations.totalResults > 0) {
             const searchQuery = getSearchQuery(search);
-            const pagination = buildPaginationElement(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery);
+            const pagination = buildPaginationElement(
+                pageNumber,
+                confirmedUserAssociations.totalPages,
+                constants.LANDING_URL,
+                searchQuery
+            );
 
             setLangForPagination(pagination, lang);
 
             this.viewData.pagination = pagination;
             this.viewData.pageNumber = pageNumber;
             this.viewData.numberOfPages = confirmedUserAssociations.totalPages;
-        }
-
-        return Promise.resolve(this.viewData);
-    }
-
-    private getViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList): void {
-        this.viewData.numberOfInvitations = invitationList.totalResults;
-
-        if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-            const associationData = confirmedUserAssociations.items.map(item => ({
-                company_name: item.companyName,
-                company_number: item.companyNumber,
-                company_status: item.companyStatus
-            }));
-
-            this.viewData.associationData = associationData;
-            this.viewData.userHasCompanies = constants.TRUE;
-            this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
-            this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
         }
     }
 }

@@ -28,7 +28,7 @@ describe("CompanyInvitationsAcceptHandler", () => {
     test.each([
         {
             associationStateChanged: constants.TRUE,
-            referer: `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/1234567890?${constants.COMPANY_NAME}=Test+Ltd`,
+            referer: `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/1234567890?${constants.COMPANY_NAME}=${encodeURIComponent("Test+Ltd")}`,
             return: "with associationStateChanged undefined",
             condition: "assiciation state is changed",
             translations: { key: "value" }
@@ -44,7 +44,7 @@ describe("CompanyInvitationsAcceptHandler", () => {
         {
             associationStateChanged: undefined,
             viewData: {},
-            referer: `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/1234567890?${constants.COMPANY_NAME}=Test+Ltd`,
+            referer: `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/1234567890?${constants.COMPANY_NAME}=${encodeURIComponent("Test+Ltd")}`,
             return: "with associationStateChanged undefined",
             condition: "assiciation state is not changed",
             translations: { key: "value" }
