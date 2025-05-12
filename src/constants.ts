@@ -131,7 +131,7 @@ export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_E
 export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 export const OAUTH2_CLIENT_ID = getEnvironmentValue(`OAUTH2_CLIENT_ID`);
 export const OAUTH2_CLIENT_SECRET = getEnvironmentValue(`OAUTH2_CLIENT_SECRET`);
-export const API_URL = getEnvironmentValue("API_URL");
+export const ACCOUNT_LOCAL_URL = getEnvironmentValue("ACCOUNT_LOCAL_URL");
 
 export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const CHS_URL = getEnvironmentValue("CHS_URL");

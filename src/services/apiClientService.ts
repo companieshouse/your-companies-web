@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { createPrivateApiClient } from "private-api-sdk-node";
-import { API_URL, INTERNAL_API_URL } from "../constants";
+import { ACCOUNT_LOCAL_URL, INTERNAL_API_URL } from "../constants";
 import PrivateApiClient from "private-api-sdk-node/dist/client";
 import { getAccessToken } from "../lib/utils/sessionUtils";
 import { createApiClient } from "@companieshouse/api-sdk-node";
@@ -22,9 +22,9 @@ export function createOauthPrivateApiClient (req: Request): PrivateApiClient {
  * Creates an instance of the API client using OAuth authentication.
  *
  * @param session - The session object, or undefined if no session exists.
- * @param baseUrl - The API base URL, if not provided, the one that is set in the environment is used by default.
+ * @param baseAccountUrl - The account base URL, if not provided, the one that is set in the environment is used by default.
  * @returns An instance of the API client configured with the OAuth access token.
  */
-export const createOAuthApiClient = (session: Session | undefined, baseUrl: string = API_URL): ApiClient => {
-    return createApiClient(undefined, getAccessToken(session), baseUrl);
+export const createOAuthApiClient = (session: Session | undefined, baseAccountUrl: string = ACCOUNT_LOCAL_URL): ApiClient => {
+    return createApiClient(undefined, getAccessToken(session), undefined, baseAccountUrl);
 };
