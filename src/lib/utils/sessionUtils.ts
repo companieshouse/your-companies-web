@@ -3,6 +3,8 @@ import { ISignInInfo } from "@companieshouse/node-session-handler/lib/session/mo
 import { SignInInfoKeys } from "@companieshouse/node-session-handler/lib/session/keys/SignInInfoKeys";
 import { UserProfileKeys } from "@companieshouse/node-session-handler/lib/session/keys/UserProfileKeys";
 import { Session } from "@companieshouse/node-session-handler";
+import { AccessTokenKeys } from "@companieshouse/node-session-handler/lib/session/keys/AccessTokenKeys";
+import logger from "../../lib/Logger";
 
 /**
  * Retrieves the sign-in information from the session.
@@ -62,4 +64,32 @@ export const deleteExtraData = (session: Session | undefined, key: string): bool
  */
 export const getAccessToken = (session: Session | undefined): string => {
     return session?.data?.signin_info?.access_token?.access_token as string;
+};
+
+/**
+ * Retrieves the refreshed token from the session.
+ * @param session The session object, or undefined if no session exists.
+ * @returns The refreshed token as a string.
+ */
+export const getRefreshToken = (session: Session): string => {
+    const signInInfo = getSignInInfo(session);
+    return signInInfo?.[SignInInfoKeys.AccessToken]?.[AccessTokenKeys.RefreshToken] as string;
+};
+
+/**
+ * Sets the access token in the session.
+ * @param session The session object.
+ * @param accessToken The access token to store in the session.
+ * @throws Error if SignInInfo is not present in the session.
+ */
+export const setAccessToken = (session: Session, accessToken: string): void => {
+    const signInInfo = getSignInInfo(session);
+    if (signInInfo) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        signInInfo[SignInInfoKeys.AccessToken]![AccessTokenKeys.AccessToken] = accessToken;
+    } else {
+        const errorMessage = "SignInInfo not present in the session";
+        logger.error(`${setAccessToken.name}: ${errorMessage}`);
+        throw new Error(errorMessage);
+    }
 };

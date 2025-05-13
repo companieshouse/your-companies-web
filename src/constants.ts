@@ -129,6 +129,9 @@ export const USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user not removed from
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
 export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
+export const OAUTH2_CLIENT_ID = getEnvironmentValue(`OAUTH2_CLIENT_ID`);
+export const OAUTH2_CLIENT_SECRET = getEnvironmentValue(`OAUTH2_CLIENT_SECRET`);
+export const ACCOUNT_LOCAL_URL = getEnvironmentValue("ACCOUNT_LOCAL_URL");
 
 export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const CHS_URL = getEnvironmentValue("CHS_URL");
@@ -147,6 +150,7 @@ export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "confirmed";
 export const YES = "yes";
 export const CONFIRM = "confirm";
+export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 // matomo tags for the goals
 export const MATOMO_ADD_COMPANY_GOAL_ID = getEnvironmentValue("MATOMO_ADD_COMPANY_GOAL_ID");
