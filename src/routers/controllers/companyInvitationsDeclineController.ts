@@ -3,6 +3,7 @@ import * as constants from "../../constants";
 import { CompanyInvitationsDeclineHandler } from "../handlers/yourCompanies/companyInvitationsDeclineHandler";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for declining company invitations.
@@ -17,9 +18,11 @@ export const companyInvitationsDeclineControllerGet = async (req: Request, res: 
 
     if (viewData.associationStateChanged) {
         deleteExtraData(req.session, viewData.associationStateChanged);
+        logger.info(createLogMessage(req.session, companyInvitationsDeclineControllerGet.name, "Redirecting to company invitations page"));
         return res.redirect(getFullUrl(constants.COMPANY_INVITATIONS_URL));
     }
 
+    logger.info(createLogMessage(req.session, companyInvitationsDeclineControllerGet.name, "Rendering company invitations decline page"));
     res.render(constants.COMPANY_INVITATIONS_DECLINE_PAGE, {
         ...viewData
     });

@@ -3,6 +3,7 @@ import * as constants from "../../constants";
 import { createAssociation } from "../../services/associationsService";
 import { getExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request to create a company association.
@@ -24,5 +25,12 @@ export const createCompanyAssociationControllerGet = async (
 
     await createAssociation(req, confirmedCompany.companyNumber);
 
+    logger.info(
+        createLogMessage(
+            req.session,
+            createCompanyAssociationControllerGet.name,
+            `Creating association for company number: ${confirmedCompany.companyNumber}`
+        )
+    );
     res.redirect(getFullUrl(constants.COMPANY_ADDED_SUCCESS_URL));
 };

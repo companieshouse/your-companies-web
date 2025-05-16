@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import { CHS_URL } from "../constants";
-import logger from "../lib/Logger";
+import logger, { createLogMessage } from "../lib/Logger";
 import { isWhitelistedUrl } from "../lib/utils/urlUtils";
 
 /**
@@ -17,7 +17,7 @@ import { isWhitelistedUrl } from "../lib/utils/urlUtils";
  */
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
     if (isWhitelistedUrl(req.originalUrl)) {
-        logger.debug("whitelist endpoint called, skipping authentication.");
+        logger.debug(createLogMessage(req.session, authenticationMiddleware.name, "whitelist endpoint called, skipping authentication."));
         return next();
     }
 

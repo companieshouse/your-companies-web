@@ -3,6 +3,7 @@ import * as constants from "../../constants";
 import { CompanyInvitationsAcceptHandler } from "../handlers/yourCompanies/companyInvitationsAcceptHandler";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for accepting company invitations.
@@ -17,9 +18,11 @@ export const companyInvitationsAcceptControllerGet = async (req: Request, res: R
 
     if (viewData.associationStateChanged) {
         deleteExtraData(req.session, viewData.associationStateChanged);
+        logger.info(createLogMessage(req.session, companyInvitationsAcceptControllerGet.name, "Redirecting to company invitations page"));
         return res.redirect(getFullUrl(constants.COMPANY_INVITATIONS_URL));
 
     }
 
+    logger.info(createLogMessage(req.session, companyInvitationsAcceptControllerGet.name, "Rendering company invitations accept page"));
     res.render(constants.COMPANY_INVITATIONS_ACCEPT_PAGE, { ...viewData });
 };

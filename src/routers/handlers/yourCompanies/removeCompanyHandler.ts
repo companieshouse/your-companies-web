@@ -4,7 +4,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
-import logger from "../../../lib/Logger";
+import logger, { createLogMessage } from "../../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { AssociationState } from "../../../types/associations";
@@ -66,7 +66,7 @@ export class RemoveCompanyHandler extends GenericHandler {
             setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
             this.viewData.companyName = companyProfile.companyName;
         } catch (err) {
-            logger.error(`Error fetching company profile for ${this.viewData.companyNumber}: ${err}`);
+            logger.error(createLogMessage(req.session, `${RemoveCompanyHandler.name}.${this.handleGetRequest.name}`, `Error fetching company profile for ${this.viewData.companyNumber}: ${err}`));
         }
 
         if (error) {

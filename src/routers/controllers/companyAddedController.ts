@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CompanyAddSuccessHandler } from "../handlers/yourCompanies/companyAddSuccessHandler";
 import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for the company added success page.
@@ -18,5 +19,6 @@ import { deleteExtraData } from "../../lib/utils/sessionUtils";
 export const companyAddedControllerGet = async (req: Request, res: Response): Promise<void> => {
     deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
     const viewData = await new CompanyAddSuccessHandler().execute(req);
+    logger.info(createLogMessage(req.session, companyAddedControllerGet.name, "Rendering company added success page"));
     res.render(constants.COMPANY_ADD_SUCCESS_PAGE, viewData);
 };

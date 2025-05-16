@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../genericHandler";
-import logger from "../../../lib/Logger";
+import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/companyProfileService";
@@ -44,7 +44,7 @@ export class AddCompanyHandler extends GenericHandler {
         const referrer: string | undefined = req.get("Referrer");
         const hrefB = getFullUrl(constants.ADD_COMPANY_URL);
 
-        logger.info(`${method} request to add company to user account`);
+        logger.info(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `${method} request to add company to user account`));
 
         try {
             this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_COMPANY_PAGE);
@@ -90,7 +90,7 @@ export class AddCompanyHandler extends GenericHandler {
                     }
                 };
             } else {
-                logger.error(`Error adding a company to user account: ${err}`);
+                logger.error(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `Error adding a company to user account: ${err}`));
                 this.viewData.errors = this.processHandlerException(err);
             }
         }

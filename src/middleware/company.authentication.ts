@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import * as constants from "../constants";
-import logger from "../lib/Logger";
+import logger, { createLogMessage } from "../lib/Logger";
 
 /**
  * Middleware to authenticate a user for a specific company based on the company number
@@ -15,11 +15,12 @@ import logger from "../lib/Logger";
 export const companyAuthenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
     const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
 
-    logger.debug(`starting web security node check: 
+    logger.debug(createLogMessage(req.session, companyAuthenticationMiddleware.name,
+        `starting web security node check: 
     returnUrl: ${req.originalUrl},
     chsWebUrl: ${constants.CHS_URL},
     companyNumber: ${companyNumber}
-    `);
+    `));
 
     const authMiddlewareConfig: AuthOptions = {
         chsWebUrl: constants.CHS_URL,

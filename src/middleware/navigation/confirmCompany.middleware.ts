@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 
 /**
@@ -44,7 +44,7 @@ const clearSessionData = (req: Request): void => {
  * @param req - The HTTP request object.
  */
 const logRequest = (req: Request): void => {
-    logger.debug(`confirmCompanyNavigation: request to ${req.originalUrl}, calling redirectPage fn`);
+    logger.debug(createLogMessage(req.session, confirmCompanyNavigation.name, `request to ${req.originalUrl}, calling redirectPage fn`));
 };
 
 /**

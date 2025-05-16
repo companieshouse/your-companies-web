@@ -26,6 +26,16 @@ export const getLoggedInUserEmail = (session: Session | undefined): string => {
 };
 
 /**
+ * Retrieves the logged-in user's id from the session.
+ * @param session  The session object, or undefined if no session exists.
+ * @returns The user id as a string.
+ */
+export const getLoggedInUserId = (session: Session | undefined): string => {
+    const signInInfo = getSignInInfo(session);
+    return signInInfo?.[SignInInfoKeys.UserProfile]?.[UserProfileKeys.UserId] as string;
+};
+
+/**
  * Stores additional data in the session under a specified key.
  * @param session The session object, or undefined if no session exists.
  * @param key The key under which the data should be stored.

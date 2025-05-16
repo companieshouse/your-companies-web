@@ -1,4 +1,4 @@
-import logger from "../../lib/Logger";
+import logger, { createLogMessage } from "../../lib/Logger";
 import type { ErrorRequestHandler } from "express";
 import { HttpError } from "http-errors";
 import { getTranslationsForView } from "../../lib/utils/translations";
@@ -23,7 +23,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err instanceof HttpError) {
         logger.errorRequest(
             req,
-            `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request was made to ${req.originalUrl}. Re-routing to the error template page. Error name: ${err.name}, Error status: ${err.status}, Error message:  + ${err.message}, Stack: " + ${err.stack}`
+            createLogMessage(req.session, httpErrorHandler.name, `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request was made to ${req.originalUrl}. Re-routing to the error template page. Error name: ${err.name}, Error status: ${err.status}, Error message: ${err.message}, Stack: ${err.stack}`)
         );
         const statusCode: number = err.statusCode || 500;
         if (err.redirctToYourCompanies) {
@@ -42,7 +42,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 export const csrfErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err instanceof CsrfError) {
         logger.error(
-            `CSRF Error occured ${err.message}, Stack: ${err.stack}`
+            createLogMessage(req.session, csrfErrorHandler.name, `CSRF Error occurred ${err.message}, Stack: ${err.stack}`)
         );
         res.status(403).redirect(`${getFullUrl(constants.SOMETHING_WENT_WRONG_URL)}?${constants.CSRF_ERRORS}`);
     } else {

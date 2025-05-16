@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { YourCompaniesHandler } from "../handlers/yourCompanies/yourCompaniesHandler";
 import * as constants from "../../constants";
 import { sanitizeUrl } from "@braintree/sanitize-url";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for the Your Companies page.
@@ -13,6 +14,7 @@ import { sanitizeUrl } from "@braintree/sanitize-url";
 export const yourCompaniesControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new YourCompaniesHandler();
     const viewData = await handler.execute(req);
+    logger.info(createLogMessage(req.session, yourCompaniesControllerGet.name, "Rendering your companies page"));
     res.render(constants.YOUR_COMPANIES_PAGE, { ...viewData });
 };
 
@@ -27,5 +29,6 @@ export const yourCompaniesControllerPost = async (req: Request, res: Response): 
     const searchQuery = req.body.search.replace(/ /g, "");
     const redirectUrl = `${constants.LANDING_URL}?search=${searchQuery}`;
     const sanitizedUrl = sanitizeUrl(redirectUrl);
+    logger.info(createLogMessage(req.session, yourCompaniesControllerPost.name, `Redirecting to sanitized URL: ${sanitizedUrl}`));
     res.redirect(sanitizedUrl);
 };

@@ -3,6 +3,7 @@ import { AddCompanyHandler } from "../handlers/yourCompanies/addCompanyHandler";
 import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for adding a company.
@@ -16,6 +17,7 @@ export const addCompanyControllerGet = async (req: Request, res: Response): Prom
     const viewData = await handler.execute(req, res, constants.GET);
 
     deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+    logger.info(createLogMessage(req.session, addCompanyControllerGet.name, "Renderring add company page"));
     res.render(constants.ADD_COMPANY_PAGE, {
         ...viewData
     });
@@ -34,10 +36,12 @@ export const addCompanyControllerPost = async (req: Request, res: Response): Pro
     const viewData = await handler.execute(req, res, constants.POST);
 
     if (viewData.errors && Object.keys(viewData.errors).length > 0) {
+        logger.info(createLogMessage(req.session, addCompanyControllerPost.name, "Renderring add company page"));
         res.render(constants.ADD_COMPANY_PAGE, {
             ...viewData
         });
     } else {
+        logger.info(createLogMessage(req.session, addCompanyControllerPost.name, "Redirecting to confirm company details page"));
         res.redirect(getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL));
     }
 };

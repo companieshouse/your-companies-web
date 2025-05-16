@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ManageAuthorisedPeopleHandler } from "../handlers/yourCompanies/manageAuthorisedPeopleHandler";
 import * as constants from "../../constants";
 import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles the GET request for managing authorised people.
@@ -17,6 +18,7 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     setSessionData(req, companyNumber);
 
+    logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerGet.name, "Rendering manage authorised people page"));
     res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
         ...viewData
     });

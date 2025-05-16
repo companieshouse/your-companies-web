@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { SomethingWentWrongHandler } from "../handlers/yourCompanies/somethingWentWrongHandler";
+import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
  * Handles GET requests for the "Something Went Wrong" page.
@@ -14,5 +15,12 @@ export const somethingWentWrongControllerGet = async (req: Request, res: Respons
     const viewData = await handler.execute(req);
     const statusCode = viewData.csrfErrors ? 403 : 500;
 
+    logger.info(
+        createLogMessage(
+            req.session,
+            somethingWentWrongControllerGet.name,
+            "Rendering something went wrong page"
+        )
+    );
     res.status(statusCode).render(constants.SERVICE_UNAVAILABLE_TEMPLATE, viewData);
 };
