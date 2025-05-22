@@ -2,11 +2,11 @@ import { faker } from "@faker-js/faker";
 
 export function createCompany () {
 
-    const companyName = `COMP${faker.string.numeric(3)}`;
+    const companyNumber = `${faker.string.alphanumeric({ length: 2, casing: "upper" })}${faker.string.numeric(6)}`;
     const company = {
-        _id: companyName,
+        _id: companyNumber,
         data: {
-            company_number: companyName,
+            company_number: companyNumber,
             company_name: faker.company.name(),
             company_status: "active"
         }
