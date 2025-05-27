@@ -1,0 +1,19 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% set html %}
+<h3 class="govuk-notification-banner__heading">
+    {{lang.renew_your_digital_authorisation}}
+</h3>
+<p class="govuk-body">{{lang.to_file_online_youll_need}}</p>
+<p class="govuk-body">{{lang.if_you_do_not_havee_the_authentication_code}}
+    <a class="govuk-notification-banner__link" href="{{requestAuthenticationCodeUrl}}">
+        {{lang.request_the_authentication_code}}
+    </a>.
+</p>
+{% endset %}
+
+{{ govukNotificationBanner({
+        html: html,
+        titleText: lang.important
+    })
+}}

@@ -36,6 +36,7 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     }[],
     viewAndManageUrl: string;
     removeCompanyUrl: string;
+    requestAuthenticationCodeUrl: string;
 }
 
 /**
@@ -73,7 +74,8 @@ export class YourCompaniesHandler extends GenericHandler {
             numberOfInvitations: 0,
             associationData: [],
             viewAndManageUrl: "",
-            removeCompanyUrl: ""
+            removeCompanyUrl: "",
+            requestAuthenticationCodeUrl: ""
         };
     }
 

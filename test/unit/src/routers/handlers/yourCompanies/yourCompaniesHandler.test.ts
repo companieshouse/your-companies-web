@@ -231,6 +231,7 @@ describe("YourCompaniesHandler", () => {
                 errors: errors,
                 pageNumber,
                 numberOfPages: 0,
+                requestAuthenticationCodeUrl: "",
                 ...viewData
             };
             getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
