@@ -30,7 +30,7 @@ import { removedThemselvesConfirmationControllerGet } from "./controllers/remove
 import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
 import { removedThemselvesNavigation } from "../middleware/navigation/personRemovedThemselves.middleware";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
-import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
+import { companyAuthenticationMiddleware, forceCompanyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
@@ -76,7 +76,7 @@ router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, confirmationCompanyRemovedNav
 
 // Cancel Person
 router.route(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL)
-    .get(companyAuthenticationMiddleware, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler)
+    .get(forceCompanyAuthenticationMiddleware, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler)
     .post(companyAuthenticationMiddleware, cancelPersonControllerPost as RequestHandler);
 
 // Confirm Company

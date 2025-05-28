@@ -1,6 +1,6 @@
 import mockAuthenticationMiddleware from "./authentication.middleware.mock";
 import { mockSessionMiddleware, mockEnsureSessionCookiePresentMiddleware } from "./session.middleware.mock";
-import mockCompanyAuthenticationMiddleware from "./company.authentication.middleware.mock";
+import { mockCompanyAuthenticationMiddleware, mockForceCompanyAuthenticationMiddleware } from "./company.authentication.middleware.mock";
 import mockCsrfProtectionMiddleware from "./csrf.protection.middleware.mock";
 
 export default {
@@ -8,5 +8,6 @@ export default {
     mockCompanyAuthenticationMiddleware,
     mockSessionMiddleware,
     mockEnsureSessionCookiePresentMiddleware,
-    mockCsrfProtectionMiddleware
+    mockCsrfProtectionMiddleware,
+    mockForceCompanyAuthenticationMiddleware
 };
