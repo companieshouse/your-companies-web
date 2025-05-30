@@ -12,7 +12,7 @@ export function createAssociations (users, companies) {
 
         for (let i = 0; i < numCompanies; i++) {
             const company = shuffledCompanies[i];
-            const association = createAssociation(user, users[0], company);
+            const association = createAssociation(user, users, company);
             associations.push(association);
         }
     });

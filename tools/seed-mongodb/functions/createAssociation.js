@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
 
-export function createAssociation (user, firstUser, company) {
+export function createAssociation (user, users, company) {
 
+    const firstUser = users[0];
     const association = {
         _id: faker.string.uuid().replace(/-/g, "").toUpperCase(),
         company_number: company._id,
@@ -37,6 +38,20 @@ export function createAssociation (user, firstUser, company) {
 
     const invitations = association.approval_route === "auth_code" ? [] : [{ invited_by: firstUser._id, invited_at: randomInviteDate }];
     association.invitations = invitations;
+
+    if (Math.random() > 0.4) {
+        const previousStates = [];
+        const numberOfPreviousStates = Math.floor(Math.random() * 101);
+        for (let index = 0; index < numberOfPreviousStates; index++) {
+            const previousState = {
+                status: statusOfAssociation(),
+                changed_by: users[Math.floor(Math.random() * users.length)]._id,
+                changed_at: faker.date.between({ from: pastDate, to: futureDate })
+            };
+            previousStates.push(previousState);
+        }
+        association.previous_states = previousStates;
+    }
 
     return association;
 }
