@@ -58,10 +58,12 @@ export function createAssociation (user, users, company) {
 
 function statusOfAssociation () {
     const random = Math.random();
-    if (random < 0.5) {
+    if (random < 0.4) {
         return "confirmed";
-    } else if (random < 0.9) {
+    } else if (random < 0.65) {
         return "awaiting-approval";
+    } else if (random < 0.85) {
+        return "migrated";
     } else {
         return "removed";
     }
