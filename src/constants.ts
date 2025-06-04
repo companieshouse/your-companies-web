@@ -96,6 +96,7 @@ export const REMOVED_THEMSELVES_URL = `/${REMOVED_THEMSELVES}`;
 export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";
 export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
 export const HEALTHCHECK_URL = "/healthcheck";
+export const CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL = `/restore-your-digital-authorisation/:${COMPANY_NUMBER}/${CONFIRM_COMPANY_PAGE}`;
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
