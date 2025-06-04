@@ -104,7 +104,6 @@ export class YourCompaniesHandler extends GenericHandler {
             errorMassage ? undefined : search,
             pageNumber - 1
         );
-        console.log(confirmedUserAssociations);
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
             confirmedUserAssociations = await getUserAssociations(
