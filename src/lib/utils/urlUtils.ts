@@ -216,3 +216,12 @@ export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber
  */
 export const getRemoveCompanyUrl = (companyNumber: string): string =>
     `/${constants.REMOVE_COMPANY_PAGE}/${companyNumber}`;
+
+/**
+ * Constructs the full URL for attempting to restore digital authorisation for a given company.
+ *
+ * @param companyNumber - The unique identifier of the company.
+ * @returns The full URL as a string for restoring digital authorisation.
+ */
+export const tryRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/company/:${companyNumber}${constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`);
