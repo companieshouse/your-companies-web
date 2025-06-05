@@ -7,11 +7,11 @@ import logger, { createLogMessage } from "../../lib/Logger";
 import { tryRestoringYourDigitalAuthorisationFullUrl } from "../../lib/utils/urlUtils";
 
 export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const companyProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
+    const companyNumber: string = req.params[constants.COMPANY_NUMBER];
 
     setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, true);
 
-    const viewData = await new ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler().execute(req.lang, companyProfile);
+    const viewData = await new ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler().execute(req, companyNumber);
     logger.info(
         createLogMessage(
             req.session,
@@ -22,7 +22,8 @@ export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationController
 };
 
 export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost = async (req: Request, res: Response): Promise<void> => {
-    const company = getExtraData(req.session, constants.COMPANY_PROFILE);
+    const companyNumber: string = req.params[constants.COMPANY_NUMBER];
+    const company = getExtraData(req.session, `${constants.COMPANY_PROFILE}_${companyNumber}`);
 
     const confirmedCompanyForAssociation: CompanyNameAndNumber = {
         companyNumber: company.companyNumber,

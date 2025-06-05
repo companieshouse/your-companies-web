@@ -36,6 +36,13 @@ import { removeCompanyControllerGet, removeCompanyControllerPost } from "./contr
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
 import { removeCompanyNavigation } from "../middleware/navigation/removeCompany.middleware";
 import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/confirmationCompanyRemoved.middleware";
+import {
+    confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet,
+    confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost
+} from "./controllers/confirmCompanyDetailsForRestoringYourDigitalAuthorisationController";
+import {
+    confirmCompanyDetailsForRestoringYourDigitalAuthorisationNavigation
+} from "../middleware/navigation/confirmCompanyDetailsForRestoringYourDigitalAuthorisation.middleware";
 
 const router: Router = Router();
 
@@ -113,5 +120,10 @@ router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedNavigatio
 
 // Something Went Wrong
 router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
+
+// Confirm Company Details For Restoring Your Digital Authorisation
+router.route(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL)
+    .get(confirmCompanyDetailsForRestoringYourDigitalAuthorisationNavigation, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet)
+    .post(confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost);
 
 export default router;
