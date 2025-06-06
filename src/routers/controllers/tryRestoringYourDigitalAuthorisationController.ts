@@ -5,8 +5,9 @@ import { getUserAssociations, updateAssociationStatus } from "../../services/ass
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import { AssociationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import logger, { createLogMessage } from "../../lib/Logger";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 
-export const tryRestoringYourDigitalAuthorisationController = async (req: Request, res: Response): Promise<void> => {
+export const tryRestoringYourDigitalAuthorisationControllerGet = async (req: Request, res: Response): Promise<void> => {
     const confirmedCompanyForAssociation: CompanyNameAndNumber = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
     const userAssociations: AssociationList = await getUserAssociations(req, [AssociationStatus.MIGRATED], confirmedCompanyForAssociation.companyNumber);
 
@@ -15,7 +16,7 @@ export const tryRestoringYourDigitalAuthorisationController = async (req: Reques
         logger.error(
             createLogMessage(
                 req.session,
-                tryRestoringYourDigitalAuthorisationController.name,
+                tryRestoringYourDigitalAuthorisationControllerGet.name,
                 errorMessage
             ));
         throw new Error(errorMessage);
@@ -24,5 +25,5 @@ export const tryRestoringYourDigitalAuthorisationController = async (req: Reques
     const associationId = userAssociations.items[0].id;
     await updateAssociationStatus(req, associationId, AssociationStatus.CONFIRMED);
 
-    res.redirect(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL);
+    res.redirect(getFullUrl(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL));
 };
