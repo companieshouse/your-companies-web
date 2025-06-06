@@ -36,6 +36,7 @@ import { removeCompanyControllerGet, removeCompanyControllerPost } from "./contr
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
 import { removeCompanyNavigation } from "../middleware/navigation/removeCompany.middleware";
 import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/confirmationCompanyRemoved.middleware";
+import { removeAuthorisationDoNotRestoreControllerGet } from "./controllers/removeAuthorisationDoNotRestoreController";
 
 const router: Router = Router();
 
@@ -113,5 +114,8 @@ router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedNavigatio
 
 // Something Went Wrong
 router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
+
+// Remove Authorisation Do Not Restore
+router.get(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreControllerGet);
 
 export default router;

@@ -1,0 +1,28 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.are_you_sure_you_want_to + lang.title_end %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+                {{ lang.are_you_sure_you_want_to }}
+            </h1>
+            <p class="govuk-body">{{ lang.if_you_remove_the_company }}</p>
+
+            <div class="govuk-button-group">
+
+                {{ govukButton({
+                        text: lang.remove_company
+                    })
+                }}
+
+                <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
