@@ -25,8 +25,11 @@
 {% endif %}
 
 {% if elem.status == "migrated" %}
-    {% set remove_not_restore = link(lang.remove_not_restore, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
-    {% set restore_link = link(lang.restore_digital_authorisation, visuallyHiddenText, restoreDigitalAuthUrl, "restore-digital-authorisation", params) %}
+    {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + elem.company_name %}
+    {% set visuallyHiddenRestoreText = lang.for + elem.company_name %}
+
+    {% set remove_not_restore = link(lang.remove_not_restore, visuallyHiddenRemoveNotRestoreText, removeCompanyUrl, "remove-company", params) %}
+    {% set restore_link = link(lang.restore_digital_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation", params) %}
 
     {% set rowElem = [
         { "text": elem.company_name, "classes": "govuk-!-width-one-quarter" },
@@ -103,8 +106,6 @@
                     {{lang.matches_found_for}} '{{search}}'</h2>
             {% endif %}
         {% endif %}
-
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
         {% if numOfMatches > 0 %}
             {{ govukTable({
