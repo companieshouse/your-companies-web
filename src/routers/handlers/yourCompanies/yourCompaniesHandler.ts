@@ -36,6 +36,7 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     }[],
     viewAndManageUrl: string;
     removeCompanyUrl: string;
+    authorisationBannerRequestAuthenticationCodeUrl: string;
 }
 
 /**
@@ -73,7 +74,8 @@ export class YourCompaniesHandler extends GenericHandler {
             numberOfInvitations: 0,
             associationData: [],
             viewAndManageUrl: "",
-            removeCompanyUrl: ""
+            removeCompanyUrl: "",
+            authorisationBannerRequestAuthenticationCodeUrl: constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL
         };
     }
 
@@ -175,7 +177,6 @@ export class YourCompaniesHandler extends GenericHandler {
      */
     private populateViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList): void {
         this.viewData.numberOfInvitations = invitationList.totalResults;
-
         if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
             this.viewData.associationData = confirmedUserAssociations.items.map(item => ({
                 company_name: item.companyName,
