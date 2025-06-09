@@ -61,6 +61,7 @@ export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 export const SERVICE_UNAVAILABLE = "service-unavailable";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE = "remove-authorisation-do-not-restore";
+export const CONFIRMATION_AUTHORISATION_REMOVED_PAGE = "confirmation-authorisation-removed";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -98,6 +99,7 @@ export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";
 export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
 export const HEALTHCHECK_URL = "/healthcheck";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL = `/${REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}`;
+export const CONFIRMATION_AUTHORISATION_REMOVED_URL = `/${CONFIRMATION_AUTHORISATION_REMOVED_PAGE}`;
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";

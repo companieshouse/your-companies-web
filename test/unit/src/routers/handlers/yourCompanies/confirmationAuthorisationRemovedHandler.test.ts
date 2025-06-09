@@ -1,23 +1,22 @@
-import { RemoveAuthorisationDoNotRestoreHandler } from "../../../../../../src/routers/handlers/yourCompanies/removeAuthorisationDoNotRestoreHandler";
+import { ConfirmationAuthorisationRemovedHandler } from "../../../../../../src/routers/handlers/yourCompanies/confirmationAuthorisationRemovedHandler";
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Request } from "express";
 import * as constants from "../../../../../../src/constants";
 import * as translations from "../../../../../../src/lib/utils/translations";
 import { Session } from "@companieshouse/node-session-handler";
-import { getFullUrl } from "../../../../../../src/lib/utils/urlUtils";
 
 jest.mock("../../../../../../src/services/companyProfileService");
 jest.mock("../../../../../../src/lib/Logger");
 
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
 
-describe("RemoveAuthorisationDoNotRestoreHandler", () => {
-    let removeAuthorisationDoNotRestoreHandler: RemoveAuthorisationDoNotRestoreHandler;
+describe("ConfirmationAuthorisationRemovedHandler", () => {
+    let confirmationAuthorisationRemovedHandler: ConfirmationAuthorisationRemovedHandler;
 
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
-        removeAuthorisationDoNotRestoreHandler = new RemoveAuthorisationDoNotRestoreHandler();
+        confirmationAuthorisationRemovedHandler = new ConfirmationAuthorisationRemovedHandler();
     });
 
     test.each([
@@ -25,14 +24,11 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             condition: "Basic test that doesn't do anything NEEDS TO CHANGE",
             method: constants.GET,
             viewData: {
-                cancelLinkHref: constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                removeLinkHref: getFullUrl(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL)
+                yourCompaniesHref: constants.LANDING_URL
             }
         }
     ])("should return expected viewData object if method is $method and $condition",
-        async ({
-            viewData
-        }) => {
+        async ({ viewData }) => {
             // Given
             const lang = "en";
             const companyName = "Croissant Holdings Ltd";
@@ -49,17 +45,17 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             getTranslationsForViewSpy.mockReturnValueOnce(translations);
 
             const expectedViewData = {
-                templateName: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE,
+                templateName: constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE,
                 lang: translations,
                 companyName,
                 companyNumber,
                 ...viewData
             };
             // When
-            const response = await removeAuthorisationDoNotRestoreHandler.execute(req);
+            const response = await confirmationAuthorisationRemovedHandler.execute(req);
             // Then
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
+            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE);
             expect(response).toEqual(expectedViewData);
         });
 });

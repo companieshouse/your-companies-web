@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { removeAuthorisationDoNotRestoreControllerGet } from "../../../../../src/routers/controllers/removeAuthorisationDoNotRestoreController";
-import { RemoveAuthorisationDoNotRestoreHandler } from "../../../../../src/routers/handlers/yourCompanies/removeAuthorisationDoNotRestoreHandler";
+import { confirmationAuthorisationRemovedControllerGet } from "../../../../../src/routers/controllers/confirmationAuthorisationRemovedController";
+import { ConfirmationAuthorisationRemovedHandler } from "../../../../../src/routers/handlers/yourCompanies/confirmationAuthorisationRemovedHandler";
 import * as constants from "../../../../../src/constants";
 import { mockRequest } from "../../../../mocks/request.mock";
 import { mockResponse } from "../../../../mocks/response.mock";
 import { Session } from "@companieshouse/node-session-handler";
 
 const mockExecute = jest.fn();
-jest.mock("../../../../../src/routers/handlers/yourCompanies/removeAuthorisationDoNotRestoreHandler", () => {
+jest.mock("../../../../../src/routers/handlers/yourCompanies/confirmationAuthorisationRemovedHandler", () => {
     return {
-        RemoveAuthorisationDoNotRestoreHandler: jest.fn().mockImplementation(() => {
+        ConfirmationAuthorisationRemovedHandler: jest.fn().mockImplementation(() => {
             return {
                 execute: mockExecute
             };
@@ -25,23 +25,23 @@ res.render = renderMock;
 const redirectMock = jest.fn();
 res.redirect = redirectMock;
 
-describe("removeAuthorisationDoNotRestoreControllerGet", () => {
+describe("confirmationAuthorisationRemovedControllerGet", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("should render remove authorisation and do not restore page", async () => {
+    it("should render add company page", async () => {
         // Given
         const expectedViewData = {
             key: "value"
         };
         mockExecute.mockReturnValue(expectedViewData);
         // When
-        await removeAuthorisationDoNotRestoreControllerGet(req as Request, res as Response);
+        await confirmationAuthorisationRemovedControllerGet(req as Request, res as Response);
         // Then
-        expect(RemoveAuthorisationDoNotRestoreHandler).toHaveBeenCalledTimes(1);
+        expect(ConfirmationAuthorisationRemovedHandler).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledTimes(1);
-        expect(renderMock).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE, expectedViewData);
+        expect(renderMock).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE, expectedViewData);
     });
 });
