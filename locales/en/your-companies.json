@@ -3,6 +3,7 @@
     "add_a_company_to_your_account": "Add a company to your account so that you can:",
     "authorisation_banner_no_auth_code": "If you do not have the authentication code, you'll either need to ask someone who is digitally authorised to add you, or",
     "authorisation_banner_request_authentication_code": "request the authentication code (opens in a new tab).",
+    "authorisation_status": "Authorisation status",
     "bullet_list": [
         "file for the company online",
         "digital authorise other people to file online for the company"
@@ -14,6 +15,9 @@
     "company_status": "Status",
     "enter_a_company_number_or_part": "Enter a company number, or part of a company number",
     "enter_company_num": "Enter the company number, or part of a company number.",
+    "digital_authorisation_for": " digital authorisation for ",
+    "digitally_authorised": "Digitally authorised",
+    "for": " for ",
     "link_to_view_and_manage": "Link to view and manage people digitally authorised to file online page",
     "match_found_for": "match found for",
     "matches_found_for": "matches found for",
@@ -22,6 +26,10 @@
     "people_digitally_authorised_to_file_online": "People digitally authorised to file online",
     "remove": "Remove",
     "remove_company": "Remove company",
+    "not_digitally_authorised": "Not digitally authorised",
+    "remove_digital_authorisation": "Remove digital authorisation",
+    "remove_not_restore": "Remove and do not restore",
+    "restore_digital_authorisation": "Restore digital authorisation",
     "search": "Search",
     "search_for_a_company": "Search for a company",
     "table_of_companies_you_are_digitally_autorised_to_file_for": "Companies you are digitally authorised to file for",

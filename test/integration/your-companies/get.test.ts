@@ -6,11 +6,11 @@ import supertest from "supertest";
 import * as associationsService from "../../../src/services/associationsService";
 import {
     emptyAssociations,
+    migratedAssociation,
     oneConfirmedAssociation,
     twentyConfirmedAssociations,
     userAssociations,
-    userAssociationsWithNumberOfInvitations,
-    userAssociationWithCompanyStatus
+    userAssociationsWithNumberOfInvitations
 } from "../../mocks/associations.mock";
 import en from "../../../locales/en/your-companies.json";
 import cy from "../../../locales/cy/your-companies.json";
@@ -19,7 +19,6 @@ import cyCommon from "../../../locales/cy/common.json";
 import { getExtraData, setExtraData } from "../../../src/lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import { CompanyStatuses } from "../../../src/types/associations";
 
 const router = supertest(app);
 
@@ -147,67 +146,26 @@ describe("GET /your-companies", () => {
             expect(data).toBeTruthy();
             expect(resultData).toBeUndefined();
         });
-
-    test.each([
-        { langInfo: "English", langVersion: "en", lang: en, statusActive: "Active" }, // Check for "Active" instead of AssociationStatus.CONFIRMED
-        { langInfo: "Welsh", langVersion: "cy", lang: cy, statusActive: "Gweithredol" }
-    ])("should display company status and remove company link in ",
-        async ({ statusActive, langVersion, lang }) => {
-            // Given
-            userAssociationsSpy.mockResolvedValue(userAssociations);
-            getInvitationsSpy.mockResolvedValue({ items: [] });
-
-            // When
-            const response = await router.get(`/your-companies?lang=${langVersion}`);
-
-            // Then
-            userAssociations.items.forEach(company => {
-                expect(response.text).toContain(statusActive);
-                const expectedLink = `/your-companies/remove-company/${company.companyNumber}`;
-                expect(response.text).toContain(expectedLink);
-                expect(response.text).toContain(lang.remove_company);
-            });
-        });
-
-    test.each([
-        {
-            companyStatusInfo: "active",
-            userAssociaton: userAssociationWithCompanyStatus,
-            expectedWelshText: "Gweithredol"
-        },
-        {
-            companyStatusInfo: "closed",
-            userAssociaton: {
-                ...userAssociationWithCompanyStatus,
-                items: [{
-                    ...userAssociationWithCompanyStatus.items[0],
-                    companyStatus: CompanyStatuses.CLOSED
-                }]
-            },
-            expectedWelshText: "Wedi cau"
-        },
-        {
-            companyStatusInfo: "insolvency-proceedings",
-            userAssociaton: {
-                ...userAssociationWithCompanyStatus,
-                items: [{
-                    ...userAssociationWithCompanyStatus.items[0],
-                    companyStatus: CompanyStatuses.INSOLVENCY_PROCEEDINGS
-                }]
-            },
-            expectedWelshText: "Trafodion Ansolfedd"
-        }
-    ])("should display company status '$companyStatusInfo' in Welsh when lang set to 'cy'",
-        async ({ userAssociaton, expectedWelshText }) => {
-            // Given
-            userAssociationsSpy.mockResolvedValue(userAssociaton);
-            getInvitationsSpy.mockResolvedValue({ items: [] });
-            // When
-            const response = await router.get("/your-companies?lang=cy");
-            // Then
-            expect(response.text).toContain(expectedWelshText);
-        });
-
+    it("should display 'Not digitally authorised' when association has status of migrated", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(migratedAssociation);
+        getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
+        // When
+        const response = await router.get("/your-companies");
+        // Then
+        expect(response.text).toContain(en.not_digitally_authorised);
+        expect(response.text).not.toContain(en.digitally_authorised);
+    });
+    it("should display 'Digitally authorised' when association has status of confirmed", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(oneConfirmedAssociation);
+        getInvitationsSpy.mockResolvedValue(emptyAssociations);
+        // When
+        const response = await router.get("/your-companies");
+        // Then
+        expect(response.text).toContain(en.digitally_authorised);
+        expect(response.text).not.toContain(en.not_digitally_authorised);
+    });
     test.each([
         { langVersion: "en", lang: en, langCommon: enCommon },
         { langVersion: undefined, lang: en, langCommon: enCommon },

@@ -63,7 +63,8 @@ describe("YourCompaniesHandler", () => {
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
-                pagination: undefined
+                pagination: undefined,
+                restoreDigitalAuthUrl: ""
             },
             return: "basic view data",
             condition: "user has no confirmed associations and has invitations"
@@ -81,12 +82,12 @@ describe("YourCompaniesHandler", () => {
                 associationData: [{
                     company_name: userAssociations.items[0].companyName,
                     company_number: userAssociations.items[0].companyNumber,
-                    company_status: userAssociations.items[0].companyStatus
+                    status: userAssociations.items[0].status
                 },
                 {
                     company_name: userAssociations.items[1].companyName,
                     company_number: userAssociations.items[1].companyNumber,
-                    company_status: userAssociations.items[1].companyStatus
+                    status: userAssociations.items[1].status
                 }],
                 numOfMatches: userAssociations.totalResults,
                 numberOfPages: userAssociations.totalPages,
@@ -121,7 +122,8 @@ describe("YourCompaniesHandler", () => {
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
-                pagination: undefined
+                pagination: undefined,
+                restoreDigitalAuthUrl: ""
             },
             errors: {
                 search: {
@@ -148,7 +150,8 @@ describe("YourCompaniesHandler", () => {
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
                 showNumOfMatches: true,
-                pagination: undefined
+                pagination: undefined,
+                restoreDigitalAuthUrl: ""
             },
             return: "view data without search error message",
             condition: "a search string exists, and is valid"
@@ -170,7 +173,8 @@ describe("YourCompaniesHandler", () => {
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
-                pagination: undefined
+                pagination: undefined,
+                restoreDigitalAuthUrl: ""
             },
             errors: {
                 search: {
@@ -197,7 +201,8 @@ describe("YourCompaniesHandler", () => {
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
                 showNumOfMatches: true,
-                pagination: undefined
+                pagination: undefined,
+                restoreDigitalAuthUrl: ""
             },
             return: "expected view data",
             condition: "invalidPageNumber is false and there are no error messages"
@@ -262,13 +267,13 @@ describe("YourCompaniesHandler", () => {
             }
 
             let getUserAssociationsCounter = 1;
-            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED], errors ? undefined : query.search, pageNumber - 1);
+            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
 
             if (!isValidPageNumber) {
                 getUserAssociationsCounter = 2;
-                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED], errors ? undefined : query.search, pageNumber - 1);
+                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1);
             }
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
@@ -302,7 +307,7 @@ describe("YourCompaniesHandler", () => {
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
             if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-                getFullUrlCounter = 4;
+                getFullUrlCounter = 5;
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
             }
