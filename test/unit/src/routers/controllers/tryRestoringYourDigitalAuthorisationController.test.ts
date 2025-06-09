@@ -7,7 +7,6 @@ import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 import * as associationsService from "../../../../../src/services/associationsService";
 import { CompanyNameAndNumber } from "../../../../../src/types/utilTypes";
 import { userAssociationWithMrigratedCompanyStatus } from "../../../../mocks/associations.mock";
-import { AssociationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 import {
     tryRestoringYourDigitalAuthorisationControllerGet
 } from "../../../../../src/routers/controllers/tryRestoringYourDigitalAuthorisationController";
@@ -17,8 +16,7 @@ jest.mock("../../../../../src/services/associationsService");
 jest.mock("../../../../../src/lib/Logger");
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-const getUserAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
-const updateAssociationStatusSpy: jest.SpyInstance = jest.spyOn(associationsService, "updateAssociationStatus");
+const createAssociationSpy: jest.SpyInstance = jest.spyOn(associationsService, "createAssociation");
 
 const req: Request = mockRequest();
 req.session = new Session();
@@ -32,41 +30,14 @@ describe("tryRestoringYourDigitalAuthorisationControllerGet", () => {
             companyNumber: userAssociationWithMrigratedCompanyStatus.items[0].companyNumber
         };
         getExtraDataSpy.mockReturnValue(confirmedCompanyForAssociation);
-        getUserAssociationsSpy.mockReturnValue(userAssociationWithMrigratedCompanyStatus);
         // When
         await tryRestoringYourDigitalAuthorisationControllerGet(req, res);
         // Then
         expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
         expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
-        expect(getUserAssociationsSpy).toHaveBeenCalledTimes(1);
-        expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.MIGRATED], confirmedCompanyForAssociation.companyNumber);
-        expect(updateAssociationStatusSpy).toHaveBeenCalledTimes(1);
-        expect(updateAssociationStatusSpy).toHaveBeenCalledWith(req, userAssociationWithMrigratedCompanyStatus.items[0].id, AssociationStatus.CONFIRMED);
+        expect(createAssociationSpy).toHaveBeenCalledTimes(1);
+        expect(createAssociationSpy).toHaveBeenCalledWith(req, confirmedCompanyForAssociation.companyNumber);
         expect(res.redirect).toHaveBeenCalledTimes(1);
         expect(res.redirect).toHaveBeenCalledWith(`${constants.LANDING_URL}${(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL)}`);
-    });
-
-    it("should throw an error if user association list does not have the association", async () => {
-        // Given
-        const confirmedCompanyForAssociation: CompanyNameAndNumber = {
-            companyName: userAssociationWithMrigratedCompanyStatus.items[0].companyName,
-            companyNumber: userAssociationWithMrigratedCompanyStatus.items[0].companyNumber
-        };
-        getExtraDataSpy.mockReturnValue(confirmedCompanyForAssociation);
-        const emptyUserAssociationsList: AssociationList = {
-            items: [],
-            itemsPerPage: 0,
-            pageNumber: 0,
-            totalResults: 0,
-            totalPages: 0,
-            links: {
-                self: "",
-                next: ""
-            }
-        };
-        getUserAssociationsSpy.mockReturnValue(emptyUserAssociationsList);
-        const errorMessage = `Missing association with status "${AssociationStatus.MIGRATED}" for company number: ${confirmedCompanyForAssociation.companyNumber}`;
-        // Then
-        await expect(tryRestoringYourDigitalAuthorisationControllerGet(req, res)).rejects.toThrow(errorMessage);
     });
 });

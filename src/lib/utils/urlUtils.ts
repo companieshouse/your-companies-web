@@ -224,4 +224,4 @@ export const getRemoveCompanyUrl = (companyNumber: string): string =>
  * @returns The full URL as a string for restoring digital authorisation.
  */
 export const tryRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
-    getFullUrl(`/company/:${companyNumber}${constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`);
+    getFullUrl(`/company/${companyNumber}${constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`);

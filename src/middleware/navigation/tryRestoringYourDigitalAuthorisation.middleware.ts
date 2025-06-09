@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
-import { deleteExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData } from "../../lib/utils/sessionUtils";
+import { tryRestoringYourDigitalAuthorisationFullUrl } from "../../lib/utils/urlUtils";
+import { CompanyNameAndNumber } from "../../types/utilTypes";
 
 /**
  * Middleware to handle navigation logic for trying to restore
@@ -21,12 +23,14 @@ export const tryRestoringYourDigitalAuthorisationNavigation = async (
     next: NextFunction
 ): Promise<void> => {
     const referrer = req.get("Referrer");
-    const pageIndicator = false;
+    const companyNumber = req.params[constants.COMPANY_NUMBER];
+    const confirmedCompanyForAssociation: CompanyNameAndNumber = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
+    const pageIndicator = companyNumber === confirmedCompanyForAssociation.companyNumber;
 
     clearSessionData(req);
     logRequest(req);
 
-    if (shouldRedirect(referrer, pageIndicator)) {
+    if (shouldRedirect(referrer, pageIndicator, companyNumber)) {
         res.redirect(constants.LANDING_URL);
     } else {
         next();
@@ -64,11 +68,11 @@ const logRequest = (req: Request): void => {
  * @param pageIndicator - A boolean indicating the page state.
  * @returns A boolean indicating whether a redirect should occur.
  */
-const shouldRedirect = (referrer: string | undefined, pageIndicator: boolean): boolean => {
+const shouldRedirect = (referrer: string | undefined, pageIndicator: boolean, companyNumber: string): boolean => {
     return redirectPage(
         referrer,
         constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-        constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+        tryRestoringYourDigitalAuthorisationFullUrl(companyNumber),
         pageIndicator
     );
 };

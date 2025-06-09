@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler } from "../handlers/yourCompanies/confirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler";
+import {
+    ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler
+} from "../handlers/yourCompanies/confirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler";
 import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber } from "../../types/utilTypes";

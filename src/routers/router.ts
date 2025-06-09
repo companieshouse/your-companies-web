@@ -45,6 +45,7 @@ import {
 } from "../middleware/navigation/confirmCompanyDetailsForRestoringYourDigitalAuthorisation.middleware";
 import { tryRestoringYourDigitalAuthorisationControllerGet } from "./controllers/tryRestoringYourDigitalAuthorisationController";
 import { tryRestoringYourDigitalAuthorisationNavigation } from "../middleware/navigation/tryRestoringYourDigitalAuthorisation.middleware";
+import { confirmationYourDigitalAuthorisationRestoredControllerGet } from "./controllers/confirmationYourDigitalAuthorisationRestoredController";
 
 const router: Router = Router();
 
@@ -131,8 +132,12 @@ router.route(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHOR
 // Try Restoring Your Digital Authorisation
 router.get(
     constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+    companyAuthenticationMiddleware,
     tryRestoringYourDigitalAuthorisationNavigation,
     tryRestoringYourDigitalAuthorisationControllerGet
 );
+
+// Restore Your Digital Authorication Success
+router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, confirmationYourDigitalAuthorisationRestoredControllerGet);
 
 export default router;
