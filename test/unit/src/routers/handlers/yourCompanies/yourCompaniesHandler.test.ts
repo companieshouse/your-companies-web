@@ -63,7 +63,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             return: "basic view data",
             condition: "user has no confirmed associations and has invitations"
@@ -122,7 +123,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             errors: {
                 search: {
@@ -150,7 +152,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: true,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             return: "view data without search error message",
             condition: "a search string exists, and is valid"
@@ -173,7 +176,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             errors: {
                 search: {
@@ -201,7 +205,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: true,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             return: "expected view data",
             condition: "invalidPageNumber is false and there are no error messages"
@@ -305,9 +310,10 @@ describe("YourCompaniesHandler", () => {
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
             if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-                getFullUrlCounter = 5;
+                getFullUrlCounter = 6;
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
+                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
             }
 
             expect(getUserAssociationsSpy).toHaveBeenCalledTimes(getUserAssociationsCounter);

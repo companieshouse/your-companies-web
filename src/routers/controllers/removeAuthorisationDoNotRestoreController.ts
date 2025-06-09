@@ -8,7 +8,7 @@ export const removeAuthorisationDoNotRestoreControllerGet = async (
     res: Response
 ): Promise<void> => {
     const handler = new RemoveAuthorisationDoNotRestoreHandler();
-    const viewData = await handler.execute(req);
+    const viewData = await handler.execute(req, res, constants.GET);
     logger.info(
         createLogMessage(
             req.session,

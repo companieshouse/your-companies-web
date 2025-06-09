@@ -1,15 +1,19 @@
 import { RemoveAuthorisationDoNotRestoreHandler } from "../../../../../../src/routers/handlers/yourCompanies/removeAuthorisationDoNotRestoreHandler";
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
-import { Request } from "express";
+import { Request, Response } from "express";
 import * as constants from "../../../../../../src/constants";
 import * as translations from "../../../../../../src/lib/utils/translations";
 import { Session } from "@companieshouse/node-session-handler";
-import { getFullUrl } from "../../../../../../src/lib/utils/urlUtils";
+import { getConfirmationAuthorisationRemovedFullUrl, getFullUrl } from "../../../../../../src/lib/utils/urlUtils";
+import { mockResponse } from "../../../../../mocks/response.mock";
+import * as companyProfileService from "../../../../../../src/services/companyProfileService";
+import { validActiveCompanyProfile } from "../../../../../mocks/companyProfile.mock";
 
 jest.mock("../../../../../../src/services/companyProfileService");
 jest.mock("../../../../../../src/lib/Logger");
 
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
+const getCompanyProfileSpy: jest.SpyInstance = jest.spyOn(companyProfileService, "getCompanyProfile");
 
 describe("RemoveAuthorisationDoNotRestoreHandler", () => {
     let removeAuthorisationDoNotRestoreHandler: RemoveAuthorisationDoNotRestoreHandler;
@@ -25,18 +29,19 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             condition: "Basic test that doesn't do anything NEEDS TO CHANGE",
             method: constants.GET,
             viewData: {
-                cancelLinkHref: constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                removeLinkHref: getFullUrl(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL)
+                cancelLinkHref: constants.MANAGE_AUTHORISED_PEOPLE_URL
             }
         }
     ])("should return expected viewData object if method is $method and $condition",
         async ({
-            viewData
+            viewData, method
         }) => {
             // Given
             const lang = "en";
-            const companyName = "Croissant Holdings Ltd";
-            const companyNumber = "FL123456";
+            const companyNumber = validActiveCompanyProfile.companyNumber;
+            const companyName = validActiveCompanyProfile.companyName;
+
+            getCompanyProfileSpy.mockReturnValueOnce(validActiveCompanyProfile);
 
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
@@ -45,6 +50,9 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
                     companyNumber
                 }
             });
+
+            const res: Response = mockResponse();
+
             const translations = { key: "value" };
             getTranslationsForViewSpy.mockReturnValueOnce(translations);
 
@@ -53,13 +61,15 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
                 lang: translations,
                 companyName,
                 companyNumber,
+                removeLinkHref: getConfirmationAuthorisationRemovedFullUrl(companyNumber),
                 ...viewData
             };
             // When
-            const response = await removeAuthorisationDoNotRestoreHandler.execute(req);
+            const response = await removeAuthorisationDoNotRestoreHandler.execute(req, res, method);
             // Then
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
+            expect(getCompanyProfileSpy).toHaveBeenCalled();
             expect(response).toEqual(expectedViewData);
         });
 });

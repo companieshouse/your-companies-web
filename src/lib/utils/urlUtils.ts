@@ -216,3 +216,6 @@ export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber
  */
 export const getRemoveCompanyUrl = (companyNumber: string): string =>
     `/${constants.REMOVE_COMPANY_PAGE}/${companyNumber}`;
+
+export const getConfirmationAuthorisationRemovedFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/${constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE}/${companyNumber}`);
