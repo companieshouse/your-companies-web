@@ -5,6 +5,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "macros/link.njk" import link %}
 
+
 {% set rowsData = [] %}
 {% for elem in associationData %}
     {% set params = {
@@ -13,6 +14,7 @@
     {% set visuallyHiddenText = elem.company_name %}
     {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
     {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
+    
 
 {% if elem.status == "confirmed" %}
     {% set rowElem = [
@@ -51,6 +53,7 @@
         {% set message = lang[value.text] %}
     {% endif %}
 {% endfor %}
+
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
