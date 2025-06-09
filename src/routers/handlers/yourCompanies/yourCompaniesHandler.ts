@@ -32,10 +32,11 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     associationData: {
         "company_name": string;
         "company_number": string;
-        "company_status": string;
+        "status": string;
     }[],
     viewAndManageUrl: string;
     removeCompanyUrl: string;
+    restoreDigitalAuthUrl: string;
 }
 
 /**
@@ -73,7 +74,8 @@ export class YourCompaniesHandler extends GenericHandler {
             numberOfInvitations: 0,
             associationData: [],
             viewAndManageUrl: "",
-            removeCompanyUrl: ""
+            removeCompanyUrl: "",
+            restoreDigitalAuthUrl: ""
         };
     }
 
@@ -98,11 +100,10 @@ export class YourCompaniesHandler extends GenericHandler {
 
         let confirmedUserAssociations: AssociationList = await getUserAssociations(
             req,
-            [AssociationStatus.CONFIRMED],
+            [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED],
             errorMassage ? undefined : search,
             pageNumber - 1
         );
-
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
             confirmedUserAssociations = await getUserAssociations(
@@ -180,12 +181,13 @@ export class YourCompaniesHandler extends GenericHandler {
             this.viewData.associationData = confirmedUserAssociations.items.map(item => ({
                 company_name: item.companyName,
                 company_number: item.companyNumber,
-                company_status: item.companyStatus
+                status: item.status
             }));
 
             this.viewData.userHasCompanies = constants.TRUE;
             this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
             this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
+            this.viewData.restoreDigitalAuthUrl = getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL);
         }
     }
 
