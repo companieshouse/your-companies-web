@@ -100,7 +100,7 @@ export const CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_UR
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
-
+export const AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing";
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
 export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";
