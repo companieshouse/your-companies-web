@@ -100,6 +100,7 @@ export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
 export const HEALTHCHECK_URL = "/healthcheck";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL = `/${REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}`;
 export const CONFIRMATION_AUTHORISATION_REMOVED_URL = `/${CONFIRMATION_AUTHORISATION_REMOVED_PAGE}`;
+export const CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL = `/restore-your-digital-authorisation/:${COMPANY_NUMBER}/${CONFIRM_COMPANY_PAGE}`;
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
