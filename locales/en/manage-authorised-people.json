@@ -18,11 +18,14 @@
     "link_to_remove_user_from_digitaly_authorised_end": " from people digitally authorised to file online for ",
     "name": "Name",
     "not_provided": "Not provided",
+    "people_digital_authorisation_ending_paragraph": "Anyone who is already digitally authorised can do this by selecting 'restore digital authorisation', or people can authorise themselves (if they have the current authentication code).",
+    "people_digital_authorisation_paragraph": "People who were previously digitally authorised to file online for a company need to have their authorisation restored.",
     "people_digitally_authorised_to_file_online": "People digitally authorised to file online for this company",
     "remove": "Remove",
     "remove_person_header_start": "",
     "resend_amail_invitation": "Resend email invitation",
     "resend_email": "Resend email",
+    "restore_people_digital_authorisation_title": "Restore other people's digital authorisation",
     "status": "Status",
     "still_has_access_to_it": " still has access to it.",
     "title_authorisation_cancelled": ": authorisation cancelled",
@@ -38,8 +41,5 @@
     "weve_sent_an_email_to_the_company": "We’ve sent an email to the company’s registered email address and to any other people who are authorised to let them know.",
     "you_have_successfully_cancelled_digital_authorisation_end": " to file online for ",
     "you_have_successfully_cancelled_digital_authorisation_start": "You have successfully cancelled digital authorisation for ",
-    "you_may_wish_to": "You may wish to ",
-    "restore_people_digital_authorisation_title": "Restore other people's digital authorisation",
-    "people_digital_authorisation_paragraph": "People who were previously digitally authorised to file online for a company need to have their authorisation restored.",
-    "people_digital_authorisation_ending_paragraph": "Anyone who is already digitally authorised can do this by selecting 'restore digital authorisation', or people can authorise themselves (if they have the current authentication code)."
+    "you_may_wish_to": "You may wish to "
 }
