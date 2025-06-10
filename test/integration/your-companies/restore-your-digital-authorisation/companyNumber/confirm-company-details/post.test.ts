@@ -21,7 +21,7 @@ jest.mock("../../../../../../src/lib/Logger");
 jest.mock("../../../../../../src/lib/utils/sessionUtils");
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-const tryRestoringYourDigitalAuthorisationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "tryRestoringYourDigitalAuthorisationFullUrl");
+const getTryRestoringYourDigitalAuthorisationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getTryRestoringYourDigitalAuthorisationFullUrl");
 
 describe("POST /your-companies/restore-your-digital-authorisation/:companyNumber/confirm-company-details", () => {
 
@@ -43,7 +43,7 @@ describe("POST /your-companies/restore-your-digital-authorisation/:companyNumber
         // Given
         getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
         const redirectUrl = "/your-companies/company/12345678/try-restoring-your-digital-authorisation";
-        tryRestoringYourDigitalAuthorisationFullUrlSpy.mockReturnValue(redirectUrl);
+        getTryRestoringYourDigitalAuthorisationFullUrlSpy.mockReturnValue(redirectUrl);
         // When
         const resp = await router.post(url);
         // Then

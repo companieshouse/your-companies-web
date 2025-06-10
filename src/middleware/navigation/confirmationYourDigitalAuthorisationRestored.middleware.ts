@@ -4,13 +4,10 @@ import { redirectPage } from "../../lib/utils/referrerUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import { getExtraData } from "../../lib/utils/sessionUtils";
-import {
-    getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl,
-    getTryRestoringYourDigitalAuthorisationFullUrl
-} from "../../lib/utils/urlUtils";
+import { getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl } from "../../lib/utils/urlUtils";
 
 /**
- * Middleware to handle navigation for trying to restore a digital authorisation.
+ * Middleware to handle navigation after a digital authorisation has been restored.
  * Redirects the user to the landing page if certain conditions are met,
  * otherwise passes control to the next middleware.
  *
@@ -18,21 +15,21 @@ import {
  * @param res - The Express response object
  * @param next - The next middleware function
  */
-export const tryRestoringYourDigitalAuthorisationNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const confirmationYourDigitalAuthorisationRestoredNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer = req.get("Referrer");
     const confirmedCompanyForAssociation: CompanyNameAndNumber = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
 
     logger.debug(
         createLogMessage(
             req.session,
-            tryRestoringYourDigitalAuthorisationNavigation.name,
+            confirmationYourDigitalAuthorisationRestoredNavigation.name,
             `request to ${req.originalUrl}, calling redirectPage fn`
         ));
 
     const shouldRedirect = redirectPage(
         referrer,
         getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl(confirmedCompanyForAssociation.companyNumber),
-        getTryRestoringYourDigitalAuthorisationFullUrl(confirmedCompanyForAssociation.companyNumber),
+        constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
         false
     );
 

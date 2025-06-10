@@ -46,6 +46,7 @@ import {
 import { tryRestoringYourDigitalAuthorisationControllerGet } from "./controllers/tryRestoringYourDigitalAuthorisationController";
 import { tryRestoringYourDigitalAuthorisationNavigation } from "../middleware/navigation/tryRestoringYourDigitalAuthorisation.middleware";
 import { confirmationYourDigitalAuthorisationRestoredControllerGet } from "./controllers/confirmationYourDigitalAuthorisationRestoredController";
+import { confirmationYourDigitalAuthorisationRestoredNavigation } from "../middleware/navigation/confirmationYourDigitalAuthorisationRestored.middleware";
 
 const router: Router = Router();
 
@@ -138,6 +139,9 @@ router.get(
 );
 
 // Restore Your Digital Authorication Success
-router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, confirmationYourDigitalAuthorisationRestoredControllerGet);
+router.get(
+    constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+    confirmationYourDigitalAuthorisationRestoredNavigation,
+    confirmationYourDigitalAuthorisationRestoredControllerGet);
 
 export default router;

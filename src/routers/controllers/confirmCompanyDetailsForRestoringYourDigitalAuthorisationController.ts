@@ -6,7 +6,7 @@ import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import logger, { createLogMessage } from "../../lib/Logger";
-import { tryRestoringYourDigitalAuthorisationFullUrl } from "../../lib/utils/urlUtils";
+import { getTryRestoringYourDigitalAuthorisationFullUrl } from "../../lib/utils/urlUtils";
 
 export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet = async (req: Request, res: Response): Promise<void> => {
     const companyNumber: string = req.params[constants.COMPANY_NUMBER];
@@ -34,7 +34,12 @@ export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationController
 
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
 
-    const nextPageUrl = tryRestoringYourDigitalAuthorisationFullUrl(company.companyNumber);
-    logger.info(createLogMessage(req.session, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost.name, `Redirecting to ${nextPageUrl}`));
+    const nextPageUrl = getTryRestoringYourDigitalAuthorisationFullUrl(company.companyNumber);
+    logger.info(
+        createLogMessage(
+            req.session,
+            confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost.name,
+            `Redirecting to ${nextPageUrl}`
+        ));
     res.redirect(nextPageUrl);
 };
