@@ -38,5 +38,8 @@
     "weve_sent_an_email_to_the_company": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi i roi gwybod iddynt.",
     "you_have_successfully_cancelled_digital_authorisation_end": " i ffeilio  ar-lein ar gyfer ",
     "you_have_successfully_cancelled_digital_authorisation_start": "Rydych chi wedi canslo awdurdodiad digidol yn llwyddiannus ar gyfer ",
-    "you_may_wish_to": "Efallai yr hoffech "
+    "you_may_wish_to": "Efallai yr hoffech ",
+    "restore_people_digital_authorisation_title": "[CY] Restore other people's digital authorisation",
+    "people_digital_authorisation_paragraph": "[CY] People who were previously digitally authorised to file online for a company need to have their authorisation restored.",
+    "people_digital_authorisation_ending_paragraph": "[CY] Anyone who is already digitally authorised can do this by selecting 'restore digital authorisation', or people can authorise themselves (if they have the current authentication code)."
 }
