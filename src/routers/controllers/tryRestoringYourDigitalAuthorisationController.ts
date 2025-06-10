@@ -6,14 +6,35 @@ import { CompanyNameAndNumber } from "../../types/utilTypes";
 import logger, { createLogMessage } from "../../lib/Logger";
 import { getFullUrl } from "../../lib/utils/urlUtils";
 
-export const tryRestoringYourDigitalAuthorisationControllerGet = async (req: Request, res: Response): Promise<void> => {
-    const confirmedCompanyForAssociation: CompanyNameAndNumber = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
+/**
+ * Handles GET requests to attempt restoring a user's digital authorisation for a company association.
+ *
+ * - Retrieves the confirmed company from the session.
+ * - Logs the attempt to restore digital authorisation.
+ * - Calls the association service to restore the authorisation.
+ * - Redirects to the success page upon completion.
+ *
+ * @param req - Express request object
+ * @param res - Express response object
+ * @returns Promise<void>
+ */
+export const tryRestoringYourDigitalAuthorisationControllerGet = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    const confirmedCompanyForAssociation: CompanyNameAndNumber = getExtraData(
+        req.session,
+        constants.CONFIRMED_COMPANY_FOR_ASSOCIATION
+    );
+
     logger.info(
         createLogMessage(
             req.session,
             tryRestoringYourDigitalAuthorisationControllerGet.name,
             `Calling API to restore digital authorisation for association with company ID: ${confirmedCompanyForAssociation.companyNumber}`
-        ));
+        )
+    );
+
     await createAssociation(req, confirmedCompanyForAssociation.companyNumber);
 
     res.redirect(getFullUrl(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL));
