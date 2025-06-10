@@ -11,6 +11,9 @@ import request from "supertest";
 import app from "../../../../src/app";
 import * as constants from "../../../../src/constants";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
+import { createCompanyAuthenticationMiddleware, forceCompanyAuthenticationMiddleware, companyAuthenticationMiddleware } from "../../../../src/middleware/company.authentication";
+import { NextFunction, Request, Response } from "express";
+import { Session } from "@companieshouse/node-session-handler";
 
 // get handle on mocked function and create mock function to be returned from calling companyAuthMiddleware
 const mockCompanyAuthMiddleware = authMiddleware as jest.Mock;
@@ -37,7 +40,8 @@ describe("company authentication middleware tests", () => {
         expect(mockCompanyAuthMiddleware).toHaveBeenCalledWith({
             chsWebUrl: "http://chsurl.co",
             returnUrl: URL,
-            companyNumber: "12345678"
+            companyNumber: "12345678",
+            forceAuthCode: true
         });
         expect(mockAuthReturnedFunction).toHaveBeenCalled();
         expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
@@ -51,9 +55,78 @@ describe("company authentication middleware tests", () => {
         expect(mockCompanyAuthMiddleware).toHaveBeenCalledWith({
             chsWebUrl: "http://chsurl.co",
             returnUrl: URL,
-            companyNumber: "12345678"
+            companyNumber: "12345678",
+            forceAuthCode: true
         });
         expect(mockAuthReturnedFunction).toHaveBeenCalled();
         expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
     });
+});
+
+describe("Company Authentication Middleware", () => {
+    let mockReq: Partial<Request>;
+    let mockRes: Partial<Response>;
+    let mockNext: NextFunction;
+
+    beforeEach(() => {
+        mockReq = {
+            params: {
+                [constants.COMPANY_NUMBER]: "12345678"
+            },
+            originalUrl: "/test-url",
+            session: new Session()
+        };
+        mockRes = {};
+        mockNext = jest.fn();
+        (authMiddleware as jest.Mock).mockReturnValue(() => "mock-auth-result");
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    describe("createCompanyAuthenticationMiddleware", () => {
+        it("should configure auth middleware with correct options when forceAuthCode is true", () => {
+            const middleware = createCompanyAuthenticationMiddleware(true);
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(authMiddleware).toHaveBeenCalledWith({
+                chsWebUrl: constants.CHS_URL,
+                returnUrl: "/test-url",
+                companyNumber: "12345678",
+                forceAuthCode: true
+            });
+        });
+
+        it("should configure auth middleware with correct options when forceAuthCode is false", () => {
+            const middleware = createCompanyAuthenticationMiddleware(false);
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(authMiddleware).toHaveBeenCalledWith({
+                chsWebUrl: constants.CHS_URL,
+                returnUrl: "/test-url",
+                companyNumber: "12345678",
+                forceAuthCode: false
+            });
+        });
+    });
+
+    describe("exported company auth middleware instances", () => {
+        it("forceCompanyAuthenticationMiddleware should use forceAuthCode=true", () => {
+            forceCompanyAuthenticationMiddleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(authMiddleware).toHaveBeenCalledWith(expect.objectContaining({
+                forceAuthCode: true
+            }));
+        });
+
+        it("companyAuthenticationMiddleware should use forceAuthCode=false", () => {
+            companyAuthenticationMiddleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(authMiddleware).toHaveBeenCalledWith(expect.objectContaining({
+                forceAuthCode: false
+            }));
+        });
+    });
+
 });
