@@ -6,7 +6,7 @@ import { BaseViewData, CompanyNameAndNumber } from "../../../types/utilTypes";
 import { getExtraData } from "../../../lib/utils/sessionUtils";
 
 interface ConfirmationYourDigitalAuthorisationRestoredViewData extends BaseViewData, CompanyNameAndNumber {
-    buttonUrl: string;
+    buttonHref: string;
 }
 
 export class ConfirmationYourDigitalAuthorisationRestoredHandler extends GenericHandler {
@@ -19,7 +19,7 @@ export class ConfirmationYourDigitalAuthorisationRestoredHandler extends Generic
             lang: {},
             companyName: "",
             companyNumber: "",
-            buttonUrl: constants.LANDING_URL
+            buttonHref: constants.LANDING_URL
         };
     }
 

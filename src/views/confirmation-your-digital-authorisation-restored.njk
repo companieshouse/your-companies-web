@@ -1,11 +1,55 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "layouts/default.njk" %}
 
 {% block main_content %}
 
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds"></div>
+        <div class="govuk-grid-column-two-thirds">
+            {% set bannetText = lang.digital_authorisation_restored_for + " " + companyName %}
+
+            {{ govukNotificationBanner({
+                    text: bannetText,
+                    type: "success",
+                    titleText: lang.success                
+                })  
+            }}
+
+            <span class="govuk-caption-l">
+                {{companyName + " (" + companyNumber + ")"}}
+            </span>
+            <h1 class="govuk-heading-l">
+                {{lang.page_header}}
+            </h1>
+
+            <p class="govuk-body">
+                {{lang.you_can_now}}
+            </p>
+            <ul class="govuk-list govuk-list--bullet">
+                {% for option in lang.you_can_now_options %}
+                    <li>{{option}}</li>
+                {% endfor %}
+            </ul>
+
+            {{ govukInsetText({
+                    text: lang.weve_sent_an_email
+                })
+            }}
+
+            {{ govukButton({
+                    text: lang.go_to_your_companies, 
+                    href: buttonHref,
+                    role: "button",
+                    classes: 'govuk-!-margin-top-3',
+                    attributes: {
+                        id: "go-to-your-companies-button",
+                        "data-event-id": "go-to-your-companies"
+                        }
+                })
+            }}
+        </div>
     </div>
 
 {% endblock %}
