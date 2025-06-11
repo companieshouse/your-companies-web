@@ -33,8 +33,8 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
     it("should check session, auth and company authorisation before creating association", async () => {
         // Given
         mockCreateCompanyAssociation.mockResolvedValueOnce("0123456789");
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
-        session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
+        const confirmedCompanyForAssociation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
+        session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
         // When
         await router.get(url);
         // Then
@@ -47,8 +47,8 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
     it("should redirect to success page after creating company assocation", async () => {
         // Given
         mockCreateCompanyAssociation.mockResolvedValueOnce("0123456789");
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
-        session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
+        const confirmedCompanyForAssociation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
+        session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
         // When
         const response = await router.get(url);
         // Then
@@ -61,8 +61,8 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
         const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
         const badRequestError = createError(HTTP_STATUS_CODE, `Http status code ${HTTP_STATUS_CODE} - Failed to change status for an association`);
         mockCreateCompanyAssociation.mockRejectedValueOnce(badRequestError);
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
-        session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
+        const confirmedCompanyForAssociation: CompanyNameAndNumber = { companyNumber, companyName: "Test Inc." };
+        session.setExtraData(constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
         // When
         const response = await router.get(url);
         // Then
