@@ -76,7 +76,7 @@ describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPos
             };
             mockExecute.mockReturnValue(expectedViewData);
             getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
-            const confirmedCompanyForAssocation: CompanyNameAndNumber = {
+            const confirmedCompanyForAssociation: CompanyNameAndNumber = {
                 companyNumber: validActiveCompanyProfile.companyNumber,
                 companyName: validActiveCompanyProfile.companyName
             };
@@ -88,7 +88,7 @@ describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPos
             expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.COMPANY_PROFILE}_${companyNumber}`);
             expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
             expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledTimes(1);
             expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);
