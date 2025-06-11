@@ -38,5 +38,13 @@
     "weve_sent_an_email_to_the_company": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi i roi gwybod iddynt.",
     "you_have_successfully_cancelled_digital_authorisation_end": " i ffeilio  ar-lein ar gyfer ",
     "you_have_successfully_cancelled_digital_authorisation_start": "Rydych chi wedi canslo awdurdodiad digidol yn llwyddiannus ar gyfer ",
-    "you_may_wish_to": "Efallai yr hoffech "
+    "you_may_wish_to": "Efallai yr hoffech ",
+        "not_digitally_authorised": "[CY] Not digitally authorised",
+    "digitally_authorised": "[CY] Digitally authorised",
+    "authorisation_status":" [CY] Authorisation status",
+    "remove_or_cancel": "[CY] Remove or cancel",
+    "restore_digital_authorisation": "[CY] Restore digital authorisation",
+    "remove_not_restore": "[CY] Remove and do not restore",
+    "for": "[CY]  for ",
+    "digital_authorisation_for": " [CY] digital authorisation for "
 }
