@@ -78,15 +78,15 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
             expect(response.text).toContain(lang.details_of_authorised_people);
             expect(response.text).toContain(lang.email_address);
             expect(response.text).toContain(lang.name);
-            expect(response.text).toContain(lang.status);
+            expect(response.text).toContain(lang.authorisation_status);
             expect(response.text).toContain(lang.remove);
             expect(response.text).toContain(langCommon.back_to_your_companies);
             expect(response.text).not.toContain(langCommon.success);
             expect(response.text).not.toContain(lang.digital_authorisation_cancelled);
-            expect(response.text).toContain(companyAssociations.items[0].userEmail + "</th>");
-            expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-            expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-            expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+            expect(response.text).toContain(companyAssociations.items[0].userEmail);
+            expect(response.text).toContain(companyAssociations.items[1].userEmail);
+            expect(response.text).toContain(companyAssociations.items[2].userEmail);
+            expect(response.text).toContain(companyAssociations.items[3].userEmail);
         });
 
     it("should display all 15 associations for page 1 with a next button", async () => {
@@ -96,7 +96,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         const response = await router.get(`${url}`);
         // Then
         companyAssociationsPage1.items.forEach((association) => {
-            expect(response.text).toContain(association.userEmail + "</th>");
+            expect(response.text).toContain(association.userEmail);
         });
         expect(response.text).toContain(enCommon.next);
         expect(response.text).not.toContain(enCommon.previous);
@@ -109,7 +109,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         const response = await router.get(`${url}?page=2`);
         // Then
         companyAssociationsPage2.items.forEach((association) => {
-            expect(response.text).toContain(association.userEmail + "</th>");
+            expect(response.text).toContain(association.userEmail + "</td>");
         });
         expect(response.text).not.toContain(enCommon.next);
         expect(response.text).toContain(enCommon.previous);

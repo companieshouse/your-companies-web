@@ -151,9 +151,9 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text).toContain(lang.change_the_authentication_code);
             expect(response.text).toContain(lang.for_this_company_if + userInfo + lang.still_has_access_to_it);
             for (const email of emails) {
-                expect(response.text).toContain(email + "</th>");
+                expect(response.text).toContain(email + "</td>");
             }
-            expect(response.text).not.toContain(excludeEmail + "</th>");
+            expect(response.text).not.toContain(excludeEmail + "</td>");
         });
 
     it("should return status 302 on page redirect", async () => {

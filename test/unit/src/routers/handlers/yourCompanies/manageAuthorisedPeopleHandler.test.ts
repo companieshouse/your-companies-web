@@ -154,6 +154,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
+                restoreDigitalAuthUrl: "",
                 ...viewData
             };
             // When
@@ -338,6 +339,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
+                restoreDigitalAuthUrl: "",
                 ...viewData
             };
             // When
@@ -510,6 +512,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
+                restoreDigitalAuthUrl: "",
                 ...viewData
             };
             // When
@@ -643,6 +646,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
+                restoreDigitalAuthUrl: "",
                 ...viewData
             };
             // When
@@ -769,6 +773,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
+                restoreDigitalAuthUrl: "",
                 ...viewData
             };
             // When

@@ -135,13 +135,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text).toContain(lang.details_of_authorised_people);
             expect(response.text).toContain(lang.email_address);
             expect(response.text).toContain(lang.name);
-            expect(response.text).toContain(lang.status);
+            expect(response.text).toContain(lang.authorisation_status);
             expect(response.text).toContain(lang.remove);
             expect(response.text).toContain(langCommon.back_to_your_companies);
-            expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</th>");
-            expect(response.text).toContain(companyAssociations.items[1].userEmail + "</th>");
-            expect(response.text).toContain(companyAssociations.items[2].userEmail + "</th>");
-            expect(response.text).toContain(companyAssociations.items[3].userEmail + "</th>");
+            expect(response.text).not.toContain(companyAssociations.items[0].userEmail + "</td>");
+            expect(response.text).toContain(companyAssociations.items[1].userEmail + "</td>");
+            expect(response.text).toContain(companyAssociations.items[2].userEmail + "</td>");
+            expect(response.text).toContain(companyAssociations.items[3].userEmail + "</td>");
         });
 
     it("should return status 302 on page redirect", async () => {
