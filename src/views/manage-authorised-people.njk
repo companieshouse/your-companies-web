@@ -186,25 +186,30 @@
                 companyNumber: association.companyNumber
             }, query_params) %}
             {% set row = (row.push({html: removeLink}), row) %}
-            {% set row = (row.push({text: ""}), row) %}
         {% endif %}
 
         {% if association.status === "awaiting-approval" %}
 
-            {% set tag = govukTag({html: lang.awaiting_confirmation, classes: "govuk-tag--yellow"}) %}
-            {% set row = (row.push({html: tag}), row) %}
+            {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, "resend-invite-email", {userEmail: association.userEmail})%}
+
+            {% set awaitingConfirmation %}
+            <div class="govuk-!-padding-bottom-3">
+            <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
+            </div>  
+            {% endset %}
+
+            {% set row = (row.push({html: awaitingConfirmation + resendEmailLink}), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, "cancel-authorised-person", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
-            {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, "resend-invite-email", {userEmail: association.userEmail})%}
-            {% set row = (row.push({html: resendEmailLink}), row) %}
+
         {% endif %}
 
         {% if association.status === "migrated" %}
 
             {% set migratedText %}
-            <div class="govuk-!-padding-bottom-3">
+            <div class="govuk-!-padding-bottom-2">
             <strong class="govuk-tag govuk-tag--red">{{lang.not_digitally_authorised }}</strong>
             </div>  
             {% endset %}
@@ -221,18 +226,14 @@
                 companyNumber: association.companyNumber
             }, query_params) %}
             {% set row = (row.push({html: remove_not_restore}), row) %}
-            {% set row = (row.push({text: ""}), row) %}
 
         {% endif %}
 
         {% set rows = (rows.push(row), rows) %}
     {% endfor %}
 
-    {% set resendEmailInvitationHeader %}
-    <span class="govuk-visually-hidden">{{lang.resend_amail_invitation}}</span>
-    {% endset %}
 
-    <div class="govuk-grid-row govuk-!-padding-top-3">
+    <div class="govuk-grid-row govuk-!-padding-top-2">
         <div class="govuk-grid-column-full">
             
             {{ govukTable({
@@ -251,9 +252,6 @@
                         },
                         {
                             text: lang.remove_or_cancel
-                        },
-                        {
-                            html: resendEmailInvitationHeader
                         }
                     ],
                     rows: rows
