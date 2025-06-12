@@ -93,6 +93,9 @@ export class YourCompaniesHandler extends GenericHandler {
     async execute (req: Request): Promise<YourCompaniesViewData> {
         logger.info(createLogMessage(req.session, `${YourCompaniesHandler.name}.${this.execute.name}`, `GET request to serve Your Companies landing page`));
 
+        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
+
         const search = req.query.search as string;
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);

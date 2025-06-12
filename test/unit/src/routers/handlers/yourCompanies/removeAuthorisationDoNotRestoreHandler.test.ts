@@ -7,12 +7,20 @@ import { Session } from "@companieshouse/node-session-handler";
 import { mockResponse } from "../../../../../mocks/response.mock";
 import * as companyProfileService from "../../../../../../src/services/companyProfileService";
 import { validActiveCompanyProfile } from "../../../../../mocks/companyProfile.mock";
+import { AssociationState } from "../../../../../../src/types/associations";
+import * as associationsService from "../../../../../../src/services/associationsService";
+import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
+import * as urlUtils from "../../../../../../src/lib/utils/urlUtils";
 
 jest.mock("../../../../../../src/services/companyProfileService");
 jest.mock("../../../../../../src/lib/Logger");
 
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
 const getCompanyProfileSpy: jest.SpyInstance = jest.spyOn(companyProfileService, "getCompanyProfile");
+const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
+const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
+const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
+const getFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getFullUrl");
 
 describe("RemoveAuthorisationDoNotRestoreHandler", () => {
     let removeAuthorisationDoNotRestoreHandler: RemoveAuthorisationDoNotRestoreHandler;
@@ -25,15 +33,42 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
 
     test.each([
         {
-            condition: "Basic test that doesn't do anything NEEDS TO CHANGE",
             method: constants.GET,
+            returnInfo: "return expected viewData object",
+            condition: "when loading the remove authorisation do not restore page",
             viewData: {
+                templateName: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE,
                 cancelLinkHref: constants.LANDING_URL
             }
+
+        },
+        {
+            method: constants.POST,
+            returnInfo: "redirect to the confirmation-authorisation-removed page",
+            condition: "the company association state is migrated and removal is successful",
+            redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
+            associationState: { state: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER, associationId: "12345" },
+            removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
+        },
+        {
+            method: constants.POST,
+            returnInfo: "redirect to the confirmation-authorisation-removed page",
+            condition: "the company association state is migrated and removal is successful",
+            redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
+            associationState: { state: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER, associationId: "12345" },
+            removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
         }
-    ])("should return expected viewData object if method is $method and $condition",
+        // {
+        //     method: constants.POST,
+        //     returnInfo: "expected error messages are thrown",
+        //     condition: "the company association is not a migrated state",
+        //     redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
+        //     associationState: { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "12345" },
+        //     removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
+        // }
+    ])("should $returnInfo if method is $method and $condition",
         async ({
-            viewData, method
+            viewData, method, associationState, removalResult, redirectUrl
         }) => {
             // Given
             const lang = "en";
@@ -41,6 +76,10 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             const companyName = validActiveCompanyProfile.companyName;
 
             getCompanyProfileSpy.mockReturnValueOnce(validActiveCompanyProfile);
+
+            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
+            removeUserFromCompanyAssociationsSpy.mockReturnValue(removalResult);
+            getFullUrlSpy.mockReturnValue(redirectUrl);
 
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
@@ -56,7 +95,6 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             getTranslationsForViewSpy.mockReturnValueOnce(translations);
 
             const expectedViewData = {
-                templateName: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE,
                 lang: translations,
                 companyName,
                 companyNumber,
@@ -67,7 +105,29 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             // Then
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
-            expect(getCompanyProfileSpy).toHaveBeenCalled();
-            expect(response).toEqual(expectedViewData);
+
+            if (method === constants.GET) {
+                expect(getCompanyProfileSpy).toHaveBeenCalledTimes(1);
+                expect(response).toEqual(expectedViewData);
+            }
+
+            if (method === constants.POST && associationState?.state === AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER) {
+                expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
+                expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
+
+                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
+                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationState?.associationId);
+
+                expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
+                expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER, companyNumber);
+
+                expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
+                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL);
+
+                expect(res.redirect).toHaveBeenCalledTimes(1);
+                expect(res.redirect).toHaveBeenCalledWith(redirectUrl);
+
+            }
+
         });
 });

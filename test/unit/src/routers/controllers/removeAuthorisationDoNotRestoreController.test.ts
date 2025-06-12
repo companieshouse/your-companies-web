@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { removeAuthorisationDoNotRestoreControllerGet } from "../../../../../src/routers/controllers/removeAuthorisationDoNotRestoreController";
+import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotRestoreControllerPost } from "../../../../../src/routers/controllers/removeAuthorisationDoNotRestoreController";
 import { RemoveAuthorisationDoNotRestoreHandler } from "../../../../../src/routers/handlers/yourCompanies/removeAuthorisationDoNotRestoreHandler";
 import * as constants from "../../../../../src/constants";
 import { mockRequest } from "../../../../mocks/request.mock";
@@ -44,4 +44,19 @@ describe("removeAuthorisationDoNotRestoreControllerGet", () => {
         expect(renderMock).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE, expectedViewData);
     });
+});
+
+describe("removeCompanyControllerPost", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should render remove company page if an error present in view data",
+        async () => {
+            // When
+            await removeAuthorisationDoNotRestoreControllerPost(req as Request, res as Response);
+            // Then
+            expect(RemoveAuthorisationDoNotRestoreHandler).toHaveBeenCalledTimes(1);
+        });
 });

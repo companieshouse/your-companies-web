@@ -40,8 +40,6 @@ export class ConfirmationAuthorisationRemovedHandler extends GenericHandler {
     async execute (req: Request): Promise<ConfirmationAuthorisationRemovedViewData> {
         const companyName = getExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
         const companyNumber = getExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
-        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
-        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
 
         this.viewData.lang = getTranslationsForView(req.lang, constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE);
         this.viewData.companyName = companyName;
