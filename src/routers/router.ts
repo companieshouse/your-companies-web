@@ -36,7 +36,7 @@ import { removeCompanyControllerGet, removeCompanyControllerPost } from "./contr
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
 import { removeCompanyNavigation } from "../middleware/navigation/removeCompany.middleware";
 import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/confirmationCompanyRemoved.middleware";
-import { removeAuthorisationDoNotRestoreControllerGet } from "./controllers/removeAuthorisationDoNotRestoreController";
+import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotRestoreControllerPost } from "./controllers/removeAuthorisationDoNotRestoreController";
 import { confirmationAuthorisationRemovedControllerGet } from "./controllers/confirmationAuthorisationRemovedController";
 
 const router: Router = Router();
@@ -118,6 +118,7 @@ router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
 
 // Remove Authorisation Do Not Restore
 router.get(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreControllerGet);
+router.post(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreControllerPost);
 
 // Confirmation Authorisation Removed
 router.get(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL, confirmationAuthorisationRemovedControllerGet);

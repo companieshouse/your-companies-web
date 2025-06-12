@@ -23,7 +23,8 @@ export const USER_EMAILS_ARRAY = "userEmailsArray";
 export const CURRENT_COMPANY_NUM = "currentCompanyNumber";
 export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
-
+export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
+export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";
 // query params
 export const CLEAR_FORM = "cf";
 export const CLEAR_FORM_TRUE = "?cf=true";
@@ -99,7 +100,7 @@ export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";
 export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
 export const HEALTHCHECK_URL = "/healthcheck";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL = `/${REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/:${COMPANY_NUMBER}`;
-export const CONFIRMATION_AUTHORISATION_REMOVED_URL = `/${CONFIRMATION_AUTHORISATION_REMOVED_PAGE}/:${COMPANY_NUMBER}`;
+export const CONFIRMATION_AUTHORISATION_REMOVED_URL = `/${CONFIRMATION_AUTHORISATION_REMOVED_PAGE}`;
 export const CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL = `/restore-your-digital-authorisation/:${COMPANY_NUMBER}/${CONFIRM_COMPANY_PAGE}`;
 
 // External URLs

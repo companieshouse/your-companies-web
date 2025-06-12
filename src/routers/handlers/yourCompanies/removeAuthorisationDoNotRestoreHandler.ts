@@ -3,16 +3,17 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { BaseViewData } from "../../../types/utilTypes";
-import { getConfirmationAuthorisationRemovedFullUrl } from "../../../lib/utils/urlUtils";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { setExtraData } from "../../../lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import logger, { createLogMessage } from "../../../lib/Logger";
+import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
+import { AssociationState } from "../../../types/associations";
 
 interface RemoveAuthorisationDoNotRestoreViewData extends BaseViewData {
     companyName: string;
     companyNumber: string;
     cancelLinkHref: string;
-    removeLinkHref: string
 }
 
 /**
@@ -31,8 +32,7 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
             lang: {},
             companyName: "",
             companyNumber: "",
-            cancelLinkHref: "",
-            removeLinkHref: ""
+            cancelLinkHref: ""
         };
     }
 
@@ -42,22 +42,18 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
      * @param req - The HTTP request object.
      * @returns A promise that resolves to the view data for the page.
      */
-    async execute (req: Request, res: Response, method: string): Promise<RemoveAuthorisationDoNotRestoreViewData> {
+    async execute (req: Request, res: Response, method: string): Promise<RemoveAuthorisationDoNotRestoreViewData | void> {
 
         const companyNumber = req.params[constants.COMPANY_NUMBER] as string;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
         this.viewData.companyNumber = companyNumber;
-        this.viewData.cancelLinkHref = constants.MANAGE_AUTHORISED_PEOPLE_URL;
-        this.viewData.removeLinkHref = getConfirmationAuthorisationRemovedFullUrl(companyNumber);
+        this.viewData.cancelLinkHref = constants.LANDING_URL;
 
         if (method === constants.GET) {
-            return this.handleGetRequest(req);
-            // } else if (method === constants.POST) {
-            //     // return this.handlePostRequest(req, res);
-            //     return undefined;
-            // }
+            return await this.handleGetRequest(req);
+        } else if (method === constants.POST) {
+            await this.handleCompanyRemoval(req, res);
         }
-        return Promise.resolve(this.viewData);
     }
 
     /**
@@ -69,11 +65,30 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
     private async handleGetRequest (req: Request): Promise<RemoveAuthorisationDoNotRestoreViewData> {
         try {
             const companyProfile = await getCompanyProfile(this.viewData.companyNumber);
-            setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
+            setExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME, companyProfile.companyName);
             this.viewData.companyName = companyProfile.companyName;
         } catch (err) {
             logger.error(createLogMessage(req.session, `${RemoveAuthorisationDoNotRestoreHandler.name}.${this.handleGetRequest.name}`, `Error fetching company profile for ${this.viewData.companyNumber}: ${err}`));
         }
         return this.viewData;
+    }
+
+    private async handleCompanyRemoval (req: Request, res: Response): Promise<RemoveAuthorisationDoNotRestoreViewData | void> {
+        const companyNumber = req.params[constants.COMPANY_NUMBER];
+        const associationState = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
+
+        if (associationState.state !== AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER) {
+            throw new Error(`Cannot remove company ${companyNumber} as it is not associated with the user`);
+        }
+
+        const removalResult = await removeUserFromCompanyAssociations(req, associationState.associationId);
+
+        if (removalResult !== constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
+            throw new Error(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
+        }
+
+        setExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER, companyNumber);
+
+        res.redirect(getFullUrl(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL));
     }
 }

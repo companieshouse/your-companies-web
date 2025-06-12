@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import * as constants from "../../../../../../src/constants";
 import * as translations from "../../../../../../src/lib/utils/translations";
 import { Session } from "@companieshouse/node-session-handler";
-import { getConfirmationAuthorisationRemovedFullUrl, getFullUrl } from "../../../../../../src/lib/utils/urlUtils";
 import { mockResponse } from "../../../../../mocks/response.mock";
 import * as companyProfileService from "../../../../../../src/services/companyProfileService";
 import { validActiveCompanyProfile } from "../../../../../mocks/companyProfile.mock";
@@ -29,7 +28,7 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             condition: "Basic test that doesn't do anything NEEDS TO CHANGE",
             method: constants.GET,
             viewData: {
-                cancelLinkHref: constants.MANAGE_AUTHORISED_PEOPLE_URL
+                cancelLinkHref: constants.LANDING_URL
             }
         }
     ])("should return expected viewData object if method is $method and $condition",
@@ -61,7 +60,6 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
                 lang: translations,
                 companyName,
                 companyNumber,
-                removeLinkHref: getConfirmationAuthorisationRemovedFullUrl(companyNumber),
                 ...viewData
             };
             // When

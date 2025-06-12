@@ -4,11 +4,15 @@ import { Request } from "express";
 import * as constants from "../../../../../../src/constants";
 import * as translations from "../../../../../../src/lib/utils/translations";
 import { Session } from "@companieshouse/node-session-handler";
+import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
+import { when } from "jest-when";
+import { validActiveCompanyProfile } from "../../../../../mocks/companyProfile.mock";
 
 jest.mock("../../../../../../src/services/companyProfileService");
 jest.mock("../../../../../../src/lib/Logger");
 
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
+const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
 describe("ConfirmationAuthorisationRemovedHandler", () => {
     let confirmationAuthorisationRemovedHandler: ConfirmationAuthorisationRemovedHandler;
@@ -31,8 +35,11 @@ describe("ConfirmationAuthorisationRemovedHandler", () => {
         async ({ viewData }) => {
             // Given
             const lang = "en";
-            const companyName = "Croissant Holdings Ltd";
-            const companyNumber = "FL123456";
+
+            const companyNumber = validActiveCompanyProfile.companyNumber;
+            const companyName = validActiveCompanyProfile.companyName;
+            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.REMOVE_AUTHORISATION_COMPANY_NAME).mockReturnValue(companyName);
+            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.REMOVE_AUTHORISATION_COMPANY_NUMBER).mockReturnValue(companyNumber);
 
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
@@ -56,6 +63,9 @@ describe("ConfirmationAuthorisationRemovedHandler", () => {
             // Then
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE);
+            expect(getExtraDataSpy).toHaveBeenCalledTimes(2);
+            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
             expect(response).toEqual(expectedViewData);
         });
 });

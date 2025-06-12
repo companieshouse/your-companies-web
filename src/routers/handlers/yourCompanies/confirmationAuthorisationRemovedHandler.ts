@@ -3,6 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { BaseViewData } from "../../../types/utilTypes";
+import { deleteExtraData, getExtraData } from "../../../lib/utils/sessionUtils";
 
 interface ConfirmationAuthorisationRemovedViewData extends BaseViewData {
     companyName: string;
@@ -37,9 +38,14 @@ export class ConfirmationAuthorisationRemovedHandler extends GenericHandler {
      * @returns A promise that resolves to the view data for the page.
      */
     async execute (req: Request): Promise<ConfirmationAuthorisationRemovedViewData> {
+        const companyName = getExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+        const companyNumber = getExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
+        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
+
         this.viewData.lang = getTranslationsForView(req.lang, constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE);
-        this.viewData.companyName = "Croissant Holdings Ltd";
-        this.viewData.companyNumber = "FL123456";
+        this.viewData.companyName = companyName;
+        this.viewData.companyNumber = companyNumber;
         this.viewData.yourCompaniesHref = constants.LANDING_URL;
         return Promise.resolve(this.viewData);
     }

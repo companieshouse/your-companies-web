@@ -13,17 +13,21 @@
             </h1>
             <p class="govuk-body">{{ lang.if_you_remove_the_company }}</p>
 
-            <div class="govuk-button-group">
+            <form method="post">
+                {% include "partials/csrf_token.njk" %}
+                <div class="govuk-button-group">
 
-                {{ govukButton({
-                        text: lang.remove_company,
-                        href: removeLinkHref
-                    })
-                }}
+                    {{ govukButton({
+                            text: lang.remove_company,
+                            attributes: {
+                                id: "submit"
+                            }
+                        })
+                    }}
 
-                <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
-
-            </div>
+                    <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
