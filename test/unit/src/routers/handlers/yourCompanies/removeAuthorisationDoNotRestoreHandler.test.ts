@@ -49,23 +49,7 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
             associationState: { state: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER, associationId: "12345" },
             removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
-        },
-        {
-            method: constants.POST,
-            returnInfo: "redirect to the confirmation-authorisation-removed page",
-            condition: "the company association state is migrated and removal is successful",
-            redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
-            associationState: { state: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER, associationId: "12345" },
-            removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
         }
-        // {
-        //     method: constants.POST,
-        //     returnInfo: "expected error messages are thrown",
-        //     condition: "the company association is not a migrated state",
-        //     redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
-        //     associationState: { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "12345" },
-        //     removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
-        // }
     ])("should $returnInfo if method is $method and $condition",
         async ({
             viewData, method, associationState, removalResult, redirectUrl
@@ -126,8 +110,55 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
 
                 expect(res.redirect).toHaveBeenCalledTimes(1);
                 expect(res.redirect).toHaveBeenCalledWith(redirectUrl);
+            }
+        });
 
+    test.each([
+        {
+            method: constants.POST,
+            returnInfo: "throw expected error message",
+            condition: "the company association is not in a migrated state",
+            redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
+            associationState: { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "12345" },
+            removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
+        },
+        {
+            method: constants.POST,
+            returnInfo: "throw expected error message",
+            condition: "the user is not able to be removed from company associations",
+            redirectUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_REMOVED_URL}`,
+            associationState: { state: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER, associationId: "12345" },
+            removalResult: constants.USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS
+        },
+        {
+            method: constants.GET
+        }
+    ])("should $returnInfo if method is $method and $condition",
+        async ({
+            method, associationState, removalResult
+        }) => {
+            // Given
+            const companyNumber = validActiveCompanyProfile.companyNumber;
+
+            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
+            removeUserFromCompanyAssociationsSpy.mockReturnValue(removalResult);
+
+            const req: Request = mockParametrisedRequest({
+                session: new Session(),
+                params: {
+                    companyNumber
+                }
+            });
+
+            const res: Response = mockResponse();
+
+            // Then
+            if (associationState?.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
+                await expect(removeAuthorisationDoNotRestoreHandler.execute(req, res, method)).rejects.toThrow(`Cannot remove company ${companyNumber} as it is not associated with the user`);
             }
 
+            if (removalResult === constants.USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
+                await expect(removeAuthorisationDoNotRestoreHandler.execute(req, res, method)).rejects.toThrow(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
+            }
         });
 });

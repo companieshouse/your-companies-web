@@ -6,7 +6,6 @@ import { BaseViewData } from "../../../types/utilTypes";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
 import { setExtraData } from "../../../lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../services/companyProfileService";
-import logger, { createLogMessage } from "../../../lib/Logger";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { AssociationState } from "../../../types/associations";
 
@@ -63,13 +62,9 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
      * @returns The view data.
      */
     private async handleGetRequest (req: Request): Promise<RemoveAuthorisationDoNotRestoreViewData> {
-        try {
-            const companyProfile = await getCompanyProfile(this.viewData.companyNumber);
-            setExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME, companyProfile.companyName);
-            this.viewData.companyName = companyProfile.companyName;
-        } catch (err) {
-            logger.error(createLogMessage(req.session, `${RemoveAuthorisationDoNotRestoreHandler.name}.${this.handleGetRequest.name}`, `Error fetching company profile for ${this.viewData.companyNumber}: ${err}`));
-        }
+        const companyProfile = await getCompanyProfile(this.viewData.companyNumber);
+        setExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME, companyProfile.companyName);
+        this.viewData.companyName = companyProfile.companyName;
         return this.viewData;
     }
 

@@ -16,6 +16,7 @@ import {
     getManageAuthorisedPeopleConfirmationEmailResentUrl,
     getManageAuthorisedPeopleFullUrl,
     getPresenterAlreadyAddedUrl,
+    getRemoveAuthorisationDoNotRestoreUrl,
     getRemoveCompanyUrl,
     isReferrerIncludes,
     isWhitelistedUrl
@@ -114,7 +115,8 @@ describe("URL generation function", () => {
         ["getCancelPersonUrl", `/${constants.CANCEL_PERSON_PAGE}/test@test.com`, "test@test.com", getCancelPersonUrl],
         ["getManageAuthorisedPeopleConfirmationEmailResentUrl", `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`, "abc123", getManageAuthorisedPeopleConfirmationEmailResentUrl],
         ["getAuthenticationCodeRemoveUrl", `/authentication-code-remove/test@test.com`, "test@test.com", getAuthenticationCodeRemoveUrl],
-        ["getRemoveCompanyUrl", `/${constants.REMOVE_COMPANY_PAGE}/abc123`, "abc123", getRemoveCompanyUrl]
+        ["getRemoveCompanyUrl", `/${constants.REMOVE_COMPANY_PAGE}/abc123`, "abc123", getRemoveCompanyUrl],
+        ["getRemoveAuthorisationDoNotRestoreUrl", `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/abc123`, "abc123", getRemoveAuthorisationDoNotRestoreUrl]
     ])("%s should generate URL: '%s'",
         (_functionName, expectedFullUrl, argument, testedFunction) => {
             // When
