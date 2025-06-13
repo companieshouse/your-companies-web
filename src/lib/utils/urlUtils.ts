@@ -65,7 +65,8 @@ export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: str
         [constants.CONFIRMATION_CANCEL_PERSON_URL]: constants.CONFIRMATION_CANCEL_PERSON_URL,
         [constants.CONFIRMATION_PERSON_REMOVED_URL]: constants.CONFIRMATION_PERSON_REMOVED_URL,
         [constants.AUTHORISATION_EMAIL_RESENT_URL]: constants.AUTHORISATION_EMAIL_RESENT_URL,
-        [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL
+        [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL,
+        [constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL]: constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
     };
 
     for (const [key, value] of Object.entries(urlMappings)) {
