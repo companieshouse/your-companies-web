@@ -14,7 +14,6 @@ import { AuthorisedPerson } from "../../../types/associations";
  * SendEmailToBeDigitallyAuthorised page.
  */
 export interface SendEmailToBeDigitallyAuthorisedViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
-    buttonHref: string;
     cancelLinkHref: string;
     userEmail: string;
     userDisplayName: string;
@@ -34,7 +33,6 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
         super();
         this.viewData = {
             templateName: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE,
-            buttonHref: constants.LANDING_URL,
             cancelLinkHref: "",
             backLinkHref: "",
             lang: {},
