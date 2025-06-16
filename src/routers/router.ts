@@ -131,17 +131,9 @@ router.route(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHOR
     .post(confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost);
 
 // Try Restoring Your Digital Authorisation
-router.get(
-    constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-    companyAuthenticationMiddleware,
-    tryRestoringYourDigitalAuthorisationNavigation,
-    tryRestoringYourDigitalAuthorisationControllerGet
-);
+router.get(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, companyAuthenticationMiddleware, tryRestoringYourDigitalAuthorisationNavigation, tryRestoringYourDigitalAuthorisationControllerGet);
 
 // Restore Your Digital Authorication Success
-router.get(
-    constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-    confirmationYourDigitalAuthorisationRestoredNavigation,
-    confirmationYourDigitalAuthorisationRestoredControllerGet);
+router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, confirmationYourDigitalAuthorisationRestoredNavigation, confirmationYourDigitalAuthorisationRestoredControllerGet);
 
 export default router;
