@@ -19,16 +19,13 @@ describe("confirmationAuthorisationRemovedNavigation", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
-        req.headers = {
-            referrer: constants.LANDING_URL
-        };
     });
 
     it("should redirect to your companies landing page", async () => {
         // Given
         const companyNumber = "FL123456";
-        const referrer = constants.LANDING_URL;
         const removeAuthorisationDoNotRestoreUrl = `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/${companyNumber}`;
+        const referrer = removeAuthorisationDoNotRestoreUrl;
         getExtraDataSpy.mockReturnValueOnce(removeAuthorisationDoNotRestoreUrl);
         redirectPageSpy.mockReturnValueOnce(true);
 

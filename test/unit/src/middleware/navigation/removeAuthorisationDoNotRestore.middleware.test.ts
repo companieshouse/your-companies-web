@@ -21,9 +21,6 @@ describe("removeAuthorisationDoNotRestoreNavigation", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
-        req.headers = {
-            referrer: constants.LANDING_URL
-        };
     });
 
     it("should redirect to your companies landing page", async () => {
