@@ -43,7 +43,7 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
      */
     async execute (req: Request, res: Response, method: string): Promise<RemoveAuthorisationDoNotRestoreViewData | void> {
 
-        const companyNumber = req.params[constants.COMPANY_NUMBER] as string;
+        const companyNumber = req.params[constants.COMPANY_NUMBER];
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
         this.viewData.companyNumber = companyNumber;
         this.viewData.cancelLinkHref = constants.LANDING_URL;

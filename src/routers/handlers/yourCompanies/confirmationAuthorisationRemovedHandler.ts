@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { BaseViewData } from "../../../types/utilTypes";
-import { deleteExtraData, getExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData } from "../../../lib/utils/sessionUtils";
 
 interface ConfirmationAuthorisationRemovedViewData extends BaseViewData {
     companyName: string;
