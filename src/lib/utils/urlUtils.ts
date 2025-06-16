@@ -217,3 +217,11 @@ export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber
  */
 export const getRemoveCompanyUrl = (companyNumber: string): string =>
     `/${constants.REMOVE_COMPANY_PAGE}/${companyNumber}`;
+
+/**
+ * Constructs the URL for sending email to be digitally authorised.
+ * @param associationId - The association ID.
+ * @returns The relative URL.
+ */
+export const getSendEmailToBeDigitallyAuthorisedFullUrl = (associationId: string): string =>
+    getFullUrl(`${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/${associationId}`);

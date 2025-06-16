@@ -40,6 +40,7 @@ import {
     sendEmailToBeDigitallyAuthorisedControllerGet,
     sendEmailToBeDigitallyAuthorisedControllerPost
 } from "./controllers/sendEmailToBeDigitallyAuthorisedController";
+import { sendEmailToBeDigitallyAuthorisedNavigation } from "../middleware/navigation/sendEmailToBeDigitallyAuthorised.middleware";
 
 const router: Router = Router();
 
@@ -121,7 +122,7 @@ router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
 
 // Send Email To Be Digitally Authorised
 router.route(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL)
-    .get(sendEmailToBeDigitallyAuthorisedControllerGet)
+    .get(sendEmailToBeDigitallyAuthorisedNavigation, sendEmailToBeDigitallyAuthorisedControllerGet)
     .post(sendEmailToBeDigitallyAuthorisedControllerPost);
 
 export default router;
