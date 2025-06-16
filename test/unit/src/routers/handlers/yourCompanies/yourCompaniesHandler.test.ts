@@ -34,7 +34,6 @@ describe("YourCompaniesHandler", () => {
     let yourCompaniesHandler: YourCompaniesHandler;
     const addCompanyUrl = `${constants.LANDING_URL}${constants.ADD_COMPANY_URL}`;
     const viewInvitationsPageUrl = `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`;
-
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
@@ -42,6 +41,7 @@ describe("YourCompaniesHandler", () => {
             .mockReturnValueOnce(addCompanyUrl)
             .mockReturnValueOnce(viewInvitationsPageUrl);
         yourCompaniesHandler = new YourCompaniesHandler();
+
     });
 
     test.each([
@@ -54,6 +54,7 @@ describe("YourCompaniesHandler", () => {
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
+
                 numberOfInvitations: mockInvitationList.totalResults,
                 associationData: [],
                 numOfMatches: 0,
@@ -236,6 +237,7 @@ describe("YourCompaniesHandler", () => {
                 errors: errors,
                 pageNumber,
                 numberOfPages: 0,
+                authorisationBannerRequestAuthenticationCodeUrl: constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL,
                 ...viewData
             };
             getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
