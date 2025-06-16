@@ -26,7 +26,7 @@ describe("removeAuthorisationDoNotRestoreNavigation", () => {
         };
     });
 
-    it("should render add company page", async () => {
+    it("should redirect to your companies landing page", async () => {
         // Given
         const companyNumber = "FL123456";
         const referrer = constants.LANDING_URL;
