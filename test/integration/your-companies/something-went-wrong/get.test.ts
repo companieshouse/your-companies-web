@@ -27,10 +27,10 @@ describe("GET /your-companies/something-went-wrong", () => {
     test.each([
         { status: 403, langInfo: "English", langVersion: "en", condition: "CSRF error", lang: en, csrfError: true },
         { status: 403, langInfo: "English", langVersion: undefined, condition: "CSRF error", lang: en, csrfError: true },
-        { status: 403, langInfo: "English", langVersion: "en", condition: "CSRF error", lang: en, csrfError: true },
+        { status: 403, langInfo: "Welsh", langVersion: "cy", condition: "CSRF error", lang: cy, csrfError: true },
         { status: 500, langInfo: "English", langVersion: "en", condition: "it is not a CSRF error", lang: en, csrfError: false },
         { status: 500, langInfo: "English", langVersion: undefined, condition: "it is not a CSRF error", lang: en, csrfError: false },
-        { status: 500, langInfo: "English", langVersion: "en", condition: "it is not a CSRF error", lang: en, csrfError: false }
+        { status: 500, langInfo: "Welsh", langVersion: "cy", condition: "it is not a CSRF error", lang: cy, csrfError: false }
     ])("should return status %s and %s content if language set to %s",
         async ({ status, langVersion, lang, csrfError }) => {
 
