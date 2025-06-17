@@ -29,9 +29,13 @@ export const tryRestoringYourDigitalAuthorisationNavigation = async (req: Reques
             `request to ${req.originalUrl}, calling redirectPage fn`
         ));
 
+    const previousUrl = referrer?.includes(constants.ACCOUNT_URL)
+        ? constants.ACCOUNT_URL
+        : getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl(confirmedCompanyForAssociation?.companyNumber);
+
     const shouldRedirect = redirectPage(
         referrer,
-        getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl(confirmedCompanyForAssociation.companyNumber),
+        previousUrl,
         getTryRestoringYourDigitalAuthorisationFullUrl(confirmedCompanyForAssociation.companyNumber),
         false
     );

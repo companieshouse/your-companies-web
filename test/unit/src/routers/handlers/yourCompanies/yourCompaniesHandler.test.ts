@@ -278,7 +278,7 @@ describe("YourCompaniesHandler", () => {
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
             expect(getInvitationsSpy).toHaveBeenCalledWith(req);
-            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(9);
+            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(10);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_URL_EXTRA);
@@ -288,6 +288,7 @@ describe("YourCompaniesHandler", () => {
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NAME);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NUMBER);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
             expect(getResourceBundleMock).toHaveBeenCalled;
             expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);

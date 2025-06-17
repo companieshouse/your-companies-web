@@ -137,6 +137,7 @@ export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 export const OAUTH2_CLIENT_ID = getEnvironmentValue(`OAUTH2_CLIENT_ID`);
 export const OAUTH2_CLIENT_SECRET = getEnvironmentValue(`OAUTH2_CLIENT_SECRET`);
 export const ACCOUNT_LOCAL_URL = getEnvironmentValue("ACCOUNT_LOCAL_URL");
+export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL");
 
 export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const CHS_URL = getEnvironmentValue("CHS_URL");
