@@ -216,3 +216,11 @@ export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber
  */
 export const getRemoveCompanyUrl = (companyNumber: string): string =>
     `/${constants.REMOVE_COMPANY_PAGE}/${companyNumber}`;
+
+/**
+ * Constructs the URL for removing a user's authorisation from a company.
+ * @param companyNumber - The company number.
+ * @returns The relative URL.
+ */
+export const getRemoveAuthorisationDoNotRestoreUrl = (companyNumber: string): string =>
+    `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/${companyNumber}`;
