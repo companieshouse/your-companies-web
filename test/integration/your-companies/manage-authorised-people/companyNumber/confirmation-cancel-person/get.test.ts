@@ -6,7 +6,6 @@ import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import { Cancellation } from "../../../../../../src/types/cancellation";
 import * as constants from "../../../../../../src/constants";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
 import enCommon from "../../../../../../locales/en/common.json";
@@ -42,7 +41,6 @@ const companyNumber = "NI038379";
 const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-cancel-person`;
 const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
 const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
 const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 const cancellation: Cancellation = {
@@ -58,7 +56,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     beforeEach(() => {
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-        redirectPageSpy.mockReturnValue(false);
         when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.CANCEL_PERSON).mockReturnValue(cancellation);
         removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
     });
@@ -68,6 +65,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockNavigationMiddleware).toHaveBeenCalled();
     });
 
     test.each([
@@ -144,26 +142,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text).toContain(companyAssociations.items[3].userEmail + "</td>");
         });
 
-    it("should return status 302 on page redirect", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        sessionUtils.setExtraData(session, constants.CANCEL_URL_EXTRA, "test.com");
-        // When
-        const response = await router.get(url);
-        // Then
-        const cancelUrlExtraData = session.getExtraData(constants.CANCEL_URL_EXTRA);
-        expect(cancelUrlExtraData).toBeUndefined();
-        expect(response.status).toEqual(302);
-
-    });
-
-    it("should return correct response message including desired url path", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
         const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
+        expect(response.status).toEqual(302);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });

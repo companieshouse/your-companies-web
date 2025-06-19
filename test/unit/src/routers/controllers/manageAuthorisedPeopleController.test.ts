@@ -45,8 +45,7 @@ describe("manageAuthorisedPeopleControllerGet", () => {
         await manageAuthorisedPeopleControllerGet(req as Request, res as Response);
         // Then
         expect(ManageAuthorisedPeopleHandler).toHaveBeenCalledTimes(1);
-        expect(deleteExtraDataSpy).toHaveBeenCalledTimes(2);
-        expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CANCEL_URL_EXTRA);
+        expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
         expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.REMOVE_URL_EXTRA);
         expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
         expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.COMPANY_NUMBER);

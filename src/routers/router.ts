@@ -52,8 +52,8 @@ router.route(constants.YOUR_COMPANIES_URL)
     .post(yourCompaniesControllerPost as RequestHandler);
 
 // Manage Authorised People
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
