@@ -72,57 +72,90 @@ const routeConfig: RouteConfig[] = [
     },
     {
         routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.REMOVE_COMPANY_CONFIRMED_URL), // itself
+            getFullUrl(constants.REMOVE_COMPANY_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL), // itself
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.CONFIRM_COMPANY_DETAILS_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL), // itself
+            getFullUrl(constants.ADD_COMPANY_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.COMPANY_ADDED_SUCCESS_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.COMPANY_ADDED_SUCCESS_URL), // itself
+            getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.ADD_PRESENTER_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.ADD_PRESENTER_URL), // itself
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.CHECK_PRESENTER_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.CHECK_PRESENTER_URL), // itself
+            getFullUrl(constants.ADD_PRESENTER_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL), // itself
+            getFullUrl(constants.COMPANY_INVITATIONS_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.COMPANY_INVITATIONS_ACCEPT_URL), // itself
+            getFullUrl(constants.COMPANY_INVITATIONS_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.PRESENTER_ALREADY_ADDED_URL), // itself
+            getFullUrl(constants.CHECK_PRESENTER_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL), // itself
+            constants.LANDING_URL // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.CONFIRMATION_AUTHORISATION_REMOVED_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL), // itself
+            getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     }
 ];
