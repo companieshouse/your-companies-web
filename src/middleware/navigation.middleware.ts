@@ -9,6 +9,7 @@ interface RouteConfig {
     allowedPages: string[];
     defaultRedirect: string;
     sessionFlag?: string;
+    paramGuards?: Array<{ paramName: string; sessionKey: string }>;
 }
 
 // Centralized config with route patterns
@@ -23,32 +24,50 @@ const routeConfig: RouteConfig[] = [
     },
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL), // itself
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.AUTHORISED_PERSON_ADDED_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL), // itself
+            getFullUrl(constants.CHECK_PRESENTER_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL), // itself
+            getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL), // itself
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.REMOVED_THEMSELVES_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.REMOVED_THEMSELVES_URL), // itself
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
         routePattern: constants.REMOVE_COMPANY_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.REMOVE_COMPANY_URL), // itself
+            constants.LANDING_URL // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
@@ -95,6 +114,16 @@ const routeConfig: RouteConfig[] = [
         routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
         allowedPages: [],
         defaultRedirect: constants.LANDING_URL
+    },
+    {
+        routePattern: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL,
+        allowedPages: [],
+        defaultRedirect: constants.LANDING_URL
+    },
+    {
+        routePattern: constants.CONFIRMATION_AUTHORISATION_REMOVED_URL,
+        allowedPages: [],
+        defaultRedirect: constants.LANDING_URL
     }
 ];
 
@@ -110,6 +139,19 @@ const matchPathToPattern = (path: string, pattern: string): boolean => {
         if (patternSegments[i] !== pathSegments[i]) return false;
     }
     return true;
+};
+
+// Helper for parameter guards (supports single value or array)
+const areParamsValid = (req: Request, config: typeof routeConfig[number]): boolean => {
+    if (!config.paramGuards) return true;
+    return config.paramGuards.every(guard => {
+        const paramValue = req.params[guard.paramName];
+        const sessionValue = getExtraData(req.session, guard.sessionKey);
+        if (Array.isArray(sessionValue)) {
+            return sessionValue.includes(paramValue);
+        }
+        return paramValue === sessionValue;
+    });
 };
 
 // Find config for current path
@@ -128,6 +170,9 @@ export const navigationMiddleware = (req: Request, res: Response, next: NextFunc
 
     // Allow reloads/language switches (referer is self)
     if (refererPath === currentPath) {
+        if (!areParamsValid(req, config)) {
+            return res.redirect(config.defaultRedirect);
+        }
         return next();
     }
 
@@ -135,6 +180,9 @@ export const navigationMiddleware = (req: Request, res: Response, next: NextFunc
     if (config.sessionFlag) {
         const sessionFlag = getExtraData(req.session, config.sessionFlag);
         if (sessionFlag) {
+            if (!areParamsValid(req, config)) {
+                return res.redirect(config.defaultRedirect);
+            }
             deleteExtraData(req.session, config.sessionFlag);
             return next();
         }
@@ -153,6 +201,9 @@ export const navigationMiddleware = (req: Request, res: Response, next: NextFunc
             matchPathToPattern(refererPath, pattern)
         )
     ) {
+        if (!areParamsValid(req, config)) {
+            return res.redirect(config.defaultRedirect);
+        }
         return next();
     }
 
