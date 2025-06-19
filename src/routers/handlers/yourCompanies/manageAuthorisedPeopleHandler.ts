@@ -22,6 +22,7 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     cancelUrl: string;
     resendEmailUrl: string;
     removeUrl: string;
+    restoreDigitalAuthUrl: string;
     matomoAddNewAuthorisedPersonGoalId: string;
     companyAssociations: AssociationList | undefined;
     cancelledPerson: string;
@@ -57,6 +58,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             cancelUrl: "",
             resendEmailUrl: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL),
             removeUrl: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL),
+            // update restoreDigitalAuthUrl with the correct url
+            restoreDigitalAuthUrl: "",
             matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID,
             companyAssociations: undefined,
             pagination: undefined,

@@ -170,52 +170,76 @@
         {% set row = (row.push({
             text: providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)
         }), row) %}
+
+        {% set query_params = {
+                userName: association.displayName
+            } if association.displayName and association.displayName !== "Not provided" else 
+                undefined %}
+
         {% if association.status === confirmed %}
-            {% set tag = govukTag({text: lang.confirmed, classes: "govuk-tag--green"}) %}
+            {% set tag = govukTag({text: lang.digitally_authorised, classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
-            {% set query_params = {
-                userName: association.displayName
-            }
-            if association.displayName and association.displayName !== "Not provided" else 
-                undefined %}
+
             {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, "remove-authorised-person", {
                 userEmail: association.userEmail,
                 companyNumber: association.companyNumber
             }, query_params) %}
             {% set row = (row.push({html: removeLink}), row) %}
-            {% set row = (row.push({text: ""}), row) %}
-        {% else %}
-            {% set awaitingConfirmationText %}
-            <span class="wrap-word">{{lang.awaiting_confirmation}}</span>
+        {% endif %}
+
+        {% if association.status === "awaiting-approval" %}
+
+            {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
+            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, "resend-invite-email", {userEmail: association.userEmail})%}
+
+            {% set awaitingConfirmation %}
+            <div class="govuk-!-padding-bottom-3">
+            <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
+            </div>  
             {% endset %}
-            {% set tag = govukTag({html: awaitingConfirmationText, classes: "govuk-tag--yellow"}) %}
-            {% set row = (row.push({html: tag}), row) %}
+
+            {% set row = (row.push({html: awaitingConfirmation + resendEmailLink}), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, "cancel-authorised-person", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
-            {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
-            {% set resendEmailLink = link(lang.resend_email, resendEmailLinkVisuallyHiddenText, resendEmailUrl, "resend-invite-email", {userEmail: association.userEmail})%}
-            {% set row = (row.push({html: resendEmailLink}), row) %}
+
         {% endif %}
+
+        {% if association.status === "migrated" %}
+
+            {% set migratedText %}
+            <div class="govuk-!-padding-bottom-2">
+            <strong class="govuk-tag govuk-tag--red">{{lang.not_digitally_authorised }}</strong>
+            </div>  
+            {% endset %}
+
+            {% set visuallyHiddenRestoreText = lang.for +  association.userEmail %}
+            {% set restore_link = link(lang.restore_digital_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation") %}
+
+            {% set row = (row.push({html: migratedText + restore_link}), row) %}
+            
+            {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
+
+            {% set remove_not_restore = link(lang.remove_not_restore, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-digital-authorisation", {
+                userEmail: association.userEmail,
+                companyNumber: association.companyNumber
+            }, query_params) %}
+            {% set row = (row.push({html: remove_not_restore}), row) %}
+
+        {% endif %}
+
         {% set rows = (rows.push(row), rows) %}
     {% endfor %}
 
-    {% set cancelOrRemoveHeader %}
-    <span class="govuk-visually-hidden">{{lang.cancel_or_remove}}</span>
-    {% endset %}
 
-    {% set resendEmailInvitationHeader %}
-    <span class="govuk-visually-hidden">{{lang.resend_amail_invitation}}</span>
-    {% endset %}
-
-    <div class="govuk-grid-row govuk-!-padding-top-3">
+    <div class="govuk-grid-row govuk-!-padding-top-2">
         <div class="govuk-grid-column-full">
-            <h2 class="govuk-table__caption--m">{{lang.details_of_authorised_people}}</h2>
+            
             {{ govukTable({
                     caption: lang.details_of_authorised_people,
-                    captionClasses: "govuk-table__caption--m govuk-visually-hidden",
-                    firstCellIsHeader: true,
+                    captionClasses: "govuk-table__caption--m",
+                  
                     head: [
                         {
                             text: lang.email_address
@@ -224,13 +248,10 @@
                             text: lang.name
                         },
                         {
-                            text: lang.status
+                            text: lang.authorisation_status
                         },
                         {
-                            html: cancelOrRemoveHeader
-                        },
-                        {
-                            html: resendEmailInvitationHeader
+                            text: lang.remove_or_cancel
                         }
                     ],
                     rows: rows
