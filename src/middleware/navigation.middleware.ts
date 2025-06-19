@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import * as url from "node:url";
 import * as constants from "../constants";
 import { deleteExtraData, getExtraData } from "../lib/utils/sessionUtils";
+import { getFullUrl } from "../lib/utils/urlUtils";
 
 interface RouteConfig {
     routePattern: string;
@@ -13,13 +14,11 @@ interface RouteConfig {
 // Centralized config with route patterns
 const routeConfig: RouteConfig[] = [
     {
-        routePattern: constants.MANAGE_AUTHORISED_PEOPLE_URL,
-        allowedPages: [],
-        defaultRedirect: constants.LANDING_URL
-    },
-    {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-        allowedPages: [],
+        allowedPages: [
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL), // itself
+            getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL) // page prior to it
+        ],
         defaultRedirect: constants.LANDING_URL
     },
     {
@@ -119,13 +118,13 @@ const findConfigForPath = (path: string): RouteConfig | undefined => {
 };
 
 export const navigationMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-    const currentPath = req.baseUrl + req.path;
-    const config = findConfigForPath(currentPath);
+    const config = findConfigForPath(req.path);
 
     if (!config) return next();
 
+    const currentPath = req.baseUrl + req.path;
     const referer = req.headers.referer as string | undefined;
-    const refererPath = referer ? url.parse(referer, true).pathname || "" : "";
+    const refererPath = referer ? url.parse(referer, true).path || "" : "";
 
     // Allow reloads/language switches (referer is self)
     if (refererPath === currentPath) {
