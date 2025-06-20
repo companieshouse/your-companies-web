@@ -274,7 +274,7 @@ describe("navigationMiddleware", () => {
         {
             routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
             path: "/company-invitations-decline/1234567890",
-            defaultRedirect: constants.LANDING_URL
+            defaultRedirect: `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`
         },
         {
             routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,

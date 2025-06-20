@@ -47,6 +47,14 @@ const routeConfig: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
     {
+        routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL,
+        allowedPages: [
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL), // itself
+            getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL) // page prior to it
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+    {
         routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
         allowedPages: [
             getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL), // itself
@@ -124,7 +132,7 @@ const routeConfig: RouteConfig[] = [
             getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL), // itself
             getFullUrl(constants.COMPANY_INVITATIONS_URL) // page prior to it
         ],
-        defaultRedirect: constants.LANDING_URL
+        defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
     },
     {
         routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
@@ -139,6 +147,14 @@ const routeConfig: RouteConfig[] = [
         allowedPages: [
             getFullUrl(constants.PRESENTER_ALREADY_ADDED_URL), // itself
             getFullUrl(constants.CHECK_PRESENTER_URL) // page prior to it
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+    {
+        routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
+        allowedPages: [
+            getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL), // itself
+            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL) // page prior to it
         ],
         defaultRedirect: constants.LANDING_URL
     },

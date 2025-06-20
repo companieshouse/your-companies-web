@@ -9,7 +9,6 @@ import enCommon from "../../../../locales/en/common.json";
 import cyCommon from "../../../../locales/cy/common.json";
 import * as constants from "../../../../src/constants";
 import { deleteExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
-import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 
 const router = supertest(app);
 
@@ -20,8 +19,6 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 jest.mock("../../../../src/lib/Logger");
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/confirmation-company-removed", () => {
     const url = "/your-companies/confirmation-company-removed";
 
@@ -29,7 +26,6 @@ describe("GET /your-companies/confirmation-company-removed", () => {
         jest.clearAllMocks();
         deleteExtraData(session, constants.LAST_REMOVED_COMPANY_NAME);
         deleteExtraData(session, constants.LAST_REMOVED_COMPANY_NUMBER);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the remove company confirmed page", async () => {
