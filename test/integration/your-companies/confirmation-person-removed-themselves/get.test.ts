@@ -63,11 +63,14 @@ describe("GET /your-companies/confirmation-person-removed-themselves", () => {
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-        expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

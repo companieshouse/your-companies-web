@@ -23,19 +23,14 @@ import { companyAddedNavigation } from "../middleware/navigation/companyAdded.mi
 import { companyInvitationsAcceptNavigation } from "../middleware/navigation/companyInvitationsAccept.middleware";
 import { companyInvitationsDeclineNavigation } from "../middleware/navigation/companyInvitationsDecline.middleware";
 import { confirmCompanyNavigation } from "../middleware/navigation/confirmCompany.middleware";
-import { manageAuthorisedPeopleNavigation } from "../middleware/navigation/manageAuthorisedPeople.middleware";
-import { removeAuthorisedPersonNavigation } from "../middleware/navigation/removeAuthorisedPerson.middleware";
 import { removeAuthorisedPersonRequestController } from "./controllers/removeAuthorisedPersonRequestController";
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
 import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
-import { removedThemselvesNavigation } from "../middleware/navigation/personRemovedThemselves.middleware";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
-import { removeCompanyNavigation } from "../middleware/navigation/removeCompany.middleware";
-import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/confirmationCompanyRemoved.middleware";
 import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotRestoreControllerPost } from "./controllers/removeAuthorisationDoNotRestoreController";
 import { confirmationAuthorisationRemovedControllerGet } from "./controllers/confirmationAuthorisationRemovedController";
 import { removeAuthorisationDoNotRestoreNavigation } from "../middleware/navigation/removeAuthorisationDoNotRestore.middleware";
@@ -54,9 +49,9 @@ router.route(constants.YOUR_COMPANIES_URL)
 // Manage Authorised People
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 
 // Add Company
 router.route(constants.ADD_COMPANY_URL)
@@ -65,18 +60,18 @@ router.route(constants.ADD_COMPANY_URL)
 
 // Remove Authorised Person
 router.route(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL)
-    .get(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonNavigation, removeAuthorisedPersonControllerGet as RequestHandler)
+    .get(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerGet as RequestHandler)
     .post(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerPost as RequestHandler);
 
 router.get(constants.REMOVE_ASSOCIATION_URL, removeAuthorisedPersonRequestController);
-router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesNavigation, removedThemselvesConfirmationControllerGet as RequestHandler);
+router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesConfirmationControllerGet as RequestHandler);
 
 // Remove Company
 router.route(constants.REMOVE_COMPANY_URL)
-    .get(removeCompanyNavigation, removeCompanyControllerGet as RequestHandler)
+    .get(removeCompanyControllerGet as RequestHandler)
     .post(removeCompanyControllerPost as RequestHandler);
 
-router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, confirmationCompanyRemovedNavigation, removeCompanyConfirmedControllerGet);
+router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, removeCompanyConfirmedControllerGet);
 
 // Cancel Person
 router.route(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL)

@@ -13,6 +13,7 @@ import * as constants from "../../../../../../src/constants";
 import { when } from "jest-when";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
 import { removalWithoutUserName, removalWithUserName } from "../../../../../mocks/removal.mock";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 
@@ -156,22 +157,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text).not.toContain(excludeEmail + "</td>");
         });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });

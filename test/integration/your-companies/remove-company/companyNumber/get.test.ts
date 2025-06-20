@@ -99,11 +99,14 @@ describe("GET /your-companies/remove-company/:companyNumber", () => {
 
     it("should return correct response message to /your-companies for remove-company page redirection", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
-        expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 
 });

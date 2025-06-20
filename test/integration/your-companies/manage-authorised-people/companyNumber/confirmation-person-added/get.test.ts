@@ -9,6 +9,7 @@ import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../../../src/constants";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 
@@ -87,22 +88,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text.includes("bob@bob.com")).toBe(false);
     });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });
