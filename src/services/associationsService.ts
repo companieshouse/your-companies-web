@@ -4,6 +4,7 @@ import logger, { createLogMessage } from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import * as constants from "../constants";
 import {
+    Association,
     AssociationsResponse,
     AssociationList,
     AssociationStatus,
@@ -315,4 +316,24 @@ export const removeUserFromCompanyAssociations = async (
         logger.error(createLogMessage(req.session, removeUserFromCompanyAssociations.name, errorMessage));
         throw createError(400, errorMessage);
     }
+};
+
+export const getAssociationById = async (
+    req: Request,
+    associationId: string
+): Promise<Association> => {
+    const sdkResponse = await makeApiCallWithRetry(
+        "associationsService",
+        "getAssociation",
+        req,
+                req.session as Session,
+                associationId
+    ) as Resource<Association | Errors>;
+
+    if (sdkResponse?.httpStatusCode !== 200) {
+        const errorMessage = `Error: getAssociationById: ${associationId} status: ${sdkResponse.httpStatusCode} `;
+        logger.error(createLogMessage(req.session, getAssociationById.name, errorMessage));
+        throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)}`);
+    }
+    return sdkResponse.resource as Association;
 };

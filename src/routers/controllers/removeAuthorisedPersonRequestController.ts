@@ -50,7 +50,7 @@ export const removeAuthorisedPersonRequestController = async (req: Request, res:
  * @param companyNumber - The company number
  * @returns The list of company associations
  */
-const fetchCompanyAssociations = async (req: Request, companyNumber: string): Promise<AssociationList> => {
+export const fetchCompanyAssociations = async (req: Request, companyNumber: string): Promise<AssociationList> => {
     return await getCompanyAssociations(req, companyNumber, undefined, undefined, undefined, 100000);
 };
 
@@ -61,7 +61,7 @@ const fetchCompanyAssociations = async (req: Request, companyNumber: string): Pr
  * @param userEmail - The email of the user to be removed
  * @returns The association to be removed
  */
-const findAssociationToBeRemoved = (companyAssociations: AssociationList, userEmail: string): Association | undefined => {
+export const findAssociationToBeRemoved = (companyAssociations: AssociationList, userEmail: string): Association | undefined => {
     return companyAssociations.items.find(assoc => assoc.userEmail === userEmail);
 };
 

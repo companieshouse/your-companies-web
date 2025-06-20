@@ -182,9 +182,10 @@
             {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
 
             {% set removeLink = link(lang.remove, removeLinkVisuallyHiddenText, removeUrl, "remove-authorised-person", {
-                userEmail: association.userEmail,
+                associationId: association.id,
                 companyNumber: association.companyNumber
-            }, query_params) %}
+            }) %}
+
             {% set row = (row.push({html: removeLink}), row) %}
         {% endif %}
 
@@ -222,9 +223,9 @@
             {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
 
             {% set remove_not_restore = link(lang.remove_not_restore, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-digital-authorisation", {
-                userEmail: association.userEmail,
+                associationId: association.id,
                 companyNumber: association.companyNumber
-            }, query_params) %}
+            }) %}
             {% set row = (row.push({html: remove_not_restore}), row) %}
 
         {% endif %}

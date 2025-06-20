@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { RemoveAuthorisedPersonHandler, RemoveAuthorisedPersonViewData } from "../handlers/yourCompanies/removeAuthorisedPersonHandler";
 import * as constants from "../../constants";
 import { deleteExtraData } from "../../lib/utils/sessionUtils";
-import { getFullUrl } from "../../lib/utils/urlUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
@@ -14,11 +13,11 @@ import logger, { createLogMessage } from "../../lib/Logger";
  */
 export const removeAuthorisedPersonControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveAuthorisedPersonHandler();
-    const viewData: RemoveAuthorisedPersonViewData = await handler.execute(req, constants.GET);
+    const viewData: RemoveAuthorisedPersonViewData = await handler.execute(req);
 
     cleanUpSessionData(req);
     logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerGet.name, "Rendering remove authorised person page"));
-    res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
+    res.render(handler.getTemplateViewName(req), viewData as RemoveAuthorisedPersonViewData);
 };
 
 /**
@@ -31,15 +30,8 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
  */
 export const removeAuthorisedPersonControllerPost = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveAuthorisedPersonHandler();
-    const viewData: RemoveAuthorisedPersonViewData = await handler.execute(req, constants.POST);
+    await handler.handlePostRequest(req, res);
 
-    if (hasErrors(viewData)) {
-        logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerPost.name, "Rendering remove authorised person page with errors"));
-        res.render(constants.REMOVE_AUTHORISED_PERSON_PAGE, { ...viewData });
-    } else {
-        logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerPost.name, "Redirecting to remove association URL"));
-        res.redirect(buildRedirectUrl(viewData.companyNumber));
-    }
 };
 
 /**
@@ -50,24 +42,4 @@ export const removeAuthorisedPersonControllerPost = async (req: Request, res: Re
 const cleanUpSessionData = (req: Request): void => {
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
-};
-
-/**
- * Checks if the view data contains errors.
- *
- * @param viewData - The data returned by the handler.
- * @returns True if errors exist, otherwise false.
- */
-const hasErrors = (viewData: RemoveAuthorisedPersonViewData): boolean => {
-    return !!viewData.errors && typeof viewData.errors === "object" && Object.keys(viewData.errors).length > 0;
-};
-
-/**
- * Builds the redirect URL by replacing the company number placeholder.
- *
- * @param companyNumber - The company number to include in the URL.
- * @returns The fully constructed redirect URL.
- */
-const buildRedirectUrl = (companyNumber: string): string => {
-    return getFullUrl(constants.REMOVE_ASSOCIATION_URL).replace(`:${constants.COMPANY_NUMBER}`, companyNumber);
 };

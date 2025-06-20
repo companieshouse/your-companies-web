@@ -1,10 +1,18 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
-import { Removal } from "../../../types/removal";
+import { deleteExtraData, getExtraData, getLoggedInUserId, setExtraData } from "../../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
+import { Session } from "@companieshouse/node-session-handler";
+import {
+    Association,
+    AssociationStatus
+} from "private-api-sdk-node/dist/services/associations/types";
+
+import { getFullUrl, getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
+import { getAssociationById, removeUserFromCompanyAssociations } from "../../../services/associationsService";
+import logger, { createLogMessage } from "../../../lib/Logger";
 
 /**
  * Interface representing the view data for the Remove Authorised Person page.
@@ -45,20 +53,12 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
      * @param method - The HTTP method (e.g., GET, POST).
      * @returns A promise resolving to the view data for the page.
      */
-    async execute (req: Request, method: string): Promise<RemoveAuthorisedPersonViewData> {
+    async execute (req: Request): Promise<RemoveAuthorisedPersonViewData> {
         deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
-        this.populateViewData(req);
 
-        const error = getExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
-        if (error) {
-            this.viewData.errors = error;
-        }
-
-        if (method === constants.POST) {
-            this.handlePostRequest(req);
-        }
-
+        await this.populateViewData(req);
         return Promise.resolve(this.viewData);
+
     }
 
     /**
@@ -66,39 +66,130 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
      *
      * @param req - The HTTP request object.
      */
-    private populateViewData (req: Request): void {
+    private async populateViewData (req: Request): Promise<void> {
+
+        const associationId = req.params[constants.ASSOCIATIONS_ID];
+
+        const association = await getAssociationById(req, associationId);
+        if (association.companyNumber !== req.params[constants.COMPANY_NUMBER]) {
+            throw new Error("Company number in association does not match the company number in the url");
+        }
+
+        console.log("association to be removed is ", association);
+
+        setExtraData(req.session, this.getSessionKey(req), association);
+
+        const error = getExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
+        if (error) {
+            this.viewData.errors = error;
+        }
+        this.viewData.companyNumber = association.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
-        this.viewData.companyNumber = req.params[constants.COMPANY_NUMBER];
-        this.viewData.cancelLinkHref = getExtraData(req.session, constants.REFERER_URL);
-        this.viewData.backLinkHref = getExtraData(req.session, constants.REFERER_URL);
-        this.viewData.companyName = getExtraData(req.session, constants.COMPANY_NAME);
-        this.viewData.userEmail = req.params[constants.USER_EMAIL];
-        this.viewData.userName = req.query[constants.USER_NAME] as string;
+        this.viewData.cancelLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, this.viewData.companyNumber);
+        this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, this.viewData.companyNumber);
+        this.viewData.companyName = association.companyName;
+        this.viewData.userName = this.getNameOrEmail(association.displayName, association.userEmail);
     }
 
-    /**
-     * Handles the logic for POST requests.
-     *
-     * @param req - The HTTP request object.
-     */
-    private handlePostRequest (req: Request): void {
-        const payload = { ...req.body };
+    public async handlePostRequest (req: Request, res: Response): Promise<void> {
 
-        if (!payload.confirmRemoval) {
-            this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
-            setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);
+        console.log("%555555  555   555  important");
+        console.log(req.body);
+        if (!req.body.confirmRemoval) {
+            return await this.handleUnconfirmedRemoval(req, res);
+        }
+
+        // cancellation.cancelPerson === constants.YES
+
+        const associationToBeRemoved = this.getAndValidateAssociation(req);
+        await this.processAssociationRemoval(req, res, associationToBeRemoved);
+
+    }
+
+    private async handleUnconfirmedRemoval (req: Request, res: Response): Promise<void> {
+        await this.populateViewData(req);
+        this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
+        setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);
+        logger.info(createLogMessage(req.session, "handleUnconfirmedRemoval", "Rendering with validation errors"));
+
+        return res.render(this.getTemplateViewName(req), this.viewData);
+    }
+
+    private getAndValidateAssociation (req: Request): Association {
+        const association = getExtraData(req.session, this.getSessionKey(req));
+        if (!association) {
+            throw new Error("Association to be removed not found in session");
+        }
+        if (association.companyNumber !== req.params[constants.COMPANY_NUMBER]) {
+            throw new Error("Company number in association does not match the company number in the url");
+        }
+        return association;
+    }
+
+    private async processAssociationRemoval (req: Request, res: Response, association: Association): Promise<void> {
+        deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
+        this.viewData.errors = undefined;
+
+        logger.info(createLogMessage(req.session, "processAssociationRemoval",
+            `Removing association ${association.id}, ${association.companyNumber}`));
+
+        await removeUserFromCompanyAssociations(req, association.id);
+
+        if (this.hasRemovedThemselves(req.session as Session, association.userId)) {
+            await this.handleSelfRemoval(req, res, association);
         } else {
-            deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
-            this.viewData.errors = undefined;
+            await this.handleOtherUserRemoval(req, res, association);
+        }
+    }
 
-            const removal: Removal = {
-                removePerson: payload.confirmRemoval,
-                userEmail: req.params[constants.USER_EMAIL],
-                userName: req.query[constants.USER_NAME] ? req.query[constants.USER_NAME] as string : undefined,
-                companyNumber: getExtraData(req.session, constants.COMPANY_NUMBER)
-            };
+    private async handleSelfRemoval (req: Request, res: Response, association: Association): Promise<void> {
+        logger.info(createLogMessage(req.session, "handleSelfRemoval",
+            `Self-removal from ${association.companyNumber}`));
 
-            setExtraData(req.session, constants.REMOVE_PERSON, removal);
+        setExtraData(req.session, constants.REMOVED_THEMSELVES_FROM_COMPANY, {
+            companyName: association.companyName,
+            companyNumber: association.companyNumber
+        } as CompanyNameAndNumber);
+
+        res.redirect(getFullUrl(constants.REMOVED_THEMSELVES_URL));
+    }
+
+    private async handleOtherUserRemoval (req: Request, res: Response, association: Association): Promise<void> {
+        const removal = {
+            userEmail: association.userEmail,
+            userName: this.getNameOrEmail(association.displayName, association.userEmail),
+            companyNumber: req.params[constants.COMPANY_NUMBER]
+        };
+
+        setExtraData(req.session, constants.REMOVE_PERSON, removal);
+        logger.info(createLogMessage(req.session, "handleOtherUserRemoval",
+            `Association ${association.id} removed`));
+
+        const redirectUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL)
+            .replace(`:${constants.COMPANY_NUMBER}`, association.companyNumber);
+        res.redirect(redirectUrl);
+    }
+
+    private getSessionKey (req:Request): string {
+        return `associationForRemoval:id:${req.params[constants.ASSOCIATIONS_ID]}:companyNumber:${req.params[constants.COMPANY_NUMBER]}`;
+    }
+
+    private hasRemovedThemselves (session:Session, associationId: string): boolean {
+        return getLoggedInUserId(session) === associationId;
+    }
+
+    public getNameOrEmail (displayName: string | undefined, userEmail: string): string {
+        return (!displayName || displayName === constants.NOT_PROVIDED) ? userEmail : displayName;
+    }
+
+    public getTemplateViewName (req:Request):string {
+        const association:Association = getExtraData(req.session, this.getSessionKey(req));
+        if (association.status === AssociationStatus.MIGRATED) {
+            return "remove-do-not-restore";
+        } else if (association.status === AssociationStatus.CONFIRMED) {
+            return "remove-authorised-person";
+        } else {
+            throw Error("unexpected status");
         }
     }
 }
