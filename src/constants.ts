@@ -62,6 +62,7 @@ export const REMOVE_COMPANY_CONFIRMED = "confirmation-company-removed";
 export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 export const SERVICE_UNAVAILABLE = "service-unavailable";
+export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE = "send-email-invitation-to-be-digitally-authorised";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE = "remove-authorisation-do-not-restore";
 export const CONFIRMATION_AUTHORISATION_REMOVED_PAGE = "confirmation-authorisation-removed";
 
@@ -103,6 +104,10 @@ export const HEALTHCHECK_URL = "/healthcheck";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL = `/${REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/:${COMPANY_NUMBER}`;
 export const CONFIRMATION_AUTHORISATION_REMOVED_URL = `/${CONFIRMATION_AUTHORISATION_REMOVED_PAGE}`;
 export const CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL = `/restore-your-digital-authorisation/:${COMPANY_NUMBER}/${CONFIRM_COMPANY_PAGE}`;
+export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL = `/${SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE}`;
+export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL = `${SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/:${ASSOCIATIONS_ID}`;
+export const CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = "/confirmation-digital-authorisation-restored";
+export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL}`;
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";

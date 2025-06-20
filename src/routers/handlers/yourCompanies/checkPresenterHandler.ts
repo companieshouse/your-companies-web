@@ -6,7 +6,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
-import { AuthorisedPerson } from "types/associations";
+import { AuthorisedPerson } from "../../../types/associations";
 
 /**
  * Interface representing the view data for the Check Presenter page.

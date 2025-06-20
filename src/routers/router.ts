@@ -36,6 +36,11 @@ import { removeCompanyControllerGet, removeCompanyControllerPost } from "./contr
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
 import { removeCompanyNavigation } from "../middleware/navigation/removeCompany.middleware";
 import { confirmationCompanyRemovedNavigation } from "../middleware/navigation/confirmationCompanyRemoved.middleware";
+import {
+    sendEmailToBeDigitallyAuthorisedControllerGet,
+    sendEmailToBeDigitallyAuthorisedControllerPost
+} from "./controllers/sendEmailToBeDigitallyAuthorisedController";
+import { sendEmailToBeDigitallyAuthorisedNavigation } from "../middleware/navigation/sendEmailToBeDigitallyAuthorised.middleware";
 import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotRestoreControllerPost } from "./controllers/removeAuthorisationDoNotRestoreController";
 import { confirmationAuthorisationRemovedControllerGet } from "./controllers/confirmationAuthorisationRemovedController";
 import { removeAuthorisationDoNotRestoreNavigation } from "../middleware/navigation/removeAuthorisationDoNotRestore.middleware";
@@ -57,6 +62,7 @@ router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL, ma
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 
 // Add Company
 router.route(constants.ADD_COMPANY_URL)
@@ -117,6 +123,11 @@ router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedNavigatio
 
 // Something Went Wrong
 router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
+
+// Send Email To Be Digitally Authorised
+router.route(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL)
+    .get(sendEmailToBeDigitallyAuthorisedNavigation, sendEmailToBeDigitallyAuthorisedControllerGet)
+    .post(sendEmailToBeDigitallyAuthorisedControllerPost);
 
 // Remove Authorisation Do Not Restore
 router.get(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreNavigation, removeAuthorisationDoNotRestoreControllerGet);
