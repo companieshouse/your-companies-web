@@ -41,6 +41,10 @@ import {
     sendEmailToBeDigitallyAuthorisedControllerPost
 } from "./controllers/sendEmailToBeDigitallyAuthorisedController";
 import { sendEmailToBeDigitallyAuthorisedNavigation } from "../middleware/navigation/sendEmailToBeDigitallyAuthorised.middleware";
+import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotRestoreControllerPost } from "./controllers/removeAuthorisationDoNotRestoreController";
+import { confirmationAuthorisationRemovedControllerGet } from "./controllers/confirmationAuthorisationRemovedController";
+import { removeAuthorisationDoNotRestoreNavigation } from "../middleware/navigation/removeAuthorisationDoNotRestore.middleware";
+import { confirmationAuthorisationRemovedNavigation } from "../middleware/navigation/confirmationAuthorisationRemoved.middleware";
 
 const router: Router = Router();
 
@@ -124,5 +128,12 @@ router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
 router.route(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL)
     .get(sendEmailToBeDigitallyAuthorisedNavigation, sendEmailToBeDigitallyAuthorisedControllerGet)
     .post(sendEmailToBeDigitallyAuthorisedControllerPost);
+
+// Remove Authorisation Do Not Restore
+router.get(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreNavigation, removeAuthorisationDoNotRestoreControllerGet);
+router.post(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreControllerPost);
+
+// Confirmation Authorisation Removed
+router.get(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL, confirmationAuthorisationRemovedNavigation, confirmationAuthorisationRemovedControllerGet);
 
 export default router;

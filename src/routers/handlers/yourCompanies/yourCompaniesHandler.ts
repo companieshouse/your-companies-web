@@ -38,6 +38,7 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     removeCompanyUrl: string;
     authorisationBannerRequestAuthenticationCodeUrl: string;
     restoreDigitalAuthUrl: string;
+    removeAuthorisationUrl;
 }
 
 /**
@@ -76,8 +77,9 @@ export class YourCompaniesHandler extends GenericHandler {
             associationData: [],
             viewAndManageUrl: "",
             removeCompanyUrl: "",
-            authorisationBannerRequestAuthenticationCodeUrl: constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL,
-            restoreDigitalAuthUrl: ""
+            restoreDigitalAuthUrl: "",
+            removeAuthorisationUrl: "",
+            authorisationBannerRequestAuthenticationCodeUrl: constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL
         };
     }
 
@@ -90,6 +92,9 @@ export class YourCompaniesHandler extends GenericHandler {
      */
     async execute (req: Request): Promise<YourCompaniesViewData> {
         logger.info(createLogMessage(req.session, `${YourCompaniesHandler.name}.${this.execute.name}`, `GET request to serve Your Companies landing page`));
+
+        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+        deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
 
         const search = req.query.search as string;
         const page = req.query.page as string;
@@ -188,6 +193,7 @@ export class YourCompaniesHandler extends GenericHandler {
             this.viewData.userHasCompanies = constants.TRUE;
             this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
             this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
+            this.viewData.removeAuthorisationUrl = getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
             this.viewData.restoreDigitalAuthUrl = getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL);
         }
     }

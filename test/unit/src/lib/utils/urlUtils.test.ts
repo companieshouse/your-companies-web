@@ -16,6 +16,7 @@ import {
     getManageAuthorisedPeopleConfirmationEmailResentUrl,
     getManageAuthorisedPeopleFullUrl,
     getPresenterAlreadyAddedUrl,
+    getRemoveAuthorisationDoNotRestoreUrl,
     getRemoveCompanyUrl,
     getSendEmailToBeDigitallyAuthorisedFullUrl,
     isReferrerIncludes,
@@ -190,6 +191,12 @@ describe("URL generation function", () => {
             `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/1234567890`,
             "1234567890",
             getSendEmailToBeDigitallyAuthorisedFullUrl
+        ],
+        [
+            "getRemoveAuthorisationDoNotRestoreUrl",
+            `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/abc123`,
+            "abc123",
+            getRemoveAuthorisationDoNotRestoreUrl
         ]
     ])("%s should generate URL: '%s'",
         (_functionName, expectedFullUrl, argument, testedFunction) => {

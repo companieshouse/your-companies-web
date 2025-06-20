@@ -225,3 +225,11 @@ export const getRemoveCompanyUrl = (companyNumber: string): string =>
  */
 export const getSendEmailToBeDigitallyAuthorisedFullUrl = (associationId: string): string =>
     getFullUrl(`${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/${associationId}`);
+
+/**
+ * Constructs the URL for removing a user's authorisation from a company.
+ * @param companyNumber - The company number.
+ * @returns The relative URL.
+ */
+export const getRemoveAuthorisationDoNotRestoreUrl = (companyNumber: string): string =>
+    `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/${companyNumber}`;
