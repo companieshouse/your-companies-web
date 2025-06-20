@@ -1,0 +1,72 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/default.njk" %}
+
+{% block back_link %}
+    {% include "partials/back_link.njk" %}
+{% endblock %}
+
+{% block main_content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+            <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+            <h1 class="govuk-heading-l">
+                {{ lang.page_header }}
+            </h1>
+
+            <p class="govuk-body">
+                {{lang.well_send_an_email_to}}
+                <span class="govuk-body govuk-!-font-weight-bold">{{userEmail}}</span>
+                {{lang.asking_if_they_want_to_be_digitally_authorised}}
+            </p>
+
+            <form method="post">
+                {% include "partials/csrf_token.njk" %}
+
+                {{ govukSummaryList({
+                        classes: 'govuk-!-margin-bottom-9',
+                        rows: [
+                            {
+                                key: {
+                                    classes: "govuk-!-margin-top-6",
+                                    text: lang.name
+                                },
+                                value: {
+                                    text: userDisplayName
+                                }
+                            },
+                            {
+                                key: {
+                                    text: lang.email_address
+                                },
+                                value: {
+                                    html: userEmail
+                                }
+                            }
+                        ]
+                    })
+                }}
+
+                <div class="govuk-button-group">
+
+                    {% set button_attributes = {
+                        role: "button",
+                        id: "send-email-button",
+                        "data-event-id": "send-email-button"
+                    } %}
+                    {{ govukButton({text: lang.send_email,
+                            type: "submit", 
+                            attributes: button_attributes
+                        })
+                    }}
+
+                    <a class="govuk-link" href="{{ cancelLinkHref }}" data-event-id="cancel-send-email" id="cancel-link">{{ lang.cancel }}</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

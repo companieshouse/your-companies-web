@@ -75,13 +75,13 @@
         {% set heading_text = lang.remove_person_header_start + removed_person_header %}
 
         {% set successHtml %}
-            <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
-            <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
-            <p class="govuk-body">
-                {{lang.you_may_wish_to}}
-                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
-                {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
-            </p>
+        <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
+        <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
+        <p class="govuk-body">
+            {{lang.you_may_wish_to}}
+            <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
+            {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
+        </p>
         {% endset%}
         <div class="govuk-grid-column-two-thirds">
             {{
@@ -100,7 +100,7 @@
         <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
         <p class="govuk-body">
             {{lang.authorised_person_success_msg1}}
-            {{authorisedPersonEmailAddress}}
+            <span class="govuk-body govuk-!-font-weight-bold">{{authorisedPersonEmailAddress}}</span>
             {{lang.authorised_person_success_msg2}}
             {{authorisedPersonCompanyName}}.
         </p>
@@ -172,9 +172,10 @@
         }), row) %}
 
         {% set query_params = {
-                userName: association.displayName
-            } if association.displayName and association.displayName !== "Not provided" else 
-                undefined %}
+            userName: association.displayName
+        }
+        if association.displayName and association.displayName !== "Not provided" else 
+            undefined %}
 
         {% if association.status === confirmed %}
             {% set tag = govukTag({text: lang.digitally_authorised, classes: "govuk-tag--green"}) %}
@@ -195,11 +196,13 @@
 
             {% set awaitingConfirmation %}
             <div class="govuk-!-padding-bottom-3">
-            <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
-            </div>  
+                <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
+            </div>
             {% endset %}
 
-            {% set row = (row.push({html: awaitingConfirmation + resendEmailLink}), row) %}
+            {% set row = (row.push({
+                html: awaitingConfirmation + resendEmailLink
+            }), row) %}
             {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
             {% set cancelLink = link(lang.cancel, cancelLinkVisuallyHiddenText, cancelUrl, "cancel-authorised-person", {userEmail: association.userEmail})%}
             {% set row = (row.push({html: cancelLink}), row) %}
@@ -210,15 +213,18 @@
 
             {% set migratedText %}
             <div class="govuk-!-padding-bottom-2">
-            <strong class="govuk-tag govuk-tag--red">{{lang.not_digitally_authorised }}</strong>
-            </div>  
+                <strong class="govuk-tag govuk-tag--red">{{lang.not_digitally_authorised }}</strong>
+            </div>
             {% endset %}
 
-            {% set visuallyHiddenRestoreText = lang.for +  association.userEmail %}
+            {% set visuallyHiddenRestoreText = lang.for + association.userEmail %}
+            {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
             {% set restore_link = link(lang.restore_digital_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation") %}
 
-            {% set row = (row.push({html: migratedText + restore_link}), row) %}
-            
+            {% set row = (row.push({
+                html: migratedText + restore_link
+            }), row) %}
+
             {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
 
             {% set remove_not_restore = link(lang.remove_not_restore, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-digital-authorisation", {
@@ -232,10 +238,9 @@
         {% set rows = (rows.push(row), rows) %}
     {% endfor %}
 
-
     <div class="govuk-grid-row govuk-!-padding-top-2">
         <div class="govuk-grid-column-full">
-            
+
             {{ govukTable({
                     caption: lang.details_of_authorised_people,
                     captionClasses: "govuk-table__caption--m",
@@ -264,8 +269,7 @@
         </div>
     </div>
 
-<script nonce={{ nonce | dump | safe }}>
-    trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
-</script>
+    <script nonce={{ nonce | dump | safe }}>
+        trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
+    </script>
 {% endblock %}
-
