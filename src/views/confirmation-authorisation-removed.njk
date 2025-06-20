@@ -1,0 +1,38 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.what_happens_now + lang.title_end %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% set authorisationRemovedBannerHtml %}
+                <h3 class="govuk-notification-banner__heading">
+                    {{lang.company_removed}}
+                </h3>
+                <p class="govuk-body">{{lang.you_have_confirmed}}{{companyName}}.</p>
+            {% endset %}
+
+            {{ govukNotificationBanner({
+                html: authorisationRemovedBannerHtml,
+                type: "success"
+            }) }}
+
+            <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+                {{ lang.what_happens_now }}
+            </h1>
+            <p class="govuk-body">{{lang.you_are_no_longer_able_to_file}}</p>
+            <p class="govuk-body">{{lang.weve_sent_an_email}}</p>
+
+            {{ govukButton({
+                    text: lang.go_to_your_companies,
+                    href: yourCompaniesHref
+                })
+            }}
+
+        </div>
+    </div>
+{% endblock %}

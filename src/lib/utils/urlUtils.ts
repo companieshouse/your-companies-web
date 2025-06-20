@@ -65,7 +65,8 @@ export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: str
         [constants.CONFIRMATION_CANCEL_PERSON_URL]: constants.CONFIRMATION_CANCEL_PERSON_URL,
         [constants.CONFIRMATION_PERSON_REMOVED_URL]: constants.CONFIRMATION_PERSON_REMOVED_URL,
         [constants.AUTHORISATION_EMAIL_RESENT_URL]: constants.AUTHORISATION_EMAIL_RESENT_URL,
-        [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL
+        [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL,
+        [constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL]: constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
     };
 
     for (const [key, value] of Object.entries(urlMappings)) {
@@ -234,3 +235,19 @@ export const getTryRestoringYourDigitalAuthorisationFullUrl = (companyNumber: st
  */
 export const getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
     getFullUrl(`/restore-your-digital-authorisation/${companyNumber}/${constants.CONFIRM_COMPANY_PAGE}`);
+
+/**
+ * Constructs the URL for sending email to be digitally authorised.
+ * @param associationId - The association ID.
+ * @returns The relative URL.
+ */
+export const getSendEmailToBeDigitallyAuthorisedFullUrl = (associationId: string): string =>
+    getFullUrl(`${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/${associationId}`);
+
+/**
+ * Constructs the URL for removing a user's authorisation from a company.
+ * @param companyNumber - The company number.
+ * @returns The relative URL.
+ */
+export const getRemoveAuthorisationDoNotRestoreUrl = (companyNumber: string): string =>
+    `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/${companyNumber}`;

@@ -80,7 +80,8 @@ export const isOrWasCompanyAssociatedWithUser = async (
     const statuses: AssociationStatus[] = [
         AssociationStatus.AWAITING_APPROVAL,
         AssociationStatus.CONFIRMED,
-        AssociationStatus.REMOVED
+        AssociationStatus.REMOVED,
+        AssociationStatus.MIGRATED
     ];
     const userAssociations: AssociationList = await getUserAssociations(req, statuses, companyNumber);
 
@@ -89,6 +90,7 @@ export const isOrWasCompanyAssociatedWithUser = async (
         const isOrWasAssociated: AssociationState = {
             [AssociationStatus.CONFIRMED]: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
             [AssociationStatus.AWAITING_APPROVAL]: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER,
+            [AssociationStatus.MIGRATED]: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER,
             [AssociationStatus.REMOVED]: AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER
         }[associationStatus];
 
