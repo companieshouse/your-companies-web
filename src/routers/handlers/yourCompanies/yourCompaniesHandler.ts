@@ -155,7 +155,8 @@ export class YourCompaniesHandler extends GenericHandler {
             constants.REMOVE_COMPANY_URL_EXTRA,
             constants.LAST_REMOVED_COMPANY_NAME,
             constants.LAST_REMOVED_COMPANY_NUMBER,
-            constants.YOU_MUST_SELECT_AN_OPTION
+            constants.YOU_MUST_SELECT_AN_OPTION,
+            constants.CONFIRMED_COMPANY_FOR_ASSOCIATION
         ];
 
         sessionKeys.forEach(key => deleteExtraData(req.session, key));

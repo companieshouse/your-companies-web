@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
-import { ConfirmCorrectCompanyHandler } from "../../../../../src/routers/handlers/yourCompanies/confirmCorrectCompanyHandler";
-import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "../../../../../src/routers/controllers/confirmCompanyController";
+import {
+    ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler
+} from "../../../../../src/routers/handlers/yourCompanies/confirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler";
+import {
+    confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet,
+    confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost
+} from "../../../../../src/routers/controllers/confirmCompanyDetailsForRestoringYourDigitalAuthorisationController";
 import * as constants from "../../../../../src/constants";
 import { mockRequest } from "../../../../mocks/request.mock";
 import { mockResponse } from "../../../../mocks/response.mock";
@@ -11,9 +16,9 @@ import { validActiveCompanyProfile } from "../../../../mocks/companyProfile.mock
 import { CompanyNameAndNumber } from "../../../../../src/types/utilTypes";
 
 const mockExecute = jest.fn();
-jest.mock("../../../../../src/routers/handlers/yourCompanies/confirmCorrectCompanyHandler", () => {
+jest.mock("../../../../../src/routers/handlers/yourCompanies/confirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler", () => {
     return {
-        ConfirmCorrectCompanyHandler: jest.fn().mockImplementation(() => {
+        ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler: jest.fn().mockImplementation(() => {
             return {
                 execute: mockExecute
             };
@@ -21,8 +26,10 @@ jest.mock("../../../../../src/routers/handlers/yourCompanies/confirmCorrectCompa
     };
 });
 
+const companyNumber = "12345678";
 const req: Request = mockRequest();
 req.session = new Session();
+req.params = { [constants.COMPANY_NUMBER]: companyNumber };
 const res: Response = mockResponse();
 const renderMock = jest.fn();
 res.render = renderMock;
@@ -30,9 +37,9 @@ const redirectMock = jest.fn();
 res.redirect = redirectMock;
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
-const getCreateCompanyAssociationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getCreateCompanyAssociationFullUrl");
+const getTryRestoringYourDigitalAuthorisationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getTryRestoringYourDigitalAuthorisationFullUrl");
 
-describe("confirmCompanyControllerGet", () => {
+describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -44,21 +51,18 @@ describe("confirmCompanyControllerGet", () => {
             key: "value"
         };
         mockExecute.mockReturnValue(expectedViewData);
-        getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
         // When
-        await confirmCompanyControllerGet(req as Request, res as Response);
+        await confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet(req as Request, res as Response);
         // Then
-        expect(ConfirmCorrectCompanyHandler).toHaveBeenCalledTimes(1);
-        expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-        expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.COMPANY_PROFILE);
+        expect(ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler).toHaveBeenCalledTimes(1);
         expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-        expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRM_COMPANY_DETAILS_INDICATOR, true);
+        expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR, true);
         expect(renderMock).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledWith(constants.CONFIRM_COMPANY_PAGE, expectedViewData);
     });
 });
 
-describe("confirmCompanyControllerPost", () => {
+describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -77,14 +81,16 @@ describe("confirmCompanyControllerPost", () => {
                 companyName: validActiveCompanyProfile.companyName
             };
             const expectedUrl = "/test/test-url";
-            getCreateCompanyAssociationFullUrlSpy.mockReturnValue(expectedUrl);
+            getTryRestoringYourDigitalAuthorisationFullUrlSpy.mockReturnValue(expectedUrl);
             // When
-            await confirmCompanyControllerPost(req as Request, res as Response);
+            await confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost(req as Request, res as Response);
             // Then
+            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
+            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.COMPANY_PROFILE}_${companyNumber}`);
             expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
-            expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
+            expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledTimes(1);
+            expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);
             expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
         });

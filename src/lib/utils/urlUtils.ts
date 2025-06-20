@@ -219,6 +219,24 @@ export const getRemoveCompanyUrl = (companyNumber: string): string =>
     `/${constants.REMOVE_COMPANY_PAGE}/${companyNumber}`;
 
 /**
+ * Constructs the full URL for attempting to restore digital authorisation for a given company.
+ *
+ * @param companyNumber - The unique identifier of the company.
+ * @returns The full URL as a string for restoring digital authorisation.
+ */
+export const getTryRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/company/${companyNumber}${constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`);
+
+/**
+ * Constructs the full URL for confirming that digital authorisation has been restored.
+ *
+ * @param companyNumber - The unique identifier of the company.
+ * @returns The full URL as a string for restoring digital authorisation.
+ */
+export const getConfirmCompanyDetailsForRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/restore-your-digital-authorisation/${companyNumber}/${constants.CONFIRM_COMPANY_PAGE}`);
+
+/**
  * Constructs the URL for sending email to be digitally authorised.
  * @param associationId - The association ID.
  * @returns The relative URL.

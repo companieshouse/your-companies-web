@@ -29,7 +29,7 @@ describe("createCompanyAssociationControllerGet", () => {
     it("should render company invitations page", async () => {
         // Given
         getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
-        const confirmedCompanyForAssocation: CompanyNameAndNumber = {
+        const confirmedCompanyForAssociation: CompanyNameAndNumber = {
             companyNumber: validActiveCompanyProfile.companyNumber,
             companyName: validActiveCompanyProfile.companyName
         };
@@ -41,7 +41,7 @@ describe("createCompanyAssociationControllerGet", () => {
         expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
         expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
         expect(createAssociationSpy).toHaveBeenCalledTimes(1);
-        expect(createAssociationSpy).toHaveBeenCalledWith(req, confirmedCompanyForAssocation.companyNumber);
+        expect(createAssociationSpy).toHaveBeenCalledWith(req, confirmedCompanyForAssociation.companyNumber);
         expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
         expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_ADDED_SUCCESS_URL);
         expect(redirectMock).toHaveBeenCalledTimes(1);
