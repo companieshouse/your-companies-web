@@ -7,6 +7,7 @@ import { getFullUrl } from "../lib/utils/urlUtils";
 interface RouteConfig {
     routePattern: string;
     allowedPages: string[];
+    allowedExternalUrls?: string[];
     defaultRedirect: string;
     sessionFlag?: string;
     paramGuards?: Array<{ paramName: string; sessionKey: string }>;
@@ -151,6 +152,26 @@ const routeConfig: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
     {
+        routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+        allowedPages: [
+            getFullUrl(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // itself
+            getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL) // page prior to it
+        ],
+        allowedExternalUrls: [
+            constants.ACCOUNT_URL
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+    {
+        routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+        allowedPages: [
+            getFullUrl(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL), // itself
+            getFullUrl(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // page prior to it
+            getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL) // page prior to it
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+    {
         routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
         allowedPages: [
             getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL), // itself
@@ -240,6 +261,11 @@ export const navigationMiddleware = (req: Request, res: Response, next: NextFunc
 
     // Entry points
     if (config.allowedPages.length === 0) {
+        return next();
+    }
+
+    // Check referer agains allowed external URLs
+    if (config.allowedExternalUrls?.some(externalUrl => referer?.startsWith(externalUrl))) {
         return next();
     }
 

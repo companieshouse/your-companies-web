@@ -175,6 +175,46 @@ describe("navigationMiddleware", () => {
             path: "/presenter-already-added/AB123456"
         },
         {
+            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
+            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+            path: "/company/AB123456/try-restoring-your-digital-authorisation"
+        },
+        {
+            referer: "https://accounturl.co",
+            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+            path: "/company/AB123456/try-restoring-your-digital-authorisation"
+        },
+        {
+            referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
+            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+            path: "/company/AB123456/try-restoring-your-digital-authorisation"
+        },
+        {
+            referer: "https://chc.local/your-companies/confirmation-your-digital-authorisation-restored",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/confirmation-your-digital-authorisation-restored"
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/confirmation-your-digital-authorisation-restored"
+        },
+        {
+            referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/confirmation-your-digital-authorisation-restored"
+        },
+        {
+            referer: "https://chc.local/your-companies/send-email-invitation-to-be-digitally-authorised/1234567890",
+            routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
+            path: "/send-email-invitation-to-be-digitally-authorised/1234567890"
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
+            path: "/send-email-invitation-to-be-digitally-authorised/1234567890"
+        },
+        {
             referer: "https://chc.local/your-companies/remove-authorisation-do-not-restore/AB123456",
             routePattern: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL,
             path: "/remove-authorisation-do-not-restore/AB123456"
@@ -284,6 +324,21 @@ describe("navigationMiddleware", () => {
         {
             routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
             path: "/presenter-already-added/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+            path: "/company/AB123456/try-restoring-your-digital-authorisation",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/confirmation-your-digital-authorisation-restored",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
+            path: "/send-email-invitation-to-be-digitally-authorised/1234567890",
             defaultRedirect: constants.LANDING_URL
         },
         {
