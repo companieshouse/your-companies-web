@@ -237,7 +237,7 @@ describe("navigationMiddleware", () => {
     ])("should call next() function if referer for route $routePattern is $referer",
         ({ referer, path }) => {
             // Given
-            req.baseUrl = `${constants.LANDING_URL}/${path}`;
+            req.path = `${constants.LANDING_URL}/${path}`;
             req.headers.referer = referer;
             // When
             navigationMiddleware(req, res, next);
@@ -354,7 +354,7 @@ describe("navigationMiddleware", () => {
     ])("should redirect to the default page if referer for route $routePattern is a wrong page",
         ({ path, defaultRedirect }) => {
             // Given
-            req.baseUrl = `${constants.LANDING_URL}/${path}`;
+            req.path = `${constants.LANDING_URL}/${path}`;
             req.headers.referer = "https://chc.local/your-companies/some-other-page";
             // When
             navigationMiddleware(req, res, next);

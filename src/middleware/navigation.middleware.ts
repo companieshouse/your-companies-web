@@ -230,13 +230,13 @@ const findConfigForPath = (path: string): RouteConfig | undefined => {
 };
 
 export const navigationMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-    const config = findConfigForPath(req.baseUrl.substring(constants.LANDING_URL.length));
+    const config = findConfigForPath(req.path.substring(constants.LANDING_URL.length));
 
     if (!config) return next();
 
     const currentPath = req.baseUrl + req.path;
     const referer = req.headers.referer as string | undefined;
-    const refererPath = referer ? url.parse(referer, true).path || "" : "";
+    const refererPath = referer ? url.parse(referer, true).pathname || "" : "";
 
     // Allow reloads/language switches (referer is self)
     if (refererPath === currentPath) {
