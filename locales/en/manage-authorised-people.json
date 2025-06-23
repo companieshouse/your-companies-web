@@ -43,5 +43,10 @@
     "weve_sent_an_email_to_the_company": "We’ve sent an email to the company’s registered email address and to any other people who are authorised to let them know.",
     "you_have_successfully_cancelled_digital_authorisation_end": " to file online for ",
     "you_have_successfully_cancelled_digital_authorisation_start": "You have successfully cancelled digital authorisation for ",
-    "you_may_wish_to": "You may wish to "
+    "you_may_wish_to": "You may wish to ",
+    "digital_authorisation_not_restored": "Digital authorisation not restored",
+    "you_have_confirmed_you_do_not":"You have confirmed you do not want to restore ",
+    "digital_authorisation_to_file": "'s digital authorisation to file online for ",
+    "weve_emailed":"We've emailed ",
+    "to_let_them_know":" to let them know. We've also sent an email to any other people who are digitally authorised."
 }

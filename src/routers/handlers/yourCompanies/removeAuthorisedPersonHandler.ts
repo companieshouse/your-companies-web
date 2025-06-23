@@ -21,6 +21,7 @@ export interface RemoveAuthorisedPersonViewData extends ViewDataWithBackLink, Co
     userEmail: string;
     userName: string;
     cancelLinkHref: string;
+    currentStatus: string;
 }
 
 /**
@@ -42,7 +43,8 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             companyNumber: "",
             userEmail: "",
             userName: "",
-            cancelLinkHref: ""
+            cancelLinkHref: "",
+            currentStatus: ""
         };
     }
 
@@ -83,36 +85,46 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         if (error) {
             this.viewData.errors = error;
         }
+        this.viewData.currentStatus = association.status;
         this.viewData.companyNumber = association.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         this.viewData.cancelLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, this.viewData.companyNumber);
         this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, this.viewData.companyNumber);
         this.viewData.companyName = association.companyName;
         this.viewData.userName = this.getNameOrEmail(association.displayName, association.userEmail);
+        this.viewData.userEmail = association.userEmail;
+        this.viewData.templateName = this.getTemplateViewName();
     }
 
     public async handlePostRequest (req: Request, res: Response): Promise<void> {
 
-        console.log("%555555  555   555  important");
         console.log(req.body);
-        if (!req.body.confirmRemoval) {
+        if (req.body.confirmRemoval === "confirm") {
+            const associationToBeRemoved = this.getAndValidateAssociation(req);
+            await this.processAssociationRemoval(req, res, associationToBeRemoved);
+        } else if (req.body.confirmRemoval === "no") {
+            res.redirect(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL)
+                .replace(`:${constants.COMPANY_NUMBER}`, req.params[constants.COMPANY_NUMBER]));
+            deleteExtraData(req.session, this.getSessionKey(req));
+            logger.info(createLogMessage(req.session, "handlePostRequest", "User chose not to confirm removal"));
+        } else {
             return await this.handleUnconfirmedRemoval(req, res);
         }
-
-        // cancellation.cancelPerson === constants.YES
-
-        const associationToBeRemoved = this.getAndValidateAssociation(req);
-        await this.processAssociationRemoval(req, res, associationToBeRemoved);
-
     }
 
     private async handleUnconfirmedRemoval (req: Request, res: Response): Promise<void> {
         await this.populateViewData(req);
-        this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
-        setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);
+        if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
+            this.viewData.errors = { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } };
+            setExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION, this.viewData.errors);
+        } else {
+            this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
+            setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);
+        }
+
         logger.info(createLogMessage(req.session, "handleUnconfirmedRemoval", "Rendering with validation errors"));
 
-        return res.render(this.getTemplateViewName(req), this.viewData);
+        return res.render(this.getTemplateViewName(), this.viewData);
     }
 
     private getAndValidateAssociation (req: Request): Association {
@@ -158,7 +170,8 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         const removal = {
             userEmail: association.userEmail,
             userName: this.getNameOrEmail(association.displayName, association.userEmail),
-            companyNumber: req.params[constants.COMPANY_NUMBER]
+            companyNumber: req.params[constants.COMPANY_NUMBER],
+            status: association.status
         };
 
         setExtraData(req.session, constants.REMOVE_PERSON, removal);
@@ -182,12 +195,14 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         return (!displayName || displayName === constants.NOT_PROVIDED) ? userEmail : displayName;
     }
 
-    public getTemplateViewName (req:Request):string {
-        const association:Association = getExtraData(req.session, this.getSessionKey(req));
-        if (association.status === AssociationStatus.MIGRATED) {
+    public getTemplateViewName ():string {
+        // const association:Association = getExtraData(req.session, this.getSessionKey(req));
+        if (this.viewData.currentStatus === AssociationStatus.MIGRATED) {
             return "remove-do-not-restore";
-        } else if (association.status === AssociationStatus.CONFIRMED) {
+        } else if (this.viewData.currentStatus === AssociationStatus.CONFIRMED) {
             return "remove-authorised-person";
+        } else if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
+            return "cancel-person";
         } else {
             throw Error("unexpected status");
         }
