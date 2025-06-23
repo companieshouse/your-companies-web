@@ -95,7 +95,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use(navigationMiddleware);
+app.use(`${constants.LANDING_URL}*`, navigationMiddleware);
 
 // Channel all requests through router dispatch
 routerDispatch(app);

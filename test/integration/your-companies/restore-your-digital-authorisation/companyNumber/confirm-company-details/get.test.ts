@@ -36,6 +36,7 @@ describe("GET /your-companies/restore-your-digital-authorisation/:companyNumber/
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockNavigationMiddleware).toHaveBeenCalled();
     });
 
     test.each([
