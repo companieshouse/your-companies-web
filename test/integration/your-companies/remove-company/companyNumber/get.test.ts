@@ -8,7 +8,6 @@ import en from "../../../../../locales/en/remove-company.json";
 import cy from "../../../../../locales/cy/remove-company.json";
 import enCommon from "../../../../../locales/en/common.json";
 import cyCommon from "../../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../../src/lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../../../src/services/companyProfileService";
 
@@ -38,8 +37,6 @@ jest.mock("../../../../../src/services/associationsService", () => ({
     removeUserFromCompanyAssociations: jest.fn()
 }));
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/remove-company/:companyNumber", () => {
 
     beforeEach(() => {
@@ -55,7 +52,6 @@ describe("GET /your-companies/remove-company/:companyNumber", () => {
             companyName: companyName,
             companyNumber: companyNumber
         });
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the remove company page", async () => {

@@ -6,7 +6,6 @@ import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../../../src/constants";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
 import { Request, Response } from "express";
@@ -31,7 +30,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     const url = `/your-companies/manage-authorised-people/${companyNumber}/authorisation-email-resent`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
     const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
     const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
     const resentSuccessEmail = "bob@bob.com";
@@ -40,7 +38,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379/authorisation-email-resent page", async () => {

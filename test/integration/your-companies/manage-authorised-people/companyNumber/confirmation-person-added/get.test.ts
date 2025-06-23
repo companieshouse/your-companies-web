@@ -5,7 +5,6 @@ import * as associationsService from "../../../../../../src/services/association
 import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../../../../src/types/associations";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../../../src/constants";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
@@ -26,8 +25,6 @@ jest.mock("../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-person-added", () => {
     const companyNumber = "NI038379";
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-added`;
@@ -43,7 +40,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     beforeEach(() => {
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-        redirectPageSpy.mockReturnValue(false);
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
     });
 

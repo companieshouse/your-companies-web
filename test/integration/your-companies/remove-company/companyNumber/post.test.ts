@@ -8,7 +8,6 @@ import en from "../../../../../locales/en/remove-company.json";
 import cy from "../../../../../locales/cy/remove-company.json";
 import enCommon from "../../../../../locales/en/common.json";
 import cyCommon from "../../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../../src/lib/utils/sessionUtils";
 import * as associationsService from "../../../../../src/services/associationsService";
 import { getFullUrl } from "../../../../../src/lib/utils/urlUtils";
@@ -39,8 +38,6 @@ jest.mock("../../../../../src/services/associationsService", () => ({
     removeUserFromCompanyAssociations: jest.fn()
 }));
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("POST /your-companies/remove-company/:companyNumber", () => {
 
     beforeEach(() => {
@@ -51,7 +48,6 @@ describe("POST /your-companies/remove-company/:companyNumber", () => {
         (getExtraData as jest.Mock).mockImplementation((session, key) => session.data[key]);
         setExtraData(session, constants.COMPANY_NAME, companyName);
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     test.each([

@@ -4,7 +4,6 @@ import app from "../../../../../../src/app";
 import * as associationsService from "../../../../../../src/services/associationsService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
 import enCommon from "../../../../../../locales/en/common.json";
@@ -31,7 +30,6 @@ jest.mock("../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
 const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
 const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
@@ -45,7 +43,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     beforeEach(() => {
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {

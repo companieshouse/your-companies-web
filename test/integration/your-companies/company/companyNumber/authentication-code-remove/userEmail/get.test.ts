@@ -8,7 +8,6 @@ import en from "../../../../../../../locales/en/remove-authorised-person.json";
 import cy from "../../../../../../../locales/cy/remove-authorised-person.json";
 import enCommon from "../../../../../../../locales/en/common.json";
 import cyCommon from "../../../../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../../../../src/lib/utils/referrerUtils";
 import { setExtraData } from "../../../../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
@@ -32,8 +31,6 @@ jest.mock("../../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/company/:companyNumber/authentication-code-remove/:userEmail", () => {
     const userEmail = "test@test.com";
     const companyNumber = "123456";
@@ -44,7 +41,6 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
 
     beforeEach(() => {
         jest.clearAllMocks;
-        redirectPageSpy.mockReturnValue(false);
     });
 
     test.each([
