@@ -6,7 +6,7 @@ import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import * as associationsService from "../../../../../../src/services/associationsService";
 import { userAssociationWithMrigratedCompanyStatus } from "../../../../../mocks/associations.mock";
 import { CompanyNameAndNumber } from "../../../../../../src/types/utilTypes";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 const url = "/your-companies/company/12345678/try-restoring-your-digital-authorisation";
@@ -17,7 +17,6 @@ jest.mock("../../../../../../src/services/associationsService");
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const getUserAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getUserAssociations");
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 
 describe("GET /your-companies/company/12345678/try-restoring-your-digital-authorisation", () => {
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
@@ -29,7 +28,6 @@ describe("GET /your-companies/company/12345678/try-restoring-your-digital-author
         getExtraDataSpy.mockReturnValue(confirmedCompanyForAssociation);
         getUserAssociationsSpy.mockReturnValue(userAssociationWithMrigratedCompanyStatus);
         const urlPath = `${constants.LANDING_URL}${(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL)}`;
-        redirectPageSpy.mockReturnValue(false);
         // When
         const response = await router.get(url);
         // Then
@@ -40,13 +38,16 @@ describe("GET /your-companies/company/12345678/try-restoring-your-digital-author
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 
-    it("should return status 302 and redirect to the landing page if the URL accessed directly or from the wrong referer", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-        expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 });

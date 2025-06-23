@@ -117,6 +117,5 @@ describe("GET /your-companies/add-presenter/companyNumber", () => {
         // Then
         expect(response.status).toEqual(302);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
-
     });
 });

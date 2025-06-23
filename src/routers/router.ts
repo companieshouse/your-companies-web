@@ -16,11 +16,8 @@ import { removeAuthorisedPersonControllerGet, removeAuthorisedPersonControllerPo
 import { companyInvitationsDeclineControllerGet } from "./controllers/companyInvitationsDeclineController";
 import { healthCheckController } from "./controllers/healthCheckController";
 import { presenterAlreadyAddedControllerGet } from "./controllers/presenterAlreadyAddedController";
-import { cancelPersonNavigation } from "../middleware/navigation/cancelPerson.middleware";
-import { companyInvitationsAcceptNavigation } from "../middleware/navigation/companyInvitationsAccept.middleware";
 import { removeAuthorisedPersonRequestController } from "./controllers/removeAuthorisedPersonRequestController";
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
-import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
@@ -30,21 +27,14 @@ import {
     confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet,
     confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost
 } from "./controllers/confirmCompanyDetailsForRestoringYourDigitalAuthorisationController";
-import {
-    confirmCompanyDetailsForRestoringYourDigitalAuthorisationNavigation
-} from "../middleware/navigation/confirmCompanyDetailsForRestoringYourDigitalAuthorisation.middleware";
 import { tryRestoringYourDigitalAuthorisationControllerGet } from "./controllers/tryRestoringYourDigitalAuthorisationController";
-import { tryRestoringYourDigitalAuthorisationNavigation } from "../middleware/navigation/tryRestoringYourDigitalAuthorisation.middleware";
 import { confirmationYourDigitalAuthorisationRestoredControllerGet } from "./controllers/confirmationYourDigitalAuthorisationRestoredController";
-import { confirmationYourDigitalAuthorisationRestoredNavigation } from "../middleware/navigation/confirmationYourDigitalAuthorisationRestored.middleware";
 import {
     sendEmailToBeDigitallyAuthorisedControllerGet,
     sendEmailToBeDigitallyAuthorisedControllerPost
 } from "./controllers/sendEmailToBeDigitallyAuthorisedController";
 import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotRestoreControllerPost } from "./controllers/removeAuthorisationDoNotRestoreController";
 import { confirmationAuthorisationRemovedControllerGet } from "./controllers/confirmationAuthorisationRemovedController";
-import { removeAuthorisationDoNotRestoreNavigation } from "../middleware/navigation/removeAuthorisationDoNotRestore.middleware";
-import { confirmationAuthorisationRemovedNavigation } from "../middleware/navigation/confirmationAuthorisationRemoved.middleware";
 
 const router: Router = Router();
 
@@ -86,7 +76,7 @@ router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, removeCompanyConfirmedControl
 
 // Cancel Person
 router.route(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL)
-    .get(companyAuthenticationMiddleware, cancelPersonNavigation, cancelPersonControllerGet as RequestHandler)
+    .get(companyAuthenticationMiddleware, cancelPersonControllerGet as RequestHandler)
     .post(companyAuthenticationMiddleware, cancelPersonControllerPost as RequestHandler);
 
 // Confirm Company
@@ -116,24 +106,24 @@ router.get(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL, resendEmailContr
 // Company Invitations
 router.get(constants.COMPANY_INVITATIONS_URL, companyInvitationsControllerGet as RequestHandler);
 router.get(constants.COMPANY_INVITATIONS_DECLINE_URL, companyInvitationsDeclineControllerGet as RequestHandler);
-router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptNavigation, companyInvitationsAcceptControllerGet as RequestHandler);
+router.get(constants.COMPANY_INVITATIONS_ACCEPT_URL, companyInvitationsAcceptControllerGet as RequestHandler);
 
 // Presenter Already Added
-router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedNavigation, presenterAlreadyAddedControllerGet);
+router.get(constants.PRESENTER_ALREADY_ADDED_URL, presenterAlreadyAddedControllerGet);
 
 // Something Went Wrong
 router.get(constants.SOMETHING_WENT_WRONG_URL, somethingWentWrongControllerGet);
 
 // Confirm Company Details For Restoring Your Digital Authorisation
 router.route(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL)
-    .get(confirmCompanyDetailsForRestoringYourDigitalAuthorisationNavigation, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet)
+    .get(confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet)
     .post(confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost);
 
 // Try Restoring Your Digital Authorisation
-router.get(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, companyAuthenticationMiddleware, tryRestoringYourDigitalAuthorisationNavigation, tryRestoringYourDigitalAuthorisationControllerGet);
+router.get(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, companyAuthenticationMiddleware, tryRestoringYourDigitalAuthorisationControllerGet);
 
 // Restore Your Digital Authorication Success
-router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, confirmationYourDigitalAuthorisationRestoredNavigation, confirmationYourDigitalAuthorisationRestoredControllerGet);
+router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, confirmationYourDigitalAuthorisationRestoredControllerGet);
 
 // Send Email To Be Digitally Authorised
 router.route(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL)
@@ -141,10 +131,10 @@ router.route(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL)
     .post(sendEmailToBeDigitallyAuthorisedControllerPost);
 
 // Remove Authorisation Do Not Restore
-router.get(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreNavigation, removeAuthorisationDoNotRestoreControllerGet);
+router.get(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreControllerGet);
 router.post(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisationDoNotRestoreControllerPost);
 
 // Confirmation Authorisation Removed
-router.get(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL, confirmationAuthorisationRemovedNavigation, confirmationAuthorisationRemovedControllerGet);
+router.get(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL, confirmationAuthorisationRemovedControllerGet);
 
 export default router;
