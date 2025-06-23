@@ -230,7 +230,7 @@ const findConfigForPath = (path: string): RouteConfig | undefined => {
 };
 
 export const navigationMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-    const config = findConfigForPath(req.path);
+    const config = findConfigForPath(req.baseUrl.substring(constants.LANDING_URL.length));
 
     if (!config) return next();
 
