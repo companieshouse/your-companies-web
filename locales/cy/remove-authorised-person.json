@@ -14,5 +14,17 @@
     "to_let_them_know_you_have_removed": " i roi gwybod iddynt eich bod wedi dileu ei awdurdodiad digidol.",
     "will_still_be_able_to_file": " yn dal i allu ffeilio ar-lein ar gyfer y cwmni hwn os oes ganddynt fynediad at y cod dilysu cyfredol.",
     "without_a_current_auth_code": " heb god dilysu cyfredol. Byddwn yn anfon e-bost at ",
-    "you_may_wish_to_change_the_auth_code": "Efallai yr hoffech newid y cod dilysu ar gyfer y cwmni hwn cyn gynted â phosibl ar ôl i chi ddileu awdurdodiad digidol "
+    "you_may_wish_to_change_the_auth_code": "Efallai yr hoffech newid y cod dilysu ar gyfer y cwmni hwn cyn gynted â phosibl ar ôl i chi ddileu awdurdodiad digidol ",
+    "confirm_you_do_not_want":"[CY] Confirm you do not want to restore digital authorisation for ",
+    "for": "[CY] for ",
+    "this_means_that":"[CY] This means that ",
+    "will_not_be_digitially_authorised":"[CY]  will not be digitially authorised to file online for ",
+    "well_email":"[CY] . We'll email ",
+    "to_let_them_know":"[CY]  to let them know they are not digitally authorised. We'll also email any other people who are authorised to let them know.",
+    "is_appointed_as_an_officer_v2":"[CY]  is appointed as an officer of the company (such as a director or secretary), this does not remove their appointment.",
+    "confirm":"[CY] Confirm",
+    "are_you_sure_you_want_to_cancel_start": "Ydych chi’n siŵr eich bod am ganslo awdurdodiad ar gyfer ",
+    "link_to_cancel_the_authorisation_cancellation_process": "[CY] Cancel and return to people digitally authorised to file online for this company",
+    "select_yes_if_you_want_to_cancel_authorisation": "Dewiswch ‘Ydw’ os ydych chi am ganslo’r awdurdodiad",
+    "title_cancel_person": "Ydych chi'n siŵr eich bod am ganslo’r awdurdodiad? - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
 }

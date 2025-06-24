@@ -46,8 +46,7 @@
 {% block main_content %}
 
     {% if cancelledPerson %}
-
-        {% set successHtml %}
+        {% set removeSuccessHtml %}
         <h3 class="govuk-notification-banner__heading">{{lang.digital_authorisation_cancelled}}</h3>
         <p class="govuk-body">
             {{lang.you_have_successfully_cancelled_digital_authorisation_start}}
@@ -57,22 +56,13 @@
         </p>
         <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
         {% endset %}
-        <div class="govuk-grid-column-two-thirds">
-            {{
-                govukNotificationBanner({
-                    html: successHtml,
-                    type: "success",
-                    titleText: lang.success
-                })
-            }}
-        </div>
     {% endif %}
 
     {% if removedPerson %}
         {% set removed_person_header = removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName + "."%}
         {% set heading_text = lang.remove_person_header_start + removed_person_header %}
 
-        {% set successHtml %}
+        {% set removeSuccessHtml %}
             <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
             <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
             <p class="govuk-body">
@@ -81,37 +71,30 @@
                 {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
             </p>
         {% endset%}
-        <div class="govuk-grid-column-two-thirds">
-            {{
-                govukNotificationBanner({
-                    html: successHtml,
-                    type: "success",
-                    titleText: lang.success
-                })
-            }}
-        </div>
-
     {% endif %}
 
     {% if notRestoredPerson %}
-        {% set successHtml %}
+        {% set removeSuccessHtml %}
             <h3 class="govuk-notification-banner__heading">{{lang.digital_authorisation_not_restored}}</h3>
             <p class="govuk-body">{{lang.you_have_confirmed_you_do_not}}{{notRestoredPerson}}{{lang.digital_authorisation_to_file}}{{company_association.companyName}}</p>
             <p class="govuk-body">
-               {{lang.weve_emailed}}{{removedPerson}}{{lang.to_let_them_know}}
+               {{lang.weve_emailed}}{{notRestoredPerson}}{{lang.to_let_them_know}}
             </p>
         {% endset%}
+    {% endif %}
+
+    {% if removeSuccessHtml %}
         <div class="govuk-grid-column-two-thirds">
             {{
                 govukNotificationBanner({
-                    html: successHtml,
+                    html: removeSuccessHtml,
                     type: "success",
                     titleText: lang.success
                 })
             }}
         </div>
-
     {% endif %}
+
 
     {% if authorisedPersonSuccess %}
         {% set successHtml %}

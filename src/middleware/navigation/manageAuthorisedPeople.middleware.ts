@@ -21,14 +21,12 @@ import {
 export const manageAuthorisedPeopleNavigation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const referrer = req.get("Referrer");
     const companyNumber = req.params[constants.COMPANY_NUMBER];
-    const cancelPageUrl = getExtraData(req.session, constants.CANCEL_URL_EXTRA);
     const removePageUrl = getExtraData(req.session, constants.REMOVE_URL_EXTRA);
     const manageAuthUrl = getManageAuthorisedPeopleUrl(companyNumber);
 
     const allowedEmailResentUrls = [
         getAuthorisedPersonAddedFullUrl(companyNumber),
-        constants.CONFIRMATION_PERSON_REMOVED_URL,
-        constants.CONFIRMATION_CANCEL_PERSON_URL
+        constants.CONFIRMATION_PERSON_REMOVED_URL
     ];
 
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
@@ -40,9 +38,6 @@ export const manageAuthorisedPeopleNavigation = async (req: Request, res: Respon
         res.redirect(constants.LANDING_URL);
     } else if (shouldRedirectToLanding(req.originalUrl, constants.CONFIRMATION_PERSON_REMOVED_URL, referrer, removePageUrl, constants.CONFIRMATION_PERSON_REMOVED_URL, pageIndicator)) {
         deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
-        res.redirect(constants.LANDING_URL);
-    } else if (shouldRedirectToLanding(req.originalUrl, constants.CONFIRMATION_CANCEL_PERSON_URL, referrer, cancelPageUrl, constants.CONFIRMATION_CANCEL_PERSON_URL, pageIndicator)) {
-        deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
         res.redirect(constants.LANDING_URL);
     } else if (shouldRedirectToLanding(req.originalUrl, constants.AUTHORISATION_EMAIL_RESENT_URL, referrer, manageAuthUrl, getManageAuthorisedPeopleConfirmationEmailResentUrl(companyNumber), pageIndicator, allowedEmailResentUrls)) {
         res.redirect(constants.LANDING_URL);

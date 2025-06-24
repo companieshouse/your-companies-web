@@ -71,20 +71,22 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     private async populateViewData (req: Request): Promise<void> {
 
         const associationId = req.params[constants.ASSOCIATIONS_ID];
+        let association: Association;
 
-        const association = await getAssociationById(req, associationId);
+        association = getExtraData(req.session, this.getSessionKey(req));
+
+        if (!association) {
+            association = await getAssociationById(req, associationId);
+            setExtraData(req.session, this.getSessionKey(req), association);
+        }
+        if (!association) {
+            throw new Error("Association to be removed not fetched from session or API");
+        }
+
         if (association.companyNumber !== req.params[constants.COMPANY_NUMBER]) {
             throw new Error("Company number in association does not match the company number in the url");
         }
 
-        console.log("association to be removed is ", association);
-
-        setExtraData(req.session, this.getSessionKey(req), association);
-
-        const error = getExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
-        if (error) {
-            this.viewData.errors = error;
-        }
         this.viewData.currentStatus = association.status;
         this.viewData.companyNumber = association.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
@@ -94,6 +96,12 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         this.viewData.userName = this.getNameOrEmail(association.displayName, association.userEmail);
         this.viewData.userEmail = association.userEmail;
         this.viewData.templateName = this.getTemplateViewName();
+
+        const error = getExtraData(req.session, "remove-page-errors");
+
+        if (error) {
+            this.viewData.errors = error;
+        }
     }
 
     public async handlePostRequest (req: Request, res: Response): Promise<void> {
@@ -116,10 +124,10 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         await this.populateViewData(req);
         if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
             this.viewData.errors = { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } };
-            setExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION, this.viewData.errors);
+            setExtraData(req.session, "remove-page-errors", this.viewData.errors);
         } else {
             this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
-            setExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ, this.viewData.errors);
+            setExtraData(req.session, "remove-page-errors", this.viewData.errors);
         }
 
         logger.info(createLogMessage(req.session, "handleUnconfirmedRemoval", "Rendering with validation errors"));
@@ -139,11 +147,10 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private async processAssociationRemoval (req: Request, res: Response, association: Association): Promise<void> {
-        deleteExtraData(req.session, constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
-        this.viewData.errors = undefined;
+        deleteExtraData(req.session, "remove-page-errors");
 
         logger.info(createLogMessage(req.session, "processAssociationRemoval",
-            `Removing association ${association.id}, ${association.companyNumber}`));
+            `Removing association id: ${association.id}, company number: ${association.companyNumber}`));
 
         await removeUserFromCompanyAssociations(req, association.id);
 
@@ -196,7 +203,6 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     public getTemplateViewName ():string {
-        // const association:Association = getExtraData(req.session, this.getSessionKey(req));
         if (this.viewData.currentStatus === AssociationStatus.MIGRATED) {
             return "remove-do-not-restore";
         } else if (this.viewData.currentStatus === AssociationStatus.CONFIRMED) {

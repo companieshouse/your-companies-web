@@ -7,7 +7,7 @@
 
 {% set user_details = userName if userName else 
     userEmail %}
-{% set title = lang.title_remove_authorised_person %}
+{% set title = lang.confirm_you_do_not_want %}
 
 {% block back_link %}
     {% include "partials/back_link.njk" %}
@@ -20,7 +20,7 @@
         {% set message = {
             text: lang[value.text]
         } %}
-        {% set title = lang.title_error + lang.title_remove_authorised_person %}
+        {% set title = lang.title_error + lang.confirm_you_do_not_want %}
     {% endif %}
 {% endfor %}
 
@@ -30,7 +30,7 @@
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">{{ companyName }} ({{companyNumber}})</span>
             <h1 class = "govuk-heading-l">
-                {{ lang.confirm_you_do_not_want + user_details }}
+                {{ lang.confirm_you_do_not_want + lang.for + user_details }}
             </h1>
 
             <p>{{ lang.this_means_that + user_details + lang.will_not_be_digitially_authorised + companyName + lang.well_email + user_details + lang.to_let_them_know }}</p>

@@ -43,5 +43,10 @@
     "weve_sent_an_email_to_the_company": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi i roi gwybod iddynt.",
     "you_have_successfully_cancelled_digital_authorisation_end": " i ffeilio  ar-lein ar gyfer ",
     "you_have_successfully_cancelled_digital_authorisation_start": "Rydych chi wedi canslo awdurdodiad digidol yn llwyddiannus ar gyfer ",
-    "you_may_wish_to": "Efallai yr hoffech "
+    "you_may_wish_to": "Efallai yr hoffech ",
+    "digital_authorisation_not_restored": "[CY] Digital authorisation not restored",
+    "you_have_confirmed_you_do_not":"[CY] You have confirmed you do not want to restore ",
+    "digital_authorisation_to_file": "[CY]'s digital authorisation to file online for ",
+    "weve_emailed":"[CY] We've emailed ",
+    "to_let_them_know":"[CY] to let them know. We've also sent an email to any other people who are digitally authorised."
 }
