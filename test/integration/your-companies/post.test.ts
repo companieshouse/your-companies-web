@@ -20,7 +20,6 @@ describe("POST /your-companies", () => {
 
     it("should check session, company and user auth before returning the page", async () => {
         await router.post("/your-companies");
-        expect(mocks.mockNavigationMiddleware).toHaveBeenCalled();
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });

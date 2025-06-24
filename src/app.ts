@@ -18,7 +18,6 @@ import { v4 as uuidv4 } from "uuid";
 import { prepareCSPConfig } from "./middleware/content.security.policy.middleware.config";
 import nocache from "nocache";
 import { csrfProtectionMiddleware } from "./middleware/csrf.protection.middleware";
-import { navigationMiddleware } from "./middleware/navigation.middleware";
 
 const app = express();
 
@@ -94,8 +93,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.locals.nonce = nonce;
     next();
 });
-
-app.use(navigationMiddleware);
 
 // Channel all requests through router dispatch
 routerDispatch(app);

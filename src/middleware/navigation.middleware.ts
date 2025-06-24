@@ -421,8 +421,8 @@ const findConfigForPath = (path: string): RouteConfig | undefined => {
     return routeConfig.find(cfg => matchPathToPattern(path, cfg.routePattern));
 };
 
-export const navigationMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-    const config = findConfigForPath(req.path.substring(constants.LANDING_URL.length));
+export const navigationMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const config = findConfigForPath(req.path);
 
     if (!config) return next();
 
