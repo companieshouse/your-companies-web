@@ -11,7 +11,8 @@
 
             {% set html %}
             <p class="govuk-notification-banner__heading">
-                {{lang.you_are_no_longer_authorised}} {{companyName}}.
+                {{lang.you_are_no_longer_authorised}}
+                {{companyName}}.
             </p>
             {% endset %}
 
@@ -28,8 +29,8 @@
                 {{lang.what_happens_now}}
             </h1>
 
-            <p class="govuk-body govuk-!-margin-bottom-4"> 
-            {{lang.weve_sent_an_email}}
+            <p class="govuk-body govuk-!-margin-bottom-4">
+                {{lang.weve_sent_an_email}}
             </p>
 
             {{ govukButton({

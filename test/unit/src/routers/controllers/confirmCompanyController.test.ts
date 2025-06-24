@@ -72,7 +72,7 @@ describe("confirmCompanyControllerPost", () => {
             };
             mockExecute.mockReturnValue(expectedViewData);
             getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
-            const confirmedCompanyForAssocation: CompanyNameAndNumber = {
+            const confirmedCompanyForAssociation: CompanyNameAndNumber = {
                 companyNumber: validActiveCompanyProfile.companyNumber,
                 companyName: validActiveCompanyProfile.companyName
             };
@@ -82,7 +82,7 @@ describe("confirmCompanyControllerPost", () => {
             await confirmCompanyControllerPost(req as Request, res as Response);
             // Then
             expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssocation);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
             expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledTimes(1);
             expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);

@@ -1,0 +1,14 @@
+{
+    "digital_authorisation_restored_for": "Digital authorisation restored for",
+    "go_to_your_companies": "Go to your companies",
+    "keep_the_authentication_code": "Keep the authentication code in a safe place, as you may still need it in the future.",
+    "page_header": "What happens now you’ve restored your digital authorisation",
+    "title": "What happens now you’ve restored your digital authorisation - Find and update company information - GOV.UK",
+    "weve_sent_an_email": "We’ve sent an email to any other people who are authorised. We’ve let them know you are digitally authorised to file online for this company.",
+    "you_can_now": "You can now:",
+    "you_can_now_options": [
+        "file most information online for this company without the authentication code",
+        "view and manage other people who are digitally authorised to file online for this company",
+        "digitally authorise other people to file online for this company"
+    ]
+}

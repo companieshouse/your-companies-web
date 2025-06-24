@@ -15,7 +15,7 @@ const url = "/your-companies/confirmation-company-added";
 const companyNumber = "1122334455";
 const companyName = "Acme Ltd";
 const session: Session = new Session();
-session.data.extra_data.confirmedCompanyForAssocation = { companyNumber, companyName };
+session.data.extra_data.confirmedCompanyForAssociation = { companyNumber, companyName };
 
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
