@@ -3,8 +3,16 @@ import * as constants from "../../../../src/constants";
 import { navigationMiddleware } from "../../../../src/middleware/navigation.middleware";
 import { mockParametrisedRequest } from "../../../mocks/request.mock";
 import { mockResponse } from "../../../mocks/response.mock";
+import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
+import { when } from "jest-when";
+import { Session } from "@companieshouse/node-session-handler";
 
-const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL });
+jest.mock("../../../../src/lib/utils/sessionUtils");
+
+const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
+
+const session = new Session();
+const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session });
 const res: Response = mockResponse();
 const next = jest.fn();
 
@@ -239,6 +247,9 @@ describe("navigationMiddleware", () => {
             // Given
             req.path = `${constants.LANDING_URL}/${path}`;
             req.headers.referer = referer;
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
             // When
             navigationMiddleware(req, res, next);
             // Then
@@ -356,6 +367,210 @@ describe("navigationMiddleware", () => {
             // Given
             req.path = `${constants.LANDING_URL}/${path}`;
             req.headers.referer = "https://chc.local/your-companies/some-other-page";
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
+            // When
+            navigationMiddleware(req, res, next);
+            // Then
+            expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
+        });
+
+    test.each([
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
+            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
+            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/cancel-person/test@example.com",
+            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
+            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
+            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
+            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people-email-resent/test@example.com",
+            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
+            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
+            routePattern: constants.AUTHORISED_PERSON_ADDED_URL,
+            path: "/manage-authorised-people/AB123456/confirmation-person-added",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/add-presenter-check-details/AB123456",
+            routePattern: constants.AUTHORISED_PERSON_ADDED_URL,
+            path: "/manage-authorised-people/AB123456/confirmation-person-added",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-removed",
+            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
+            path: "/manage-authorised-people/AB123456/confirmation-person-removed",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/test@example.com",
+            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
+            path: "/manage-authorised-people/AB123456/confirmation-person-removed",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/test@example.com",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
+            path: "/company/:companyNumber/authentication-code-remove/:userEmail",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
+            path: "/company/:companyNumber/authentication-code-remove/:userEmail",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            routePattern: constants.REMOVED_THEMSELVES_URL,
+            path: "/confirmation-person-removed-themselves",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/remove-company/AB123456",
+            routePattern: constants.REMOVE_COMPANY_URL,
+            path: "/remove-company/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/remove-company/AB123456",
+            routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
+            path: "/confirmation-company-removed",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/cancel-person/test@example.com",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
+            path: "/company/AB123456/cancel-person/test@example.com",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
+            path: "/company/AB123456/cancel-person/test@example.com",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/add-presenter/AB123456",
+            routePattern: constants.ADD_PRESENTER_URL,
+            path: "/add-presenter/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            routePattern: constants.ADD_PRESENTER_URL,
+            path: "/add-presenter/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/add-presenter-check-details/AB123456",
+            routePattern: constants.CHECK_PRESENTER_URL,
+            path: "/add-presenter-check-details/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/add-presenter/AB123456",
+            routePattern: constants.CHECK_PRESENTER_URL,
+            path: "/add-presenter-check-details/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company-invitations-decline/1234567890",
+            routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
+            path: "/company-invitations-decline/1234567890",
+            defaultRedirect: `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`
+        },
+        {
+            referer: "https://chc.local/your-companies/company-invitations-accept/1234567890",
+            routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
+            path: "/company-invitations-accept/1234567890",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/presenter-already-added/AB123456",
+            routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
+            path: "/presenter-already-added/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/add-presenter-check-details/AB123456",
+            routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
+            path: "/presenter-already-added/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
+            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+            path: "/company/AB123456/try-restoring-your-digital-authorisation",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
+            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+            path: "/company/AB123456/try-restoring-your-digital-authorisation",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/confirmation-your-digital-authorisation-restored",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/confirmation-your-digital-authorisation-restored",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/send-email-invitation-to-be-digitally-authorised/1234567890",
+            routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
+            path: "/send-email-invitation-to-be-digitally-authorised/1234567890",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
+            path: "/send-email-invitation-to-be-digitally-authorised/1234567890",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/remove-authorisation-do-not-restore/AB123456",
+            routePattern: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL,
+            path: "/remove-authorisation-do-not-restore/AB123456",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/remove-authorisation-do-not-restore/AB123456",
+            routePattern: constants.CONFIRMATION_AUTHORISATION_REMOVED_URL,
+            path: "/confirmation-authorisation-removed",
+            defaultRedirect: constants.LANDING_URL
+        }
+    ])("should redirect to the default page if referer for route $routePattern has wrong parameter",
+        ({ path, referer, defaultRedirect }) => {
+            // Given
+            req.path = `${constants.LANDING_URL}/${path}`;
+            req.headers.referer = referer;
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("XX111111");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("other@example.com");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("9999999999");
             // When
             navigationMiddleware(req, res, next);
             // Then

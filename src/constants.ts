@@ -25,6 +25,9 @@ export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
 export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
 export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";
+export const NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER = "navigationMiddlewareCheckCompanyNumber";
+export const NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL = "navigationMiddlewareCheckUserEmail";
+export const NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID = "navigationMiddlewareCheckAssociationId";
 // query params
 export const CLEAR_FORM = "cf";
 export const CLEAR_FORM_TRUE = "?cf=true";
