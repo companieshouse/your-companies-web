@@ -139,6 +139,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
         setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
         setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emailArray);
 
         return Promise.resolve(this.viewData);
     }

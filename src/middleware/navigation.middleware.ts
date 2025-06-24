@@ -219,6 +219,36 @@ const routeConfig: RouteConfig[] = [
                 paramGuards: [
                     { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
                 ]
+            },
+            {
+                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL), // page prior to it
+                paramGuards: [
+                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+                ]
+            },
+            {
+                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL), // page prior to it
+                paramGuards: [
+                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+                ]
+            },
+            {
+                pattern: getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL), // page prior to it
+                paramGuards: [
+                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+                ]
+            },
+            {
+                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL), //  page prior to it
+                paramGuards: [
+                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+                ]
+            },
+            {
+                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL), // page prior to it
+                paramGuards: [
+                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+                ]
             }
         ],
         defaultRedirect: constants.LANDING_URL
