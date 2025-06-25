@@ -1699,3 +1699,87 @@ export const migratedAssociation: AssociationList = {
     totalResults: 2,
     totalPages: 1
 } as AssociationList;
+
+export const singleMigratedAssociation: Association = {
+    etag: "ABC",
+    id: "1234567890",
+    userId: "",
+    userEmail: "demo@ch.gov.uk",
+    displayName: "Not provided",
+    companyNumber: "NI038379",
+    companyName: "THE POLISH BREWERY",
+    companyStatus: CompanyStatuses.ACTIVE,
+    status: AssociationStatus.MIGRATED,
+    createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+    approvedAt: "",
+    removedAt: "",
+    kind: "association",
+    approvalRoute: ApprovalRoute.INVITATION,
+    approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    links: {
+        self: "/12345"
+    }
+};
+
+export const singleConfirmedAssociation: Association = {
+    etag: "ABC",
+    id: "1234567890",
+    userId: "qwertyiop",
+    userEmail: "demo@ch.gov.uk",
+    displayName: "Not provided",
+    companyNumber: "NI038379",
+    companyName: "THE POLISH BREWERY",
+    companyStatus: CompanyStatuses.ACTIVE,
+    status: AssociationStatus.CONFIRMED,
+    createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+    approvedAt: "",
+    removedAt: "",
+    kind: "association",
+    approvalRoute: ApprovalRoute.INVITATION,
+    approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    links: {
+        self: "/12345"
+    }
+};
+
+export const singleAwaitingApprovalAssociation: Association = {
+    etag: "ABC",
+    id: "1234567890",
+    userId: "qwertyiop",
+    userEmail: "demo@ch.gov.uk",
+    displayName: "Not provided",
+    companyNumber: "NI038379",
+    companyName: "THE POLISH BREWERY",
+    companyStatus: CompanyStatuses.ACTIVE,
+    status: AssociationStatus.AWAITING_APPROVAL,
+    createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+    approvedAt: "",
+    removedAt: "",
+    kind: "association",
+    approvalRoute: ApprovalRoute.INVITATION,
+    approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    links: {
+        self: "/12345"
+    }
+};
+
+export const singleRemovedAssociation: Association = {
+    etag: "ABC",
+    id: "1234567890",
+    userId: "qwertyiop",
+    userEmail: "demo@ch.gov.uk",
+    displayName: "Not provided",
+    companyNumber: "NI038379",
+    companyName: "THE POLISH BREWERY",
+    companyStatus: CompanyStatuses.ACTIVE,
+    status: AssociationStatus.REMOVED,
+    createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+    approvedAt: "",
+    removedAt: "",
+    kind: "association",
+    approvalRoute: ApprovalRoute.INVITATION,
+    approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    links: {
+        self: "/12345"
+    }
+};

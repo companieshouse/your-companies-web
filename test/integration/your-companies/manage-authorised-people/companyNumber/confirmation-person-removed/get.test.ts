@@ -12,7 +12,7 @@ import cyCommon from "../../../../../../locales/cy/common.json";
 import * as constants from "../../../../../../src/constants";
 import { when } from "jest-when";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
-import { removalWithoutUserName, removalWithUserName } from "../../../../../mocks/removal.mock";
+import { mockRemovalWithEmailAsName, mockRemovalWithName } from "../../../../../mocks/removal.mock";
 
 const router = supertest(app);
 
@@ -32,7 +32,6 @@ jest.mock("../../../../../../src/lib/utils/sessionUtils", () => {
 
 const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
-const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
 const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
 describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-person-removed", () => {
@@ -61,12 +60,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             lang: en,
             langCommon: enCommon,
             condition: "person removed, their name not provided",
-            removal: removalWithoutUserName,
-            isRemoved: undefined,
+            removal: mockRemovalWithEmailAsName,
             expectedBannerHeaderText: companyAssociations.items[1].userEmail + en.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
             userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail],
-            excludeEmail: companyAssociations.items[1].userEmail
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
         },
         {
             langInfo: "Welsh",
@@ -74,12 +71,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             lang: cy,
             langCommon: cyCommon,
             condition: "person removed, their name not provided",
-            removal: removalWithoutUserName,
-            isRemoved: undefined,
+            removal: mockRemovalWithEmailAsName,
             expectedBannerHeaderText: companyAssociations.items[1].userEmail + cy.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
             userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail],
-            excludeEmail: companyAssociations.items[1].userEmail
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
         },
         {
             langInfo: "English",
@@ -87,12 +82,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             lang: en,
             langCommon: enCommon,
             condition: "person already removed, their name not provided",
-            removal: removalWithoutUserName,
-            isRemoved: constants.TRUE,
+            removal: mockRemovalWithEmailAsName,
             expectedBannerHeaderText: companyAssociations.items[1].userEmail + en.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
             userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail],
-            excludeEmail: companyAssociations.items[1].userEmail
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
         },
         {
             langInfo: "Welsh",
@@ -100,12 +93,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             lang: cy,
             langCommon: cyCommon,
             condition: "person already removed, their name not provided",
-            removal: removalWithoutUserName,
-            isRemoved: constants.TRUE,
-            expectedBannerHeaderText: companyAssociations.items[1].userEmail + cy.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
-            userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail],
-            excludeEmail: companyAssociations.items[1].userEmail
+            removal: mockRemovalWithName,
+            expectedBannerHeaderText: mockRemovalWithName.userName + cy.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
+            userInfo: mockRemovalWithName.userName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
         },
         {
             langInfo: "English",
@@ -113,12 +104,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             lang: en,
             langCommon: enCommon,
             condition: "person removed, their name provided",
-            removal: removalWithUserName,
-            isRemoved: undefined,
-            expectedBannerHeaderText: companyAssociations.items[3].displayName + en.is_no_longer_digitally_authorised + companyAssociations.items[3].companyName,
-            userInfo: companyAssociations.items[3].displayName,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail],
-            excludeEmail: companyAssociations.items[3].userEmail
+            removal: mockRemovalWithName,
+            expectedBannerHeaderText: mockRemovalWithName.userName + en.is_no_longer_digitally_authorised + companyAssociations.items[3].companyName,
+            userInfo: mockRemovalWithName.userName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail]
         },
         {
             langInfo: "Welsh",
@@ -126,21 +115,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             lang: cy,
             langCommon: cyCommon,
             condition: "person removed, their name provided",
-            removal: removalWithUserName,
-            isRemoved: undefined,
-            expectedBannerHeaderText: companyAssociations.items[3].displayName + cy.is_no_longer_digitally_authorised + companyAssociations.items[3].companyName,
-            userInfo: companyAssociations.items[3].displayName,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail],
-            excludeEmail: companyAssociations.items[3].userEmail
+            removal: mockRemovalWithName,
+            expectedBannerHeaderText: mockRemovalWithName.userName + cy.is_no_longer_digitally_authorised + companyAssociations.items[3].companyName,
+            userInfo: mockRemovalWithName.userName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail]
         }
     ])("should return expected $langInfo content if $condition and language version set to $langVersion",
-        async ({ langVersion, lang, langCommon, removal, isRemoved, expectedBannerHeaderText, userInfo, emails, excludeEmail }) => {
+        async ({ langVersion, lang, langCommon, removal, expectedBannerHeaderText, userInfo, emails }) => {
             // Given
-            expectedCompanyAssociations.items = companyAssociations.items.filter(item => item.userEmail !== removal.userEmail);
+            expectedCompanyAssociations.items = companyAssociations.items;
             getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
             when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.REMOVE_PERSON).mockReturnValue(removal);
-            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS).mockReturnValue(isRemoved);
-            removeUserFromCompanyAssociationsSpy.mockReturnValue(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
             // When
             const response = await router.get(`${url}?lang=${langVersion}`);
             // Then
@@ -153,25 +138,15 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             for (const email of emails) {
                 expect(response.text).toContain(email + "</td>");
             }
-            expect(response.text).not.toContain(excludeEmail + "</td>");
         });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 200", async () => {
         // Given
         redirectPageSpy.mockReturnValue(true);
         // When
         const response = await router.get(url);
         // Then
-        expect(response.status).toEqual(302);
+        expect(response.status).toEqual(200);
     });
 
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
-    });
 });

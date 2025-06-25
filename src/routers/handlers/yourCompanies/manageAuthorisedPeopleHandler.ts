@@ -17,7 +17,6 @@ import { Pagination } from "../../../types/pagination";
 
 interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Pagination {
     buttonHref: string;
-    cancelUrl: string;
     resendEmailUrl: string;
     removeUrl: string;
     restoreDigitalAuthUrl: string;
@@ -54,7 +53,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             backLinkHref: constants.LANDING_URL,
             lang: {},
             buttonHref: "",
-            cancelUrl: "",
             resendEmailUrl: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL),
             removeUrl: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL),
             // update restoreDigitalAuthUrl with the correct url
@@ -145,7 +143,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
      * Handles the confirmation of a person being removed.
      * @param req - The HTTP request object.
      */
-    private async handleRemoveConfirmation (req: Request) {
+    private handleRemoveConfirmation (req: Request) {
         const removal = getExtraData(req.session, constants.REMOVE_PERSON);
         if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
             if (removal.status === AssociationStatus.AWAITING_APPROVAL) {
@@ -156,7 +154,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             } else if (removal.status === AssociationStatus.MIGRATED) {
                 this.viewData.notRestoredPerson = removal.userName;
             }
-            //        deleteExtraData(req.session, constants.REMOVE_PERSON);
         }
     }
 

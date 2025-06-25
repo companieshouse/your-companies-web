@@ -56,11 +56,8 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
      * @returns A promise resolving to the view data for the page.
      */
     async execute (req: Request): Promise<RemoveAuthorisedPersonViewData> {
-        deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
-
         await this.populateViewData(req);
-        return Promise.resolve(this.viewData);
-
+        return this.viewData;
     }
 
     /**
@@ -74,9 +71,9 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         let association: Association;
 
         association = getExtraData(req.session, this.getSessionKey(req));
-
         if (!association) {
             association = await getAssociationById(req, associationId);
+
             setExtraData(req.session, this.getSessionKey(req), association);
         }
         if (!association) {
@@ -105,16 +102,15 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     public async handlePostRequest (req: Request, res: Response): Promise<void> {
-
-        console.log(req.body);
         if (req.body.confirmRemoval === "confirm") {
             const associationToBeRemoved = this.getAndValidateAssociation(req);
             await this.processAssociationRemoval(req, res, associationToBeRemoved);
         } else if (req.body.confirmRemoval === "no") {
-            res.redirect(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL)
-                .replace(`:${constants.COMPANY_NUMBER}`, req.params[constants.COMPANY_NUMBER]));
             deleteExtraData(req.session, this.getSessionKey(req));
             logger.info(createLogMessage(req.session, "handlePostRequest", "User chose not to confirm removal"));
+            return res.redirect(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL)
+                .replace(`:${constants.COMPANY_NUMBER}`, req.params[constants.COMPANY_NUMBER]));
+
         } else {
             return await this.handleUnconfirmedRemoval(req, res);
         }

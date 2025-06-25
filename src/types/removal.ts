@@ -1,6 +1,6 @@
 export interface Removal {
-    removePerson: string;
     userEmail: string;
-    userName?: string;
+    userName: string;
     companyNumber: string;
+    status: string;
 }
