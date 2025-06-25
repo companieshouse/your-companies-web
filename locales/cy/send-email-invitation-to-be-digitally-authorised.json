@@ -1,8 +1,8 @@
 {
     "asking_if_they_want_to_be_digitally_authorised": "[CY] asking if they want to be digitally authorised for this company.",
-    "email_address": "[CY] Email address",
-    "name": "[CY] Name",
-    "not_provided": "[CY] Not provided",
+    "email_address": "Cyfeiriad e-bost",
+    "name": "Enw",
+    "not_provided": "Heb ei ddarparu",
     "page_header": "[CY] Send email invitation to be digitally authorised",
     "send_email": "[CY] Send email",
     "title": "[CY] Send email invitation to be digitally authorised - Find and update company information - GOV.UK",

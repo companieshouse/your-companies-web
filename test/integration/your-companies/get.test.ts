@@ -125,7 +125,6 @@ describe("GET /your-companies", () => {
             // Then
             expect(response.text).toContain(expectedText);
         });
-
     test.each([
         { deletionInfo: "the manage authorised people page indicator", key: "manageAuthorisedPeopleIndicator" },
         { deletionInfo: "the confirm company details page indicator", key: "confirmCompanyDetailsIndicator" }
