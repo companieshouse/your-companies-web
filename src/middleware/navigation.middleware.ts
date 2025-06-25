@@ -2,9 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import * as url from "node:url";
 import { deleteExtraData, getExtraData } from "../lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
-import routeConfig, { RouteConfig } from "./navigation.middleware.config";
+import routeConfigs, { RouteConfig } from "./navigation.middleware.config";
 
-// Helper to match a path against a pattern with :param support
+/**
+ * Checks if a given path matches a pattern with support for :param wildcards.
+ * @param path - The actual URL path (e.g., "/foo/123/bar")
+ * @param pattern - The pattern to match against (e.g., "/foo/:id/bar")
+ * @returns True if the path matches the pattern, false otherwise.
+ */
 const matchPathToPattern = (path: string, pattern: string): boolean => {
     const pathSegments = path.split("/").filter(Boolean);
     const patternSegments = pattern.split("/").filter(Boolean);
@@ -18,7 +23,12 @@ const matchPathToPattern = (path: string, pattern: string): boolean => {
     return true;
 };
 
-// Helper to extract params from a path given a pattern
+/**
+ * Extracts parameter values from a path based on a pattern with :param wildcards.
+ * @param path - The actual URL path (e.g., "/foo/123/bar")
+ * @param pattern - The pattern to extract params from (e.g., "/foo/:id/bar")
+ * @returns An object mapping param names to values (e.g., { id: "123" })
+ */
 const extractParams = (path: string, pattern: string): Record<string, string> => {
     const pathSegments = path.split("/").filter(Boolean);
     const patternSegments = pattern.split("/").filter(Boolean);
@@ -32,7 +42,14 @@ const extractParams = (path: string, pattern: string): Record<string, string> =>
     return params;
 };
 
-// Helper for parameter guards (supports single value or array)
+/**
+ * Validates that route parameters match expected values from the session.
+ * Supports single values or arrays in the session.
+ * @param params - The extracted route parameters.
+ * @param paramGuards - Array of guards specifying which params to check against session keys.
+ * @param session - The current session object.
+ * @returns True if all param guards pass, false otherwise.
+ */
 const areParamsValid = (
     params: Record<string, string>,
     paramGuards: Array<{ paramName: string; sessionKey: string }> | undefined,
@@ -49,12 +66,25 @@ const areParamsValid = (
     });
 };
 
-// Find config for current path
+/**
+ * Finds the route configuration for a given path.
+ * @param path - The request path.
+ * @returns The matching RouteConfig, or undefined if not found.
+ */
 const findConfigForPath = (path: string): RouteConfig | undefined => {
-    return routeConfig.find(cfg => matchPathToPattern(path, cfg.routePattern));
+    return routeConfigs.find(cfg => matchPathToPattern(path, cfg.routePattern));
 };
 
-export const navigationMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+/**
+ * Express middleware to control navigation flow based on route configuration,
+ * referer, session flags, and parameter guards.
+ * Redirects or allows navigation as appropriate.
+ */
+export const navigationMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     const config = findConfigForPath(req.path);
 
     if (!config) return next();
@@ -120,11 +150,6 @@ export const navigationMiddleware = async (req: Request, res: Response, next: Ne
             return res.redirect(config.defaultRedirect);
         }
         return next();
-    }
-
-    // Fallback: check current params as last resort
-    if (!areParamsValid(currentParams, refererParamGuards, req.session)) {
-        return res.redirect(config.defaultRedirect);
     }
 
     return res.redirect(config.defaultRedirect);

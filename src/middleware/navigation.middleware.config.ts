@@ -15,7 +15,7 @@ export interface RouteConfig {
 }
 
 // Centralized config with route patterns
-const routeConfig: RouteConfig[] = [];
+const routeConfigs: RouteConfig[] = [];
 const confirmationCancelPersonConfig = {
     routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
     allowedPages: [
@@ -35,7 +35,7 @@ const confirmationCancelPersonConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(confirmationCancelPersonConfig);
+routeConfigs.push(confirmationCancelPersonConfig);
 
 const confirmationEmailResentConfig = {
     routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
@@ -61,7 +61,7 @@ const confirmationEmailResentConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(confirmationEmailResentConfig);
+routeConfigs.push(confirmationEmailResentConfig);
 
 const manageAuthorisedPeopleEmailResentConfig = {
     routePattern: constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
@@ -111,7 +111,7 @@ const manageAuthorisedPeopleEmailResentConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(manageAuthorisedPeopleEmailResentConfig);
+routeConfigs.push(manageAuthorisedPeopleEmailResentConfig);
 
 const authorisedPersonAddedConfig = {
     routePattern: constants.AUTHORISED_PERSON_ADDED_URL,
@@ -131,7 +131,7 @@ const authorisedPersonAddedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(authorisedPersonAddedConfig);
+routeConfigs.push(authorisedPersonAddedConfig);
 
 const confirmationPersonRemovedConfig = {
     routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
@@ -152,7 +152,7 @@ const confirmationPersonRemovedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(confirmationPersonRemovedConfig);
+routeConfigs.push(confirmationPersonRemovedConfig);
 
 const confirmationDigitalAuthorisationRestoredConfig = {
     routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL,
@@ -172,7 +172,7 @@ const confirmationDigitalAuthorisationRestoredConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(confirmationDigitalAuthorisationRestoredConfig);
+routeConfigs.push(confirmationDigitalAuthorisationRestoredConfig);
 
 const authenticationCodeRemovedConfig = {
     routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
@@ -223,7 +223,7 @@ const authenticationCodeRemovedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(authenticationCodeRemovedConfig);
+routeConfigs.push(authenticationCodeRemovedConfig);
 
 const removeThemselvesConfig = {
     routePattern: constants.REMOVED_THEMSELVES_URL,
@@ -238,7 +238,7 @@ const removeThemselvesConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(removeThemselvesConfig);
+routeConfigs.push(removeThemselvesConfig);
 
 const removeCompanyConfig = {
     routePattern: constants.REMOVE_COMPANY_URL,
@@ -253,7 +253,7 @@ const removeCompanyConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(removeCompanyConfig);
+routeConfigs.push(removeCompanyConfig);
 
 const removeCompanyConfirmedConfig = {
     routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
@@ -268,7 +268,7 @@ const removeCompanyConfirmedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(removeCompanyConfirmedConfig);
+routeConfigs.push(removeCompanyConfirmedConfig);
 
 const cancelPersonConfig = {
     routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
@@ -319,7 +319,7 @@ const cancelPersonConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(cancelPersonConfig);
+routeConfigs.push(cancelPersonConfig);
 
 const confirmCompanyDetailsConfig = {
     routePattern: constants.CONFIRM_COMPANY_DETAILS_URL,
@@ -329,7 +329,7 @@ const confirmCompanyDetailsConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(confirmCompanyDetailsConfig);
+routeConfigs.push(confirmCompanyDetailsConfig);
 
 const companyAddedSuccessConfig = {
     routePattern: constants.COMPANY_ADDED_SUCCESS_URL,
@@ -339,7 +339,7 @@ const companyAddedSuccessConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(companyAddedSuccessConfig);
+routeConfigs.push(companyAddedSuccessConfig);
 
 const addPresenterConfig = {
     routePattern: constants.ADD_PRESENTER_URL,
@@ -389,7 +389,7 @@ const addPresenterConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(addPresenterConfig);
+routeConfigs.push(addPresenterConfig);
 
 const checkPresenterConfig = {
     routePattern: constants.CHECK_PRESENTER_URL,
@@ -409,7 +409,7 @@ const checkPresenterConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(checkPresenterConfig);
+routeConfigs.push(checkPresenterConfig);
 
 const companyInvitationsDeclineConfig = {
     routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
@@ -424,7 +424,7 @@ const companyInvitationsDeclineConfig = {
     ],
     defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
 };
-routeConfig.push(companyInvitationsDeclineConfig);
+routeConfigs.push(companyInvitationsDeclineConfig);
 
 const companyInvitationsAcceptConfig = {
     routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
@@ -439,7 +439,7 @@ const companyInvitationsAcceptConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(companyInvitationsAcceptConfig);
+routeConfigs.push(companyInvitationsAcceptConfig);
 
 const presenterAlreadyAddedConfig = {
     routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
@@ -459,7 +459,7 @@ const presenterAlreadyAddedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(presenterAlreadyAddedConfig);
+routeConfigs.push(presenterAlreadyAddedConfig);
 
 const tryRestoringYourDigitalAuthorisationConfig = {
     routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
@@ -482,7 +482,7 @@ const tryRestoringYourDigitalAuthorisationConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(tryRestoringYourDigitalAuthorisationConfig);
+routeConfigs.push(tryRestoringYourDigitalAuthorisationConfig);
 
 const restoreYourDigitalAuthorisationSuccessConfig = {
     routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
@@ -503,7 +503,7 @@ const restoreYourDigitalAuthorisationSuccessConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(restoreYourDigitalAuthorisationSuccessConfig);
+routeConfigs.push(restoreYourDigitalAuthorisationSuccessConfig);
 
 const sendEmailInvitationToBeDigitallyAuthorisedConfig = {
     routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
@@ -553,7 +553,7 @@ const sendEmailInvitationToBeDigitallyAuthorisedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(sendEmailInvitationToBeDigitallyAuthorisedConfig);
+routeConfigs.push(sendEmailInvitationToBeDigitallyAuthorisedConfig);
 
 const removeAuthorisationDoNotRestoreConfig = {
     routePattern: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL,
@@ -568,7 +568,7 @@ const removeAuthorisationDoNotRestoreConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(removeAuthorisationDoNotRestoreConfig);
+routeConfigs.push(removeAuthorisationDoNotRestoreConfig);
 
 const confirmationAuthorisationRemovedConfig = {
     routePattern: constants.CONFIRMATION_AUTHORISATION_REMOVED_URL,
@@ -583,6 +583,6 @@ const confirmationAuthorisationRemovedConfig = {
     ],
     defaultRedirect: constants.LANDING_URL
 };
-routeConfig.push(confirmationAuthorisationRemovedConfig);
+routeConfigs.push(confirmationAuthorisationRemovedConfig);
 
-export default routeConfig;
+export default routeConfigs;
