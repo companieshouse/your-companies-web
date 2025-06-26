@@ -82,8 +82,8 @@ const findConfigForPath = (path: string): RouteConfig | undefined => {
  * @returns The pathname portion of the Referer URL, or an empty string if not available.
  */
 const getRefererPath = (req: Request): string => {
-    const referer = req.headers.referer as string | undefined;
-    return referer ? url.parse(referer, true).pathname || "" : "";
+    const referer = req.headers.referer;
+    return referer ? url.parse(referer, true).pathname ?? "" : "";
 };
 
 /**
@@ -172,7 +172,7 @@ export const navigationMiddleware = async (
 
     const currentPath = req.baseUrl + req.path;
     const refererPath = getRefererPath(req);
-    const referer = req.headers.referer as string | undefined;
+    const referer = req.headers.referer;
     const currentParams = req.params;
 
     const { refererParams, refererParamGuards } = getRefererParamsAndGuards(refererPath, config.allowedPages);
