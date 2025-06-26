@@ -28,6 +28,7 @@ export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNu
 export const NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER = "navigationMiddlewareCheckCompanyNumber";
 export const NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL = "navigationMiddlewareCheckUserEmail";
 export const NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID = "navigationMiddlewareCheckAssociationId";
+export const NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE = "navigationMiddlewareFlagForCompanyAuthenticationService";
 // query params
 export const CLEAR_FORM = "cf";
 export const CLEAR_FORM_TRUE = "?cf=true";

@@ -75,7 +75,7 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // 3) Company added success (TODO - fix for company auth code service)
+    // 3) Company added success
     {
         routePattern: constants.COMPANY_ADDED_SUCCESS_URL,
         allowedPages: [
@@ -88,6 +88,7 @@ const routeConfigs: RouteConfig[] = [
                 ]
             }
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -207,6 +208,7 @@ const routeConfigs: RouteConfig[] = [
                 ]
             }
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -376,11 +378,12 @@ const routeConfigs: RouteConfig[] = [
                 ]
             }
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
     },
 
     // Resend email to a new authorised person journey
-    // 1) Manage authorised people email resent (TODO - check if works as journey is redirected to landing)
+    // 1) Manage authorised people email resent
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
         allowedPages: [
@@ -408,7 +411,7 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // 2) Confirmation email resent (TODO - check if works as journey is redirected to landing)
+    // 2) Confirmation email resent
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
         allowedPages: [
@@ -426,6 +429,12 @@ const routeConfigs: RouteConfig[] = [
             },
             {
                 pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL), // previous page
+                paramGuards: [
+                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+                ]
+            },
+            {
+                pattern: getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL), // previous page
                 paramGuards: [
                     { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
                 ]

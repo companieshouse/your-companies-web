@@ -146,6 +146,11 @@ describe("navigationMiddleware", () => {
             path: "/confirmation-company-added"
         },
         {
+            referer: undefined,
+            routePattern: constants.COMPANY_ADDED_SUCCESS_URL,
+            path: "/confirmation-company-added"
+        },
+        {
             referer: "https://chc.local/your-companies/add-presenter/AB123456",
             routePattern: constants.ADD_PRESENTER_URL,
             path: "/add-presenter/AB123456",
@@ -236,7 +241,8 @@ describe("navigationMiddleware", () => {
         {
             referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
             routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored"
+            path: "/confirmation-your-digital-authorisation-restored",
+            params: { companyNumber: "AB123456" }
         },
         {
             referer: "https://chc.local/your-companies/send-email-invitation-to-be-digitally-authorised/1234567890",
@@ -281,6 +287,7 @@ describe("navigationMiddleware", () => {
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE).mockReturnValue(true);
             // When
             await navigationMiddleware(req, res, next);
             // Then
@@ -401,6 +408,7 @@ describe("navigationMiddleware", () => {
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE).mockReturnValue(false);
             // When
             await navigationMiddleware(req, res, next);
             // Then
@@ -600,8 +608,9 @@ describe("navigationMiddleware", () => {
             const headers = { referer };
             const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("XX111111");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("other@example.com");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue(["other@example.com"]);
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("9999999999");
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE).mockReturnValue(false);
             // When
             await navigationMiddleware(req, res, next);
             // Then

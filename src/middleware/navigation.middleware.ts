@@ -121,18 +121,10 @@ export const navigationMiddleware = async (
     if (config.sessionFlag) {
         const sessionFlag = getExtraData(req.session, config.sessionFlag);
         if (sessionFlag) {
-            if (!areParamsValid(currentParams, refererParamGuards, req.session)) {
-                return res.redirect(config.defaultRedirect);
-            }
             deleteExtraData(req.session, config.sessionFlag);
             return next();
         }
         return res.redirect(config.defaultRedirect);
-    }
-
-    // Entry points
-    if (config.allowedPages.length === 0) {
-        return next();
     }
 
     // Check referer against allowed external URLs
