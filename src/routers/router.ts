@@ -59,7 +59,6 @@ router.route(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL)
     .get(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerGet as RequestHandler)
     .post(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerPost as RequestHandler);
 
-// router.get(constants.REMOVE_ASSOCIATION_URL, removeAuthorisedPersonRequestController);
 router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesNavigation, removedThemselvesConfirmationControllerGet as RequestHandler);
 
 // Remove Company
