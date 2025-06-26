@@ -2,19 +2,28 @@ import * as constants from "../constants";
 import { getFullUrl } from "../lib/utils/urlUtils";
 
 /**
- * Configuration for allowed pages.
+ * Configuration for parameter guards.
  *
- * @property pattern - The URL pattern that this configuration applies to.
- * @property paramGuards - Optional array of parameter guards. Each guard specifies:
- *   - paramName: the name of the parameter in the URL.
- *   - sessionKey: the key used by the navigation middleware to retrieve the expected value from the session.
+ * @property paramName: the name of the parameter in the URL.
+ * @property sessionKey: the key used by the navigation middleware to retrieve the expected value from the session.
  * This mechanism ensures that sensitive URL parameters cannot be tampered with by users
  * (e.g., manually changing a company number in the URL) by validating that the parameter value in the URL
  * matches the value stored in the user's session.
  */
+interface ParamGuard {
+    paramName: string;
+    sessionKey: string;
+}
+
+/**
+ * Configuration for allowed pages.
+ *
+ * @property pattern - The URL pattern that this configuration applies to.
+ * @property paramGuards - Optional parameter guards to ensures that sensitive URL parameters cannot be tampered with by users.
+ */
 interface AllowedPageConfig {
     pattern: string;
-    paramGuards?: Array<{ paramName: string; sessionKey: string }>;
+    paramGuards?: ParamGuard[];
 }
 
 /**
