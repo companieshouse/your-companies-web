@@ -17,7 +17,7 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
 
     cleanUpSessionData(req);
     logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerGet.name, "Rendering remove authorised person page"));
-    res.render(handler.getTemplateViewName(), viewData as RemoveAuthorisedPersonViewData);
+    res.render(handler.getTemplateViewName(), viewData);
 };
 
 /**

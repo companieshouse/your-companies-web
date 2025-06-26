@@ -67,7 +67,7 @@ describe("POST /your-companies/remove-authenticated-person/:associationId", () =
             langVersion: "cy",
             url: urlWithId
         }
-    ])("should return status 302 if $condition",
+    ])("should return status 200 if $condition",
         async ({ langVersion, url }) => {
             // When
             const response = await router.post(`${url}?lang=${langVersion}`).send({ confirmRemoval: "confirm" });
