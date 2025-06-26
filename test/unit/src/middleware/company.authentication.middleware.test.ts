@@ -43,17 +43,4 @@ describe("company authentication middleware tests", () => {
         expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
     });
 
-    it("should call CH company authentication library when cancelling an authorised person", async () => {
-        const URL = getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL).replace(":companyNumber", "12345678");
-
-        await request(app).get(URL);
-
-        expect(mockCompanyAuthMiddleware).toHaveBeenCalledWith({
-            chsWebUrl: "http://chsurl.co",
-            returnUrl: URL,
-            companyNumber: "12345678"
-        });
-        expect(mockAuthReturnedFunction).toHaveBeenCalled();
-        expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
-    });
 });

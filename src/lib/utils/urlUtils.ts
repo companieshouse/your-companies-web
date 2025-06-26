@@ -62,7 +62,6 @@ export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: str
     const baseUrl = getFullUrl(getManageAuthorisedPeopleUrl(companyNumber));
 
     const urlMappings: Record<string, string> = {
-        [constants.CONFIRMATION_CANCEL_PERSON_URL]: constants.CONFIRMATION_CANCEL_PERSON_URL,
         [constants.CONFIRMATION_PERSON_REMOVED_URL]: constants.CONFIRMATION_PERSON_REMOVED_URL,
         [constants.AUTHORISATION_EMAIL_RESENT_URL]: constants.AUTHORISATION_EMAIL_RESENT_URL,
         [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL,
@@ -83,7 +82,6 @@ export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: str
  */
 const REFERRER_URLS = [
     constants.CONFIRMATION_PERSON_REMOVED_URL,
-    constants.CONFIRMATION_CANCEL_PERSON_URL,
     constants.CONFIRMATION_PERSON_ADDED_URL,
     constants.AUTHORISATION_EMAIL_RESENT_URL
 ];
@@ -169,23 +167,6 @@ export const getAuthorisedPersonAddedFullUrl = (companyNumber: string): string =
     getFullUrl(`/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}${constants.CONFIRMATION_PERSON_ADDED_URL}`);
 
 /**
- * Constructs the URL for canceling a person by email.
- * @param userEmail - The user's email.
- * @returns The relative URL.
- */
-export const getCancelPersonUrl = (userEmail: string): string =>
-    `/${constants.CANCEL_PERSON_PAGE}/${userEmail}`;
-
-/**
- * Constructs the full URL for canceling a person in a company context.
- * @param companyNumber - The company number.
- * @param userEmail - The user's email.
- * @returns The full URL.
- */
-export const getCompanyAuthProtectedCancelPersonFullUrl = (companyNumber: string, userEmail: string): string =>
-    getFullUrl(`/company/${companyNumber}${getCancelPersonUrl(userEmail)}`);
-
-/**
  * Constructs the URL for resending a confirmation email for managing authorized people.
  * @param companyNumber - The company number.
  * @returns The relative URL.
@@ -195,20 +176,20 @@ export const getManageAuthorisedPeopleConfirmationEmailResentUrl = (companyNumbe
 
 /**
  * Constructs the URL for removing an authentication code by email.
- * @param userEmail - The user's email.
+ * @param associationId - The association id to be removed.
  * @returns The relative URL.
  */
-export const getAuthenticationCodeRemoveUrl = (userEmail: string): string =>
-    `/authentication-code-remove/${userEmail}`;
+export const getAuthenticationCodeRemoveUrl = (associationId: string): string =>
+    `/authentication-code-remove/${associationId}`;
 
 /**
  * Constructs the full URL for removing an authentication code in a company context.
  * @param companyNumber - The company number.
- * @param userEmail - The user's email.
+ * @param id - The id of the association being removed.
  * @returns The full URL.
  */
-export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber: string, userEmail: string): string =>
-    `/company/${companyNumber}${getAuthenticationCodeRemoveUrl(userEmail)}`;
+export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber: string, id: string): string =>
+    `/company/${companyNumber}${getAuthenticationCodeRemoveUrl(id)}`;
 
 /**
  * Constructs the URL for removing a company.
