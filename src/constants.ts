@@ -9,7 +9,7 @@ export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
 export const REFERER_URL = "refererUrl";
 export const AUTHORISED_PERSON = "authorisedPerson";
 export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
-export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssocation";
+export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssociation";
 export const USER_ASSOCIATIONS = "userAssociations";
 export const ASSOCIATIONS_ID = "associationId";
 export const REMOVE_PERSON = "removePerson";
@@ -24,6 +24,8 @@ export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
 export const REMOVE_PAGE_ERRORS = "removePageErrors";
 
+export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
+export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";
 // query params
 export const CLEAR_FORM = "cf";
 export const CLEAR_FORM_TRUE = "?cf=true";
@@ -33,6 +35,7 @@ export const CANCEL_URL_EXTRA = "cancelPersonUrlExtraData";
 export const REMOVE_URL_EXTRA = "removePersonUrlExtraData";
 export const REMOVE_COMPANY_URL_EXTRA = "removeCompanyUrlExtraData";
 export const CSRF_ERRORS = "csrfErrors";
+export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL_EXTRA = "removeAuthorisationDoNotRestoreUrlExtraData";
 
 // Paths to Nunjucks template files
 export const SERVICE_UNAVAILABLE_TEMPLATE = "partials/service_unavailable";
@@ -61,6 +64,10 @@ export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 export const SERVICE_UNAVAILABLE = "service-unavailable";
 export const REMOVE_DO_NOT_RESTORE_PAGE = "remove-do-not-restore";
+export const RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_PAGE = "confirmation-your-digital-authorisation-restored";
+export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE = "send-email-invitation-to-be-digitally-authorised";
+export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE = "remove-authorisation-do-not-restore";
+export const CONFIRMATION_AUTHORISATION_REMOVED_PAGE = "confirmation-authorisation-removed";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -93,7 +100,16 @@ export const REMOVED_THEMSELVES_URL = `/${REMOVED_THEMSELVES}`;
 export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";
 export const REMOVE_ASSOCIATION_URL = `/:${COMPANY_NUMBER}/remove-association`;
 export const HEALTHCHECK_URL = "/healthcheck";
+export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL = `/${REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/:${COMPANY_NUMBER}`;
+export const CONFIRMATION_AUTHORISATION_REMOVED_URL = `/${CONFIRMATION_AUTHORISATION_REMOVED_PAGE}`;
 export const CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL = `/restore-your-digital-authorisation/:${COMPANY_NUMBER}/${CONFIRM_COMPANY_PAGE}`;
+export const TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL = "/try-restoring-your-digital-authorisation";
+export const TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL = `${COMPANY_AUTH_PROTECTED_BASE}${TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`;
+export const RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL = `/${RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_PAGE}`;
+export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL = `/${SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE}`;
+export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL = `${SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/:${ASSOCIATIONS_ID}`;
+export const CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = "/confirmation-digital-authorisation-restored";
+export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL}`;
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
@@ -130,6 +146,7 @@ export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 export const OAUTH2_CLIENT_ID = getEnvironmentValue(`OAUTH2_CLIENT_ID`);
 export const OAUTH2_CLIENT_SECRET = getEnvironmentValue(`OAUTH2_CLIENT_SECRET`);
 export const ACCOUNT_LOCAL_URL = getEnvironmentValue("ACCOUNT_LOCAL_URL");
+export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL");
 
 export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const CHS_URL = getEnvironmentValue("CHS_URL");

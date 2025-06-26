@@ -64,7 +64,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             return: "basic view data",
             condition: "user has no confirmed associations and has invitations"
@@ -123,7 +124,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             errors: {
                 search: {
@@ -151,7 +153,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: true,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             return: "view data without search error message",
             condition: "a search string exists, and is valid"
@@ -174,7 +177,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             errors: {
                 search: {
@@ -202,7 +206,8 @@ describe("YourCompaniesHandler", () => {
                 viewAndManageUrl: "",
                 showNumOfMatches: true,
                 pagination: undefined,
-                restoreDigitalAuthUrl: ""
+                restoreDigitalAuthUrl: "",
+                removeAuthorisationUrl: ""
             },
             return: "expected view data",
             condition: "invalidPageNumber is false and there are no error messages"
@@ -278,7 +283,7 @@ describe("YourCompaniesHandler", () => {
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
             expect(getInvitationsSpy).toHaveBeenCalledWith(req);
-            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(9);
+            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(12);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_URL_EXTRA);
@@ -288,6 +293,9 @@ describe("YourCompaniesHandler", () => {
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NAME);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NUMBER);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
             expect(getResourceBundleMock).toHaveBeenCalled;
             expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
@@ -307,9 +315,10 @@ describe("YourCompaniesHandler", () => {
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
             if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-                getFullUrlCounter = 5;
+                getFullUrlCounter = 6;
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
+                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
             }
 
             expect(getUserAssociationsSpy).toHaveBeenCalledTimes(getUserAssociationsCounter);

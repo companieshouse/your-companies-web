@@ -35,13 +35,16 @@ describe("ManageAuthorisedPeopleHandler", () => {
     const manageAuthorisedPeopleEmailResentFullUrl = `${constants.LANDING_URL}${constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL}`;
     const companyAuthProtectedAuthenticationCodeRemoveFullUrl = `${constants.LANDING_URL}${constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL}`;
     const manageAuthorisedPeopleFullUrl = `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${constants.COMPANY_NUMBER}`;
+    const sendEmailInvitationToBeDigitallyAuthorisedBaseUrl = `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`;
 
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
         getFullUrlSpy
             .mockReturnValueOnce(manageAuthorisedPeopleEmailResentFullUrl)
-            .mockReturnValueOnce(companyAuthProtectedAuthenticationCodeRemoveFullUrl);
+            .mockReturnValueOnce(companyAuthProtectedAuthenticationCodeRemoveFullUrl)
+            .mockReturnValueOnce(sendEmailInvitationToBeDigitallyAuthorisedBaseUrl);
+
         manageAuthorisedPeopleHandler = new ManageAuthorisedPeopleHandler();
     });
 
@@ -137,7 +140,6 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 backLinkHref: constants.LANDING_URL,
                 lang: translations,
                 buttonHref: addPresenterFullUrl + constants.CLEAR_FORM_TRUE,
-                //          cancelUrl: `${constants.LANDING_URL}/company/${companyNumber}/cancel-person/:userEmail`,
                 resendEmailUrl: manageAuthorisedPeopleEmailResentFullUrl,
                 removeUrl: companyAuthProtectedAuthenticationCodeRemoveFullUrl,
                 matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID,
@@ -151,22 +153,21 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
-                restoreDigitalAuthUrl: "",
                 notRestoredPerson: "",
+                restoreDigitalAuthBaseUrl: `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`,
                 ...viewData
             };
             // When
             const response = await manageAuthorisedPeopleHandler.execute(req);
             // Then
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(2);
+            expect(getFullUrlSpy).toHaveBeenCalledTimes(3);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL);
-            //   expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL);
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
-            //    expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
@@ -195,11 +196,14 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
                 expect(setLangForPaginationSpy).toHaveBeenCalledWith(pagination, translations);
             }
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(4);
+            expect(setExtraDataSpy).toHaveBeenCalledTimes(4 + companyAssociations.items.length);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REFERER_URL, manageAuthorisedPeopleFullUrl);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, companyAssociations.items.map(item => item.userEmail));
+            for (const association of companyAssociations.items) {
+                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+            }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(getCompanyAssociationsCounter);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(getManageAuthorisedPeopleFullUrlCounter);
             expect(response).toEqual(finalViewData);
@@ -318,16 +322,17 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
-                restoreDigitalAuthUrl: "",
                 notRestoredPerson: "",
+                restoreDigitalAuthBaseUrl: `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`,
                 ...viewData
             };
             // When
             const response = await manageAuthorisedPeopleHandler.execute(req);
             // Then
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(2);
+            expect(getFullUrlSpy).toHaveBeenCalledTimes(3);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL);
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
@@ -342,11 +347,14 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.RESENT_SUCCESS_EMAIL);
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(4);
+            expect(setExtraDataSpy).toHaveBeenCalledTimes(4 + companyAssociations.items.length);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REFERER_URL, manageAuthorisedPeopleFullUrl);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, companyAssociations.items.map(item => item.userEmail));
+            for (const association of companyAssociations.items) {
+                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+            }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
             expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
@@ -448,16 +456,17 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
-                restoreDigitalAuthUrl: "",
                 notRestoredPerson: "",
+                restoreDigitalAuthBaseUrl: `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`,
                 ...viewData
             };
             // When
             const response = await manageAuthorisedPeopleHandler.execute(req);
             // Then
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(2);
+            expect(getFullUrlSpy).toHaveBeenCalledTimes(3);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL);
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
@@ -472,11 +481,14 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.RESENT_SUCCESS_EMAIL);
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(4);
+            expect(setExtraDataSpy).toHaveBeenCalledTimes(4 + companyAssociations.items.length);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REFERER_URL, manageAuthorisedPeopleFullUrl);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, companyAssociations.items.map(item => item.userEmail));
+            for (const association of companyAssociations.items) {
+                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+            }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
             expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
@@ -571,16 +583,17 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 authorisedPersonSuccess: false,
                 authorisedPersonEmailAddress: undefined,
                 authorisedPersonCompanyName: undefined,
-                restoreDigitalAuthUrl: "",
                 notRestoredPerson: "",
+                restoreDigitalAuthBaseUrl: `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`,
                 ...viewData
             };
             // When
             const response = await manageAuthorisedPeopleHandler.execute(req);
             // Then
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(2);
+            expect(getFullUrlSpy).toHaveBeenCalledTimes(3);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL);
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
@@ -595,11 +608,14 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.RESENT_SUCCESS_EMAIL);
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(4);
+            expect(setExtraDataSpy).toHaveBeenCalledTimes(4 + companyAssociations.items.length);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REFERER_URL, manageAuthorisedPeopleFullUrl);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, companyAssociations.items.map(item => item.userEmail));
+            for (const association of companyAssociations.items) {
+                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+            }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
             expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);

@@ -19,7 +19,7 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     buttonHref: string;
     resendEmailUrl: string;
     removeUrl: string;
-    restoreDigitalAuthUrl: string;
+    restoreDigitalAuthBaseUrl: string;
     matomoAddNewAuthorisedPersonGoalId: string;
     companyAssociations: AssociationList | undefined;
     cancelledPerson: string;
@@ -55,8 +55,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             buttonHref: "",
             resendEmailUrl: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL),
             removeUrl: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL),
-            // update restoreDigitalAuthUrl with the correct url
-            restoreDigitalAuthUrl: "",
+            restoreDigitalAuthBaseUrl: getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL),
             matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID,
             companyAssociations: undefined,
             pagination: undefined,
@@ -104,7 +103,11 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
-        const emailArray = companyAssociations.items.map(item => item?.userEmail);
+        const emailArray: string[] = [];
+        for (const association of companyAssociations.items) {
+            emailArray.push(association.userEmail);
+            setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+        }
         this.viewData.companyAssociations = companyAssociations;
 
         if (companyAssociations.totalPages > 1) {
@@ -175,7 +178,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
      */
     private handleConfirmationPersonAdded (req: Request) {
         const authorisedPerson: AuthorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
-        if (authorisedPerson && req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL)) {
+        if (authorisedPerson &&
+            (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL) ||
+                req.originalUrl.includes(constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL))
+        ) {
             this.viewData.authorisedPersonSuccess = true;
             this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;
             this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
