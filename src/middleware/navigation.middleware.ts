@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import * as url from "node:url";
 import { deleteExtraData, getExtraData } from "../lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
-import routeConfigs, { RouteConfig } from "./navigation.middleware.config";
+import routeConfigs, { ParamGuard, RouteConfig } from "./navigation.middleware.config";
 
 /**
  * Checks if a given path matches a pattern with support for :param wildcards.
@@ -76,9 +76,91 @@ const findConfigForPath = (path: string): RouteConfig | undefined => {
 };
 
 /**
- * Express middleware to control navigation flow based on route configuration,
- * referer, session flags, and parameter guards.
- * Redirects or allows navigation as appropriate.
+ * Extracts the pathname from the Referer header of the given HTTP request.
+ *
+ * @param req - The HTTP request object from which to extract the Referer header.
+ * @returns The pathname portion of the Referer URL, or an empty string if not available.
+ */
+const getRefererPath = (req: Request): string => {
+    const referer = req.headers.referer as string | undefined;
+    return referer ? url.parse(referer, true).pathname || "" : "";
+};
+
+/**
+ * Extracts parameters and parameter guards from the referer path based on allowed route configurations.
+ *
+ * Iterates through the provided allowedPages and checks if the refererPath matches any of the route patterns.
+ * If a match is found, it extracts the route parameters and associated parameter guards.
+ *
+ * @param refererPath - The path of the referer to be checked against allowed route patterns.
+ * @param allowedPages - An array of route configurations specifying allowed patterns and parameter guards.
+ * @returns An object containing the extracted referer parameters (`refererParams`)
+ * and parameter guards (`refererParamGuards`) if a match is found; otherwise, returns an empty object.
+ */
+const getRefererParamsAndGuards = (
+    refererPath: string,
+    allowedPages: RouteConfig["allowedPages"]
+): { refererParams?: Record<string, string>; refererParamGuards?: ParamGuard[] } => {
+    for (const allowed of allowedPages) {
+        if (matchPathToPattern(refererPath, allowed.pattern)) {
+            return {
+                refererParams: extractParams(refererPath, allowed.pattern),
+                refererParamGuards: allowed.paramGuards
+            };
+        }
+    }
+    return {};
+};
+
+/**
+ * Helper to check if referer is allowed external URL.
+ */
+const isAllowedExternalReferer = (
+    referer: string | undefined,
+    allowedExternalUrls?: string[]
+): boolean => {
+    return !!allowedExternalUrls?.some(externalUrl => referer?.startsWith(externalUrl));
+};
+
+/**
+ * Handles navigation based on a session flag specified in the route configuration.
+ * If the session flag exists in the session, it is deleted and navigation is allowed.
+ * If the session flag does not exist, the user is redirected to the default redirect URL.
+ * If no session flag is specified in the configuration, the function returns `undefined`.
+ *
+ * @param req - The Express request object, containing the session.
+ * @param res - The Express response object, used for redirection.
+ * @param config - The route configuration object, which may specify a session flag and a default redirect URL.
+ * @returns `true` if navigation is allowed, `false` if a redirect occurs, or `undefined` if not applicable.
+ */
+const handleSessionFlag = (
+    req: Request,
+    res: Response,
+    config: RouteConfig
+): boolean => {
+    if (config.sessionFlag) {
+        const sessionFlag = getExtraData(req.session, config.sessionFlag);
+        if (sessionFlag) {
+            deleteExtraData(req.session, config.sessionFlag);
+            return true; // allow navigation
+        }
+        res.redirect(config.defaultRedirect);
+        return false; // redirect
+    }
+    return undefined as unknown as boolean; // not applicable
+};
+
+/**
+ * Middleware to handle navigation flow and access control based on the request path, referer, and session state.
+ *
+ * This middleware checks if the current request path matches a configured navigation rule.
+ * It validates navigation based on allowed pages, referer, session flags, and external URLs.
+ * If navigation is not allowed, it redirects to a default path.
+ *
+ * @param req - Express request object, expected to contain path, params, headers, and session.
+ * @param res - Express response object, used for redirection if navigation is not allowed.
+ * @param next - Express next middleware function, called if navigation is allowed.
+ * @returns A Promise that resolves when navigation is handled or redirected.
  */
 export const navigationMiddleware = async (
     req: Request,
@@ -86,28 +168,14 @@ export const navigationMiddleware = async (
     next: NextFunction
 ): Promise<void> => {
     const config = findConfigForPath(req.path);
-
     if (!config) return next();
 
     const currentPath = req.baseUrl + req.path;
+    const refererPath = getRefererPath(req);
     const referer = req.headers.referer as string | undefined;
-    const refererPath = referer ? url.parse(referer, true).pathname || "" : "";
-
-    // Params for current path
     const currentParams = req.params;
 
-    // Params for referer path (if any match)
-    let refererParams: Record<string, string> | undefined;
-    let refererParamGuards: Array<{ paramName: string; sessionKey: string }> | undefined;
-    if (refererPath) {
-        for (const allowed of config.allowedPages) {
-            if (matchPathToPattern(refererPath, allowed.pattern)) {
-                refererParams = extractParams(refererPath, allowed.pattern);
-                refererParamGuards = allowed.paramGuards;
-                break;
-            }
-        }
-    }
+    const { refererParams, refererParamGuards } = getRefererParamsAndGuards(refererPath, config.allowedPages);
 
     // Allow reloads/language switches (referer is self)
     if (refererPath === currentPath) {
@@ -118,17 +186,14 @@ export const navigationMiddleware = async (
     }
 
     // Session flag for external service
-    if (config.sessionFlag) {
-        const sessionFlag = getExtraData(req.session, config.sessionFlag);
-        if (sessionFlag) {
-            deleteExtraData(req.session, config.sessionFlag);
-            return next();
-        }
-        return res.redirect(config.defaultRedirect);
+    const sessionFlagResult = handleSessionFlag(req, res, config);
+    if (sessionFlagResult !== undefined) {
+        if (sessionFlagResult) return next();
+        return; // already redirected
     }
 
     // Check referer against allowed external URLs
-    if (config.allowedExternalUrls?.some(externalUrl => referer?.startsWith(externalUrl))) {
+    if (isAllowedExternalReferer(referer, config.allowedExternalUrls)) {
         return next();
     }
 

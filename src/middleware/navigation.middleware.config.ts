@@ -10,7 +10,7 @@ import { getFullUrl } from "../lib/utils/urlUtils";
  * (e.g., manually changing a company number in the URL) by validating that the parameter value in the URL
  * matches the value stored in the user's session.
  */
-interface ParamGuard {
+export interface ParamGuard {
     paramName: string;
     sessionKey: string;
 }
