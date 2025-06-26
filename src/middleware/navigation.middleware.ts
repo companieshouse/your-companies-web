@@ -113,7 +113,11 @@ const getRefererParamsAndGuards = (
 };
 
 /**
- * Helper to check if referer is allowed external URL.
+ * Determines whether the provided referer URL is allowed based on a list of permitted external URLs.
+ *
+ * @param referer - The referer URL to check, or undefined if not provided.
+ * @param allowedExternalUrls - An optional array of allowed external URL prefixes.
+ * @returns True if the referer starts with any of the allowed external URLs; otherwise, false.
  */
 const isAllowedExternalReferer = (
     referer: string | undefined,
