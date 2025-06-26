@@ -24,7 +24,6 @@ import { confirmCompanyNavigation } from "../middleware/navigation/confirmCompan
 import { manageAuthorisedPeopleNavigation } from "../middleware/navigation/manageAuthorisedPeople.middleware";
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
 import { presenterAlreadyAddedNavigation } from "../middleware/navigation/presenterAlreadyAdded.middleware";
-import { removedThemselvesNavigation } from "../middleware/navigation/personRemovedThemselves.middleware";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
 import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
@@ -67,7 +66,7 @@ router.route(constants.YOUR_COMPANIES_URL)
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL, manageAuthorisedPeopleNavigation, manageAuthorisedPeopleControllerGet as RequestHandler);
 
 // Add Company
@@ -80,7 +79,7 @@ router.route(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL)
     .get(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerGet as RequestHandler)
     .post(removeAuthorisedPersonCompanyAuth, removeAuthorisedPersonControllerPost as RequestHandler);
 
-router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesNavigation, removedThemselvesConfirmationControllerGet as RequestHandler);
+router.get(constants.REMOVED_THEMSELVES_URL, removedThemselvesConfirmationControllerGet as RequestHandler);
 
 // Remove Company
 router.route(constants.REMOVE_COMPANY_URL)

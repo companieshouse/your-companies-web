@@ -179,8 +179,8 @@ export const getManageAuthorisedPeopleConfirmationEmailResentUrl = (companyNumbe
  * @param userEmail - The user's email.
  * @returns The relative URL.
  */
-export const getAuthenticationCodeRemoveUrl = (userEmail: string): string =>
-    `/authentication-code-remove/${userEmail}`;
+export const getAuthenticationCodeRemoveUrl = (associationId: string): string =>
+    `/authentication-code-remove/${associationId}`;
 
 /**
  * Constructs the full URL for removing an authentication code in a company context.
@@ -188,8 +188,8 @@ export const getAuthenticationCodeRemoveUrl = (userEmail: string): string =>
  * @param userEmail - The user's email.
  * @returns The full URL.
  */
-export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber: string, userEmail: string): string =>
-    `/company/${companyNumber}${getAuthenticationCodeRemoveUrl(userEmail)}`;
+export const getCompanyAuthProtectedAuthenticationCodeRemoveUrl = (companyNumber: string, id: string): string =>
+    `/company/${companyNumber}${getAuthenticationCodeRemoveUrl(id)}`;
 
 /**
  * Constructs the URL for removing a company.

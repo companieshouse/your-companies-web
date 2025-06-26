@@ -127,13 +127,4 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             }
         });
 
-    it("should return status 302", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
-        expect(response.status).toEqual(302);
-    });
-
 });
