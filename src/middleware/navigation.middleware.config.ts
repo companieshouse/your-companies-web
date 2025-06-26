@@ -210,7 +210,39 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // Manage authorised people journey (starting point MANAGE_AUTHORISED_PEOPLE_URL does not require config)
+    // Accept/Reject company invitation journey
+    // 1) Company invitations page doesn't require config
+    // 2a) Accept invitation
+    {
+        routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
+        allowedPages: [
+            {
+                pattern: getFullUrl(constants.COMPANY_INVITATIONS_ACCEPT_URL), // itself
+                paramGuards: [
+                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
+                ]
+            },
+            { pattern: getFullUrl(constants.COMPANY_INVITATIONS_URL) } // previous page
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+
+    // 2b) Decline invitation
+    {
+        routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
+        allowedPages: [
+            {
+                pattern: getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL), // itself
+                paramGuards: [
+                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
+                ]
+            },
+            { pattern: getFullUrl(constants.COMPANY_INVITATIONS_URL) } // previous page
+        ],
+        defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
+    },
+
+    // Manage authorised people journey with all sub-jurneys (starting point MANAGE_AUTHORISED_PEOPLE_URL does not require config)
 
     // Add new authorised person journey
     // 1) Add presenter
@@ -515,38 +547,6 @@ const routeConfigs: RouteConfig[] = [
             }
         ],
         defaultRedirect: constants.LANDING_URL
-    },
-
-    // Accept/Reject company invitation journey
-    // 1) Company invitations page doesn't require config
-    // 2a) Accept invitation
-    {
-        routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
-        allowedPages: [
-            {
-                pattern: getFullUrl(constants.COMPANY_INVITATIONS_ACCEPT_URL), // itself
-                paramGuards: [
-                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
-                ]
-            },
-            { pattern: getFullUrl(constants.COMPANY_INVITATIONS_URL) } // previous page
-        ],
-        defaultRedirect: constants.LANDING_URL
-    },
-
-    // 2b) Decline invitation
-    {
-        routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
-        allowedPages: [
-            {
-                pattern: getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL), // itself
-                paramGuards: [
-                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
-                ]
-            },
-            { pattern: getFullUrl(constants.COMPANY_INVITATIONS_URL) } // previous page
-        ],
-        defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
     }
 ];
 
