@@ -2,14 +2,15 @@ import * as constants from "../constants";
 import { getFullUrl } from "../lib/utils/urlUtils";
 
 /**
- * Configuration for allowed navigation pages.
+ * Configuration for allowed pages.
  *
  * @property pattern - The URL pattern that this configuration applies to.
  * @property paramGuards - Optional array of parameter guards. Each guard specifies:
  *   - paramName: the name of the parameter in the URL.
  *   - sessionKey: the key used by the navigation middleware to retrieve the expected value from the session.
- * This mechanism ensures that sensitive URL parameters cannot be tampered with by users (e.g., manually changing an ID in the URL)
- * by validating that the parameter value in the URL matches the value stored in the user's session.
+ * This mechanism ensures that sensitive URL parameters cannot be tampered with by users
+ * (e.g., manually changing a company number in the URL) by validating that the parameter value in the URL
+ * matches the value stored in the user's session.
  */
 interface AllowedPageConfig {
     pattern: string;
@@ -18,11 +19,11 @@ interface AllowedPageConfig {
 
 /**
  * RouteConfig describes the navigation rules for a route:
- * - routePattern: the route this config applies to
- * - allowedPages: which pages can access this route (with optional param guards)
- * - allowedExternalUrls: external URLs allowed to access this route
- * - defaultRedirect: where to redirect if navigation is not allowed
- * - sessionFlag: optional session flag for additional checks
+ * @property routePattern - The route this config applies to
+ * @property allowedPages - Which pages can access this route (with optional param guards)
+ * @property allowedExternalUrls - External URLs allowed to access this route
+ * @property defaultRedirect - Where to redirect if navigation is not allowed
+ * @property sessionFlag - Optional session flag for additional checks
  */
 export interface RouteConfig {
     routePattern: string;
