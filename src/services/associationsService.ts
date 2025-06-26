@@ -323,14 +323,14 @@ export const getAssociationById = async (
     associationId: string
 ): Promise<Association> => {
     const sdkResponse = await makeApiCallWithRetry(
-        "associationsService",
+        ASSOCIATIONS_SERVICE,
         "getAssociation",
         req,
                 req.session as Session,
                 associationId
     ) as Resource<Association | Errors>;
 
-    if (sdkResponse?.httpStatusCode !== 200) {
+    if (sdkResponse?.httpStatusCode !== 200 || !sdkResponse.resource) {
         const errorMessage = `Error: getAssociationById: ${associationId} status: ${sdkResponse.httpStatusCode} `;
         logger.error(createLogMessage(req.session, getAssociationById.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)}`);

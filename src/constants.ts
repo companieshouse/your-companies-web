@@ -22,6 +22,7 @@ export const USER_EMAILS_ARRAY = "userEmailsArray";
 export const CURRENT_COMPANY_NUM = "currentCompanyNumber";
 export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
+export const REMOVE_PAGE_ERRORS = "removePageErrors";
 
 // query params
 export const CLEAR_FORM = "cf";
@@ -48,6 +49,7 @@ export const REMOVE_COMPANY_PAGE = "remove-company";
 export const CONFIRM_COMPANY_PAGE = "confirm-company-details";
 export const COMPANY_ADD_SUCCESS_PAGE = "confirmation-company-added";
 export const MANAGE_AUTHORISED_PEOPLE_PAGE = "manage-authorised-people";
+export const CANCEL_PERSON_PAGE = "cancel-person";
 export const ADD_PRESENTER_PAGE = "add-presenter";
 export const CHECK_PRESENTER_PAGE = "add-presenter-check-details";
 export const COMPANY_INVITATIONS_PAGE = "company-invitations";
@@ -58,6 +60,7 @@ export const REMOVE_COMPANY_CONFIRMED = "confirmation-company-removed";
 export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 export const SERVICE_UNAVAILABLE = "service-unavailable";
+export const REMOVE_DO_NOT_RESTORE_PAGE = "remove-do-not-restore";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -144,6 +147,7 @@ export const TRUE = "true";
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "confirmed";
 export const YES = "yes";
+export const NO = "no";
 export const CONFIRM = "confirm";
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 

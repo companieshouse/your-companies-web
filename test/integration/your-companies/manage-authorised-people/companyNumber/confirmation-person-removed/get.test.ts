@@ -12,7 +12,7 @@ import cyCommon from "../../../../../../locales/cy/common.json";
 import * as constants from "../../../../../../src/constants";
 import { when } from "jest-when";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
-import { mockRemovalWithEmailAsName, mockRemovalWithName } from "../../../../../mocks/removal.mock";
+import { mockAwaitingApprovalRemoval, mockConfirmedRemoval, mockMigratedRemoval } from "../../../../../mocks/removal.mock";
 
 const router = supertest(app);
 
@@ -57,56 +57,47 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         {
             langInfo: "English",
             langVersion: "en",
-            lang: en,
             langCommon: enCommon,
-            condition: "person removed, their name not provided",
-            removal: mockRemovalWithEmailAsName,
-            expectedBannerHeaderText: companyAssociations.items[1].userEmail + en.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
-            userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
+            condition: "person who had a confirmed status removed in English",
+            removal: mockConfirmedRemoval,
+            expectedBannerHeaderText: mockConfirmedRemoval.userName + en.is_no_longer_digitally_authorised + companyAssociations.items[0].companyName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
         },
         {
             langInfo: "Welsh",
             langVersion: "cy",
-            lang: cy,
             langCommon: cyCommon,
-            condition: "person removed, their name not provided",
-            removal: mockRemovalWithEmailAsName,
-            expectedBannerHeaderText: companyAssociations.items[1].userEmail + cy.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
-            userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
+            condition: "person who had a confirmed status removed in Welsh",
+            removal: mockConfirmedRemoval,
+            expectedBannerHeaderText: mockConfirmedRemoval.userName + cy.is_no_longer_digitally_authorised + companyAssociations.items[0].companyName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
+        },
+        {
+            langInfo: "English",
+            langVersion: "en",
+            langCommon: enCommon,
+            condition: "person removed with status migrated in English",
+            removal: mockMigratedRemoval,
+            expectedBannerHeaderText: en.you_have_confirmed_you_do_not + mockMigratedRemoval.userName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
+        },
+        {
+            langInfo: "Welsh",
+            langVersion: "cy",
+            langCommon: cyCommon,
+            condition: "person removed with status migrated in Welsh",
+            removal: mockMigratedRemoval,
+            expectedBannerHeaderText: cy.you_have_confirmed_you_do_not + mockMigratedRemoval.userName,
+            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
         },
         {
             langInfo: "English",
             langVersion: "en",
             lang: en,
             langCommon: enCommon,
-            condition: "person already removed, their name not provided",
-            removal: mockRemovalWithEmailAsName,
-            expectedBannerHeaderText: companyAssociations.items[1].userEmail + en.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
-            userInfo: companyAssociations.items[1].userEmail,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
-        },
-        {
-            langInfo: "Welsh",
-            langVersion: "cy",
-            lang: cy,
-            langCommon: cyCommon,
-            condition: "person already removed, their name not provided",
-            removal: mockRemovalWithName,
-            expectedBannerHeaderText: mockRemovalWithName.userName + cy.is_no_longer_digitally_authorised + companyAssociations.items[1].companyName,
-            userInfo: mockRemovalWithName.userName,
-            emails: [companyAssociations.items[0].userEmail, companyAssociations.items[2].userEmail, companyAssociations.items[3].userEmail]
-        },
-        {
-            langInfo: "English",
-            langVersion: "en",
-            lang: en,
-            langCommon: enCommon,
-            condition: "person removed, their name provided",
-            removal: mockRemovalWithName,
-            expectedBannerHeaderText: mockRemovalWithName.userName + en.is_no_longer_digitally_authorised + companyAssociations.items[3].companyName,
-            userInfo: mockRemovalWithName.userName,
+            condition: "person removed that had status awaiting approval in English",
+            removal: mockAwaitingApprovalRemoval,
+            expectedBannerHeaderText: en.you_have_successfully_cancelled_digital_authorisation_start,
             emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail]
         },
         {
@@ -114,14 +105,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             langVersion: "cy",
             lang: cy,
             langCommon: cyCommon,
-            condition: "person removed, their name provided",
-            removal: mockRemovalWithName,
-            expectedBannerHeaderText: mockRemovalWithName.userName + cy.is_no_longer_digitally_authorised + companyAssociations.items[3].companyName,
-            userInfo: mockRemovalWithName.userName,
+            condition: "person removed that had status awaiting approval in Welsh",
+            removal: mockAwaitingApprovalRemoval,
+            expectedBannerHeaderText: cy.you_have_successfully_cancelled_digital_authorisation_start,
             emails: [companyAssociations.items[0].userEmail, companyAssociations.items[1].userEmail, companyAssociations.items[2].userEmail]
         }
     ])("should return expected $langInfo content if $condition and language version set to $langVersion",
-        async ({ langVersion, lang, langCommon, removal, expectedBannerHeaderText, userInfo, emails }) => {
+        async ({ langVersion, langCommon, removal, expectedBannerHeaderText, emails }) => {
             // Given
             expectedCompanyAssociations.items = companyAssociations.items;
             getCompanyAssociationsSpy.mockReturnValue(expectedCompanyAssociations);
@@ -131,10 +121,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             // Then
             expect(response.text).toContain(langCommon.success);
             expect(response.text).toContain(expectedBannerHeaderText);
-            expect(response.text).toContain(lang.weve_sent_an_email_to_the_company);
-            expect(response.text).toContain(lang.you_may_wish_to);
-            expect(response.text).toContain(lang.change_the_authentication_code);
-            expect(response.text).toContain(lang.for_this_company_if + userInfo + lang.still_has_access_to_it);
+
             for (const email of emails) {
                 expect(response.text).toContain(email + "</td>");
             }

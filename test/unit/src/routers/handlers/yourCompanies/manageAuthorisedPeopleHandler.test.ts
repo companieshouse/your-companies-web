@@ -165,7 +165,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), "remove-page-errors");
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
             //    expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
@@ -331,7 +331,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), "remove-page-errors");
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
@@ -461,7 +461,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), "remove-page-errors");
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
@@ -584,7 +584,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
             expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), "remove-page-errors");
+            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
             expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);

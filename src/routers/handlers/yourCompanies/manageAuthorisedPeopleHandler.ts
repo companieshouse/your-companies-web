@@ -84,7 +84,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
 
-        deleteExtraData(req.session, "remove-page-errors");
+        deleteExtraData(req.session, constants.REMOVE_PAGE_ERRORS);
 
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
         await this.preventUnauthorisedAccess(req, companyNumber);

@@ -13,6 +13,7 @@ import {
 import { getFullUrl, getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 import { getAssociationById, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import logger, { createLogMessage } from "../../../lib/Logger";
+import { Removal } from "../../../types/removal";
 
 /**
  * Interface representing the view data for the Remove Authorised Person page.
@@ -71,11 +72,12 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         let association: Association;
 
         association = getExtraData(req.session, this.getSessionKey(req));
+        let fetched = false;
         if (!association) {
             association = await getAssociationById(req, associationId);
-
-            setExtraData(req.session, this.getSessionKey(req), association);
+            fetched = true;
         }
+
         if (!association) {
             throw new Error("Association to be removed not fetched from session or API");
         }
@@ -84,6 +86,13 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             throw new Error("Company number in association does not match the company number in the url");
         }
 
+        if (![AssociationStatus.AWAITING_APPROVAL, AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED].includes(association.status)) {
+            throw new Error("Invalid association status");
+        }
+
+        if (fetched) {
+            setExtraData(req.session, this.getSessionKey(req), association);
+        }
         this.viewData.currentStatus = association.status;
         this.viewData.companyNumber = association.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
@@ -94,7 +103,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         this.viewData.userEmail = association.userEmail;
         this.viewData.templateName = this.getTemplateViewName();
 
-        const error = getExtraData(req.session, "remove-page-errors");
+        const error = getExtraData(req.session, constants.REMOVE_PAGE_ERRORS);
 
         if (error) {
             this.viewData.errors = error;
@@ -102,14 +111,13 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     public async handlePostRequest (req: Request, res: Response): Promise<void> {
-        if (req.body.confirmRemoval === "confirm") {
+        if (req.body.confirmRemoval === constants.CONFIRM) {
             const associationToBeRemoved = this.getAndValidateAssociation(req);
             await this.processAssociationRemoval(req, res, associationToBeRemoved);
-        } else if (req.body.confirmRemoval === "no") {
+        } else if (req.body.confirmRemoval === constants.NO) {
             deleteExtraData(req.session, this.getSessionKey(req));
-            logger.info(createLogMessage(req.session, "handlePostRequest", "User chose not to confirm removal"));
-            return res.redirect(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL)
-                .replace(`:${constants.COMPANY_NUMBER}`, req.params[constants.COMPANY_NUMBER]));
+            logger.info(createLogMessage(req.session, this.handlePostRequest.name, "User chose not to confirm removal"));
+            return res.redirect(getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, req.params[constants.COMPANY_NUMBER]));
 
         } else {
             return await this.handleUnconfirmedRemoval(req, res);
@@ -120,13 +128,13 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         await this.populateViewData(req);
         if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
             this.viewData.errors = { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } };
-            setExtraData(req.session, "remove-page-errors", this.viewData.errors);
+            setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
         } else {
             this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
-            setExtraData(req.session, "remove-page-errors", this.viewData.errors);
+            setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
         }
 
-        logger.info(createLogMessage(req.session, "handleUnconfirmedRemoval", "Rendering with validation errors"));
+        logger.info(createLogMessage(req.session, this.handleUnconfirmedRemoval.name, "Rendering with validation errors"));
 
         return res.render(this.getTemplateViewName(), this.viewData);
     }
@@ -143,9 +151,9 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private async processAssociationRemoval (req: Request, res: Response, association: Association): Promise<void> {
-        deleteExtraData(req.session, "remove-page-errors");
+        deleteExtraData(req.session, constants.REMOVE_PAGE_ERRORS);
 
-        logger.info(createLogMessage(req.session, "processAssociationRemoval",
+        logger.info(createLogMessage(req.session, this.processAssociationRemoval.name,
             `Removing association id: ${association.id}, company number: ${association.companyNumber}`));
 
         await removeUserFromCompanyAssociations(req, association.id);
@@ -158,7 +166,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private async handleSelfRemoval (req: Request, res: Response, association: Association): Promise<void> {
-        logger.info(createLogMessage(req.session, "handleSelfRemoval",
+        logger.info(createLogMessage(req.session, this.handleSelfRemoval.name,
             `Self-removal from ${association.companyNumber}`));
 
         setExtraData(req.session, constants.REMOVED_THEMSELVES_FROM_COMPANY, {
@@ -170,7 +178,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private async handleOtherUserRemoval (req: Request, res: Response, association: Association): Promise<void> {
-        const removal = {
+        const removal: Removal = {
             userEmail: association.userEmail,
             userName: this.getNameOrEmail(association.displayName, association.userEmail),
             companyNumber: req.params[constants.COMPANY_NUMBER],
@@ -178,7 +186,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         };
 
         setExtraData(req.session, constants.REMOVE_PERSON, removal);
-        logger.info(createLogMessage(req.session, "handleOtherUserRemoval",
+        logger.info(createLogMessage(req.session, this.handleOtherUserRemoval.name,
             `Association ${association.id} removed`));
 
         const redirectUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL)
@@ -198,15 +206,14 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         return (!displayName || displayName === constants.NOT_PROVIDED) ? userEmail : displayName;
     }
 
-    public getTemplateViewName ():string {
+    public getTemplateViewName (): string {
         if (this.viewData.currentStatus === AssociationStatus.MIGRATED) {
-            return "remove-do-not-restore";
+            return constants.REMOVE_DO_NOT_RESTORE_PAGE;
         } else if (this.viewData.currentStatus === AssociationStatus.CONFIRMED) {
-            return "remove-authorised-person";
+            return constants.REMOVE_AUTHORISED_PERSON_PAGE;
         } else if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
-            return "cancel-person";
-        } else {
-            throw Error("unexpected status");
+            return constants.CANCEL_PERSON_PAGE;
         }
+        throw new Error("Unexpected association status");
     }
 }
