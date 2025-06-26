@@ -427,18 +427,20 @@ const routeConfigs: RouteConfig[] = [
                     { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
                 ]
             },
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL), // previous page
+            // previous pages
+            ...[
+                constants.MANAGE_AUTHORISED_PEOPLE_URL,
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
+                constants.AUTHORISED_PERSON_ADDED_URL,
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
+            ].map(pattern => ({
+                pattern: getFullUrl(pattern),
                 paramGuards: [
                     { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
                 ]
-            },
-            {
-                pattern: getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            }))
         ],
         defaultRedirect: constants.LANDING_URL
     },
