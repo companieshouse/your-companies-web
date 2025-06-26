@@ -164,7 +164,8 @@ const routeConfigs: RouteConfig[] = [
                 paramGuards: [
                     { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
                 ]
-            }
+            },
+            { pattern: constants.LANDING_URL }
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -474,7 +475,7 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // 2) Confirmation digital authorisation restored (TODO - fix as it redirects to landing)
+    // 2) Confirmation digital authorisation restored
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL,
         allowedPages: [

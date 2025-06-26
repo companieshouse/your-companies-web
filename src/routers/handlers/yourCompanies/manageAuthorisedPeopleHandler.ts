@@ -118,8 +118,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
 
         const emailArray: string[] = [];
+        const associationIdArray: string[] = [];
         for (const association of companyAssociations.items) {
             emailArray.push(association.userEmail);
+            associationIdArray.push(association.id);
             setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
         }
         this.viewData.companyAssociations = companyAssociations;
@@ -141,6 +143,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
         setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emailArray);
         setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIdArray);
 
         return Promise.resolve(this.viewData);
     }
