@@ -116,16 +116,6 @@ const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
     }));
 };
 
-/**
- * Helper to generate AllowedPageConfig[] for a list of patterns with a custom param guard.
- */
-const allowedPagesWithCustomGuard = (patterns: string[], paramGuards: ParamGuard[]): AllowedPageConfig[] => {
-    return patterns.map(pattern => ({
-        pattern: getFullUrl(pattern),
-        paramGuards
-    }));
-};
-
 // --- Centralized navigation configuration for all journeys ---
 
 const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
@@ -383,15 +373,9 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithCompanyNumberGuard([
                 constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL
             ]),
-            ...allowedPagesWithCustomGuard(
-                [
-                    constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL
-                ],
-                [
-                    companyNumberGuard,
-                    userEmailGuard
-                ]
-            )
+            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
+                constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL
+            ])
         ],
         sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
