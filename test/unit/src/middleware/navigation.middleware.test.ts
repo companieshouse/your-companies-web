@@ -22,6 +22,18 @@ describe("navigationMiddleware", () => {
 
     test.each([
         {
+            referer: "https://chc.local/your-companies/",
+            routePattern: constants.LANDING_URL,
+            path: "/your-companies",
+            params: {}
+        },
+        {
+            referer: undefined,
+            routePattern: constants.LANDING_URL,
+            path: "/your-companies",
+            params: {}
+        },
+        {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
             path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
