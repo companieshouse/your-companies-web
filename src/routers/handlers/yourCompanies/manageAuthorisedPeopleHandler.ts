@@ -82,6 +82,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     async execute (req: Request): Promise<ManageAuthorisedPeopleViewData> {
         logger.info(createLogMessage(req.session, `${ManageAuthorisedPeopleHandler.name}.${this.execute.name}`, `GET request to serve People Digitally Authorised To File Online For This Company page`));
 
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
 
@@ -118,8 +120,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
 
         const emailArray: string[] = [];
+        const associationIdArray: string[] = [];
         for (const association of companyAssociations.items) {
             emailArray.push(association.userEmail);
+            associationIdArray.push(association.id);
             setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
         }
         this.viewData.companyAssociations = companyAssociations;
@@ -137,7 +141,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
         setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
         setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emailArray);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIdArray);
 
         return Promise.resolve(this.viewData);
     }

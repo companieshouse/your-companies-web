@@ -4,7 +4,6 @@ import app from "../../../../../../src/app";
 import * as associationsService from "../../../../../../src/services/associationsService";
 import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
 import enCommon from "../../../../../../locales/en/common.json";
@@ -13,6 +12,7 @@ import * as constants from "../../../../../../src/constants";
 import { when } from "jest-when";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
 import { removalWithoutUserName, removalWithUserName } from "../../../../../mocks/removal.mock";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 
@@ -30,7 +30,6 @@ jest.mock("../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
 const removeUserFromCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "removeUserFromCompanyAssociations");
 const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
@@ -44,7 +43,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     beforeEach(() => {
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379 page", async () => {
@@ -156,22 +154,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text).not.toContain(excludeEmail + "</td>");
         });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });

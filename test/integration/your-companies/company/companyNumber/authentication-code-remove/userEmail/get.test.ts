@@ -8,7 +8,6 @@ import en from "../../../../../../../locales/en/remove-authorised-person.json";
 import cy from "../../../../../../../locales/cy/remove-authorised-person.json";
 import enCommon from "../../../../../../../locales/en/common.json";
 import cyCommon from "../../../../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../../../../src/lib/utils/referrerUtils";
 import { setExtraData } from "../../../../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
@@ -32,8 +31,6 @@ jest.mock("../../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/company/:companyNumber/authentication-code-remove/:userEmail", () => {
     const userEmail = "test@test.com";
     const companyNumber = "123456";
@@ -44,7 +41,6 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
 
     beforeEach(() => {
         jest.clearAllMocks;
-        redirectPageSpy.mockReturnValue(false);
     });
 
     test.each([
@@ -169,7 +165,10 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
 
     it("should redirect, and return status 302 if referrer is undefined and pageIndicator is true", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
             req.headers = { referrer: undefined };
             req.session = session;
@@ -197,7 +196,10 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
     ])("should redirect, and return status 302 if $condition",
         async ({ pageIndicator, userEmailsArray }) => {
             // Given
-            redirectPageSpy.mockReturnValue(true);
+            const urlPath = constants.LANDING_URL;
+            mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+                res.redirect(urlPath);
+            });
             mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
                 req.headers = { referrer: undefined };
                 req.session = session;
@@ -220,11 +222,14 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
     ])("should return status 302 and correct response message including desired url path for $pathInfo page",
         async ({ url }) => {
             // Given
-            redirectPageSpy.mockReturnValue(true);
+            const urlPath = constants.LANDING_URL;
+            mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+                res.redirect(urlPath);
+            });
             // When
             const response = await router.get(url);
             // Then
             expect(response.status).toEqual(302);
-            expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
+            expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
         });
 });

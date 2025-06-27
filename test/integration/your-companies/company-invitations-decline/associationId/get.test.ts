@@ -4,15 +4,13 @@ import supertest from "supertest";
 import en from "../../../../../locales/en/company-invitations-decline.json";
 import cy from "../../../../../locales/cy/company-invitations-decline.json";
 import { updateAssociationStatus } from "../../../../../src/services/associationsService";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../../src/constants";
 import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
-import { getFullUrl } from "../../../../../src/lib/utils/urlUtils";
+import { Request, Response } from "express";
 
 jest.mock("../../../../../src/lib/Logger");
 jest.mock("../../../../../src/services/associationsService");
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
 const router = supertest(app);
@@ -26,12 +24,11 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         jest.clearAllMocks();
     });
 
-    redirectPageSpy.mockReturnValue(false);
-
     it("should check session and auth before returning the /your-companies/companies-invitations-decline/:associationId page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockNavigationMiddleware).toHaveBeenCalled();
     });
 
     it("should return status 200", async () => {
@@ -58,30 +55,6 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
             expect(response.text).toContain(lang.view_your_companies);
         });
 
-    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        getExtraDataSpy.mockReturnValue("");
-        // When
-        const response = await router.get(url);
-        // Then
-        expect(response.status).toEqual(302);
-        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
-    });
-
-    it("should redirect back to people digitally authorised page if association already declined", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(false);
-        getExtraDataSpy.mockReturnValue(constants.TRUE);
-        const urlPath = getFullUrl(constants.COMPANY_INVITATIONS_URL);
-        // When
-        const result = await router.get(url);
-        // Then
-        expect(result.statusCode).toEqual(302);
-        expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
-    });
-
     test.each([
         { langInfo: "English", langVersion: "en", lang: en },
         { langInfo: "English", langVersion: undefined, lang: en },
@@ -90,7 +63,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         async ({ langVersion, lang }) => {
             // Given
             const fullUrl = `${url}&lang=${langVersion}`;
-            const referrerUrl = `http://localhost${getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL).replace(":associationId", associationId)}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
+            const referrerUrl = `http://localhost${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associationId}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
             getExtraDataSpy.mockReturnValue(constants.TRUE);
             // When
             const result = await router
@@ -103,4 +76,31 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
             expect(result.text).toContain(lang.view_your_companies);
             expect(result.text).toContain(constants.LANDING_URL);
         });
+
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
+        // Given
+        const urlPath = `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
+    it("should redirect back to people digitally authorised page if association already declined", async () => {
+        // Given
+        getExtraDataSpy.mockReturnValue(constants.TRUE);
+        const urlPath = `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
+        // When
+        const result = await router.get(url);
+        // Then
+        expect(result.statusCode).toEqual(302);
+        expect(result.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
 });

@@ -8,7 +8,6 @@ import enCommon from "../../../../../../../locales/en/common.json";
 import cyCommon from "../../../../../../../locales/cy/common.json";
 import en from "../../../../../../../locales/en/cancel-person.json";
 import cy from "../../../../../../../locales/cy/cancel-person.json";
-import * as referrerUtils from "../../../../../../../src/lib/utils/referrerUtils";
 import { setExtraData } from "../../../../../../../src/lib/utils/sessionUtils";
 const router = supertest(app);
 const session: Session = new Session();
@@ -36,13 +35,9 @@ jest.mock("../../../../../../../src/lib/utils/sessionUtils", () => {
 
 describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", () => {
 
-    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
     beforeEach(() => {
         jest.clearAllMocks();
     });
-
-    redirectPageSpy.mockReturnValue(false);
 
     it("should check session and auth before returning the /your-companies/company/:companyNumber/cancel-person/:userEmail page", async () => {
         await router.get(url);
@@ -146,7 +141,10 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
     ])("should redirect, and return status 302 if $condition",
         async ({ referrer, userEmail, pageIndicator, userEmailsArray }) => {
             // Given
-            redirectPageSpy.mockReturnValue(true);
+            const urlPath = constants.LANDING_URL;
+            mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+                res.redirect(urlPath);
+            });
             mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
                 req.headers = { referrer };
                 req.session = session;
@@ -163,7 +161,10 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
 
     it("should redirect, and return status 302 if referrer is undefined and pageIndicator is true", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
             req.headers = { referrer: undefined };
             req.session = session;
@@ -176,22 +177,16 @@ describe("GET /your-companies/company/:companyNumber/cancel-person/:userEmail", 
         expect(response.status).toEqual(302);
     });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
 

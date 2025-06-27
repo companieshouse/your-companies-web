@@ -3,7 +3,6 @@ import app from "../../../../../src/app";
 import supertest from "supertest";
 import * as associationsService from "../../../../../src/services/associationsService";
 import * as constants from "../../../../../src/constants";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import { getFullUrl } from "../../../../../src/lib/utils/urlUtils";
@@ -23,16 +22,12 @@ const mockPostInvitation = jest.spyOn(associationsService, "postInvitation");
 const router = supertest(app);
 const url = "/your-companies/add-presenter-check-details/12345678";
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-redirectPageSpy.mockReturnValue(false);
-
 describe("POST /your-companies/add-presenter-check-details/:companyNumber", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
         session.setExtraData(constants.COMPANY_NUMBER, "12345678");
         session.setExtraData(constants.COMPANY_NAME, "Test Company");
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session, company and user auth before routing to controller", async () => {

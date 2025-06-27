@@ -5,10 +5,10 @@ import * as associationsService from "../../../../../../src/services/association
 import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../../../../src/types/associations";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import { LANDING_URL } from "../../../../../../src/constants";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 
@@ -25,8 +25,6 @@ jest.mock("../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmation-person-added", () => {
     const companyNumber = "NI038379";
     const url = `/your-companies/manage-authorised-people/${companyNumber}/confirmation-person-added`;
@@ -42,7 +40,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
     beforeEach(() => {
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-        redirectPageSpy.mockReturnValue(false);
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
     });
 
@@ -87,22 +84,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
         expect(response.text.includes("bob@bob.com")).toBe(false);
     });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });

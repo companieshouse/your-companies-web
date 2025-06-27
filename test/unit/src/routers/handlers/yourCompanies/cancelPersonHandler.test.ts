@@ -121,7 +121,7 @@ describe("CancelPersonHandler", () => {
             }
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CANCEL_PERSON_PAGE);
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(method === constants.POST ? 1 : 0);
+            expect(setExtraDataSpy).toHaveBeenCalledTimes(method === constants.POST ? 2 : 1);
             if (method === constants.POST && cancelPerson) {
                 deleteExtraDataCallCounter = ++deleteExtraDataCallCounter;
                 expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);
@@ -130,6 +130,7 @@ describe("CancelPersonHandler", () => {
                 const setExtraDataValue = cancelPerson ? { cancelPerson, userEmail, companyNumber } : viewData.errors;
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), setExtraDataKey, setExtraDataValue);
             }
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
             expect(deleteExtraDataSpy).toHaveBeenCalledTimes(deleteExtraDataCallCounter);
             expect(response).toEqual(expectedViewData);
         });
