@@ -46,6 +46,7 @@ export class CancelPersonHandler extends GenericHandler {
      */
     async execute (req: Request, res: Response, method: string): Promise<CancelPersonViewData> {
         deleteExtraData(req.session, constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
         this.populateViewData(req);
 
         const error = getExtraData(req.session, constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION);

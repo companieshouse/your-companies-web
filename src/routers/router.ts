@@ -72,7 +72,7 @@ router.post(constants.REMOVE_COMPANY_URL, removeCompanyControllerPost as Request
 router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, navigationMiddleware, removeCompanyConfirmedControllerGet);
 
 // Cancel Person
-router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, navigationMiddleware, companyAuthenticationMiddleware, cancelPersonControllerGet as RequestHandler);
+router.get(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, navigationMiddleware, cancelPersonControllerGet as RequestHandler);
 router.post(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL, companyAuthenticationMiddleware, cancelPersonControllerPost as RequestHandler);
 
 // Confirm Company

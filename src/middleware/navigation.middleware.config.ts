@@ -363,6 +363,7 @@ const routeConfigs: RouteConfig[] = [
             ]),
             ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -446,6 +447,7 @@ const routeConfigs: RouteConfig[] = [
             ]),
             ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
     },
 
