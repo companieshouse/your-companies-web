@@ -42,19 +42,111 @@ export interface RouteConfig {
     sessionFlag?: string;
 }
 
+// --- Helper functions to reduce duplication ---
+
+/** Common paramGuards */
+const companyNumberGuard: ParamGuard = {
+    paramName: constants.COMPANY_NUMBER,
+    sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER
+};
+const userEmailGuard: ParamGuard = {
+    paramName: constants.USER_EMAIL,
+    sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL
+};
+const associationsIdGuard: ParamGuard = {
+    paramName: constants.ASSOCIATIONS_ID,
+    sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID
+};
+
 /**
- * Centralized navigation configuration for all journeys.
- * Each journey is split into steps, with comments explaining the flow.
- * Steps with letters (e.g., 3a, 3b) are alternatives.
+ * Helper to generate AllowedPageConfig[] for a list of patterns with company number guard.
  */
+function allowedPagesWithCompanyNumberGuard (patterns: string[]): AllowedPageConfig[] {
+    return patterns.map(pattern => ({
+        pattern: getFullUrl(pattern),
+        paramGuards: [
+            companyNumberGuard
+        ]
+    }));
+}
+
+/**
+ * Helper to generate AllowedPageConfig[] for a list of patterns with user email guard.
+ */
+const allowedPagesWithUserEmailGuard = (patterns: string[]): AllowedPageConfig[] => {
+    return patterns.map(pattern => ({
+        pattern: getFullUrl(pattern),
+        paramGuards: [
+            userEmailGuard
+        ]
+    }));
+};
+
+/**
+ * Helper to generate AllowedPageConfig[] for a list of patterns with associations id guard.
+ */
+const allowedPagesWithAssociationsIdGuard = (patterns: string[]): AllowedPageConfig[] => {
+    return patterns.map(pattern => ({
+        pattern: getFullUrl(pattern),
+        paramGuards: [
+            associationsIdGuard
+        ]
+    }));
+};
+
+/**
+ * Helper to generate AllowedPageConfig[] for a list of patterns with both company number and user email guards.
+ */
+const allowedPagesWithCompanyNumberAndUserEmailGuard = (patterns: string[]): AllowedPageConfig[] => {
+    return patterns.map(pattern => ({
+        pattern: getFullUrl(pattern),
+        paramGuards: [
+            companyNumberGuard,
+            userEmailGuard
+        ]
+    }));
+};
+
+/**
+ * Helper to generate AllowedPageConfig[] for a list of patterns with no param guards.
+ */
+const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
+    return patterns.map(pattern => ({
+        pattern: getFullUrl(pattern)
+    }));
+};
+
+/**
+ * Helper to generate AllowedPageConfig[] for a list of patterns with a custom param guard.
+ */
+const allowedPagesWithCustomGuard = (patterns: string[], paramGuards: ParamGuard[]): AllowedPageConfig[] => {
+    return patterns.map(pattern => ({
+        pattern: getFullUrl(pattern),
+        paramGuards
+    }));
+};
+
+// --- Centralized navigation configuration for all journeys ---
+
+const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
+    constants.MANAGE_AUTHORISED_PEOPLE_URL,
+    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
+    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
+    constants.AUTHORISED_PERSON_ADDED_URL,
+    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
+    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
+];
+
 const routeConfigs: RouteConfig[] = [
     // Add a company journey
     // 1) Confirm company details
     {
         routePattern: constants.CONFIRM_COMPANY_DETAILS_URL,
         allowedPages: [
-            { pattern: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL) }, // itself
-            { pattern: getFullUrl(constants.ADD_COMPANY_URL) } // previous page
+            ...allowedPagesNoGuards([
+                constants.CONFIRM_COMPANY_DETAILS_URL,
+                constants.ADD_COMPANY_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -63,15 +155,16 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.CREATE_COMPANY_ASSOCIATION_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            { pattern: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL) } // previous page
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.CREATE_COMPANY_ASSOCIATION_URL
+            ]),
+            ...allowedPagesNoGuards([
+                constants.CONFIRM_COMPANY_DETAILS_URL
+            ])
         ],
-        allowedExternalUrls: [constants.ACCOUNT_URL],
+        allowedExternalUrls: [
+            constants.ACCOUNT_URL
+        ],
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -79,14 +172,13 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.COMPANY_ADDED_SUCCESS_URL,
         allowedPages: [
-            { pattern: getFullUrl(constants.COMPANY_ADDED_SUCCESS_URL) }, // itself
-            { pattern: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL) }, // previous page
-            {
-                pattern: getFullUrl(constants.CREATE_COMPANY_ASSOCIATION_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesNoGuards([
+                constants.COMPANY_ADDED_SUCCESS_URL,
+                constants.CONFIRM_COMPANY_DETAILS_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.CREATE_COMPANY_ASSOCIATION_URL
+            ])
         ],
         sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
@@ -97,13 +189,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.REMOVE_COMPANY_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.REMOVE_COMPANY_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            { pattern: constants.LANDING_URL } // previous page
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.REMOVE_COMPANY_URL
+            ]),
+            { pattern: constants.LANDING_URL }
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -112,13 +201,12 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
         allowedPages: [
-            { pattern: getFullUrl(constants.REMOVE_COMPANY_CONFIRMED_URL) }, // itself
-            {
-                pattern: getFullUrl(constants.REMOVE_COMPANY_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesNoGuards([
+                constants.REMOVE_COMPANY_CONFIRMED_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.REMOVE_COMPANY_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -128,13 +216,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            { pattern: constants.LANDING_URL } // previous page
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL
+            ]),
+            { pattern: constants.LANDING_URL }
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -143,13 +228,12 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.CONFIRMATION_AUTHORISATION_REMOVED_URL,
         allowedPages: [
-            { pattern: getFullUrl(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL) }, // itself
-            {
-                pattern: getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_AUTHORISATION_REMOVED_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -159,12 +243,9 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL
+            ]),
             { pattern: constants.LANDING_URL }
         ],
         defaultRedirect: constants.LANDING_URL
@@ -174,20 +255,14 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+                constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL
+            ])
         ],
-        allowedExternalUrls: [constants.ACCOUNT_URL],
+        allowedExternalUrls: [
+            constants.ACCOUNT_URL
+        ],
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -195,37 +270,29 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
         allowedPages: [
-            { pattern: getFullUrl(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL) }, // itself
-            {
-                pattern: getFullUrl(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesNoGuards([
+                constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
+                constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL
+            ])
         ],
         sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
     },
 
     // Accept/Reject company invitation journey
-    // 1) Company invitations page doesn't require config
     // 2a) Accept invitation
     {
         routePattern: constants.COMPANY_INVITATIONS_ACCEPT_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.COMPANY_INVITATIONS_ACCEPT_URL), // itself
-                paramGuards: [
-                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
-                ]
-            },
-            { pattern: getFullUrl(constants.COMPANY_INVITATIONS_URL) } // previous page
+            ...allowedPagesWithAssociationsIdGuard([
+                constants.COMPANY_INVITATIONS_ACCEPT_URL
+            ]),
+            ...allowedPagesNoGuards([
+                constants.COMPANY_INVITATIONS_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -234,18 +301,17 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.COMPANY_INVITATIONS_DECLINE_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.COMPANY_INVITATIONS_DECLINE_URL), // itself
-                paramGuards: [
-                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
-                ]
-            },
-            { pattern: getFullUrl(constants.COMPANY_INVITATIONS_URL) } // previous page
+            ...allowedPagesWithAssociationsIdGuard([
+                constants.COMPANY_INVITATIONS_DECLINE_URL
+            ]),
+            ...allowedPagesNoGuards([
+                constants.COMPANY_INVITATIONS_URL
+            ])
         ],
         defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
     },
 
-    // Manage authorised people journey with all sub-jurneys (starting point MANAGE_AUTHORISED_PEOPLE_URL does not require config)
+    // Manage authorised people journey with all sub-journeys
 
     // Add new authorised person journey
     // 1) Add presenter
@@ -253,20 +319,10 @@ const routeConfigs: RouteConfig[] = [
         routePattern: constants.ADD_PRESENTER_URL,
         allowedPages: [
             // itself and all possible previous steps
-            ...[
+            ...allowedPagesWithCompanyNumberGuard([
                 constants.ADD_PRESENTER_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-                constants.AUTHORISED_PERSON_ADDED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
-            ].map(pattern => ({
-                pattern: getFullUrl(pattern),
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }))
+                ...MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -275,18 +331,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.CHECK_PRESENTER_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.CHECK_PRESENTER_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.ADD_PRESENTER_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.CHECK_PRESENTER_URL,
+                constants.ADD_PRESENTER_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -295,18 +343,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.AUTHORISED_PERSON_ADDED_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.AUTHORISED_PERSON_ADDED_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.CHECK_PRESENTER_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.AUTHORISED_PERSON_ADDED_URL,
+                constants.CHECK_PRESENTER_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -315,18 +355,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.PRESENTER_ALREADY_ADDED_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.PRESENTER_ALREADY_ADDED_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.CHECK_PRESENTER_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.PRESENTER_ALREADY_ADDED_URL,
+                constants.CHECK_PRESENTER_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -336,27 +368,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER },
-                    { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
-                ]
-            },
-            // previous pages
-            ...[
-                constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-                constants.AUTHORISED_PERSON_ADDED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
-            ].map(pattern => ({
-                pattern: getFullUrl(pattern),
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }))
+            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
+                constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -365,19 +380,18 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL
+            ]),
+            ...allowedPagesWithCustomGuard(
+                [
+                    constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL
+                ],
+                [
+                    companyNumberGuard,
+                    userEmailGuard
                 ]
-            },
-            {
-                pattern: getFullUrl(constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER },
-                    { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
-                ]
-            }
+            )
         ],
         sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
         defaultRedirect: constants.LANDING_URL
@@ -388,26 +402,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL), // itself
-                paramGuards: [
-                    { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
-                ]
-            },
-            // previous pages
-            ...[
-                constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-                constants.AUTHORISED_PERSON_ADDED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
-            ].map(pattern => ({
-                pattern: getFullUrl(pattern),
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }))
+            ...allowedPagesWithUserEmailGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -416,32 +414,13 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
-                ]
-            },
-            // previous pages
-            ...[
-                constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-                constants.AUTHORISED_PERSON_ADDED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
-            ].map(pattern => ({
-                pattern: getFullUrl(pattern),
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }))
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL
+            ]),
+            ...allowedPagesWithUserEmailGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -451,26 +430,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL), // itself
-                paramGuards: [
-                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
-                ]
-            },
-            // previous pages
-            ...[
-                constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-                constants.AUTHORISED_PERSON_ADDED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
-            ].map(pattern => ({
-                pattern: getFullUrl(pattern),
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }))
+            ...allowedPagesWithAssociationsIdGuard([
+                constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -479,18 +442,12 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.ASSOCIATIONS_ID, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID }
-                ]
-            }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
+            ]),
+            ...allowedPagesWithAssociationsIdGuard([
+                constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -500,27 +457,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER },
-                    { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
-                ]
-            },
-            // previous pages
-            ...[
-                constants.MANAGE_AUTHORISED_PEOPLE_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-                constants.AUTHORISED_PERSON_ADDED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
-            ].map(pattern => ({
-                pattern: getFullUrl(pattern),
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }))
+            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
+                constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -529,13 +469,12 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.REMOVED_THEMSELVES_URL,
         allowedPages: [
-            { pattern: getFullUrl(constants.REMOVED_THEMSELVES_URL) }, // itself
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            }
+            ...allowedPagesNoGuards([
+                constants.REMOVED_THEMSELVES_URL
+            ]),
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -544,19 +483,12 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
         allowedPages: [
-            {
-                pattern: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL), // itself
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER }
-                ]
-            },
-            {
-                pattern: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL), // previous page
-                paramGuards: [
-                    { paramName: constants.COMPANY_NUMBER, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER },
-                    { paramName: constants.USER_EMAIL, sessionKey: constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL }
-                ]
-            }
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL
+            ]),
+            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
+                constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     }
