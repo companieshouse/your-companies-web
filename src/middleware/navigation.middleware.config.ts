@@ -61,14 +61,14 @@ const associationsIdGuard: ParamGuard = {
 /**
  * Helper to generate AllowedPageConfig[] for a list of patterns with company number guard.
  */
-function allowedPagesWithCompanyNumberGuard (patterns: string[]): AllowedPageConfig[] {
+const allowedPagesWithCompanyNumberGuard = (patterns: string[]): AllowedPageConfig[] => {
     return patterns.map(pattern => ({
         pattern: getFullUrl(pattern),
         paramGuards: [
             companyNumberGuard
         ]
     }));
-}
+};
 
 /**
  * Helper to generate AllowedPageConfig[] for a list of patterns with user email guard.
