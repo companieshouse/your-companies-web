@@ -3,6 +3,7 @@
     "authorisation_to_file_online": "’s authorisation to file online for this company",
     "confirm": "Confirm",
     "confirm_you_do_not_want": "Confirm you do not want to restore digital authorisation",
+    "confirm_that_you_have_read": "Confirm that you have read and understood this information",
     "digital_authorisation": "’s digital authorisation.",
     "digital_authorisation_this_means_they": "’s digital authorisation, this means they will no longer be able to file online for ",
     "for": " for ",
@@ -26,5 +27,7 @@
     "will_not_be_digitially_authorised": " will not be digitially authorised to file online for ",
     "will_still_be_able_to_file": " will still be able to file online for this company if they have access to the current authentication code.",
     "without_a_current_auth_code": " without a current authentication code. We’ll email ",
-    "you_may_wish_to_change_the_auth_code": "You may wish to change the authentication code for this company as soon as possible after you have removed "
+    "you_may_wish_to_change_the_auth_code": "You may wish to change the authentication code for this company as soon as possible after you have removed ",
+    "you_may_wish_to_change_the_auth_code_not_restore": "You may wish to change the authentication code for this company as soon as possible after you have confirmed you do not want to restore "
+    
 }

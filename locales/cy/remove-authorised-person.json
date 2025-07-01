@@ -3,6 +3,7 @@
     "authorisation_to_file_online": " i ffeilio ar-lein ar gyfer y cwmni hwn",
     "confirm": "[CY] Confirm",
     "confirm_you_do_not_want": "[CY] Confirm you do not want to restore digital authorisation for ",
+    "confirm_that_you_have_read": "[CY] Confirm that you have read and understood this information",
     "digital_authorisation": ".",
     "digital_authorisation_this_means_they": ", mae hyn yn golygu na fyddant bellach yn gallu ffeilio ar-lein ar gyfer ",
     "for": "[CY] for ",
@@ -26,5 +27,6 @@
     "will_not_be_digitially_authorised": "[CY]  will not be digitially authorised to file online for ",
     "will_still_be_able_to_file": " yn dal i allu ffeilio ar-lein ar gyfer y cwmni hwn os oes ganddynt fynediad at y cod dilysu cyfredol.",
     "without_a_current_auth_code": " heb god dilysu cyfredol. Byddwn yn anfon e-bost at ",
-    "you_may_wish_to_change_the_auth_code": "Efallai yr hoffech newid y cod dilysu ar gyfer y cwmni hwn cyn gynted â phosibl ar ôl i chi ddileu awdurdodiad digidol "
+    "you_may_wish_to_change_the_auth_code": "Efallai yr hoffech newid y cod dilysu ar gyfer y cwmni hwn cyn gynted â phosibl ar ôl i chi ddileu awdurdodiad digidol ",
+    "you_may_wish_to_change_the_auth_code_not_restore": "[CY] You may wish to change the authentication code for this company as soon as possible after you have confirmed you do not want to restore "
 }

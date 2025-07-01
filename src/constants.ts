@@ -126,6 +126,7 @@ export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_t
 export const COMPANY_NUMBER_MUST_ONLY_INCLUDE = "company_number_must_only_include";
 export const ENTER_A_COMPANY_NUMBER_OR_PART = "enter_a_company_number_or_part";
 export const YOU_MUST_SELECT_AN_OPTION = "you_must_select_an_option";
+export const CONFIRM_YOU_HAVE_READ = "confirm_that_you_have_read";
 
 // HTTP Methods
 export const GET = "GET";

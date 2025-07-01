@@ -129,6 +129,9 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
             this.viewData.errors = { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } };
             setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
+        } else if (this.viewData.currentStatus === AssociationStatus.MIGRATED) {
+            this.viewData.errors = { confirmRemoval: { text: constants.CONFIRM_YOU_HAVE_READ } };
+            setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
         } else {
             this.viewData.errors = { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } };
             setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
@@ -152,6 +155,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     private async processAssociationRemoval (req: Request, res: Response, association: Association): Promise<void> {
         deleteExtraData(req.session, constants.REMOVE_PAGE_ERRORS);
+        deleteExtraData(req.session, this.getSessionKey(req));
 
         logger.info(createLogMessage(req.session, this.processAssociationRemoval.name,
             `Removing association id: ${association.id}, company number: ${association.companyNumber}`));
