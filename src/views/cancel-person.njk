@@ -35,7 +35,7 @@
                 {% include "partials/csrf_token.njk" %}
                 {{ govukRadios({
                         classes: "govuk-radios--inline",
-                        name: "cancelPerson",
+                        name: "confirmRemoval",
                         fieldset: {
                             legend: {
                                 html: legendContent,
@@ -45,7 +45,7 @@
                         },
                         items: [
                             {
-                                value: "yes",
+                                value: "confirm",
                                 text: lang.yes,
                                 attributes: {
                                     "data-event-id": "yes-option"

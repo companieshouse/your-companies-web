@@ -7,7 +7,7 @@
 
 {% set user_details = userName if userName else 
     userEmail %}
-{% set title = lang.title_remove_authorised_person %}
+{% set title = lang.confirm_you_do_not_want %}
 
 {% block back_link %}
     {% include "partials/back_link.njk" %}
@@ -20,7 +20,7 @@
         {% set message = {
             text: lang[value.text]
         } %}
-        {% set title = lang.title_error + lang.title_remove_authorised_person %}
+        {% set title = lang.title_error + lang.confirm_you_do_not_want %}
     {% endif %}
 {% endfor %}
 
@@ -28,12 +28,12 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">{{ companyName }} ({{companyNumber}})</span>
-            <h1 class = "govuk-heading-xl">
-                {{ lang.remove + user_details + lang.authorisation_to_file_online }}
+            <span class="govuk-caption-l">{{ companyName }} ({{companyNumber}})</span>
+            <h1 class = "govuk-heading-l">
+                {{ lang.confirm_you_do_not_want + lang.for + user_details }}
             </h1>
 
-            <p>{{ lang.if_you_remove + user_details + lang.digital_authorisation_this_means_they + companyName + lang.without_a_current_auth_code + user_details + lang.to_let_them_know_you_have_removed }}</p>
+            <p>{{ lang.this_means_that + user_details + lang.will_not_be_digitially_authorised + companyName + lang.well_email + user_details + lang.to_let_them_know }}</p>
 
             {% set warning_text_html %}
             
@@ -41,7 +41,7 @@
                     {{ lang.remove_person_summary_start + user_details + lang.will_still_be_able_to_file }}
                 </span>
                 <span class="govuk-!-display-block">
-                    {{ lang.you_may_wish_to_change_the_auth_code + user_details + lang.digital_authorisation }}
+                    {{ lang.you_may_wish_to_change_the_auth_code_not_restore + user_details + lang.digital_authorisation }}
                 </span>
         
             {% endset %}
@@ -54,7 +54,7 @@
                 })
             }}
 
-            <p>{{ lang.if + user_details + lang.is_appointed_as_an_officer }}</p>
+            <p>{{ lang.if + user_details + lang.is_appointed_as_an_officer_v2 }}</p>
 
             <form method = "post">
                 {% include "partials/csrf_token.njk" %}
@@ -72,7 +72,7 @@
                 <div class="govuk-button-group">
 
                     {{ govukButton({
-                            text: lang.remove_authorisation,
+                            text: lang.confirm,
                             classes: "govuk-button--warning",
                             attributes: {
                                 id: "remove-authorisation-button",

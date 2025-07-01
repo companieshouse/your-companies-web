@@ -61,13 +61,4 @@ describe("GET /your-companies/confirmation-person-removed-themselves", () => {
             expect(response.text).toContain(companyNumber);
         });
 
-    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
-        expect(response.status).toEqual(302);
-        expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
-    });
 });

@@ -7,7 +7,6 @@ export const COMPANY_PROFILE = "companyProfile";
 export const USER_EMAIL = "userEmail";
 export const AUTHORISED_PERSON_EMAIL = "authorisedPersonEmail";
 export const REFERER_URL = "refererUrl";
-export const CANCEL_PERSON = "cancelPerson";
 export const AUTHORISED_PERSON = "authorisedPerson";
 export const RESENT_SUCCESS_EMAIL = "resentSuccessEmail";
 export const CONFIRMED_COMPANY_FOR_ASSOCIATION = "confirmedCompanyForAssociation";
@@ -23,6 +22,8 @@ export const USER_EMAILS_ARRAY = "userEmailsArray";
 export const CURRENT_COMPANY_NUM = "currentCompanyNumber";
 export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
+export const REMOVE_PAGE_ERRORS = "removePageErrors";
+
 export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
 export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";
 // query params
@@ -62,6 +63,7 @@ export const REMOVE_COMPANY_CONFIRMED = "confirmation-company-removed";
 export const REMOVED_THEMSELVES = "confirmation-person-removed-themselves";
 export const PRESENTER_ALREADY_ADDED_PAGE = "presenter-already-added";
 export const SERVICE_UNAVAILABLE = "service-unavailable";
+export const REMOVE_DO_NOT_RESTORE_PAGE = "remove-do-not-restore";
 export const RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_PAGE = "confirmation-your-digital-authorisation-restored";
 export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE = "send-email-invitation-to-be-digitally-authorised";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE = "remove-authorisation-do-not-restore";
@@ -81,14 +83,10 @@ export const CONFIRMATION_PERSON_ADDED_URL = "/confirmation-person-added";
 export const AUTHORISED_PERSON_ADDED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_ADDED_URL}`;
 export const PRESENTER_ALREADY_ADDED_URL = `/${PRESENTER_ALREADY_ADDED_PAGE}/:${COMPANY_NUMBER}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = `/${ADD_PRESENTER_PAGE}`;
-export const CANCEL_PERSON_URL = `/${CANCEL_PERSON_PAGE}/:${USER_EMAIL}`;
-export const COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL = `${COMPANY_AUTH_PROTECTED_BASE}${CANCEL_PERSON_URL}`;
 export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-people-email-resent/:${USER_EMAIL}`;
-export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${USER_EMAIL}`;
+export const AUTHENTICATION_CODE_REMOVE_URL = `/authentication-code-remove/:${ASSOCIATIONS_ID}`;
 export const COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL = `${COMPANY_AUTH_PROTECTED_BASE}${AUTHENTICATION_CODE_REMOVE_URL}`;
-export const CONFIRMATION_CANCEL_PERSON_URL = "/confirmation-cancel-person";
 export const AUTHORISATION_EMAIL_RESENT_URL = "/authorisation-email-resent";
-export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_CANCEL_PERSON_URL}`;
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${AUTHORISATION_EMAIL_RESENT_URL}`;
 export const ADD_PRESENTER_URL = `/${ADD_PRESENTER_PAGE}/:${COMPANY_NUMBER}`;
 export const CHECK_PRESENTER_URL = `/${CHECK_PRESENTER_PAGE}/:${COMPANY_NUMBER}`;
@@ -128,6 +126,7 @@ export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_t
 export const COMPANY_NUMBER_MUST_ONLY_INCLUDE = "company_number_must_only_include";
 export const ENTER_A_COMPANY_NUMBER_OR_PART = "enter_a_company_number_or_part";
 export const YOU_MUST_SELECT_AN_OPTION = "you_must_select_an_option";
+export const CONFIRM_YOU_HAVE_READ = "confirm_that_you_have_read";
 
 // HTTP Methods
 export const GET = "GET";
@@ -166,6 +165,7 @@ export const TRUE = "true";
 export const NOT_PROVIDED = "Not provided";
 export const CONFIRMED = "confirmed";
 export const YES = "yes";
+export const NO = "no";
 export const CONFIRM = "confirm";
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
