@@ -6,14 +6,16 @@ import { mockRequest } from "../../../../mocks/request.mock";
 import { mockResponse } from "../../../../mocks/response.mock";
 import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
-import * as urlUtils from "../../../../../src/lib/utils/urlUtils";
 
 const mockExecute = jest.fn();
+const mockHandlePostRequest = jest.fn();
 jest.mock("../../../../../src/routers/handlers/yourCompanies/removeAuthorisedPersonHandler", () => {
     return {
         RemoveAuthorisedPersonHandler: jest.fn().mockImplementation(() => {
             return {
-                execute: mockExecute
+                execute: mockExecute,
+                getTemplateViewName: jest.fn().mockReturnValue("remove-authorised-person"),
+                handlePostRequest: mockHandlePostRequest
             };
         })
     };
@@ -27,7 +29,6 @@ res.render = renderMock;
 const redirectMock = jest.fn();
 res.redirect = redirectMock;
 const deleteExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "deleteExtraData");
-const getFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getFullUrl");
 
 describe("removeAuthorisedPersonControllerGet", () => {
 
@@ -59,39 +60,13 @@ describe("removeAuthorisedPersonControllerPost", () => {
         jest.clearAllMocks();
     });
 
-    it("should render remove authorised person page if an error present in view data",
+    it("should create an instance of RemoveAuthorisedPersonHandler and call its handlePostRequest method",
         async () => {
-            // Given
-            const expectedViewData = {
-                errors: [
-                    { key: "value" }
-                ]
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            // When
+            // Given / When
             await removeAuthorisedPersonControllerPost(req as Request, res as Response);
-            // Then
-            expect(RemoveAuthorisedPersonHandler).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledWith(constants.REMOVE_AUTHORISED_PERSON_PAGE, expectedViewData);
-        });
 
-    it("should redirect to remove association page if an error does not present in view data",
-        async () => {
-            // Given
-            const expectedViewData = {
-                companyNumber: "12345"
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            const url = "/your-companies/12345/remove-association";
-            getFullUrlSpy.mockReturnValue(`${constants.LANDING_URL}${constants.REMOVE_ASSOCIATION_URL}`);
-            // When
-            await removeAuthorisedPersonControllerPost(req as Request, res as Response);
             // Then
             expect(RemoveAuthorisedPersonHandler).toHaveBeenCalledTimes(1);
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_ASSOCIATION_URL);
-            expect(redirectMock).toHaveBeenCalledTimes(1);
-            expect(redirectMock).toHaveBeenCalledWith(url);
+            expect(mockHandlePostRequest).toHaveBeenCalledTimes(1);
         });
 });

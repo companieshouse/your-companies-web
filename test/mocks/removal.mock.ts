@@ -1,16 +1,23 @@
-import * as constants from "../../src/constants";
 import { Removal } from "../../src/types/removal";
-import { companyAssociations } from "../mocks/associations.mock";
+import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
 
-export const removalWithoutUserName: Removal = {
-    removePerson: constants.CONFIRM,
-    userEmail: companyAssociations.items[1].userEmail,
-    companyNumber: companyAssociations.items[1].companyNumber
+export const mockConfirmedRemoval: Removal = {
+    userEmail: "mario@example.com",
+    companyNumber: "NI038379",
+    userName: "Mario Rossi",
+    status: AssociationStatus.CONFIRMED
 };
 
-export const removalWithUserName: Removal = {
-    removePerson: constants.CONFIRM,
-    userEmail: companyAssociations.items[3].userEmail,
-    userName: companyAssociations.items[3].displayName,
-    companyNumber: companyAssociations.items[3].companyNumber
+export const mockAwaitingApprovalRemoval: Removal = {
+    userEmail: "luigi@example.com",
+    companyNumber: "NI038379",
+    userName: "Luigi Verdi",
+    status: AssociationStatus.AWAITING_APPROVAL
+};
+
+export const mockMigratedRemoval: Removal = {
+    userEmail: "peach@example.com",
+    companyNumber: "NI038379",
+    userName: "Peach Toadstool",
+    status: AssociationStatus.MIGRATED
 };

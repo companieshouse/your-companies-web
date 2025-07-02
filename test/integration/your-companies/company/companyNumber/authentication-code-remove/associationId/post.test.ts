@@ -6,6 +6,10 @@ import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import en from "../../../../../../../locales/en/remove-authorised-person.json";
 import cy from "../../../../../../../locales/cy/remove-authorised-person.json";
+import * as sessionUtils from "../../../../../../../src/lib/utils/sessionUtils";
+import { singleConfirmedAssociation } from "../../../../../../mocks/associations.mock";
+
+const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
 const router = supertest(app);
 
@@ -28,12 +32,10 @@ jest.mock("../../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
-    const userEmail = "test@test.com";
-    const companyNumber = "123456";
-    const userName = "John Black";
-    const urlWithEmail = `/your-companies/company/${companyNumber}/authentication-code-remove/${userEmail}`;
-    const urlWithName = `/your-companies/company/${companyNumber}/authentication-code-remove/${userEmail}?userName=${userName}`;
+describe("POST /your-companies/remove-authenticated-person/:associationId", () => {
+    const companyNumber = "NI038379";
+    const associationId = "654321";
+    const urlWithId = `/your-companies/company/${companyNumber}/authentication-code-remove/${associationId}`;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -43,8 +45,7 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
 
     test.each([
         // Given
-        { urlInfo: "/your-companies/remove-authenticated-person/:userEmail", url: urlWithEmail },
-        { urlInfo: "/your-companies/remove-authenticated-person/:userEmail?userName=:userName", url: urlWithName }
+        { urlInfo: "/your-companies/remove-authenticated-person/:associationId", url: urlWithId }
     ])("should check session and auth before returning the $urlInfo page",
         async ({ url }) => {
             // When
@@ -57,31 +58,21 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
     test.each([
         // Given
         {
-            condition: "checkbox is selected for remove-authenticated-person/:userEmail page",
+            condition: "checkbox is selected for remove-authenticated-person/:associationId page",
             langVersion: "en",
-            url: urlWithEmail
+            url: urlWithId
         },
         {
-            condition: "checkbox is selected for remove-authenticated-person/:userEmail page",
+            condition: "checkbox is selected for remove-authenticated-person/:associationId page",
             langVersion: "cy",
-            url: urlWithEmail
-        },
-        {
-            condition: "checkbox is selected for remove-authenticated-person/:userEmail?userName=:userName page",
-            langVersion: "en",
-            url: urlWithName
-        },
-        {
-            condition: "checkbox is selected for remove-authenticated-person/:userEmail?userName=:userName page",
-            langVersion: "cy",
-            url: urlWithName
+            url: urlWithId
         }
-    ])("should return status 302 if $condition",
+    ])("should return status 200 if $condition",
         async ({ langVersion, url }) => {
             // When
             const response = await router.post(`${url}?lang=${langVersion}`).send({ confirmRemoval: "confirm" });
             // Then
-            expect(response.statusCode).toEqual(302);
+            expect(response.statusCode).toEqual(200);
         });
 
     test.each([
@@ -89,37 +80,25 @@ describe("POST /your-companies/remove-authenticated-person/:userEmail", () => {
             langInfo: "English",
             langVersion: "en",
             lang: en,
-            urlInfo: "remove-authenticated-person/:userEmail",
-            url: urlWithEmail
+            urlInfo: "remove-authenticated-person/:associationId",
+            url: urlWithId
         },
         {
             langInfo: "Welsh",
             langVersion: "cy",
             lang: cy,
-            urlInfo: "remove-authenticated-person/:userEmail",
-            url: urlWithEmail
-        },
-        {
-            langInfo: "English",
-            langVersion: "en",
-            lang: en,
-            urlInfo: "remove-authenticated-person/:userEmail?userName=:userName",
-            url: urlWithName
-        },
-        {
-            langInfo: "Welsh",
-            langVersion: "cy",
-            lang: cy,
-            urlInfo: "remove-authenticated-person/:userEmail?userName=:userName",
-            url: urlWithName
+            urlInfo: "remove-authenticated-person/:associationId",
+            url: urlWithId
         }
     ])("should return expected $langInfo error message if no option selected and language version set to '$langVersion' for $urlInfo page",
         async ({ langVersion, url, lang }) => {
             // Given
-            const langString = url === urlWithName ? "&lang=" : "?lang=";
+            const langString = `?lang=${langVersion}`;
             const expectedErrorMessage = lang.select_if_you_confirm_that_you_have_read;
+            getExtraDataSpy
+                .mockReturnValueOnce(singleConfirmedAssociation);
             // When
-            const response = await router.post(`${url}${langString}${langVersion}`);
+            const response = await router.post(`${url}${langString}`);
             // Then
             expect(response.text).toContain(expectedErrorMessage);
         });

@@ -88,8 +88,7 @@ describe("GET /your-companies/add-presenter/companyNumber", () => {
     test.each([
         { condition: "is without confirmation ending", referrer: "testUrl.com" },
         { condition: "contains confirmation-person-removed", referrer: "testUrl.com/confirmation-person-removed" },
-        { condition: "referrer contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" },
-        { condition: "referrer contains confirmation-cancel-person", referrer: "testUrl.com/confirmation-cancel-person" }
+        { condition: "referrer contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" }
     ])("should not redirect, and return status 200 if referrer $condition",
         async ({ referrer }) => {
             // Given

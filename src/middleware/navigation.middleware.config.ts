@@ -95,14 +95,14 @@ const allowedPagesWithAssociationsIdGuard = (patterns: string[]): AllowedPageCon
 };
 
 /**
- * Helper to generate AllowedPageConfig[] for a list of patterns with both company number and user email guards.
+ * Helper to generate AllowedPageConfig[] for a list of patterns with both company number and association id guards.
  */
-const allowedPagesWithCompanyNumberAndUserEmailGuard = (patterns: string[]): AllowedPageConfig[] => {
+const allowedPagesWithCompanyNumberAndAssociationIdGuard = (patterns: string[]): AllowedPageConfig[] => {
     return patterns.map(pattern => ({
         pattern: getFullUrl(pattern),
         paramGuards: [
             companyNumberGuard,
-            userEmailGuard
+            associationsIdGuard
         ]
     }));
 };
@@ -120,7 +120,6 @@ const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
 
 const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
     constants.MANAGE_AUTHORISED_PEOPLE_URL,
-    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
     constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
     constants.AUTHORISED_PERSON_ADDED_URL,
     constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
@@ -353,35 +352,6 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // Cancel a new authorised person journey
-    // 1) Cancel person
-    {
-        routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-        allowedPages: [
-            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
-                constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL
-            ]),
-            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
-        ],
-        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
-        defaultRedirect: constants.LANDING_URL
-    },
-
-    // 2) Confirmation cancel person
-    {
-        routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-        allowedPages: [
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL
-            ]),
-            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
-                constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL
-            ])
-        ],
-        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
-        defaultRedirect: constants.LANDING_URL
-    },
-
     // Resend email to a new authorised person journey
     // 1) Manage authorised people email resent
     {
@@ -442,7 +412,7 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
         allowedPages: [
-            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
+            ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
                 constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
             ]),
             ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
@@ -458,8 +428,8 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesNoGuards([
                 constants.REMOVED_THEMSELVES_URL
             ]),
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.MANAGE_AUTHORISED_PEOPLE_URL
+            ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
+                constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
             ])
         ],
         defaultRedirect: constants.LANDING_URL
@@ -472,7 +442,7 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithCompanyNumberGuard([
                 constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL
             ]),
-            ...allowedPagesWithCompanyNumberAndUserEmailGuard([
+            ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
                 constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
             ])
         ],

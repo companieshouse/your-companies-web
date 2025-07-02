@@ -4,11 +4,9 @@ import {
     getAddPresenterUrl,
     getAuthenticationCodeRemoveUrl,
     getAuthorisedPersonAddedFullUrl,
-    getCancelPersonUrl,
     getCheckPresenterFullUrl,
     getCheckPresenterUrl,
     getCompanyAuthProtectedAuthenticationCodeRemoveUrl,
-    getCompanyAuthProtectedCancelPersonFullUrl,
     getCompanyInvitationsAcceptFullUrl,
     getCompanyInvitationsDeclineFullUrl,
     getCreateCompanyAssociationFullUrl,
@@ -44,7 +42,6 @@ describe("addLangToUrl", () => {
 
 describe("getManageAuthorisedPeopleUrl should return correct url", () => {
     it.each([
-        { url: "/confirmation-cancel-person", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person" },
         { url: "/confirmation-person-removed", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-removed" },
         { url: "/authorisation-email-resent", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/authorisation-email-resent" },
         { url: "/confirmation-person-added", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-added" },
@@ -58,7 +55,6 @@ describe("isReferrerIncludes", () => {
     it.each([
         // Given
         [true, "http://some-service.com/confirmation-person-removed"],
-        [true, "http://some-service.com/confirmation-cancel-person"],
         [true, "http://some-service.com/confirmation-person-added"],
         [true, "http://some-service.com/authorisation-email-resent"],
         [false, "http://some-service.com/something-else"]
@@ -103,6 +99,19 @@ describe("URL generation function", () => {
 
     test.each([
         // Given
+        ["getFullUrl", `${constants.LANDING_URL}/test/path`, "/test/path", getFullUrl],
+        ["getAddPresenterUrl", `/${constants.ADD_PRESENTER_PAGE}/12345`, "12345", getAddPresenterUrl],
+        ["getAddPresenterFullUrl", `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/12345`, "12345", getAddPresenterFullUrl],
+        ["getCompanyInvitationsAcceptFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/abc123`, "abc123", getCompanyInvitationsAcceptFullUrl],
+        ["getCompanyInvitationsDeclineFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/abc123`, "abc123", getCompanyInvitationsDeclineFullUrl],
+        ["getCheckPresenterUrl", `/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterUrl],
+        ["getCheckPresenterFullUrl", `${constants.LANDING_URL}/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterFullUrl],
+        ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl],
+        ["getPresenterAlreadyAddedUrl", `/${constants.PRESENTER_ALREADY_ADDED_PAGE}/abc123`, "abc123", getPresenterAlreadyAddedUrl],
+        ["getAuthorisedPersonAddedFullUrl", `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.CONFIRMATION_PERSON_ADDED_URL}`, "abc123", getAuthorisedPersonAddedFullUrl],
+        ["getManageAuthorisedPeopleConfirmationEmailResentUrl", `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`, "abc123", getManageAuthorisedPeopleConfirmationEmailResentUrl],
+        ["getAuthenticationCodeRemoveUrl", `/authentication-code-remove/test@test.com`, "test@test.com", getAuthenticationCodeRemoveUrl],
+        ["getRemoveCompanyUrl", `/${constants.REMOVE_COMPANY_PAGE}/abc123`, "abc123", getRemoveCompanyUrl],
         [
             "getFullUrl",
             `${constants.LANDING_URL}/test/path`,
@@ -164,11 +173,6 @@ describe("URL generation function", () => {
             getAuthorisedPersonAddedFullUrl
         ],
         [
-            "getCancelPersonUrl",
-            `/${constants.CANCEL_PERSON_PAGE}/test@test.com`,
-            "test@test.com", getCancelPersonUrl
-        ],
-        [
             "getManageAuthorisedPeopleConfirmationEmailResentUrl",
             `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`,
             "abc123",
@@ -208,13 +212,7 @@ describe("URL generation function", () => {
 
     test.each([
         // Given
-        [
-            "getCompanyAuthProtectedCancelPersonFullUrl",
-            `${constants.LANDING_URL}/company/abc123/${constants.CANCEL_PERSON_PAGE}/test@test.com`,
-            "abc123",
-            "test@test.com",
-            getCompanyAuthProtectedCancelPersonFullUrl
-        ],
+        ["getCompanyAuthProtectedAuthenticationCodeRemoveUrl", `/company/12345/authentication-code-remove/test@test.com`, "12345", "test@test.com", getCompanyAuthProtectedAuthenticationCodeRemoveUrl],
         [
             "getCompanyAuthProtectedAuthenticationCodeRemoveUrl",
             `/company/12345/authentication-code-remove/test@test.com`,

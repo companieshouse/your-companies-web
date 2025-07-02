@@ -38,6 +38,7 @@ describe("GET /your-companies/confirmation-person-removed-themselves", () => {
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockNavigationMiddleware).toHaveBeenCalled();
     });
 
     test.each([

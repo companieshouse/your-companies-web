@@ -34,24 +34,6 @@ describe("navigationMiddleware", () => {
             params: {}
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
-            params: { companyNumber: "AB123456" }
-        },
-        {
-            referer: "https://chc.local/your-companies/company/AB123456/cancel-person/test@example.com",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
-            params: { companyNumber: "AB123456" }
-        },
-        {
-            referer: undefined,
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
-            params: { companyNumber: "AB123456" }
-        },
-        {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
             path: "/manage-authorised-people/AB123456/authorisation-email-resent",
@@ -70,7 +52,7 @@ describe("navigationMiddleware", () => {
             params: { companyNumber: "AB123456" }
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-removed",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
             path: "/manage-authorised-people/AB123456/authorisation-email-resent",
             params: { companyNumber: "AB123456" }
@@ -112,52 +94,52 @@ describe("navigationMiddleware", () => {
             params: { companyNumber: "AB123456" }
         },
         {
-            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/test@example.com",
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/1234567890",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
             path: "/manage-authorised-people/AB123456/confirmation-person-removed",
             params: { companyNumber: "AB123456" }
         },
         {
-            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/test@example.com",
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/1234567890",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-removed",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
+        },
+        {
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-removed",
+            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-digital-authorisation-restored",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
+            path: "/company/AB123456/authentication-code-remove/1234567890",
+            params: { companyNumber: "AB123456", associationId: "1234567890" }
         },
         {
             referer: "https://chc.local/your-companies/confirmation-person-removed-themselves",
@@ -165,7 +147,7 @@ describe("navigationMiddleware", () => {
             path: "/confirmation-person-removed-themselves"
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/1234567890",
             routePattern: constants.REMOVED_THEMSELVES_URL,
             path: "/confirmation-person-removed-themselves"
         },
@@ -190,24 +172,6 @@ describe("navigationMiddleware", () => {
             referer: "https://chc.local/your-companies/remove-company/AB123456",
             routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
             path: "/confirmation-company-removed"
-        },
-        {
-            referer: "https://chc.local/your-companies/company/AB123456/cancel-person/test@example.com",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-            path: "/company/AB123456/cancel-person/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-            path: "/company/AB123456/cancel-person/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
-        },
-        {
-            referer: undefined,
-            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-            path: "/company/AB123456/cancel-person/test@example.com",
-            params: { companyNumber: "AB123456", userEmail: "test@example.com" }
         },
         {
             referer: "https://chc.local/your-companies/confirm-company-details",
@@ -347,7 +311,7 @@ describe("navigationMiddleware", () => {
             params: { associationId: "1234567890" }
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-removed",
             routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
             path: "/send-email-invitation-to-be-digitally-authorised/1234567890",
             params: { associationId: "1234567890" }
@@ -442,7 +406,7 @@ describe("navigationMiddleware", () => {
             params: { userEmail: "test@example.com", companyNumber: "AB123456" }
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
+            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-removed",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
             path: "/manage-authorised-people-email-resent/test@example.com",
             params: { userEmail: "test@example.com", companyNumber: "AB123456" }
@@ -500,11 +464,6 @@ describe("navigationMiddleware", () => {
 
     test.each([
         {
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
             path: "/manage-authorised-people/AB123456/authorisation-email-resent",
             defaultRedirect: constants.LANDING_URL
@@ -521,7 +480,7 @@ describe("navigationMiddleware", () => {
         },
         {
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/test@example.com",
+            path: "/company/AB123456/authentication-code-remove/1234567890",
             defaultRedirect: constants.LANDING_URL
         },
         {
@@ -537,11 +496,6 @@ describe("navigationMiddleware", () => {
         {
             routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
             path: "/confirmation-company-removed",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-            path: "/company/AB123456/cancel-person/test@example.com",
             defaultRedirect: constants.LANDING_URL
         },
         {
@@ -641,18 +595,6 @@ describe("navigationMiddleware", () => {
 
     test.each([
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-cancel-person",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            referer: "https://chc.local/your-companies/company/AB123456/cancel-person/test@example.com",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_CANCEL_PERSON_URL,
-            path: "/manage-authorised-people/AB123456/confirmation-cancel-person",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
             path: "/manage-authorised-people/AB123456/authorisation-email-resent",
@@ -683,21 +625,21 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         },
         {
-            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/test@example.com",
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/1234567890",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
             path: "/manage-authorised-people/AB123456/confirmation-person-removed",
             defaultRedirect: constants.LANDING_URL
         },
         {
-            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/test@example.com",
+            referer: "https://chc.local/your-companies/company/AB123456/authentication-code-remove/1234567890",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/:companyNumber/authentication-code-remove/:userEmail",
+            path: "/company/:companyNumber/authentication-code-remove/:associationId",
             defaultRedirect: constants.LANDING_URL
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/:companyNumber/authentication-code-remove/:userEmail",
+            path: "/company/:companyNumber/authentication-code-remove/:associationId",
             defaultRedirect: constants.LANDING_URL
         },
         {
@@ -716,18 +658,6 @@ describe("navigationMiddleware", () => {
             referer: "https://chc.local/your-companies/remove-company/AB123456",
             routePattern: constants.REMOVE_COMPANY_CONFIRMED_URL,
             path: "/confirmation-company-removed",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            referer: "https://chc.local/your-companies/company/AB123456/cancel-person/test@example.com",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-            path: "/company/AB123456/cancel-person/test@example.com",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_CANCEL_PERSON_URL,
-            path: "/company/AB123456/cancel-person/test@example.com",
             defaultRedirect: constants.LANDING_URL
         },
         {
