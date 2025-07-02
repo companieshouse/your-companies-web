@@ -7,9 +7,9 @@ import en from "../../../../../../../locales/en/remove-authorised-person.json";
 import cy from "../../../../../../../locales/cy/remove-authorised-person.json";
 import enCommon from "../../../../../../../locales/en/common.json";
 import cyCommon from "../../../../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../../../../src/lib/utils/referrerUtils";
 import * as sessionUtils from "../../../../../../../src/lib/utils/sessionUtils";
 import { singleConfirmedAssociation } from "../../../../../../mocks/associations.mock";
+import * as constants from "../../../../../../../src/constants";
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
@@ -34,8 +34,6 @@ jest.mock("../../../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/company/:companyNumber/authentication-code-remove/:associationId", () => {
     const userEmail = singleConfirmedAssociation.userEmail;
     const companyNumber = singleConfirmedAssociation.companyNumber;
@@ -46,7 +44,6 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
 
     beforeEach(() => {
         jest.clearAllMocks;
-        redirectPageSpy.mockReturnValue(false);
     });
 
     test.each([
@@ -101,4 +98,18 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
             expect(response.text).toContain(`${lang.you_may_wish_to_change_the_auth_code}${includedText}`);
             expect(response.text).toContain(lang.digital_authorisation);
         });
+
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
+        // Given
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
+
 });

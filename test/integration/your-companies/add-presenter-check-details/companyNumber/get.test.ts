@@ -2,7 +2,6 @@ import mocks from "../../../../mocks/all.middleware.mock";
 import app from "../../../../../src/app";
 import supertest from "supertest";
 import * as constants from "../../../../../src/constants";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
 import en from "../../../../../locales/en/add-presenter-check-details.json";
@@ -20,9 +19,6 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 
 const router = supertest(app);
 const url = "/your-companies/add-presenter-check-details/12345678";
-
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-redirectPageSpy.mockReturnValue(false);
 
 describe("GET /your-companies/add-presenter-check-details/:companyNumber", () => {
     beforeEach(() => {
@@ -54,15 +50,17 @@ describe("GET /your-companies/add-presenter-check-details/:companyNumber", () =>
             expect(response.text).toContain(lang.change);
         });
 
-    it("should return status 302 and correct response message including desired url path on page redirect",
-        async () => {
-            // Given
-            const urlPath = constants.LANDING_URL;
-            redirectPageSpy.mockReturnValue(true);
-            // When
-            const response = await router.get(url);
-            // Then
-            expect(response.status).toEqual(302);
-            expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
+        // Given
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
         });
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
+    });
 });

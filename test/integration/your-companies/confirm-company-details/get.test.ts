@@ -5,7 +5,6 @@ import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
 import { badFormatCompanyProfile, validActiveCompanyProfile } from "../../../mocks/companyProfile.mock";
 import * as constants from "../../../../src/constants";
-import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import en from "../../../../locales/en/confirm-company-details.json";
 import cy from "../../../../locales/cy/confirm-company-details.json";
 
@@ -20,13 +19,10 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     return next();
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/confirm-company-details", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the your-companies page", async () => {
@@ -143,23 +139,18 @@ describe("GET /your-companies/confirm-company-details", () => {
         expect(response.text).toContain(expected);
     });
 
-    it("should return status 302 on page redirect", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get("/your-companies/confirm-company-details");
-        // Then
-        expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
         const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
-        const response = await router.get("/your-companies/confirm-company-details");
+        const response = await router.get(url);
         // Then
+        expect(response.status).toEqual(302);
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 
 });

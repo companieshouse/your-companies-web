@@ -3,7 +3,6 @@ import { Session } from "@companieshouse/node-session-handler";
 import app from "../../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../../src/constants";
 import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 import { migratedAssociation } from "../../../../mocks/associations.mock";
@@ -21,14 +20,12 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     return next();
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
 describe("POST /your-companies/send-email-invitation-to-be-digitally-authorised/1234567890", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before proceeding with the restoration of the digital authorisation",

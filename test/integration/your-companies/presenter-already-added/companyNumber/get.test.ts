@@ -1,7 +1,6 @@
 import mocks from "../../../../mocks/all.middleware.mock";
 import app from "../../../../../src/app";
 import supertest from "supertest";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 import * as constants from "../../../../../src/constants";
 import en from "../../../../../locales/en/presenter-already-added.json";
@@ -9,6 +8,7 @@ import cy from "../../../../../locales/cy/presenter-already-added.json";
 import enCommon from "../../../../../locales/en/common.json";
 import cyCommon from "../../../../../locales/cy/common.json";
 import { when } from "jest-when";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 
@@ -24,8 +24,6 @@ jest.mock("../../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/presenter-already-added/:companyNumber", () => {
     const companyNumber = "AB123456";
     const companyName = "ABC Ltd.";
@@ -34,22 +32,12 @@ describe("GET /your-companies/presenter-already-added/:companyNumber", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session, auth and company authorisation before returning the your-companies page", async () => {
         await router.get(url);
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-    });
-
-    it("should return status 302", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
-        expect(response.status).toEqual(302);
     });
 
     test.each([
@@ -74,4 +62,17 @@ describe("GET /your-companies/presenter-already-added/:companyNumber", () => {
             expect(response.text).toContain(lang.has_already_been_digitally_authorised);
             expect(response.text).toContain(langCommon.go_back_to_your_companies);
         });
+
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
+        // Given
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
 });

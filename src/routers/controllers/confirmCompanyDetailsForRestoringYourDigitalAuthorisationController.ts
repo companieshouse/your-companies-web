@@ -57,6 +57,7 @@ export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationController
     };
 
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
+    setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
 
     const nextPageUrl = getTryRestoringYourDigitalAuthorisationFullUrl(company.companyNumber);
 

@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { deleteExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { BaseViewData, AnyRecord } from "../../../types/utilTypes";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AssociationList, AssociationStatus, InvitationList } from "private-api-sdk-node/dist/services/associations/types";
@@ -128,7 +128,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const lang = this.getLanguageData(req);
         this.viewData.lang = lang;
 
-        this.populateViewData(confirmedUserAssociations, invites);
+        this.populateViewData(req, confirmedUserAssociations, invites);
         this.viewData.search = search;
 
         if (errorMassage) {
@@ -182,20 +182,25 @@ export class YourCompaniesHandler extends GenericHandler {
      * @param {AssociationList} confirmedUserAssociations - The list of confirmed user associations.
      * @param {InvitationList} invitationList - The list of invitations.
      */
-    private populateViewData (confirmedUserAssociations: AssociationList, invitationList: InvitationList): void {
+    private populateViewData (req: Request, confirmedUserAssociations: AssociationList, invitationList: InvitationList): void {
         this.viewData.numberOfInvitations = invitationList.totalResults;
         if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-            this.viewData.associationData = confirmedUserAssociations.items.map(item => ({
-                company_name: item.companyName,
-                company_number: item.companyNumber,
-                status: item.status
-            }));
+            const navigationMiddlewareCheckCompanyNumber: string[] = [];
+            this.viewData.associationData = confirmedUserAssociations.items.map(item => {
+                navigationMiddlewareCheckCompanyNumber.push(item.companyNumber);
+                return {
+                    company_name: item.companyName,
+                    company_number: item.companyNumber,
+                    status: item.status
+                };
+            });
 
             this.viewData.userHasCompanies = constants.TRUE;
             this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
             this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
             this.viewData.removeAuthorisationUrl = getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
             this.viewData.restoreDigitalAuthUrl = getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL);
+            setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, navigationMiddlewareCheckCompanyNumber);
         }
     }
 
