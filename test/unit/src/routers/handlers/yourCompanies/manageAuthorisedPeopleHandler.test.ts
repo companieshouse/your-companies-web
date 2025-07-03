@@ -239,7 +239,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             originalUrl: manageAuthorisedPeopleFullUrl + constants.CONFIRMATION_PERSON_REMOVED_URL,
             viewData: {
                 removedPerson: companyAssociations.items[0].userEmail,
-                changeCompanyAuthCodeUrl: constants.CHANGE_COMPANY_AUTH_CODE_URL
+                changeCompanyAuthCodeUrl: constants.CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH
             },
             returnInfo: "basic view data with removal confirmation",
             condition: "there is removal that does not contain user name but user email, and original URL contain confirmation-person-removed"
@@ -256,7 +256,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             originalUrl: manageAuthorisedPeopleFullUrl + constants.CONFIRMATION_PERSON_REMOVED_URL,
             viewData: {
                 removedPerson: "John Smith",
-                changeCompanyAuthCodeUrl: constants.CHANGE_COMPANY_AUTH_CODE_URL
+                changeCompanyAuthCodeUrl: constants.CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH
             },
             returnInfo: "basic view data with removal confirmation",
             condition: "there is removal that contain user name and user email, and original URL contain confirmation-person-removed"

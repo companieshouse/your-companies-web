@@ -153,7 +153,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
                 this.viewData.cancelledPerson = removal.userEmail;
             } else if (removal.status === AssociationStatus.CONFIRMED) {
                 this.viewData.removedPerson = removal.userName;
-                this.viewData.changeCompanyAuthCodeUrl = constants.CHANGE_COMPANY_AUTH_CODE_URL;
+                this.viewData.changeCompanyAuthCodeUrl = req.lang === "en" ? constants.CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH : constants.CHANGE_COMPANY_AUTH_CODE_URL_WELSH;
             } else if (removal.status === AssociationStatus.MIGRATED) {
                 this.viewData.notRestoredPerson = removal.userName;
             }

@@ -63,14 +63,12 @@
         {% set removed_person_header = removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName + "."%}
         {% set heading_text = lang.remove_person_header_start + removed_person_header %}
 
-        {% set changeCompanyAuthCodeLangUrl = changeCompanyAuthCodeUrl if locale == "en" else  changeCompanyAuthCodeUrl + ".cy"%}
-
         {% set removeSuccessHtml %}
             <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
             <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
             <p class="govuk-body">
                 {{lang.you_may_wish_to}}
-                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeLangUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
+                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
                 {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
             </p>
         {% endset%}
