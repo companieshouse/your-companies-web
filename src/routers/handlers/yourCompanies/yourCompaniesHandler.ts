@@ -79,7 +79,7 @@ export class YourCompaniesHandler extends GenericHandler {
             removeCompanyUrl: "",
             restoreDigitalAuthUrl: "",
             removeAuthorisationUrl: "",
-            authorisationBannerRequestAuthenticationCodeUrl: constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL
+            authorisationBannerRequestAuthenticationCodeUrl: ""
         };
     }
 
@@ -130,6 +130,8 @@ export class YourCompaniesHandler extends GenericHandler {
 
         this.populateViewData(confirmedUserAssociations, invites);
         this.viewData.search = search;
+
+        this.viewData.authorisationBannerRequestAuthenticationCodeUrl = req.lang === "en" ? constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL : `${constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL}.cy`;
 
         if (errorMassage) {
             this.viewData.errors = { search: { text: errorMassage } };
