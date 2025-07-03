@@ -112,7 +112,7 @@ export const CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = "/confirmation-di
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL}`;
 
 // External URLs
-export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#change-or-cancel-your-code";
+export const CHANGE_COMPANY_AUTH_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing";
 export const AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing";
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
