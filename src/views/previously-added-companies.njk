@@ -60,76 +60,6 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters"">
 
-{% for elem in associationData %}
-
-
-        {% set companyNameHtml %}
-<a href="#" class="govuk-link govuk-link--no-visited-state">{{elem.company_name}}</a>
-        {% endset %}
-
-{% if elem.status == "confirmed" %}
-
-
-
-{{ govukSummaryList({
-  card: {
-    title: {
-      text: elem.company_name
-      
-    },
-
-    actions: {
-        items: [{
-            href: "/link",
-            text: "Remove"
-          }]
-      }
-
-  },
-  rows: [
-    {
-      key: {
-        text: "Company number"
-      },
-      value: {
-        html: elem.company_number
-      },
-      actions: {
-      
-      }
-    },
-    {
-      key: {
-        text: "Digital authorisation status	"
-      },
-      value: {
-        html: '<strong class="govuk-tag govuk-tag--green">' +  'Authorised' + '</strong>'
-      },
-      actions: {}
-    },
-    {
-      key: {
-        text: "Digitally authorised people"
-      },
-      
-      actions: {
-        items: [
-          {
-            href: "#",
-            text: "View and manage",
-            visuallyHiddenText: "age"
-          }
-        ]
-      }
-    }
-  ]
-}) }}
-
-{% endif %}
-{% endfor %}
-
-
-
         {{ govukButton({
                 text: lang.add_a_company,
                 href: buttonHref,
@@ -183,36 +113,125 @@
         {% endif %}
 
         {% if numOfMatches > 0 %}
-            {{ govukTable({
-                 classes: "govuk-!-margin-bottom-9",
-                    caption: lang.table_of_companies_you_are_digitally_autorised_to_file_for,
-                    captionClasses: "govuk-table__caption--m govuk-visually-hidden",
-                    firstCellIsHeader: true,
-                      head: [
-                        {
-                            text: lang.company_name,
-                            classes: "govuk-!-width-one-quarter"
-                        },
-                        {
-                            text: lang.company_number,
-                            classes: "govuk-!-width-one-sixth"
-                        },
-                        {
-                            text: lang.authorisation_status,
-                            classes: "govuk-!-width-one-eighth govuk-!-padding-right-3"
-                        },
-                        {
-                            text: lang.people_digitally_authorised_to_file_online,
-                            classes: "govuk-!-width-one-quarter govuk-!-padding-left-3"
-                        },
-                        {
-                            text: lang.remove_digital_authorisation,
-                            classes: "govuk-!-width-one-sixth"
-                        }
-                    ],
-                    rows: rowsData
-                })
-            }}
+
+
+{% for elem in associationData %}
+
+
+        {% set companyNameHtml %}
+            <a href="#">{{elem.company_name}}</a>
+        {% endset %}
+
+{% if elem.status == "confirmed" %}
+
+{{ govukSummaryList({
+  card: {
+    title: {
+      html: elem.company_name
+
+    },
+    actions: {
+        items: [{
+            href: "/link",
+            text: "Remove"
+          }]
+      }
+  },
+  rows: [
+    {
+      key: {
+        text: "Company number"
+      },
+      value: {
+        html: elem.company_number
+      },
+      actions: {
+      
+      }
+    },
+    {
+      key: {
+        text: "Digital authorisation status"
+      },
+      value: {
+        html: '<strong class="govuk-tag govuk-tag--green">' +  'Authorised' + '</strong>'
+      },
+      actions: {}
+    },
+    {
+      key: {
+        text: "Digitally authorised people"
+      },
+      
+      actions: {
+        items: [
+          {
+            href: "#",
+            text: "View and manage",
+            visuallyHiddenText: "age"
+          }
+        ]
+      }
+    }
+  ]
+}) }}
+
+{% endif %}
+
+{% if elem.status == "migrated" %}
+
+{{ govukSummaryList({
+  card: {
+    title: {
+      text: companyNameHtml
+
+    },
+
+    actions: {
+        items: [{
+            href: "/link",
+            text: "Remove"
+          }]
+      }
+
+  },
+  rows: [
+    {
+      key: {
+        text: "Company number"
+      },
+      value: {
+        html: elem.company_number
+      },
+      actions: {
+      
+      }
+    },
+    {
+      key: {
+        text: "Digital authorisation status"
+      },
+      value: {
+        html: '<strong class="govuk-tag govuk-tag--red">' +  'Not authorised' + '</strong>'
+      },
+  actions: {
+        items: [
+          {
+            href: "#",
+            text: "Restore authorisation",
+            visuallyHiddenText: "age"
+          }
+        ]
+      }
+    }
+  ]
+}) }}
+
+{% endif %}
+
+
+{% endfor %}
+
         {% endif %}
 
         {% if pagination and pagination.items | length %}
