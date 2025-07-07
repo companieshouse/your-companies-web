@@ -124,108 +124,97 @@
 
 {% if elem.status == "confirmed" %}
 
-{{ govukSummaryList({
-  card: {
-    title: {
-      html: elem.company_name
-
-    },
-    actions: {
-        items: [{
-            href: "/link",
-            text: "Remove"
-          }]
-      }
-  },
-  rows: [
-    {
-      key: {
-        text: "Company number"
-      },
-      value: {
-        html: elem.company_number
-      },
-      actions: {
-      
-      }
-    },
-    {
-      key: {
-        text: "Digital authorisation status"
-      },
-      value: {
-        html: '<strong class="govuk-tag govuk-tag--green">' +  'Authorised' + '</strong>'
-      },
-      actions: {}
-    },
-    {
-      key: {
-        text: "Digitally authorised people"
-      },
-      
-      actions: {
-        items: [
-          {
-            href: "#",
-            text: "View and manage",
-            visuallyHiddenText: "age"
-          }
-        ]
-      }
-    }
-  ]
-}) }}
+<div class="govuk-summary-card">
+  <div class="govuk-summary-card__title-wrapper">
+    <h2 class="govuk-summary-card__title">
+      <a href="#" class="govuk-link govuk-link--no-visited-state" >{{elem.company_name | upper}}</a>
+    </h2>
+    <ul class="govuk-summary-card__actions">
+      <li class="govuk-summary-card__action">
+        <a class="govuk-link govuk-link--no-visited-state" href="#">Remove<span class="govuk-visually-hidden"> </span></a>
+      </li>
+    </ul>
+  </div>
+  <div class="govuk-summary-card__content">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Company number
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{ elem.company_number }} 
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Digital authorisation status	
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <strong class="govuk-tag govuk-tag--green">Authorised</strong>
+        </dd>
+        <dd class="govuk-summary-list__actions">
+         
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Digitally authorised people	
+        </dt>
+        <dd class="govuk-summary-list__value govuk-!-width-one-quarter">
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link" href="#">View and manage<span class="govuk-visually-hidden"> working situation (Lead tenant)</span></a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</div>
 
 {% endif %}
 
 {% if elem.status == "migrated" %}
 
-{{ govukSummaryList({
-  card: {
-    title: {
-      text: companyNameHtml
-
-    },
-
-    actions: {
-        items: [{
-            href: "/link",
-            text: "Remove"
-          }]
-      }
-
-  },
-  rows: [
-    {
-      key: {
-        text: "Company number"
-      },
-      value: {
-        html: elem.company_number
-      },
-      actions: {
-      
-      }
-    },
-    {
-      key: {
-        text: "Digital authorisation status"
-      },
-      value: {
-        html: '<strong class="govuk-tag govuk-tag--red">' +  'Not authorised' + '</strong>'
-      },
-  actions: {
-        items: [
-          {
-            href: "#",
-            text: "Restore authorisation",
-            visuallyHiddenText: "age"
-          }
-        ]
-      }
-    }
-  ]
-}) }}
+<div class="govuk-summary-card">
+  <div class="govuk-summary-card__title-wrapper">
+    <h2 class="govuk-summary-card__title">
+      <a href="#" class="govuk-link govuk-link--no-visited-state" >{{elem.company_name | upper}}</a>
+    </h2>
+    <ul class="govuk-summary-card__actions">
+      <li class="govuk-summary-card__action">
+        <a class="govuk-link govuk-link--no-visited-state" href="#">Remove<span class="govuk-visually-hidden"> </span></a>
+      </li>
+    </ul>
+  </div>
+  <div class="govuk-summary-card__content">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Company number
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{ elem.company_number }} 
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Digital authorisation status	
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <strong class="govuk-tag govuk-tag--red">Not authorised</strong>
+        </dd>
+        <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="#">Restore authorisation<span class="govuk-visually-hidden"> </span></a>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</div>
 
 {% endif %}
 
