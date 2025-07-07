@@ -242,7 +242,7 @@ describe("YourCompaniesHandler", () => {
                 errors: errors,
                 pageNumber,
                 numberOfPages: 0,
-                authorisationBannerRequestAuthenticationCodeUrl: constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL,
+                authorisationBannerRequestAuthenticationCodeUrl: `${constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL}.cy`,
                 ...viewData
             };
             getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
