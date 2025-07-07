@@ -163,21 +163,10 @@
     {% for association in companyAssociations.items %}
         {% set row = [] %}
         {% set row = (row.push({text: association.userEmail}), row) %}
-        {% set defaultDisplayName = lang.not_provided
-        if association.displayName
-        and association.displayName === notProvided
-        and association.status === confirmed
-        else 
-            "" %}
+        {% set defaultDisplayName = lang.not_provided %}
         {% set row = (row.push({
             text: providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)
         }), row) %}
-
-        {% set query_params = {
-            userName: association.displayName
-        }
-        if association.displayName and association.displayName !== "Not provided" else 
-            undefined %}
 
         {% if association.status === confirmed %}
             {% set tag = govukTag({text: lang.digitally_authorised, classes: "govuk-tag--green"}) %}
