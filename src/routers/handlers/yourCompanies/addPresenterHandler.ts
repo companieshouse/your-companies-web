@@ -100,7 +100,7 @@ export class AddPresenterHandler extends GenericHandler {
      * @param req - The HTTP request object.
      */
     private async handlePostRequest (req: Request): Promise<void> {
-        const email = req.body.email.trim();
+        const email = req.body.email.trim().toLowerCase();
         await this.validateEmail(email);
 
         if (!this.viewData.errors) {
