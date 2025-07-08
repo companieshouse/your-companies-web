@@ -48,7 +48,7 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         const associationStateChanged = this.isAssociationStateChanged(req, associationId);
         const referrer = req.get("Referrer");
         const companyName = req.query[constants.COMPANY_NAME] as string;
-        const expectedReferrer = this.getExpectedReferrer(associationId, companyName);
+        const expectedReferrer = getCompanyInvitationsAcceptFullUrl(associationId);
 
         this.viewData.companyName = companyName;
 
@@ -84,17 +84,6 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         await updateAssociationStatus(req, associationId, AssociationStatus.CONFIRMED);
         setExtraData(req.session, constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, constants.TRUE);
         this.viewData.lang = getTranslationsForView(req.lang, constants.COMPANY_INVITATIONS_ACCEPT_PAGE);
-    }
-
-    /**
-     * Constructs the expected referrer URL for validation.
-     *
-     * @param associationId - The ID of the association.
-     * @param companyName - The name of the company.
-     * @returns The expected referrer URL.
-     */
-    private getExpectedReferrer (associationId: string, companyName: string): string {
-        return `${getCompanyInvitationsAcceptFullUrl(associationId)}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName.replace(/ /g, "+"))}`;
     }
 
     /**
