@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { BaseViewData } from "../../../types/utilTypes";
+import { ViewDataWithBackLink } from "../../../types/utilTypes";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
 import { setExtraData } from "../../../lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../services/companyProfileService";
 import { isOrWasCompanyAssociatedWithUser, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import { AssociationState } from "../../../types/associations";
 
-interface RemoveAuthorisationDoNotRestoreViewData extends BaseViewData {
+export interface RemoveAuthorisationDoNotRestoreViewData extends ViewDataWithBackLink {
     companyName: string;
     companyNumber: string;
     cancelLinkHref: string;
@@ -31,7 +31,8 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
             lang: {},
             companyName: "",
             companyNumber: "",
-            cancelLinkHref: ""
+            cancelLinkHref: "",
+            backLinkHref: ""
         };
     }
 
@@ -47,6 +48,7 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
         this.viewData.companyNumber = companyNumber;
         this.viewData.cancelLinkHref = constants.LANDING_URL;
+        this.viewData.backLinkHref = constants.LANDING_URL;
 
         if (method === constants.GET) {
             return await this.handleGetRequest(req);
