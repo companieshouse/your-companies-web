@@ -218,6 +218,12 @@ describe("navigationMiddleware", () => {
         },
         {
             referer: "https://chc.local/your-companies/add-presenter-check-details/AB123456",
+            routePattern: constants.ADD_PRESENTER_URL,
+            path: "/add-presenter/AB123456",
+            params: { companyNumber: "AB123456" }
+        },
+        {
+            referer: "https://chc.local/your-companies/add-presenter-check-details/AB123456",
             routePattern: constants.CHECK_PRESENTER_URL,
             path: "/add-presenter-check-details/AB123456",
             params: { companyNumber: "AB123456" }

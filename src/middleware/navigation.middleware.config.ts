@@ -307,9 +307,10 @@ const routeConfigs: RouteConfig[] = [
     {
         routePattern: constants.ADD_PRESENTER_URL,
         allowedPages: [
-            // itself and all possible previous steps
+            // itself, all possible previous steps and the back link
             ...allowedPagesWithCompanyNumberGuard([
                 constants.ADD_PRESENTER_URL,
+                constants.CHECK_PRESENTER_URL,
                 ...MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES
             ])
         ],
