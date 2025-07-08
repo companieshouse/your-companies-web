@@ -205,7 +205,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, emails);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emails);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
             for (const association of companyAssociations.items) {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
@@ -362,7 +362,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, emails);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emails);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
             for (const association of companyAssociations.items) {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
@@ -502,7 +502,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, emails);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emails);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
             for (const association of companyAssociations.items) {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
@@ -635,7 +635,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, emails);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emails);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
             for (const association of companyAssociations.items) {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);

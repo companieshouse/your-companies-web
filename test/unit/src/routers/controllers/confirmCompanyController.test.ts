@@ -83,7 +83,7 @@ describe("confirmCompanyControllerPost", () => {
             // Then
             expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
             expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledTimes(1);
             expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);

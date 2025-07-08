@@ -461,7 +461,9 @@ describe("navigationMiddleware", () => {
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE).mockReturnValue(true);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(true);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(true);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(true);
             // When
             await navigationMiddleware(req, res, next);
             // Then
@@ -592,7 +594,9 @@ describe("navigationMiddleware", () => {
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE).mockReturnValue(false);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(false);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(false);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(false);
             // When
             await navigationMiddleware(req, res, next);
             // Then
@@ -770,7 +774,9 @@ describe("navigationMiddleware", () => {
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("XX111111");
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue(["other@example.com"]);
             when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("9999999999");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE).mockReturnValue(false);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(false);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(false);
+            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(false);
             // When
             await navigationMiddleware(req, res, next);
             // Then

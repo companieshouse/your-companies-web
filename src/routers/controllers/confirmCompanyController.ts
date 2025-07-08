@@ -40,7 +40,7 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
     };
 
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
-    setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+    setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
 
     const nextPageUrl = getCreateCompanyAssociationFullUrl(company.companyNumber);
     logger.info(createLogMessage(req.session, confirmCompanyControllerPost.name, `Redirecting to ${nextPageUrl}`));

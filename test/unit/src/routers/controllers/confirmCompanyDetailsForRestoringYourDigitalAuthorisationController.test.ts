@@ -89,7 +89,7 @@ describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPos
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.COMPANY_PROFILE}_${companyNumber}`);
             expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS, true);
             expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledTimes(1);
             expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);

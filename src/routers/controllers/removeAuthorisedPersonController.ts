@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { RemoveAuthorisedPersonHandler, RemoveAuthorisedPersonViewData } from "../handlers/yourCompanies/removeAuthorisedPersonHandler";
 import * as constants from "../../constants";
-import { deleteExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData } from "../../lib/utils/sessionUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
@@ -17,7 +17,6 @@ export const removeAuthorisedPersonControllerGet = async (req: Request, res: Res
 
     cleanUpSessionData(req);
     logger.info(createLogMessage(req.session, removeAuthorisedPersonControllerGet.name, "Rendering remove authorised person page"));
-    setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
     res.render(handler.getTemplateViewName(), viewData);
 };
 

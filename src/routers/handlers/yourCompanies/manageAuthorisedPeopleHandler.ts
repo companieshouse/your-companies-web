@@ -80,7 +80,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
     async execute (req: Request): Promise<ManageAuthorisedPeopleViewData> {
         logger.info(createLogMessage(req.session, `${ManageAuthorisedPeopleHandler.name}.${this.execute.name}`, `GET request to serve People Digitally Authorised To File Online For This Company page`));
 
-        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE, true);
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
 
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);

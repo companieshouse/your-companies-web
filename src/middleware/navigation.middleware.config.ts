@@ -169,7 +169,7 @@ const routeConfigs: RouteConfig[] = [
                 constants.CREATE_COMPANY_ASSOCIATION_URL
             ])
         ],
-        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -267,7 +267,7 @@ const routeConfigs: RouteConfig[] = [
                 constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL
             ])
         ],
-        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -418,7 +418,7 @@ const routeConfigs: RouteConfig[] = [
             ]),
             ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
         ],
-        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE,
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE,
         defaultRedirect: constants.LANDING_URL
     },
 
