@@ -4,7 +4,6 @@ import supertest from "supertest";
 import * as constants from "../../../../../src/constants";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../../src/lib/utils/sessionUtils";
 import * as associationsService from "../../../../../src/services/associationsService";
 
@@ -34,8 +33,6 @@ jest.mock("../../../../../src/services/associationsService", () => ({
     removeUserFromCompanyAssociations: jest.fn()
 }));
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("POST /your-companies/remove-authorisation-do-not-restore/:companyNumber", () => {
 
     beforeEach(() => {
@@ -46,7 +43,6 @@ describe("POST /your-companies/remove-authorisation-do-not-restore/:companyNumbe
         (getExtraData as jest.Mock).mockImplementation((session, key) => session.data[key]);
         setExtraData(session, constants.COMPANY_NAME, companyName);
         setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     test.each([

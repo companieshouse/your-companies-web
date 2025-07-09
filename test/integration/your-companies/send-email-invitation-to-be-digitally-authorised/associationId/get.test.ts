@@ -3,7 +3,6 @@ import { Session } from "@companieshouse/node-session-handler";
 import app from "../../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import en from "../../../../../locales/en/send-email-invitation-to-be-digitally-authorised.json";
 import cy from "../../../../../locales/cy/send-email-invitation-to-be-digitally-authorised.json";
 import enCommon from "../../../../../locales/en/common.json";
@@ -24,14 +23,12 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     return next();
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
 describe("GET /your-companies/send-email-invitation-to-be-digitally-authorised/1234567890", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the send email to be digitally authorised page", async () => {
@@ -78,22 +75,17 @@ describe("GET /your-companies/send-email-invitation-to-be-digitally-authorised/1
             expect(response.text).toContain(`${companyName} (${companyNumber})`);
         });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });

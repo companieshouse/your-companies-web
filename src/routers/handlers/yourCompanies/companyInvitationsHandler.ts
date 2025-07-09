@@ -10,6 +10,7 @@ import { buildPaginationElement, setLangForPagination, stringToPositiveInteger }
 import { validatePageNumber } from "../../../lib/validation/generic";
 import { getCompanyInvitationsAcceptFullUrl, getCompanyInvitationsDeclineFullUrl, getFullUrl } from "../../../lib/utils/urlUtils";
 import { Pagination } from "../../../types/pagination";
+import { setExtraData } from "../../../lib/utils/sessionUtils";
 
 interface CompanyInvitationsViewData extends ViewDataWithBackLink, Pagination {
     rowsData: ({ text: string } | { html: string })[][];
@@ -63,7 +64,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
             this.viewData.numberOfPages = userInvites.totalPages;
         }
 
-        const { rows } = await this.getRowsData(invitesWithCompanyDetail, translations);
+        const { rows } = await this.getRowsData(req, invitesWithCompanyDetail, translations);
         this.viewData.rowsData = rows;
 
         return this.viewData;
@@ -71,12 +72,14 @@ export class CompanyInvitationsHandler extends GenericHandler {
 
     /**
      * Generates the rows data for the invitations table.
+     * @param req - Express request object
      * @param invites - The list of invitations with company details.
      * @param translations - The translations for the current language.
      * @returns A promise resolving to the rows data for the invitations table.
      */
-    private async getRowsData (invites: InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
+    private async getRowsData (req: Request, invites: InvitationWithCompanyDetail[], translations: AnyRecord): Promise<Invitations> {
         const rows: ({ text: string } | { html: string })[][] = [];
+        const associationIds: string[] = [];
 
         if (invites?.length) {
             for (const invite of invites) {
@@ -95,8 +98,12 @@ export class CompanyInvitationsHandler extends GenericHandler {
                         html: this.getLink(declinePath + companyNameQueryParam, `${translations.decline_an_invitation_from}${invite.companyName}`, translations.decline as string)
                     }
                 ]);
+
+                associationIds.push(invite.associationId);
             }
         }
+
+        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
 
         return { rows };
     }

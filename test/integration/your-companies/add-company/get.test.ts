@@ -12,7 +12,6 @@ import { StatusCodes } from "http-status-codes";
 import * as commpanyProfileService from "../../../../src/services/companyProfileService";
 import * as constants from "../../../../src/constants";
 import { PROPOSED_COMPANY_NUM } from "../../../../src/constants";
-import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import en from "../../../../locales/en/add-company.json";
 import cy from "../../../../locales/cy/add-company.json";
 import enCommon from "../../../../locales/en/common.json";
@@ -42,14 +41,12 @@ jest.mock("../../../../src/lib/utils/sessionUtils", () => {
     };
 });
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
 const companyProfileSpy: jest.SpyInstance = jest.spyOn(commpanyProfileService, "getCompanyProfile");
 
 describe("GET /your-companies/add-company", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the add company page", async () => {
@@ -120,7 +117,6 @@ describe("GET /your-companies/add-company", () => {
 
     it("should handle saved profile scenario", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(false);
         companyProfileSpy.mockResolvedValue(validActiveCompanyProfile);
         const savedProfile = { companyNumber: "12345678" };
         setExtraData(session, constants.COMPANY_PROFILE, savedProfile);
@@ -134,7 +130,6 @@ describe("GET /your-companies/add-company", () => {
 
     it("should handle matching referrer URL scenario", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(false);
         companyProfileSpy.mockResolvedValue(validActiveCompanyProfile);
         setExtraData(session, constants.COMPANY_PROFILE, null); // Ensure no saved profile
         setExtraData(session, constants.CURRENT_COMPANY_NUM, "87654321");

@@ -31,7 +31,6 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
  * @param companyNumber - The company number to be stored in the session.
  */
 const setSessionData = (req: Request, companyNumber: string): void => {
-    deleteExtraData(req.session, constants.CANCEL_URL_EXTRA);
     deleteExtraData(req.session, constants.REMOVE_URL_EXTRA);
     setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, companyNumber);
 };

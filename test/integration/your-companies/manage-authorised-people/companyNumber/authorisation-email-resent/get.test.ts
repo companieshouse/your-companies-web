@@ -6,9 +6,9 @@ import supertest from "supertest";
 import * as sessionUtils from "../../../../../../src/lib/utils/sessionUtils";
 import en from "../../../../../../locales/en/manage-authorised-people.json";
 import cy from "../../../../../../locales/cy/manage-authorised-people.json";
-import * as referrerUtils from "../../../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../../../src/constants";
 import { AssociationState, AssociationStateResponse } from "../../../../../../src/types/associations";
+import { Request, Response } from "express";
 
 const router = supertest(app);
 
@@ -30,7 +30,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     const url = `/your-companies/manage-authorised-people/${companyNumber}/authorisation-email-resent`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
     const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
     const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
     const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
     const resentSuccessEmail = "bob@bob.com";
@@ -39,7 +38,6 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
         jest.clearAllMocks();
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
         getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the /your-companies/manage-authorised-people/NI038379/authorisation-email-resent page", async () => {
@@ -81,22 +79,17 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
         expect(response.text.includes("bob@bob.com")).toBe(false);
     });
 
-    it("should return status 302 on page redirect", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+
     });
 });

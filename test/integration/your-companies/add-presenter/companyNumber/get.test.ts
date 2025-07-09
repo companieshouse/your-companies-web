@@ -1,11 +1,10 @@
 import mocks from "../../../../mocks/all.middleware.mock";
 import app from "../../../../../src/app";
 import supertest from "supertest";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import en from "../../../../../locales/en/add-presenter.json";
 import cy from "../../../../../locales/cy/add-presenter.json";
 import * as constants from "../../../../../src/constants";
-import { getExtraData, setExtraData } from "../../../../../src/lib/utils/sessionUtils";
+import { setExtraData } from "../../../../../src/lib/utils/sessionUtils";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
@@ -36,15 +35,11 @@ jest.mock("../../../../../src/lib/utils/sessionUtils", () => {
 
 describe("GET /your-companies/add-presenter/companyNumber", () => {
 
-    const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
     beforeEach(() => {
         jest.clearAllMocks();
         session.setExtraData(constants.COMPANY_NUMBER, "12345678");
         session.setExtraData(constants.COMPANY_NAME, "Test Company");
     });
-
-    redirectPageSpy.mockReturnValue(false);
 
     it("should check session, company and user auth before returning the page", async () => {
         await router.get(url);
@@ -93,8 +88,7 @@ describe("GET /your-companies/add-presenter/companyNumber", () => {
     test.each([
         { condition: "is without confirmation ending", referrer: "testUrl.com" },
         { condition: "contains confirmation-person-removed", referrer: "testUrl.com/confirmation-person-removed" },
-        { condition: "referrer contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" },
-        { condition: "referrer contains confirmation-cancel-person", referrer: "testUrl.com/confirmation-cancel-person" }
+        { condition: "referrer contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" }
     ])("should not redirect, and return status 200 if referrer $condition",
         async ({ referrer }) => {
             // Given
@@ -111,37 +105,16 @@ describe("GET /your-companies/add-presenter/companyNumber", () => {
             expect(response.status).toEqual(200);
         });
 
-    it("should delete the manage authorised people page indicator in extraData on page load", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        const MANAGE_AUTHORISED_PEOPLE_INDICATOR = "manageAuthorisedPeopleIndicator";
-        const value = true;
-        setExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR, value);
-        const data = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        // When
-        await router.get(url);
-        const resultData = getExtraData(session, MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-        // Then
-        expect(data).toBeTruthy();
-        expect(resultData).toBeUndefined();
-    });
-
-    it("should return status 302 on page redirect", async () => {
-        // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
         expect(response.status).toEqual(302);
-    });
-
-    it("should return correct response message including desired url path", async () => {
-        // Given
-        const urlPath = constants.LANDING_URL;
-        redirectPageSpy.mockReturnValue(true);
-        // When
-        const response = await router.get(url);
-        // Then
         expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
-
 });

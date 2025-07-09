@@ -8,7 +8,6 @@ import en from "../../../../locales/en/confirmation-authorisation-removed.json";
 import cy from "../../../../locales/cy/confirmation-authorisation-removed.json";
 import enCommon from "../../../../locales/en/common.json";
 import cyCommon from "../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../../src/services/companyProfileService";
 
@@ -38,8 +37,6 @@ jest.mock("../../../../src/services/associationsService", () => ({
     removeUserFromCompanyAssociations: jest.fn()
 }));
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/confirmation-authorisation-removed", () => {
 
     beforeEach(() => {
@@ -55,7 +52,6 @@ describe("GET /your-companies/confirmation-authorisation-removed", () => {
             companyName: companyName,
             companyNumber: companyNumber
         });
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the remove company page", async () => {
@@ -87,13 +83,16 @@ describe("GET /your-companies/confirmation-authorisation-removed", () => {
             expect(response.text).toContain(lang.go_to_your_companies);
         });
 
-    it("should return correct response message to /your-companies for confirmation-authorisation-removed page redirection", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
-        expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
-
 });

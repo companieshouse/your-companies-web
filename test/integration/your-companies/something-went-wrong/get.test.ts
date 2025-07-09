@@ -46,8 +46,8 @@ describe("GET /your-companies/something-went-wrong", () => {
             // When
             const result = await router.get(`${url}${queryString}`);
             // Then
-            expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
             expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+            expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
             expect(result.status).toEqual(status);
             if (status === 403) {
                 expect(result.text).toContain(lang.sorry_something_went_wrong);

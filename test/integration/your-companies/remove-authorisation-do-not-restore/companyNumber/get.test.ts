@@ -8,7 +8,6 @@ import en from "../../../../../locales/en/remove-authorisation-do-not-restore.js
 import cy from "../../../../../locales/cy/remove-authorisation-do-not-restore.json";
 import enCommon from "../../../../../locales/en/common.json";
 import cyCommon from "../../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../../src/lib/utils/referrerUtils";
 import { setExtraData, getExtraData } from "../../../../../src/lib/utils/sessionUtils";
 import { getCompanyProfile } from "../../../../../src/services/companyProfileService";
 
@@ -38,8 +37,6 @@ jest.mock("../../../../../src/services/associationsService", () => ({
     removeUserFromCompanyAssociations: jest.fn()
 }));
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/remove-authorisation-do-not-restore/:companyNumber", () => {
 
     beforeEach(() => {
@@ -55,7 +52,6 @@ describe("GET /your-companies/remove-authorisation-do-not-restore/:companyNumber
             companyName: companyName,
             companyNumber: companyNumber
         });
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session and auth before returning the remove company page", async () => {
@@ -84,13 +80,16 @@ describe("GET /your-companies/remove-authorisation-do-not-restore/:companyNumber
             expect(response.text).toContain(lang.remove_company);
         });
 
-    it("should return correct response message to /your-companies for remove-authorisation-do-not-restore page redirection", async () => {
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
-        redirectPageSpy.mockReturnValue(true);
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
         // When
         const response = await router.get(url);
         // Then
-        expect(response.text).toEqual(`Found. Redirecting to ${constants.LANDING_URL}`);
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
     });
-
 });

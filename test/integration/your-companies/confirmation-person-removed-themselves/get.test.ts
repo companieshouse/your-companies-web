@@ -7,7 +7,6 @@ import en from "../../../../locales/en/confirmation-person-removed-themselves.js
 import cy from "../../../../locales/cy/confirmation-person-removed-themselves.json";
 import enCommon from "../../../../locales/en/common.json";
 import cyCommon from "../../../../locales/cy/common.json";
-import * as referrerUtils from "../../../../src/lib/utils/referrerUtils";
 import * as constants from "../../../../src/constants";
 
 const router = supertest(app);
@@ -27,13 +26,10 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 jest.mock("../../../../src/lib/Logger");
 
-const redirectPageSpy: jest.SpyInstance = jest.spyOn(referrerUtils, "redirectPage");
-
 describe("GET /your-companies/confirmation-person-removed-themselves", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        redirectPageSpy.mockReturnValue(false);
     });
 
     it("should check session, auth and company authorisation before returning the remove themselves page", async () => {
@@ -42,6 +38,7 @@ describe("GET /your-companies/confirmation-person-removed-themselves", () => {
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockNavigationMiddleware).toHaveBeenCalled();
     });
 
     test.each([
@@ -61,4 +58,16 @@ describe("GET /your-companies/confirmation-person-removed-themselves", () => {
             expect(response.text).toContain(companyNumber);
         });
 
+    it("should return status 302 and correct response message including desired url path on page redirect", async () => {
+        // Given
+        const urlPath = constants.LANDING_URL;
+        mocks.mockNavigationMiddleware.mockImplementation((req: Request, res: Response) => {
+            res.redirect(urlPath);
+        });
+        // When
+        const response = await router.get(url);
+        // Then
+        expect(response.status).toEqual(302);
+        expect(response.text).toEqual(`Found. Redirecting to ${urlPath}`);
+    });
 });
