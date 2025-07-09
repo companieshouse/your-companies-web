@@ -38,7 +38,8 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             condition: "when loading the remove authorisation do not restore page",
             viewData: {
                 templateName: constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE,
-                cancelLinkHref: constants.LANDING_URL
+                cancelLinkHref: constants.LANDING_URL,
+                backLinkHref: constants.LANDING_URL
             }
 
         },
