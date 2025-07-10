@@ -37,6 +37,7 @@
     "status": "Status",
     "still_has_access_to_it": " still has access to it.",
     "title_authorisation_cancelled": ": authorisation cancelled",
+    "title_authorisation_not_restored":": authorisation not restored",
     "title_authorisation_removed": ": authorisation removed",
     "title_email_resent": ": email resent",
     "title_email_sent": ": email sent",

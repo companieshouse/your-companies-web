@@ -17,7 +17,7 @@
     
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">{{ lang.your_companies }}</h1>
     <p class="govuk-body {{marginClass}}">
-        <a class="govuk-link" href="{{viewInvitationsPageUrl}}" id="view-invitations-link">{{lang.view_invitations}} &#40;{{numberOfInvitations}}&#41;</a>
+        <a class="govuk-link" href="{{viewInvitationsPageUrl}}" id="view-invitations-link" data-event-id="view-invitations-link">{{lang.view_invitations}} &#40;{{numberOfInvitations}}&#41;</a>
     </p>
 
     {% if userHasCompanies == "true" %}

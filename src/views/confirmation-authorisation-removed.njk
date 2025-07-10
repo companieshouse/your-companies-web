@@ -29,7 +29,10 @@
 
             {{ govukButton({
                     text: lang.go_to_your_companies,
-                    href: yourCompaniesHref
+                    href: yourCompaniesHref,
+                    attributes: {  
+                        "data-event-id": "go-to-your-companies"
+                    }
                 })
             }}
 

@@ -63,7 +63,10 @@
 
                         items: [{
                             value: "confirm",
-                            text: lang.i_confirm_that_i_have_read
+                            text: lang.i_confirm_that_i_have_read,
+                            attributes: {
+                                "data-event-id": "confirm-read-checkbox"
+                            }
                         }],
                         errorMessage: message
                     }) 

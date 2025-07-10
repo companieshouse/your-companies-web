@@ -13,7 +13,7 @@
         {% endif %}
         {% if locale !== "en" %}
             <li class="govuk-language-select__list-item">
-                <a href="{{addLangToUrl(ENGLISH)}}" lang="en" rel="alternate" class="govuk-link">
+                <a href="{{addLangToUrl(ENGLISH)}}" lang="en" rel="alternate" class="govuk-link" data-event-id="switch-language-to-english">
                     <span class="govuk-visually-hidden">Change the language to English</span>
                     <span aria-hidden="true">English</span>
                 </a>
@@ -26,7 +26,7 @@
         {% endif %}
         {% if locale !== "cy" %}
             <li class="govuk-language-select__list-item">
-                <a href="{{addLangToUrl(WELSH)}}" lang="cy" rel="alternate" class="govuk-link">
+                <a href="{{addLangToUrl(WELSH)}}" lang="cy" rel="alternate" class="govuk-link" data-event-id="switch-language-to-welsh">
                     <span class="govuk-visually-hidden">Newid yr iaith ir Gymraeg</span>
                     <span aria-hidden="true">Cymraeg</span>
                 </a>
