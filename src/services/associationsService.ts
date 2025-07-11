@@ -11,7 +11,7 @@ import {
     Errors,
     NewAssociationResponse,
     InvitationList
-} from "private-api-sdk-node/dist/services/associations/types";
+} from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { AssociationState, AssociationStateResponse } from "../types/associations";
 import createError from "http-errors";
 import { makeApiCallWithRetry } from "./apiCallRetryService";
@@ -328,8 +328,8 @@ export const getAssociationById = async (
         ASSOCIATIONS_SERVICE,
         "getAssociation",
         req,
-                req.session as Session,
-                associationId
+        req.session as Session,
+        associationId
     ) as Resource<Association | Errors>;
 
     if (sdkResponse?.httpStatusCode !== 200 || !sdkResponse.resource) {

@@ -1,5 +1,5 @@
 import { Removal } from "../../src/types/removal";
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 export const mockConfirmedRemoval: Removal = {
     userEmail: "mario@example.com",

@@ -4,7 +4,7 @@ import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
-import { Association } from "private-api-sdk-node/dist/services/associations/types";
+import { Association } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "../../../types/associations";

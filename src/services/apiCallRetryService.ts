@@ -1,9 +1,9 @@
 import { Session } from "@companieshouse/node-session-handler";
 import { Request } from "express";
 import { getAccessToken } from "../lib/utils/sessionUtils";
-import { createOauthPrivateApiClient } from "./apiClientService";
 import { refreshToken } from "./refreshTokenService";
 import logger, { createLogMessage } from "../lib/Logger";
+import { createOAuthApiClient } from "./apiClientService";
 
 /**
  * Calls API and if the response is unauthorized then it refreshes access token and retries the call to the API.
@@ -25,7 +25,7 @@ export const makeApiCallWithRetry = async (
 
     logger.info(createLogMessage(session, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`));
 
-    let client = createOauthPrivateApiClient(req);
+    let client = createOAuthApiClient(req.session);
 
     let response = await client[serviceName][fnName](...otherParams);
 
@@ -37,7 +37,7 @@ export const makeApiCallWithRetry = async (
         const accessToken = await refreshToken(req, session);
         logger.info(createLogMessage(session, makeApiCallWithRetry.name, `New access token: ${accessToken}`));
 
-        client = createOauthPrivateApiClient(req);
+        client = createOAuthApiClient(req.session);
         response = await client[serviceName][fnName](...otherParams);
 
     }
