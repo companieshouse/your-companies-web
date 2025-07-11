@@ -4,7 +4,7 @@ import {
     Invitation,
     ApprovalRoute,
     Association
-} from "private-api-sdk-node/dist/services/associations/types";
+} from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { CompanyStatuses } from "../../src/types/associations";
 
 export const userAssociations: AssociationList = {
@@ -1634,6 +1634,7 @@ export const userAssociationWithCompanyStatus: AssociationList = {
             kind: "association",
             approvalRoute: ApprovalRoute.AUTH_CODE,
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            unauthorisedAt: "",
             links: {
                 self: "/12345"
             }
@@ -1667,6 +1668,7 @@ export const userAssociationWithMrigratedCompanyStatus: AssociationList = {
             kind: "association",
             approvalRoute: ApprovalRoute.AUTH_CODE,
             approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+            unauthorisedAt: "",
             links: {
                 self: "/12345"
             }
@@ -1749,6 +1751,7 @@ export const singleMigratedAssociation: Association = {
     kind: "association",
     approvalRoute: ApprovalRoute.INVITATION,
     approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    unauthorisedAt: "",
     links: {
         self: "/12345"
     }
@@ -1770,6 +1773,7 @@ export const singleConfirmedAssociation: Association = {
     kind: "association",
     approvalRoute: ApprovalRoute.INVITATION,
     approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    unauthorisedAt: "",
     links: {
         self: "/12345"
     }
@@ -1791,6 +1795,7 @@ export const singleAwaitingApprovalAssociation: Association = {
     kind: "association",
     approvalRoute: ApprovalRoute.INVITATION,
     approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    unauthorisedAt: "",
     links: {
         self: "/12345"
     }
@@ -1812,6 +1817,7 @@ export const singleRemovedAssociation: Association = {
     kind: "association",
     approvalRoute: ApprovalRoute.INVITATION,
     approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    unauthorisedAt: "",
     links: {
         self: "/12345"
     }

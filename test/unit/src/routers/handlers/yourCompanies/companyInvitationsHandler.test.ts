@@ -9,7 +9,7 @@ import { CompanyInvitationsHandler } from "../../../../../../src/routers/handler
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Session } from "@companieshouse/node-session-handler";
 import { getMockInvitationList, getPaginatedMockInvitationList, mockInvitations } from "../../../../../mocks/invitations.mock";
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { userAssociations } from "../../../../../mocks/associations.mock";
 
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");

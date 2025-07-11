@@ -1,7 +1,7 @@
 import {
     Invitation,
     InvitationList
-} from "private-api-sdk-node/dist/services/associations/types";
+} from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 const date = new Date();
 date.setDate(date.getDate() + 5);

@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createOauthPrivateApiClient } from "../../../../src/services/apiClientService";
+import { createOAuthApiClient } from "../../../../src/services/apiClientService";
 import { postInvitation } from "../../../../src/services/associationsService";
-import { Errors, NewAssociationResponse } from "private-api-sdk-node/dist/services/associations/types";
+import { Errors, NewAssociationResponse } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { mockRequest } from "../../../mocks/request.mock";
 import { BadRequest } from "http-errors";
@@ -9,10 +9,10 @@ import { BadRequest } from "http-errors";
 jest.mock("../../../../src/services/apiClientService");
 jest.mock("../../../../src/lib/Logger");
 
-const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
+const mockCreateOauthApiClient = createOAuthApiClient as jest.Mock;
 const mockPostInvitation = jest.fn();
 
-mockCreateOauthPrivateApiClient.mockReturnValue({
+mockCreateOauthApiClient.mockReturnValue({
     associationsService: {
         postInvitation: mockPostInvitation
     }

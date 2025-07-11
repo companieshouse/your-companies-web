@@ -7,7 +7,7 @@ import * as constants from "../../../../../../src/constants";
 import { CompanyInvitationsAcceptHandler } from "../../../../../../src/routers/handlers/yourCompanies/companyInvitationsAcceptHandler";
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Session } from "@companieshouse/node-session-handler";
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");

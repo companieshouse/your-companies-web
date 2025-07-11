@@ -43,7 +43,8 @@ export const badFormatCompanyProfile: CompanyProfile = {
         region: "region"
     },
     sicCodes: ["123"],
-    type: "ltd"
+    type: "ltd",
+    subtype: ""
 };
 
 export const validActiveCompanyProfile: CompanyProfile = {
@@ -83,7 +84,8 @@ export const validActiveCompanyProfile: CompanyProfile = {
         region: "region"
     },
     sicCodes: ["123"],
-    type: "ltd"
+    type: "ltd",
+    subtype: ""
 };
 
 export const formatterValidActiveCompanyProfile: FormattedCompanyProfile = {
@@ -141,7 +143,8 @@ export const validDisolvedCompanyProfile: CompanyProfile = {
         region: "region"
     },
     sicCodes: ["123"],
-    type: "ltd"
+    type: "ltd",
+    subtype: ""
 };
 
 export const validSDKResource: Resource<CompanyProfile> = {

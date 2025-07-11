@@ -1,4 +1,4 @@
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 export interface Removal {
     userEmail: string;

@@ -12,7 +12,7 @@ import { emptyAssociations, userAssociations } from "../../../../../mocks/associ
 import { i18nCh } from "@companieshouse/ch-node-utils";
 import { mockInvitationList } from "../../../../../mocks/invitations.mock";
 import * as paginationHelper from "../../../../../../src/lib/helpers/buildPaginationHelper";
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 jest.mock("../../../../../../src/lib/Logger");
 

@@ -8,7 +8,7 @@ import { Session } from "@companieshouse/node-session-handler";
 import {
     Association,
     AssociationStatus
-} from "private-api-sdk-node/dist/services/associations/types";
+} from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 import { getFullUrl, getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 import { getAssociationById, removeUserFromCompanyAssociations } from "../../../services/associationsService";
@@ -198,11 +198,11 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         res.redirect(redirectUrl);
     }
 
-    private getSessionKey (req:Request): string {
+    private getSessionKey (req: Request): string {
         return `associationForRemoval:id:${req.params[constants.ASSOCIATIONS_ID]}:companyNumber:${req.params[constants.COMPANY_NUMBER]}`;
     }
 
-    private hasRemovedThemselves (session:Session, associationId: string): boolean {
+    private hasRemovedThemselves (session: Session, associationId: string): boolean {
         return getLoggedInUserId(session) === associationId;
     }
 

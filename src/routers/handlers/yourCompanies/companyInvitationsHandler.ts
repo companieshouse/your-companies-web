@@ -2,7 +2,7 @@ import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { Invitation, AssociationList, InvitationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { Invitation, AssociationList, InvitationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AnyRecord, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { InvitationWithCompanyDetail, Invitations } from "../../../types/invitations";

@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createOauthPrivateApiClient } from "../../../../src/services/apiClientService";
+import { createOAuthApiClient } from "../../../../src/services/apiClientService";
 import { getAssociationById } from "../../../../src/services/associationsService";
-import { Association } from "private-api-sdk-node/dist/services/associations/types";
+import { Association } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { StatusCodes } from "http-status-codes";
 import { singleAwaitingApprovalAssociation } from "../../../mocks/associations.mock";
 import { mockRequest } from "../../../mocks/request.mock";
@@ -12,11 +12,11 @@ jest.mock("../../../../src/services/apiClientService");
 jest.mock("../../../../src/services/refreshTokenService");
 jest.mock("../../../../src/lib/Logger");
 
-const mockCreateOauthPrivateApiClient = createOauthPrivateApiClient as jest.Mock;
+const mockCreateOauthApiClient = createOAuthApiClient as jest.Mock;
 const mockGetAssociationById = jest.fn();
 const mockRefreshToken = refreshToken as jest.Mock;
 
-mockCreateOauthPrivateApiClient.mockReturnValue({
+mockCreateOauthApiClient.mockReturnValue({
     associationsService: {
         getAssociation: mockGetAssociationById
     }
