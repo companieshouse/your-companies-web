@@ -4,6 +4,7 @@ import { getAccessToken } from "../lib/utils/sessionUtils";
 import { refreshToken } from "./refreshTokenService";
 import logger, { createLogMessage } from "../lib/Logger";
 import { createOAuthApiClient } from "./apiClientService";
+import * as constansts from "../constants";
 
 /**
  * Calls API and if the response is unauthorized then it refreshes access token and retries the call to the API.
@@ -25,7 +26,7 @@ export const makeApiCallWithRetry = async (
 
     logger.info(createLogMessage(session, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`));
 
-    let client = createOAuthApiClient(req.session);
+    let client = createOAuthApiClient(req.session, constansts.ACCOUNTS_API_URL);
 
     let response = await client[serviceName][fnName](...otherParams);
 
@@ -37,7 +38,7 @@ export const makeApiCallWithRetry = async (
         const accessToken = await refreshToken(req, session);
         logger.info(createLogMessage(session, makeApiCallWithRetry.name, `New access token: ${accessToken}`));
 
-        client = createOAuthApiClient(req.session);
+        client = createOAuthApiClient(req.session, constansts.ACCOUNTS_API_URL);
         response = await client[serviceName][fnName](...otherParams);
 
     }
