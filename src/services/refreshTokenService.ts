@@ -3,7 +3,7 @@ import { createOAuthApiClient } from "./apiClientService";
 import { getAccessToken, getRefreshToken, setAccessToken } from "../lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { Request } from "express";
-import * as constansts from "../constants";
+import * as constants from "../constants";
 import logger, { createLogMessage } from "../lib/Logger";
 
 /**
@@ -20,9 +20,9 @@ export const refreshToken = async (req: Request, session: Session): Promise<stri
 
     const refreshTokenData = await apiClient.refreshToken.refresh(
         getRefreshToken(session),
-        constansts.REFRESH_TOKEN_GRANT_TYPE,
-        constansts.OAUTH2_CLIENT_ID,
-        constansts.OAUTH2_CLIENT_SECRET
+        constants.REFRESH_TOKEN_GRANT_TYPE,
+        constants.OAUTH2_CLIENT_ID,
+        constants.OAUTH2_CLIENT_SECRET
     ) as any;
     const accessToken = refreshTokenData?.resource?.access_token;
 
