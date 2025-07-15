@@ -35,7 +35,7 @@
     "license": "MIT",
     "dependencies": {
         "@braintree/sanitize-url": "^7.0.1",
-        "@companieshouse/api-sdk-node": "^2.0.160",
+        "@companieshouse/api-sdk-node": "^2.0.274",
         "@companieshouse/ch-node-utils": "^2.1.3",
         "@companieshouse/node-session-handler": "^5.2.4",
         "@companieshouse/structured-logging-node": "^2.0.1",
@@ -58,7 +58,6 @@
         "luxon": "^3.4.4",
         "nocache": "^4.0.0",
         "nunjucks": "3.2.4",
-        "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.73",
         "require-directory": "^2.1.1",
         "tslib": "^2.6.3",
         "uuid": "^9.0.1",

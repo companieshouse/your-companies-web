@@ -4,7 +4,7 @@ import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
-import { AssociationList, AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { ViewDataWithBackLink } from "../../../types/utilTypes";

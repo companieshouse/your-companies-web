@@ -8,7 +8,7 @@ import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import * as associationsService from "../../../../../../src/services/associationsService";
 import { singleAwaitingApprovalAssociation, singleConfirmedAssociation, singleMigratedAssociation } from "../../../../../mocks/associations.mock";
 import { mockResponse } from "../../../../../mocks/response.mock";
-import { AssociationStatus } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");

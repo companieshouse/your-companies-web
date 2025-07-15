@@ -13,7 +13,7 @@ import cy from "../../../../locales/cy/company-invitations.json";
 import * as commonEn from "../../../../locales/en/common.json";
 import * as commonCy from "../../../../locales/cy/common.json";
 import * as associationsService from "../../../../src/services/associationsService";
-import { AssociationStatus, AssociationList } from "private-api-sdk-node/dist/services/associations/types";
+import { AssociationStatus, AssociationList } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
 const router = supertest(app);
 const url = "/your-companies/company-invitations";
