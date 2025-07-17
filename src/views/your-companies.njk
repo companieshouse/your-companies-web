@@ -10,22 +10,24 @@
 {% set marginClass = "govuk-!-margin-bottom-6" if displaySearchForm else "govuk-!-margin-bottom-9" %}
 
 {% block main_content %}
+    <div class="govuk-grid-column-three-quarters">
 
-    {% if userHasCompanies == "true" %}
-    {% include "partials/digital_authorisation_banner.njk" %}
-    {% endif %}
-    
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">{{ lang.your_companies }}</h1>
-    <p class="govuk-body {{marginClass}}">
-        <a class="govuk-link" href="{{viewInvitationsPageUrl}}" id="view-invitations-link">{{lang.view_invitations}} &#40;{{numberOfInvitations}}&#41;</a>
-    </p>
+        {% if userHasCompanies == "true" %}
+        {% include "partials/digital_authorisation_banner.njk" %}
+        {% endif %}
+        
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">{{ lang.your_companies }}</h1>
+        <p class="govuk-body {{marginClass}}">
+            <a class="govuk-link" href="{{viewInvitationsPageUrl}}" id="view-invitations-link">{{lang.view_invitations}} &#40;{{numberOfInvitations}}&#41;</a>
+        </p>
 
-    {% if userHasCompanies == "true" %}
-        {% include "previously-added-companies.njk" %}
-    {% else %}
-        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-        {% include "no-companies-added.njk" %}
-    {% endif %}
+        {% if userHasCompanies == "true" %}
+            {% include "previously-added-companies.njk" %}
+        {% else %}
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            {% include "no-companies-added.njk" %}
+        {% endif %}
+    </div>
 <script nonce={{ nonce | dump | safe }}>
         trackGoal("add-a-company-button", {{matomoAddCompanyGoalId}});
 </script>
