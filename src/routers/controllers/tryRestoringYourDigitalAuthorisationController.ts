@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
-import { getExtraData } from "../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { createAssociation } from "../../services/associationsService";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import logger, { createLogMessage } from "../../lib/Logger";
@@ -36,6 +36,7 @@ export const tryRestoringYourDigitalAuthorisationControllerGet = async (
     );
 
     await createAssociation(req, confirmedCompanyForAssociation.companyNumber);
+    setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS, true);
 
     res.redirect(getFullUrl(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL));
 };

@@ -297,7 +297,7 @@ const routeConfigs: RouteConfig[] = [
                 constants.COMPANY_INVITATIONS_URL
             ])
         ],
-        defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
+        defaultRedirect: constants.LANDING_URL
     },
 
     // Manage authorised people journey with all sub-journeys
