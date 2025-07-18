@@ -239,7 +239,21 @@ export const navigationMiddleware = async (
     logger.error(createLogMessage(
         req.session,
         navigationMiddleware.name,
-        `${req.path} did not fit any of the checks - redirecting to the default page`
+        `DEBUG: 
+        req.path=${req.path}, 
+        req.baseUrl=${req.baseUrl}, 
+        currentPath=${currentPath}, 
+        referer=${referer}, 
+        refererPath=${refererPath}, 
+        currentParams=${JSON.stringify(currentParams)}, 
+        refererParams=${JSON.stringify(refererParams)}, 
+        refererParamGuards=${JSON.stringify(refererParamGuards)}, 
+        config.routePattern=${config.routePattern}, 
+        config.allowedPages=${JSON.stringify(config.allowedPages)}, 
+        config.allowedExternalUrls=${JSON.stringify(config.allowedExternalUrls)}, 
+        config.sessionFlag=${config.sessionFlag}, 
+        sessionFlagValue=${config.sessionFlag ? JSON.stringify(getExtraData(req.session, config.sessionFlag)) : undefined}, 
+        isAllowedExternalReferer=${isAllowedExternalReferer(referer, config.allowedExternalUrls)}`
     ));
     return res.redirect(config.defaultRedirect);
 };
