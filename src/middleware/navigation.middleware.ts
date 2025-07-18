@@ -239,7 +239,9 @@ export const navigationMiddleware = async (
     logger.error(createLogMessage(
         req.session,
         navigationMiddleware.name,
-        `${req.path} did not fit any of the checks - redirecting to the default page`
+        `DEBUG: 
+        referer=${referer}, 
+        refererPath=${refererPath}`
     ));
     return res.redirect(config.defaultRedirect);
 };
