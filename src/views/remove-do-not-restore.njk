@@ -63,7 +63,10 @@
 
                         items: [{
                             value: "confirm",
-                            text: lang.i_confirm_that_i_have_read
+                            text: lang.i_confirm_that_i_have_read,
+                            attributes: {
+                                "data-event-id": "confirm-read-checkbox"
+                            }
                         }],
                         errorMessage: message
                     }) 
@@ -75,13 +78,12 @@
                             text: lang.confirm,
                             classes: "govuk-button--warning",
                             attributes: {
-                                id: "remove-authorisation-button",
-                                "data-event-id": "remove-authorisation-button"
+                                "data-event-id": "remove-do-not-restore-confirm-button"
                             }
                         })
                     }}
 
-                    <a class="govuk-link" href="{{ cancelLinkHref }}" data-event-id="cancel-remove-authorisation" id="cancel-link">{{ lang.cancel }}</a>
+                    <a class="govuk-link" href="{{ cancelLinkHref }}" data-event-id="cancel-do-not-restore-authorisation" id="cancel-link">{{ lang.cancel }}</a>
 
                 </div>
             </form>

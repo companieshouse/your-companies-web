@@ -24,12 +24,13 @@
                     {{ govukButton({
                             text: lang.remove_company,
                             attributes: {
-                                id: "submit"
+                                id: "submit",
+                                "data-event-id": "remove-company-do-not-restore"
                             }
                         })
                     }}
 
-                    <a class="govuk-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
+                    <a class="govuk-link" data-event-id="cancel-link" href="{{ cancelLinkHref }}">{{ lang.cancel }}</a>
                 </div>
             </form>
         </div>

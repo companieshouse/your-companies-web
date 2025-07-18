@@ -42,11 +42,18 @@
                             text: lang.yes,
                             hint: {
                                 text: lang.if_you_remove_this_company + ' ' + companyName + ' ' + lang.without_a_current_auth_code
+                            },
+                            attributes: {
+                                "data-event-id": "yes-option"
                             }
+                            
                         },
                         {
                             value: "no",
-                            text: lang.no
+                            text: lang.no,
+                            attributes: {
+                                "data-event-id": "no-option"
+                            }
                         }
                     ]
                 })
@@ -55,7 +62,8 @@
             {{ govukButton({
                     text: lang.continue,
                     attributes: {
-                        id: "submit"
+                        id: "submit",
+                        "data-event-id": "confirm-selection-on-company-removal"
                     }
                 })
             }}
