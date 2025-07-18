@@ -241,8 +241,7 @@ export const navigationMiddleware = async (
         navigationMiddleware.name,
         `DEBUG: 
         referer=${referer}, 
-        refererPath=${refererPath}, 
-        config.allowedExternalUrls=${JSON.stringify(config.allowedExternalUrls)}`
+        refererPath=${refererPath}`
     ));
     return res.redirect(config.defaultRedirect);
 };
