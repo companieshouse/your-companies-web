@@ -240,20 +240,9 @@ export const navigationMiddleware = async (
         req.session,
         navigationMiddleware.name,
         `DEBUG: 
-        req.path=${req.path}, 
-        req.baseUrl=${req.baseUrl}, 
-        currentPath=${currentPath}, 
         referer=${referer}, 
         refererPath=${refererPath}, 
-        currentParams=${JSON.stringify(currentParams)}, 
-        refererParams=${JSON.stringify(refererParams)}, 
-        refererParamGuards=${JSON.stringify(refererParamGuards)}, 
-        config.routePattern=${config.routePattern}, 
-        config.allowedPages=${JSON.stringify(config.allowedPages)}, 
-        config.allowedExternalUrls=${JSON.stringify(config.allowedExternalUrls)}, 
-        config.sessionFlag=${config.sessionFlag}, 
-        sessionFlagValue=${config.sessionFlag ? JSON.stringify(getExtraData(req.session, config.sessionFlag)) : undefined}, 
-        isAllowedExternalReferer=${isAllowedExternalReferer(referer, config.allowedExternalUrls)}`
+        config.allowedExternalUrls=${JSON.stringify(config.allowedExternalUrls)}`
     ));
     return res.redirect(config.defaultRedirect);
 };
