@@ -3,6 +3,7 @@ import * as url from "node:url";
 import { deleteExtraData, getExtraData } from "../lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import routeConfigs, { ParamGuard, RouteConfig } from "./navigation.middleware.config";
+import logger, { createLogMessage } from "../lib/Logger";
 
 /**
  * Checks if a given path matches a pattern with support for :param wildcards.
@@ -148,6 +149,11 @@ const handleSessionFlag = (
             deleteExtraData(req.session, config.sessionFlag);
             return true; // allow navigation
         }
+        logger.error(createLogMessage(
+            req.session,
+            navigationMiddleware.name,
+            `${req.path} requires a session flag ${JSON.stringify(config.sessionFlag)} with value 'true' but got ${JSON.stringify(sessionFlag)} instead - redirecting to the default page`
+        ));
         res.redirect(config.defaultRedirect);
         return false; // redirect
     }
@@ -172,7 +178,14 @@ export const navigationMiddleware = async (
     next: NextFunction
 ): Promise<void> => {
     const config = findConfigForPath(req.path);
-    if (!config) return next();
+    if (!config) {
+        logger.info(createLogMessage(
+            req.session,
+            navigationMiddleware.name,
+            `${req.path} has no navigation middleware config - calling next()`
+        ));
+        return next();
+    }
 
     const currentPath = req.baseUrl + req.path;
     const refererPath = getRefererPath(req);
@@ -184,6 +197,11 @@ export const navigationMiddleware = async (
     // Allow reloads/language switches (referer is self)
     if (refererPath === currentPath) {
         if (!areParamsValid(currentParams, refererParamGuards, req.session)) {
+            logger.error(createLogMessage(
+                req.session,
+                navigationMiddleware.name,
+                `${req.path} has invalid parameters: ${JSON.stringify(currentParams)} - redirecting to the default page`
+            ));
             return res.redirect(config.defaultRedirect);
         }
         return next();
@@ -208,10 +226,20 @@ export const navigationMiddleware = async (
         config.allowedPages.some(allowed => matchPathToPattern(refererPath, allowed.pattern))
     ) {
         if (!areParamsValid(refererParams, refererParamGuards, req.session)) {
+            logger.error(createLogMessage(
+                req.session,
+                navigationMiddleware.name,
+                `${req.path} has invalid parameters: ${JSON.stringify(currentParams)} - redirecting to the default page`
+            ));
             return res.redirect(config.defaultRedirect);
         }
         return next();
     }
 
+    logger.error(createLogMessage(
+        req.session,
+        navigationMiddleware.name,
+        `${req.path} did not fit any of the checks - redirecting to the default page`
+    ));
     return res.redirect(config.defaultRedirect);
 };
