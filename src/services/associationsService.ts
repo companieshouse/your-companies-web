@@ -16,6 +16,8 @@ import { AssociationState, AssociationStateResponse } from "../types/association
 import createError from "http-errors";
 import { makeApiCallWithRetry } from "./apiCallRetryService";
 import { Session } from "@companieshouse/node-session-handler";
+import { createKeyApiClient } from "./apiClientService";
+import { getLoggedInUserId } from "../lib/utils/sessionUtils";
 
 const ASSOCIATIONS_SERVICE = "associationsService";
 
@@ -152,16 +154,11 @@ export const getCompanyAssociations = async (
 export const createAssociation = async (
     req: Request,
     companyNumber: string,
-    inviteeEmailAddress?: string
+    userId?: string
 ): Promise<string> => {
-    const sdkResponse = await makeApiCallWithRetry(
-        ASSOCIATIONS_SERVICE,
-        "createAssociation",
-        req,
-        req.session as Session,
-        companyNumber,
-        inviteeEmailAddress
-    ) as Resource<NewAssociationResponse | Errors>;
+    const apiClient = createKeyApiClient();
+    const userIdForApiCall = userId || getLoggedInUserId(req.session);
+    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
@@ -182,6 +179,47 @@ export const createAssociation = async (
     }
 
     logger.info(createLogMessage(req.session, createAssociation.name, `Received the new association link for a company with company number ${companyNumber}`));
+    const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
+
+    return Promise.resolve(associationLink);
+};
+
+/**
+ * Invites a user with the provided email address to a company.
+ */
+export const inviteUser = async (
+    req: Request,
+    companyNumber: string,
+    inviteeEmailAddress?: string
+): Promise<string> => {
+    const sdkResponse = await makeApiCallWithRetry(
+        ASSOCIATIONS_SERVICE,
+        "inviteUser",
+        req,
+        req.session as Session,
+        companyNumber,
+        inviteeEmailAddress
+    ) as Resource<NewAssociationResponse | Errors>;
+
+    if (!sdkResponse) {
+        const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
+        logger.error(createLogMessage(req.session, inviteUser.name, errorMessage));
+        throw new Error(errorMessage);
+    }
+
+    if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
+        const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
+        logger.error(createLogMessage(req.session, inviteUser.name, errorMessage));
+        throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
+    }
+
+    if (!sdkResponse.resource) {
+        const errorMessage = `Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`;
+        logger.error(createLogMessage(req.session, inviteUser.name, errorMessage));
+        throw new Error(errorMessage);
+    }
+
+    logger.info(createLogMessage(req.session, inviteUser.name, `Received the new association link for a company with company number ${companyNumber}`));
     const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
 
     return Promise.resolve(associationLink);

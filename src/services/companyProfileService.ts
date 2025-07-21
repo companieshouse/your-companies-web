@@ -1,8 +1,8 @@
-import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
+import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
-import { CHS_API_KEY } from "../constants";
+import { createKeyApiClient } from "./apiClientService";
 
 /**
  * Retrieves the company profile for a given company number.
@@ -26,7 +26,7 @@ import { CHS_API_KEY } from "../constants";
  * ```
  */
 export const getCompanyProfile = async (companyNumber: string): Promise<CompanyProfile> => {
-    const apiClient = createApiClient(CHS_API_KEY);
+    const apiClient = createKeyApiClient();
 
     logger.info(`${getCompanyProfile.name}: Looking for company profile with company number ${companyNumber}`);
     const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber);

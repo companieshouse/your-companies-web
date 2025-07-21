@@ -7,7 +7,7 @@ import { Session } from "@companieshouse/node-session-handler";
 import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 import * as validator from "../../../../../src/lib/validation/generic";
 import logger from "../../../../../src/lib/Logger";
-import * as associationService from "../../../../../src/services/associationsService";
+import * as associationsService from "../../../../../src/services/associationsService";
 import * as urlUtils from "../../../../../src/lib/utils/urlUtils";
 
 jest.mock("../../../../../src/lib/Logger", () => ({
@@ -27,7 +27,7 @@ const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
 const getLoggedInUserIdSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getLoggedInUserId");
 const validateEmailStringSpy: jest.SpyInstance = jest.spyOn(validator, "validateEmailString");
-const createAssociationSpy: jest.SpyInstance = jest.spyOn(associationService, "createAssociation");
+const inviteUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "inviteUser");
 const getFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getFullUrl");
 logger.info = jest.fn();
 
@@ -67,7 +67,7 @@ describe("resendEmailController", () => {
             req.params = { [constants.USER_EMAIL]: email };
             validateEmailStringSpy.mockReturnValue(true);
             const response = "54321";
-            createAssociationSpy.mockReturnValue(response);
+            inviteUserSpy.mockReturnValue(response);
             const expectedUrl = `${constants.LANDING_URL}/manage-authorised-people/12345/authorisation-email-resent`;
             getFullUrlSpy.mockReturnValue(`${constants.LANDING_URL}${constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL}`);
             // When
@@ -77,8 +77,8 @@ describe("resendEmailController", () => {
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.COMPANY_NUMBER);
             expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.RESENT_SUCCESS_EMAIL, email);
-            expect(createAssociationSpy).toHaveBeenCalledTimes(1);
-            expect(createAssociationSpy).toHaveBeenCalledWith(req, companyNumber, email);
+            expect(inviteUserSpy).toHaveBeenCalledTimes(1);
+            expect(inviteUserSpy).toHaveBeenCalledWith(req, companyNumber, email);
             expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL);
             expect(redirectMock).toHaveBeenCalledTimes(1);
