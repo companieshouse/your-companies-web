@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as constants from "../../constants";
 import { createAssociation } from "../../services/associationsService";
-import { getExtraData } from "../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { getFullUrl } from "../../lib/utils/urlUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 
@@ -32,5 +32,6 @@ export const createCompanyAssociationControllerGet = async (
             `Creating association for company number: ${confirmedCompany.companyNumber}`
         )
     );
+    setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
     res.redirect(getFullUrl(constants.COMPANY_ADDED_SUCCESS_URL));
 };

@@ -17,6 +17,8 @@
     {% set title_middle_part = lang.title_authorisation_removed %}
 {% elif cancelledPerson %}
     {% set title_middle_part = lang.title_authorisation_cancelled %}
+{% elif notRestoredPerson %}
+    {% set title_middle_part = lang.title_authorisation_not_restored %}
 {% elif showEmailResentSuccess %}
     {% set title_middle_part = lang.title_email_resent %}
 {% endif %}
@@ -222,7 +224,7 @@
 
             {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
 
-            {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-digital-authorisation", {
+            {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-do-not-restore-digital-authorisation", {
                 associationId: association.id,
                 companyNumber: association.companyNumber
             }) %}

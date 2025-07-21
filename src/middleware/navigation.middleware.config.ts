@@ -154,6 +154,7 @@ const routeConfigs: RouteConfig[] = [
         allowedExternalUrls: [
             constants.ACCOUNT_URL
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -252,6 +253,7 @@ const routeConfigs: RouteConfig[] = [
         allowedExternalUrls: [
             constants.ACCOUNT_URL
         ],
+        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS,
         defaultRedirect: constants.LANDING_URL
     },
 
@@ -297,7 +299,7 @@ const routeConfigs: RouteConfig[] = [
                 constants.COMPANY_INVITATIONS_URL
             ])
         ],
-        defaultRedirect: getFullUrl(constants.COMPANY_INVITATIONS_URL)
+        defaultRedirect: constants.LANDING_URL
     },
 
     // Manage authorised people journey with all sub-journeys
