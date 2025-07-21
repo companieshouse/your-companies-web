@@ -157,8 +157,8 @@ export const createAssociation = async (
     userId?: string
 ): Promise<string> => {
     const apiClient = createKeyApiClient();
-    const userIdForApiCall = userId || getLoggedInUserId(req.session);
-    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall) as Resource<NewAssociationResponse | Errors>;
+    const userIdForApiCall = userId ?? getLoggedInUserId(req.session);
+    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall);
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
