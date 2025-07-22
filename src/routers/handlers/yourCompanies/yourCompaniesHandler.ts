@@ -99,6 +99,7 @@ export class YourCompaniesHandler extends GenericHandler {
         const search = req.query.search as string;
         const page = req.query.page as string;
         let pageNumber = stringToPositiveInteger(page);
+        const itemsPerPage = 10;
 
         let errorMassage;
         if (search && !validateCompanyNumberSearchString(search)) {
@@ -109,7 +110,8 @@ export class YourCompaniesHandler extends GenericHandler {
             req,
             [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED],
             errorMassage ? undefined : search,
-            pageNumber - 1
+            pageNumber - 1,
+            itemsPerPage
         );
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
@@ -117,7 +119,8 @@ export class YourCompaniesHandler extends GenericHandler {
                 req,
                 [AssociationStatus.CONFIRMED],
                 errorMassage ? undefined : search,
-                pageNumber - 1
+                pageNumber - 1,
+                itemsPerPage
             );
         }
 

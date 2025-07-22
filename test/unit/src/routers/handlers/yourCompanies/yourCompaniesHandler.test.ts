@@ -51,6 +51,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -76,6 +77,7 @@ describe("YourCompaniesHandler", () => {
                 page: "1"
             },
             pageNumber: userAssociations.pageNumber,
+            itemsPerPage: userAssociations.itemsPerPage,
             confirmedUserAssociations: userAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -112,6 +114,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -141,6 +144,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -165,6 +169,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: false,
             viewData: {
@@ -194,6 +199,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: false,
             viewData: {
@@ -214,7 +220,7 @@ describe("YourCompaniesHandler", () => {
         }
     ])("should return $return when $condition",
         async ({
-            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
+            query, pageNumber, itemsPerPage, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
         }) => {
 
             // Given
@@ -272,13 +278,13 @@ describe("YourCompaniesHandler", () => {
             }
 
             let getUserAssociationsCounter = 1;
-            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1);
+            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
 
             if (!isValidPageNumber) {
                 getUserAssociationsCounter = 2;
-                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1);
+                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
             }
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
