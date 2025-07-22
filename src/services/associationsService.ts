@@ -156,7 +156,7 @@ export const createAssociation = async (
     companyNumber: string,
     userId?: string
 ): Promise<string> => {
-    const apiClient = createKeyApiClient();
+    const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const userIdForApiCall = userId ?? getLoggedInUserId(req.session);
     const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall);
 
