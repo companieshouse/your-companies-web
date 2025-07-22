@@ -74,16 +74,18 @@
             {% set params = {
                 companyNumber: elem.company_number
             } %}
+
+            {% set companyNameUpper = elem.company_name  | upper %}
             {% set visuallyHiddenText = elem.company_name %}
             {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
             {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
-            {% set companyNameUpper = elem.company_name  | upper %}
+            {% set companyInfoLink = link(companyNameUpper, visuallyHiddenText, companyInformationUrl, "company-information", params) %}
 
         {% if elem.status == "confirmed" %}
             <div class="govuk-summary-card">
         <div class="govuk-summary-card__title-wrapper">
             <h2 class="govuk-summary-card__title">
-            <a href="#" class="govuk-link govuk-link--no-visited-state">{{companyNameUpper}}</a>
+            {{companyInfoLink}}
             </h2>
             <ul class="govuk-summary-card__actions">
             <li class="govuk-summary-card__action">
