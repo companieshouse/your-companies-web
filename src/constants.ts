@@ -150,6 +150,7 @@ export const USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS = "user not removed from
 
 // APP config
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
+export const CHS_INTERNAL_API_KEY = getEnvironmentValue("CHS_INTERNAL_API_KEY", "chs.api.key");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
 export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 export const OAUTH2_CLIENT_ID = getEnvironmentValue(`OAUTH2_CLIENT_ID`);
