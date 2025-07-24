@@ -4,7 +4,7 @@ import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
-import { AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
+import { AssociationList } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { ViewDataWithBackLink } from "../../../types/utilTypes";
@@ -101,7 +101,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         }
 
-        this.handleRemoveConfirmation(req);
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
@@ -147,24 +146,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             return Promise.reject(createError(StatusCodes.FORBIDDEN, errorText, { redirctToYourCompanies: true }));
         }
         return Promise.resolve();
-    }
-
-    /**
-     * Handles the confirmation of a person being removed.
-     * @param req - The HTTP request object.
-     */
-    private handleRemoveConfirmation (req: Request) {
-        const removal = getExtraData(req.session, constants.REMOVE_PERSON);
-        if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-            if (removal.status === AssociationStatus.AWAITING_APPROVAL) {
-                this.viewData.cancelledPerson = removal.userEmail;
-            } else if (removal.status === AssociationStatus.CONFIRMED) {
-                this.viewData.removedPerson = removal.userName;
-                this.viewData.changeCompanyAuthCodeUrl = req.lang === "en" ? constants.CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH : constants.CHANGE_COMPANY_AUTH_CODE_URL_WELSH;
-            } else if (removal.status === AssociationStatus.MIGRATED) {
-                this.viewData.notRestoredPerson = removal.userName;
-            }
-        }
     }
 
     /**

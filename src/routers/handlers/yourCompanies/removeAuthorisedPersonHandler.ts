@@ -13,7 +13,7 @@ import {
 import { getFullUrl, getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 import { getAssociationById, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import logger, { createLogMessage } from "../../../lib/Logger";
-import { Removal } from "../../../types/removal";
+import { PersonRemovedConfirmation, Removal } from "../../../types/removal";
 
 /**
  * Interface representing the view data for the Remove Authorised Person page.
@@ -182,19 +182,26 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private async handleOtherUserRemoval (req: Request, res: Response, association: Association): Promise<void> {
+        const userNameOrEmail = this.getNameOrEmail(association.displayName, association.userEmail);
         const removal: Removal = {
             userEmail: association.userEmail,
-            userName: this.getNameOrEmail(association.displayName, association.userEmail),
+            userName: userNameOrEmail,
             companyNumber: req.params[constants.COMPANY_NUMBER],
             status: association.status
         };
 
+        const personRemovedConfirmationData: PersonRemovedConfirmation = {
+            userNameOrEmail,
+            companyNumber: req.params[constants.COMPANY_NUMBER],
+            companyName: association.companyName
+        };
+
         setExtraData(req.session, constants.REMOVE_PERSON, removal);
+        setExtraData(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, personRemovedConfirmationData);
         logger.info(createLogMessage(req.session, this.handleOtherUserRemoval.name,
             `Association ${association.id} removed`));
 
-        const redirectUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL)
-            .replace(`:${constants.COMPANY_NUMBER}`, association.companyNumber);
+        const redirectUrl = getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
         res.redirect(redirectUrl);
     }
 

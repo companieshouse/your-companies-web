@@ -23,6 +23,7 @@ export const CURRENT_COMPANY_NUM = "currentCompanyNumber";
 export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
 export const REMOVE_PAGE_ERRORS = "removePageErrors";
+export const PERSON_REMOVED_CONFIRMATION_DATA = "personRemovedConfirmationData";
 
 export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
 export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";
@@ -74,6 +75,7 @@ export const RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_PAGE = "confirmation-you
 export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE = "send-email-invitation-to-be-digitally-authorised";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE = "remove-authorisation-do-not-restore";
 export const CONFIRMATION_AUTHORISATION_REMOVED_PAGE = "confirmation-authorisation-removed";
+export const CONFIRMATION_PERSON_REMOVED_PAGE = "confirmation-person-removed";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -99,8 +101,7 @@ export const CHECK_PRESENTER_URL = `/${CHECK_PRESENTER_PAGE}/:${COMPANY_NUMBER}`
 export const COMPANY_INVITATIONS_URL = `/${COMPANY_INVITATIONS_PAGE}`;
 export const COMPANY_INVITATIONS_ACCEPT_URL = `/${COMPANY_INVITATIONS_ACCEPT_PAGE}/:${ASSOCIATIONS_ID}`;
 export const COMPANY_INVITATIONS_DECLINE_URL = `/${COMPANY_INVITATIONS_DECLINE_PAGE}/:${ASSOCIATIONS_ID}`;
-export const CONFIRMATION_PERSON_REMOVED_URL = "/confirmation-person-removed";
-export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_REMOVED_URL}`;
+export const CONFIRMATION_PERSON_REMOVED_URL = `/${CONFIRMATION_PERSON_REMOVED_PAGE}`;
 export const REMOVE_COMPANY_URL = `/${REMOVE_COMPANY_PAGE}/:${COMPANY_NUMBER}`;
 export const REMOVED_THEMSELVES_URL = `/${REMOVED_THEMSELVES}`;
 export const SOMETHING_WENT_WRONG_URL = "/something-went-wrong";

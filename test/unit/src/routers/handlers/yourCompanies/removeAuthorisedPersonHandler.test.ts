@@ -425,7 +425,7 @@ describe("RemoveAuthorisedPersonHandler", () => {
             // Then
             expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
             expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, "removePerson", expectedSavedRemovalForConfirmationPage);
-            expect(res.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/NI038379/confirmation-person-removed");
+            expect(res.redirect).toHaveBeenCalledWith("/your-companies/confirmation-person-removed");
         });
 
         it("should handle self removal", async () => {

@@ -122,7 +122,6 @@ const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
     constants.MANAGE_AUTHORISED_PEOPLE_URL,
     constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
     constants.AUTHORISED_PERSON_ADDED_URL,
-    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
     constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
 ];
 
@@ -440,13 +439,13 @@ const routeConfigs: RouteConfig[] = [
 
     // 3b) Confirmation person removed (alternative step)
     {
-        routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL,
+        routePattern: constants.CONFIRMATION_PERSON_REMOVED_URL,
         allowedPages: [
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL
-            ]),
             ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
                 constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
+            ]),
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_PERSON_REMOVED_URL
             ])
         ],
         defaultRedirect: constants.LANDING_URL
