@@ -9,7 +9,7 @@ import { Session } from "@companieshouse/node-session-handler";
 const router = supertest(app);
 
 jest.mock("../../../../../src/lib/Logger");
-const createAssociationSpy: jest.SpyInstance = jest.spyOn(associationsService, "createAssociation");
+const inviteUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "inviteUser");
 const session: Session = new Session();
 mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
     req.session = session;
@@ -27,7 +27,7 @@ describe("GET /your-companies/manage-authorised-people-email-resent/:userEmail",
         // Given
         const url = "/your-companies/manage-authorised-people-email-resent/bob1@bob.com";
         const expectedRedirectUrl = "/your-companies/manage-authorised-people/1234567/authorisation-email-resent";
-        createAssociationSpy.mockReturnValue({ association_id: "123456" });
+        inviteUserSpy.mockReturnValue({ association_id: "123456" });
         // When
         const response = await router.get(url);
         // Then

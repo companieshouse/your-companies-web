@@ -3,7 +3,7 @@ import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 import { validateEmailString } from "../../lib/validation/generic";
-import { createAssociation } from "../../services/associationsService";
+import { inviteUser } from "../../services/associationsService";
 import { getFullUrl } from "../../lib/utils/urlUtils";
 
 /**
@@ -32,7 +32,7 @@ export const resendEmailController = async (req: Request, res: Response): Promis
         return;
     }
 
-    const emailSendResponse = await createAssociation(req, companyNumber, email);
+    const emailSendResponse = await inviteUser(req, companyNumber, email);
 
     if (emailSendResponse) {
         setExtraData(req.session, constants.RESENT_SUCCESS_EMAIL, email);
