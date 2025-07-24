@@ -8,8 +8,10 @@
    <p class="govuk-body">{{lang.people_digital_authorisation_ending_paragraph}}</p>
 {% endset %}
 
-{{ govukNotificationBanner({
-  html: html,
-  titleId: "gov-uk-important-banner",
-  titleText: lang.important
-}) }}
+<div class="govuk-grid-column-three-quarters">
+    {{ govukNotificationBanner({
+    html: html,
+    titleId: "gov-uk-important-banner",
+    titleText: lang.important
+    }) }}
+</div>
