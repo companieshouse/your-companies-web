@@ -4,16 +4,17 @@ import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
-import { AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
-import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
+import { Association, AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
+import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, searchForCompanyAssociationByEmail } from "../../../services/associationsService";
 import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { ViewDataWithBackLink } from "../../../types/utilTypes";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
-import { validatePageNumber } from "../../../lib/validation/generic";
+import { validateEmailString, validatePageNumber } from "../../../lib/validation/generic";
 import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../types/associations";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { Pagination } from "../../../types/pagination";
+import { getSearchStringEmail } from "../../../routers/controllers/manageAuthorisedPeopleController";
 
 interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Pagination {
     buttonHref: string;
@@ -31,8 +32,25 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     authorisedPersonSuccess: boolean;
     authorisedPersonEmailAddress: string | undefined;
     authorisedPersonCompanyName: string | undefined;
-}
+    companyName: string;
+    companyNumber: string;
+    searchEmail: string | null;
+    validSearch?: boolean;
+    resultsFound?: boolean;
+    cancelSearchHref:string;
+    }
 
+export const setCompanyName = (req: Request, companyName: string, companyNumber:string): void => {
+
+    const companyNameCollection = getExtraData(req.session, "companyNameCollection") || {};
+    companyNameCollection[companyNumber] = companyName;
+    setExtraData(req.session, "companyNameCollection", companyNameCollection);
+};
+
+export const getCompanyName = (req: Request, companyNumber: string): string | undefined => {
+    const companyNameCollection = getExtraData(req.session, "companyNameCollection");
+    return companyNameCollection?.[companyNumber];
+};
 /**
  * Handler for managing authorised people associated with a company.
  */
@@ -69,7 +87,11 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             resentSuccessEmail: "",
             authorisedPersonSuccess: false,
             authorisedPersonEmailAddress: undefined,
-            authorisedPersonCompanyName: undefined
+            authorisedPersonCompanyName: undefined,
+            companyName: "",
+            companyNumber: "",
+            cancelSearchHref: "",
+            searchEmail: null
         };
     }
 
@@ -88,50 +110,83 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         deleteExtraData(req.session, constants.REMOVE_PAGE_ERRORS);
 
         const companyNumber: string = req.params[constants.COMPANY_NUMBER];
+        this.viewData.cancelSearchHref = `${getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)}?${constants.CANCEL_SEARCH}`;
+        this.viewData.companyNumber = companyNumber;
         await this.preventUnauthorisedAccess(req, companyNumber);
 
         const lang = getTranslationsForView(req.lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
         this.viewData.lang = lang;
         this.viewData.buttonHref = getAddPresenterFullUrl(companyNumber) + constants.CLEAR_FORM_TRUE;
 
-        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        const trimmedSearch: string | undefined = getSearchStringEmail(req, companyNumber);
+        const searchIsAString = typeof trimmedSearch === "string";
+        if (searchIsAString) {
+            this.viewData.searchEmail = trimmedSearch;
+        }
+        this.viewData.validSearch = searchIsAString && validateEmailString(trimmedSearch);
 
-        if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
-            pageNumber = 1;
-            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        if (searchIsAString && !this.viewData.validSearch) {
+            this.viewData.errors = {
+                searchEmail: {
+                    text: constants.ERRORS_EMAIL_INVALID
+                }
+            };
+            this.viewData.validSearch = false;
+            this.viewData.resultsFound = false;
         }
 
+        let companyAssociations: AssociationList | undefined;
+
+        if (!searchIsAString || !this.viewData.validSearch) {
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+
+            if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
+                pageNumber = 1;
+                companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+            }
+            if (companyAssociations.items.length && companyAssociations?.items[0]?.companyName) {
+                this.viewData.companyName = companyAssociations.items[0].companyName;
+                setCompanyName(req, companyAssociations.items[0].companyName, companyNumber);
+            }
+
+        }
+
+        if (searchIsAString && this.viewData.validSearch) {
+            await this.handleSearch(req, companyNumber, trimmedSearch);
+        }
         this.handleRemoveConfirmation(req);
         this.handleConfirmationPersonAdded(req);
         this.handleResentSuccessEmail(req);
 
         const emailArray: string[] = [];
         const associationIdArray: string[] = [];
-        for (const association of companyAssociations.items) {
-            emailArray.push(association.userEmail);
-            associationIdArray.push(association.id);
-            setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+
+        if (companyAssociations) {
+            for (const association of companyAssociations.items) {
+                emailArray.push(association.userEmail);
+                associationIdArray.push(association.id);
+                setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+            }
+            this.viewData.companyAssociations = companyAssociations;
+
+            if (companyAssociations.totalPages > 1) {
+                const urlPrefix = getManageAuthorisedPeopleFullUrl(req.originalUrl, companyNumber);
+                const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
+                setLangForPagination(pagination, lang);
+                this.viewData.pagination = pagination;
+                this.viewData.pageNumber = pageNumber;
+                this.viewData.numberOfPages = companyAssociations.totalPages;
+            }
+
+            const href = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
+            setExtraData(req.session, constants.REFERER_URL, href);
+            setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
+            setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
+            setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
+            setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
+            setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emailArray);
+            setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIdArray);
         }
-        this.viewData.companyAssociations = companyAssociations;
-
-        if (companyAssociations.totalPages > 1) {
-            const urlPrefix = getManageAuthorisedPeopleFullUrl(req.originalUrl, companyNumber);
-            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
-            setLangForPagination(pagination, lang);
-            this.viewData.pagination = pagination;
-            this.viewData.pageNumber = pageNumber;
-            this.viewData.numberOfPages = companyAssociations.totalPages;
-        }
-
-        const href = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
-        setExtraData(req.session, constants.REFERER_URL, href);
-        setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
-        setExtraData(req.session, constants.COMPANY_NUMBER, companyNumber);
-        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
-        setExtraData(req.session, constants.USER_EMAILS_ARRAY, emailArray);
-        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emailArray);
-        setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIdArray);
-
         return Promise.resolve(this.viewData);
     }
 
@@ -192,6 +247,32 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.authorisedPersonSuccess = true;
             this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;
             this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
+        }
+    }
+
+    private async handleSearch (req: Request, companyNumber:string, searchStringEmail:string): Promise<void> {
+
+        const result = await searchForCompanyAssociationByEmail(companyNumber, searchStringEmail.toLowerCase());
+        if (result === null) {
+            this.viewData.validSearch = true;
+            this.viewData.resultsFound = false;
+            this.viewData.companyName = getCompanyName(req, companyNumber) || "";
+
+        } else {
+            this.viewData.validSearch = true;
+            this.viewData.resultsFound = true;
+            this.viewData.companyAssociations = {
+                items: [result as Association],
+                itemsPerPage: 1,
+                pageNumber: 1,
+                totalResults: 1,
+                totalPages: 1,
+                links: {
+                    self: "",
+                    next: ""
+                }
+            };
+            this.viewData.companyName = result.companyName;
         }
     }
 }

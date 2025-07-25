@@ -4,7 +4,7 @@ import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "./con
 import { companyAddedControllerGet } from "./controllers/companyAddedController";
 import * as constants from "../constants";
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
-import { manageAuthorisedPeopleControllerGet } from "./controllers/manageAuthorisedPeopleController";
+import { manageAuthorisedPeopleControllerGet, manageAuthorisedPeopleControllerPost } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet, yourCompaniesControllerPost } from "./controllers/yourCompaniesController";
 import { addPresenterControllerGet, addPresenterControllerPost } from "./controllers/addPresenterController";
 import { checkPresenterControllerGet, checkPresenterControllerPost } from "./controllers/checkPresenterController";
@@ -46,6 +46,8 @@ router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as Request
 
 // Manage Authorised People
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
+router.post(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerPost as RequestHandler);
+
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_PERSON_REMOVED_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);

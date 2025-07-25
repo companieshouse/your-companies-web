@@ -377,3 +377,24 @@ export const getAssociationById = async (
     }
     return sdkResponse.resource as Association;
 };
+
+export const searchForCompanyAssociationByEmail = async (companyNumber: string, email:string): Promise<Association | null> => {
+    const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
+    const statuses = [
+        AssociationStatus.CONFIRMED,
+        AssociationStatus.AWAITING_APPROVAL,
+        AssociationStatus.MIGRATED,
+        AssociationStatus.UNAUTHORISED
+    ];
+    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses) as Resource<Association | Errors>;
+
+    if (sdkResponse.httpStatusCode === StatusCodes.OK) {
+        return sdkResponse.resource as Association;
+    } else if (sdkResponse.httpStatusCode === StatusCodes.NOT_FOUND) {
+        return null;
+    } else {
+        const errMsg = `${searchForCompanyAssociationByEmail.name} Unexpected status code: ${sdkResponse?.resource?.toString()}`;
+        logger.error(errMsg);
+        throw createError(sdkResponse.httpStatusCode, errMsg);
+    }
+};

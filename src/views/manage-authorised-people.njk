@@ -7,10 +7,24 @@
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% from "macros/link.njk" import link %}
 {% from "macros/providedTextOrDefault.njk" import providedTextOrDefault %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 
 {% extends "layouts/default.njk" %}
 
-{% set company_association = companyAssociations.items | first %}
+{% set message = null %}
+
+{% for key, value in errors %}
+    {% if key == "searchEmail" %}
+        {% set message = lang[value.text] %}
+    {% endif %}
+{% endfor %}
+
+
+{% if companyAssociations and companyAssociations.items %}
+  {% set company_association = companyAssociations.items | first %}
+{% else %}
+  {% set company_association = null %}
+{% endif %}
 {% if authorisedPersonSuccess %}
     {% set title_middle_part = lang.title_email_sent %}
 {% elif removedPerson %}
@@ -143,7 +157,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">
-                <span class="govuk-caption-l">{{company_association.companyName + " (" + company_association.companyNumber + ")"}}</span>
+                <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
                 {{lang.people_digitally_authorised_to_file_online}}
             </h1>
             {{ govukInsetText({
@@ -160,6 +174,46 @@
             }) }}
         </div>
     </div>
+
+            
+            {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
+            {% set inputClasses = "govuk-input govuk-input--error govuk-input--width-10 govuk-!-margin-right-1" if message else "govuk-input govuk-input--width-10 govuk-!-margin-right-1" %}
+
+            <form method="post" >
+                {% include "partials/csrf_token.njk" %}
+                <div class="{{formClasses}}">
+                    <label class="govuk-label govuk-label--m" for="search">
+                        Search for an authorised person
+                    </label>
+                    <div id="event-name-hint" class="govuk-hint">
+                        Enter an email address
+                    </div>
+                    {% if message %}
+                        {{ govukErrorMessage({
+                            text: message
+                        })
+                    }}
+                    {% endif %}
+                    <div id="search-input-group">
+                        <input class="{{inputClasses}}" id="searchEmail" name="searchEmail" type="text" aria-describedby="event-name-hint" value="{{searchEmail}}">
+                        <button type="submit" name="action" value="trySearch" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
+                        </button>
+                        {% if searchEmail != null %}
+                        <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.cancel_search}}</a>
+                   {% endif %}
+                    </div>
+                </div>
+            </form>
+
+        {% if validSearch %}
+            {% if not resultsFound %}
+                <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{searchEmail}}'</h2>
+                <p class="govuk-body">{{lang.no_results_that_match}}</p>
+            {% else %}
+                <h2 class="govuk-heading-s"> {{lang.match_found_for}} '{{searchEmail}}'</h2>
+            {% endif %}
+        {% endif %}
+       
 
     {% set rows = [] %}
     {% for association in companyAssociations.items %}
@@ -235,6 +289,7 @@
         {% set rows = (rows.push(row), rows) %}
     {% endfor %}
 
+        {% if validSearch == false or resultsFound == true %}
     <div class="govuk-grid-row govuk-!-padding-top-2">
         <div class="govuk-grid-column-full">
 
@@ -265,7 +320,7 @@
             {% endif %}
         </div>
     </div>
-
+ {% endif %}
     <script nonce={{ nonce | dump | safe }}>
         trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
     </script>
