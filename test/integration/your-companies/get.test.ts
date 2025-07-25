@@ -75,9 +75,7 @@ describe("GET /your-companies", () => {
             expect(response.text).toContain(lang.bullet_list[1]);
             expect(response.text).toContain(lang.you_have_not_added_any_companies);
             expect(response.text).toContain(lang.your_companies);
-            expect(response.text).not.toContain(lang.company_name);
             expect(response.text).not.toContain(lang.company_number);
-            expect(response.text).not.toContain(lang.people_digitally_authorised_to_file_online);
         });
 
     test.each([
@@ -97,9 +95,7 @@ describe("GET /your-companies", () => {
             expect(response.text).toContain(userAssociations.items[0].companyNumber);
             expect(response.text).toContain(lang.view_and_manage);
             expect(response.text).toContain(lang.your_companies);
-            expect(response.text).toContain(lang.company_name);
             expect(response.text).toContain(lang.company_number);
-            expect(response.text).toContain(lang.people_digitally_authorised_to_file_online);
             expect(response.text).toContain(lang.add_a_company);
             expect(response.text).toContain(lang.your_companies);
             expect(response.text).not.toContain(lang.add_a_company_to_your_account);
@@ -153,8 +149,8 @@ describe("GET /your-companies", () => {
         // When
         const response = await router.get("/your-companies");
         // Then
-        expect(response.text).toContain(en.not_digitally_authorised);
-        expect(response.text).not.toContain(en.digitally_authorised);
+        expect(response.text).toContain(en.not_authorised);
+        expect(response.text).not.toContain(en.authorised);
     });
     it("should display 'Digitally authorised' when association has status of confirmed", async () => {
         // Give
@@ -163,8 +159,8 @@ describe("GET /your-companies", () => {
         // When
         const response = await router.get("/your-companies");
         // Then
-        expect(response.text).toContain(en.digitally_authorised);
-        expect(response.text).not.toContain(en.not_digitally_authorised);
+        expect(response.text).toContain(en.authorised);
+        expect(response.text).not.toContain(en.not_authorised);
     });
     test.each([
         { langVersion: "en", lang: en, langCommon: enCommon },

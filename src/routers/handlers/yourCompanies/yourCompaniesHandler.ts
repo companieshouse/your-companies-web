@@ -36,6 +36,7 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     }[],
     viewAndManageUrl: string;
     removeCompanyUrl: string;
+    companyInformationUrl: string;
     authorisationBannerRequestAuthenticationCodeUrl: string;
     restoreDigitalAuthUrl: string;
     removeAuthorisationUrl;
@@ -77,6 +78,7 @@ export class YourCompaniesHandler extends GenericHandler {
             associationData: [],
             viewAndManageUrl: "",
             removeCompanyUrl: "",
+            companyInformationUrl: "",
             restoreDigitalAuthUrl: "",
             removeAuthorisationUrl: "",
             authorisationBannerRequestAuthenticationCodeUrl: ""
@@ -109,7 +111,8 @@ export class YourCompaniesHandler extends GenericHandler {
             req,
             [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED],
             errorMassage ? undefined : search,
-            pageNumber - 1
+            pageNumber - 1,
+            constants.ITEMS_PER_PAGE
         );
         if (!validatePageNumber(pageNumber, confirmedUserAssociations.totalPages)) {
             pageNumber = 1;
@@ -117,7 +120,8 @@ export class YourCompaniesHandler extends GenericHandler {
                 req,
                 [AssociationStatus.CONFIRMED],
                 errorMassage ? undefined : search,
-                pageNumber - 1
+                pageNumber - 1,
+                constants.ITEMS_PER_PAGE
             );
         }
 
@@ -200,6 +204,7 @@ export class YourCompaniesHandler extends GenericHandler {
             this.viewData.userHasCompanies = constants.TRUE;
             this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
             this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
+            this.viewData.companyInformationUrl = getFullUrl(constants.COMPANY_INFORMATION_URL);
             this.viewData.removeAuthorisationUrl = getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
             this.viewData.restoreDigitalAuthUrl = getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL);
             setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, navigationMiddlewareCheckCompanyNumber);

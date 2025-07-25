@@ -54,7 +54,7 @@ export const userAssociations: AssociationList = {
         self: "http://localhost:8080/associations",
         next: "http://localhost:8080/associations?page_index=2&itesm_per_page=15"
     },
-    itemsPerPage: 15,
+    itemsPerPage: 10,
     pageNumber: 0,
     totalResults: 2,
     totalPages: 1
@@ -375,7 +375,7 @@ export const emptyAssociations: AssociationList = {
         self: "",
         next: ""
     },
-    itemsPerPage: 1,
+    itemsPerPage: 10,
     pageNumber: 0,
     totalResults: 0,
     totalPages: 0
