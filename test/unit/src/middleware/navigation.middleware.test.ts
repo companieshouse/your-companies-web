@@ -34,34 +34,29 @@ describe("navigationMiddleware", () => {
             params: {}
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            params: { companyNumber: "AB123456" }
+            referer: "https://chc.local/your-companies/confirmation-authorisation-email-resent",
+            routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
+            path: "/confirmation-authorisation-email-resent"
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people-email-resent/test@example.com",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            params: { companyNumber: "AB123456" }
+            routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
+            path: "/confirmation-authorisation-email-resent"
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            params: { companyNumber: "AB123456" }
+            routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
+            path: "/confirmation-authorisation-email-resent"
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            params: { companyNumber: "AB123456" }
+            routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
+            path: "/confirmation-authorisation-email-resent"
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-digital-authorisation-restored",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            params: { companyNumber: "AB123456" }
+            routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
+            path: "/confirmation-authorisation-email-resent"
         },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
@@ -100,12 +95,6 @@ describe("navigationMiddleware", () => {
         },
         {
             referer: "https://chc.local/your-companies/confirmation-person-removed",
-            routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
-            path: "/company/AB123456/authentication-code-remove/1234567890",
-            params: { companyNumber: "AB123456", associationId: "1234567890" }
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
             routePattern: constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL,
             path: "/company/AB123456/authentication-code-remove/1234567890",
             params: { companyNumber: "AB123456", associationId: "1234567890" }
@@ -304,12 +293,6 @@ describe("navigationMiddleware", () => {
             params: { associationId: "1234567890" }
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
-            routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
-            path: "/send-email-invitation-to-be-digitally-authorised/1234567890",
-            params: { associationId: "1234567890" }
-        },
-        {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
             routePattern: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL,
             path: "/send-email-invitation-to-be-digitally-authorised/1234567890",
@@ -387,12 +370,6 @@ describe("navigationMiddleware", () => {
             params: { userEmail: "test@example.com", companyNumber: "AB123456" }
         },
         {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people-email-resent/test@example.com",
-            params: { userEmail: "test@example.com", companyNumber: "AB123456" }
-        },
-        {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
             routePattern: constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL,
             path: "/manage-authorised-people-email-resent/test@example.com",
@@ -435,8 +412,8 @@ describe("navigationMiddleware", () => {
 
     test.each([
         {
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
+            routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
+            path: "/confirmation-authorisation-email-resent",
             defaultRedirect: constants.LANDING_URL
         },
         {
@@ -567,18 +544,6 @@ describe("navigationMiddleware", () => {
         });
 
     test.each([
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/authorisation-email-resent",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            referer: "https://chc.local/your-companies/manage-authorised-people-email-resent/test@example.com",
-            routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
-            path: "/manage-authorised-people/AB123456/authorisation-email-resent",
-            defaultRedirect: constants.LANDING_URL
-        },
         {
             referer: "https://chc.local/your-companies/manage-authorised-people/AB123456/confirmation-person-added",
             routePattern: constants.AUTHORISED_PERSON_ADDED_URL,

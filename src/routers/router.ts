@@ -35,6 +35,7 @@ import { removeAuthorisationDoNotRestoreControllerGet, removeAuthorisationDoNotR
 import { confirmationAuthorisationRemovedControllerGet } from "./controllers/confirmationAuthorisationRemovedController";
 import { navigationMiddleware } from "../middleware/navigation.middleware";
 import { confirmationPersonRemovedControllerGet } from "./controllers/confirmationPersonRemovedController";
+import { confirmationAuthorisationEmailResentControllerGet } from "./controllers/confirmationAuthorisationEmailResentController";
 
 const router: Router = Router();
 
@@ -47,7 +48,6 @@ router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as Request
 
 // Manage Authorised People
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 
@@ -122,5 +122,8 @@ router.get(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL, navigationMiddlewar
 
 // Confirmation Person Removed
 router.get(constants.CONFIRMATION_PERSON_REMOVED_URL, confirmationPersonRemovedControllerGet);
+
+// Confirmation Authorisation Email Resent
+router.get(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL, confirmationAuthorisationEmailResentControllerGet);
 
 export default router;

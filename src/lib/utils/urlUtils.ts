@@ -63,7 +63,7 @@ export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: str
 
     const urlMappings: Record<string, string> = {
         [constants.CONFIRMATION_PERSON_REMOVED_URL]: constants.CONFIRMATION_PERSON_REMOVED_URL,
-        [constants.AUTHORISATION_EMAIL_RESENT_URL]: constants.AUTHORISATION_EMAIL_RESENT_URL,
+        [constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL]: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
         [constants.CONFIRMATION_PERSON_ADDED_URL]: constants.CONFIRMATION_PERSON_ADDED_URL,
         [constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL]: constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
     };
@@ -76,23 +76,6 @@ export const getManageAuthorisedPeopleFullUrl = (url: string, companyNumber: str
 
     return baseUrl;
 };
-
-/**
- * List of referrer URLs.
- */
-const REFERRER_URLS = [
-    constants.CONFIRMATION_PERSON_REMOVED_URL,
-    constants.CONFIRMATION_PERSON_ADDED_URL,
-    constants.AUTHORISATION_EMAIL_RESENT_URL
-];
-
-/**
- * Checks if a referrer URL includes any of the predefined referrer URLs.
- * @param referrer - The referrer URL to check.
- * @returns True if the referrer includes any predefined URL, false otherwise.
- */
-export const isReferrerIncludes = (referrer: string): boolean =>
-    REFERRER_URLS.some(url => referrer.includes(url));
 
 /**
  * Constructs the URL for adding a presenter to a company.
@@ -165,14 +148,6 @@ export const getPresenterAlreadyAddedUrl = (companyNumber: string): string =>
  */
 export const getAuthorisedPersonAddedFullUrl = (companyNumber: string): string =>
     getFullUrl(`/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}${constants.CONFIRMATION_PERSON_ADDED_URL}`);
-
-/**
- * Constructs the URL for resending a confirmation email for managing authorized people.
- * @param companyNumber - The company number.
- * @returns The relative URL.
- */
-export const getManageAuthorisedPeopleConfirmationEmailResentUrl = (companyNumber: string): string =>
-    `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}${constants.AUTHORISATION_EMAIL_RESENT_URL}`;
 
 /**
  * Constructs the URL for removing an authentication code by email.

@@ -11,13 +11,11 @@ import {
     getCompanyInvitationsDeclineFullUrl,
     getCreateCompanyAssociationFullUrl,
     getFullUrl,
-    getManageAuthorisedPeopleConfirmationEmailResentUrl,
     getManageAuthorisedPeopleFullUrl,
     getPresenterAlreadyAddedUrl,
     getRemoveAuthorisationDoNotRestoreUrl,
     getRemoveCompanyUrl,
     getSendEmailToBeDigitallyAuthorisedFullUrl,
-    isReferrerIncludes,
     isWhitelistedUrl
 } from "../../../../../src/lib/utils/urlUtils";
 import * as constants from "../../../../../src/constants";
@@ -43,26 +41,10 @@ describe("addLangToUrl", () => {
 describe("getManageAuthorisedPeopleUrl should return correct url", () => {
     it.each([
         { url: "/confirmation-person-removed", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-removed" },
-        { url: "/authorisation-email-resent", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/authorisation-email-resent" },
         { url: "/confirmation-person-added", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-added" },
         { url: "/any-other-url", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456" }
     ])("should return $expected for $url, $companyNumber", ({ url, companyNumber, expected }) => {
         expect(getManageAuthorisedPeopleFullUrl(url, companyNumber)).toEqual(expected);
-    });
-});
-
-describe("isReferrerIncludes", () => {
-    it.each([
-        // Given
-        [true, "http://some-service.com/confirmation-person-removed"],
-        [true, "http://some-service.com/confirmation-person-added"],
-        [true, "http://some-service.com/authorisation-email-resent"],
-        [false, "http://some-service.com/something-else"]
-    ])("should return %s for %s", (expectedResult, referrer) => {
-        // When
-        const result = isReferrerIncludes(referrer);
-        // Then
-        expect(result).toEqual(expectedResult);
     });
 });
 
@@ -109,7 +91,6 @@ describe("URL generation function", () => {
         ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl],
         ["getPresenterAlreadyAddedUrl", `/${constants.PRESENTER_ALREADY_ADDED_PAGE}/abc123`, "abc123", getPresenterAlreadyAddedUrl],
         ["getAuthorisedPersonAddedFullUrl", `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.CONFIRMATION_PERSON_ADDED_URL}`, "abc123", getAuthorisedPersonAddedFullUrl],
-        ["getManageAuthorisedPeopleConfirmationEmailResentUrl", `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`, "abc123", getManageAuthorisedPeopleConfirmationEmailResentUrl],
         ["getAuthenticationCodeRemoveUrl", `/authentication-code-remove/test@test.com`, "test@test.com", getAuthenticationCodeRemoveUrl],
         ["getRemoveCompanyUrl", `/${constants.REMOVE_COMPANY_PAGE}/abc123`, "abc123", getRemoveCompanyUrl],
         [
@@ -171,12 +152,6 @@ describe("URL generation function", () => {
             `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.CONFIRMATION_PERSON_ADDED_URL}`,
             "abc123",
             getAuthorisedPersonAddedFullUrl
-        ],
-        [
-            "getManageAuthorisedPeopleConfirmationEmailResentUrl",
-            `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`,
-            "abc123",
-            getManageAuthorisedPeopleConfirmationEmailResentUrl
         ],
         [
             "getAuthenticationCodeRemoveUrl",

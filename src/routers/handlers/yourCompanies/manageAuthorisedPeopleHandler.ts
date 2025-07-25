@@ -102,7 +102,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
 
         this.handleConfirmationPersonAdded(req);
-        this.handleResentSuccessEmail(req);
 
         const emailArray: string[] = [];
         const associationIdArray: string[] = [];
@@ -146,18 +145,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             return Promise.reject(createError(StatusCodes.FORBIDDEN, errorText, { redirctToYourCompanies: true }));
         }
         return Promise.resolve();
-    }
-
-    /**
-     * Handles the success message for a resent email.
-     * @param req - The HTTP request object.
-     */
-    private handleResentSuccessEmail (req: Request) {
-        const resentSuccessEmail: string = getExtraData(req.session, constants.RESENT_SUCCESS_EMAIL);
-        if (resentSuccessEmail && req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL)) {
-            this.viewData.showEmailResentSuccess = true;
-            this.viewData.resentSuccessEmail = resentSuccessEmail;
-        }
     }
 
     /**

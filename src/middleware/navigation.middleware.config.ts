@@ -120,7 +120,6 @@ const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
 
 const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
     constants.MANAGE_AUTHORISED_PEOPLE_URL,
-    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
     constants.AUTHORISED_PERSON_ADDED_URL,
     constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
 ];
@@ -369,10 +368,10 @@ const routeConfigs: RouteConfig[] = [
 
     // 2) Confirmation email resent
     {
-        routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL,
+        routePattern: constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL,
         allowedPages: [
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL
             ]),
             ...allowedPagesWithUserEmailGuard([
                 constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL
