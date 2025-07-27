@@ -179,14 +179,14 @@
             {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
             {% set inputClasses = "govuk-input govuk-input--error govuk-input--width-10 govuk-!-margin-right-1" if message else "govuk-input govuk-input--width-10 govuk-!-margin-right-1" %}
 
-            <form method="post" >
+            <form method="post" action="{{manageAuthorisedPeopleUrl}}" >
                 {% include "partials/csrf_token.njk" %}
                 <div class="{{formClasses}}">
                     <label class="govuk-label govuk-label--m" for="search">
-                        Search for an authorised person
+                        {{lang.search_for_an_authorised_person}}
                     </label>
                     <div id="event-name-hint" class="govuk-hint">
-                        Enter an email address
+                        {{lang.enter_an_email_address}}
                     </div>
                     {% if message %}
                         {{ govukErrorMessage({
@@ -200,7 +200,7 @@
                         </button>
                         {% if searchEmail != null %}
                         <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.cancel_search}}</a>
-                   {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </form>

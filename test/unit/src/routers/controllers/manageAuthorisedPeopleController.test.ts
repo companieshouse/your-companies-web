@@ -20,6 +20,7 @@ jest.mock("../../../../../src/routers/handlers/yourCompanies/manageAuthorisedPeo
 
 const req: Request = mockRequest();
 req.session = new Session();
+req.query = {};
 const res: Response = mockResponse();
 const renderMock = jest.fn();
 res.render = renderMock;

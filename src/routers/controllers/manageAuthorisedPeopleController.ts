@@ -13,7 +13,7 @@ import logger, { createLogMessage } from "../../lib/Logger";
  */
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response): Promise<void> => {
     if (isCancelSearch(req)) {
-        logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerPost.name, "User cancelled search"));
+        logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerGet.name, "User cancelled search"));
         deleteSearchStringEmail(req, req.params.companyNumber);
     }
     const handler = new ManageAuthorisedPeopleHandler();

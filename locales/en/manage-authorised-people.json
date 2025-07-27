@@ -59,5 +59,7 @@
     "you_have_confirmed_you_do_not": "You have confirmed you do not want to restore ",
     "you_have_successfully_cancelled_digital_authorisation_end": " to file online for ",
     "you_have_successfully_cancelled_digital_authorisation_start": "You have successfully cancelled digital authorisation for ",
-    "you_may_wish_to": "You may wish to "
+    "you_may_wish_to": "You may wish to ",
+    "search_for_an_authorised_person":"Search for an authorised person",
+    "enter_an_email_address":"Enter an email address"
 }

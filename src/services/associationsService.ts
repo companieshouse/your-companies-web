@@ -390,7 +390,7 @@ export const searchForCompanyAssociationByEmail = async (companyNumber: string, 
 
     if (sdkResponse.httpStatusCode === StatusCodes.OK) {
         return sdkResponse.resource as Association;
-    } else if (sdkResponse.httpStatusCode === StatusCodes.NOT_FOUND) {
+    } else if (sdkResponse.httpStatusCode === StatusCodes.NOT_FOUND && sdkResponse.resource && Object.hasOwn(sdkResponse.resource, "errors")) {
         return null;
     } else {
         const errMsg = `${searchForCompanyAssociationByEmail.name} Unexpected status code: ${sdkResponse?.resource?.toString()}`;
