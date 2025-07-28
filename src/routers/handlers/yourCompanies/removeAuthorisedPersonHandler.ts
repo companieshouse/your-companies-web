@@ -118,7 +118,6 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             deleteExtraData(req.session, this.getSessionKey(req));
             logger.info(createLogMessage(req.session, this.handlePostRequest.name, "User chose not to confirm removal"));
             return res.redirect(getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, req.params[constants.COMPANY_NUMBER]));
-
         } else {
             return await this.handleUnconfirmedRemoval(req, res);
         }
@@ -201,7 +200,9 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         logger.info(createLogMessage(req.session, this.handleOtherUserRemoval.name,
             `Association ${association.id} removed`));
 
-        const redirectUrl = getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
+        const redirectUrl = association.status === AssociationStatus.AWAITING_APPROVAL
+            ? getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL)
+            : getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
         res.redirect(redirectUrl);
     }
 

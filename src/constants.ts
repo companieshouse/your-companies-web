@@ -77,6 +77,7 @@ export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE = "remove-authorisation-do
 export const CONFIRMATION_AUTHORISATION_REMOVED_PAGE = "confirmation-authorisation-removed";
 export const CONFIRMATION_PERSON_REMOVED_PAGE = "confirmation-person-removed";
 export const CONFIRMATION_AUTHORISATION_EMAIL_RESENT_PAGE = "confirmation-authorisation-email-resent";
+export const CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_PAGE = "confirmation-persons-digital-authorisation-cancelled";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -117,6 +118,7 @@ export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL = `/${SEN
 export const SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL = `${SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/:${ASSOCIATIONS_ID}`;
 export const CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = "/confirmation-digital-authorisation-restored";
 export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL}`;
+export const CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL = `/${CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_PAGE}`;
 
 // External URLs
 export const CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#changing-or-cancelling-your-code";
