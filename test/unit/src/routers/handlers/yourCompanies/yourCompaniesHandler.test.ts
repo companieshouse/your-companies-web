@@ -51,6 +51,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -62,6 +63,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: "",
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
+                companyInformationUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
                 restoreDigitalAuthUrl: "",
@@ -76,6 +78,7 @@ describe("YourCompaniesHandler", () => {
                 page: "1"
             },
             pageNumber: userAssociations.pageNumber,
+            itemsPerPage: userAssociations.itemsPerPage,
             confirmedUserAssociations: userAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -96,6 +99,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: undefined,
                 viewAndManageUrl: undefined,
+                companyInformationUrl: undefined,
                 showNumOfMatches: true,
                 pagination: {
                     previous: { href: "href" },
@@ -112,6 +116,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -122,6 +127,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
+                companyInformationUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
                 restoreDigitalAuthUrl: "",
@@ -141,6 +147,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: true,
             viewData: {
@@ -151,6 +158,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
+                companyInformationUrl: "",
                 showNumOfMatches: true,
                 pagination: undefined,
                 restoreDigitalAuthUrl: "",
@@ -165,6 +173,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: false,
             viewData: {
@@ -175,6 +184,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
+                companyInformationUrl: "",
                 showNumOfMatches: false,
                 pagination: undefined,
                 restoreDigitalAuthUrl: "",
@@ -194,6 +204,7 @@ describe("YourCompaniesHandler", () => {
                 page: undefined
             },
             pageNumber: emptyAssociations.pageNumber,
+            itemsPerPage: emptyAssociations.itemsPerPage,
             confirmedUserAssociations: emptyAssociations,
             isValidPageNumber: false,
             viewData: {
@@ -204,6 +215,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: "",
                 viewAndManageUrl: "",
+                companyInformationUrl: "",
                 showNumOfMatches: true,
                 pagination: undefined,
                 restoreDigitalAuthUrl: "",
@@ -214,7 +226,7 @@ describe("YourCompaniesHandler", () => {
         }
     ])("should return $return when $condition",
         async ({
-            query, pageNumber, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
+            query, pageNumber, itemsPerPage, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
         }) => {
 
             // Given
@@ -272,13 +284,13 @@ describe("YourCompaniesHandler", () => {
             }
 
             let getUserAssociationsCounter = 1;
-            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1);
+            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
 
             if (!isValidPageNumber) {
                 getUserAssociationsCounter = 2;
-                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1);
+                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
             }
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
@@ -315,7 +327,7 @@ describe("YourCompaniesHandler", () => {
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
             if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-                getFullUrlCounter = 6;
+                getFullUrlCounter = 7;
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
