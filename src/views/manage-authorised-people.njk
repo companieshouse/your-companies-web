@@ -155,7 +155,7 @@
     {% endif %}
 
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+        <div class="govuk-grid-column-three-quarters">
             <h1 class="govuk-heading-l">
                 <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
                 {{lang.people_digitally_authorised_to_file_online}}
@@ -225,7 +225,7 @@
         }), row) %}
 
         {% if association.status === confirmed %}
-            {% set tag = govukTag({text: lang.digitally_authorised, classes: "govuk-tag--green"}) %}
+            {% set tag = govukTag({text: lang.authorised, classes: "govuk-tag--green"}) %}
             {% set row = (row.push({html: tag}), row) %}
             {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
 
@@ -264,13 +264,13 @@
 
             {% set migratedText %}
             <div class="govuk-!-padding-bottom-2">
-                <strong class="govuk-tag govuk-tag--red">{{lang.not_digitally_authorised }}</strong>
+                <strong class="govuk-tag govuk-tag--red">{{lang.not_authorised }}</strong>
             </div>
             {% endset %}
 
             {% set visuallyHiddenRestoreText = lang.for + association.userEmail %}
             {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
-            {% set restore_link = link(lang.restore_digital_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation") %}
+            {% set restore_link = link(lang.restore_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation") %}
 
             {% set row = (row.push({
                 html: migratedText + restore_link
@@ -278,7 +278,7 @@
 
             {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
 
-            {% set remove_not_restore = link(lang.remove_not_restore, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-do-not-restore-digital-authorisation", {
+            {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeUrl, "remove-do-not-restore-digital-authorisation", {
                 associationId: association.id,
                 companyNumber: association.companyNumber
             }) %}
