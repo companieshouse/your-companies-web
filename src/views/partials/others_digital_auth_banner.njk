@@ -1,15 +1,17 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% set html %}
-  <h3 class="govuk-notification-banner__heading">
-  {{lang.restore_people_digital_authorisation_title}}
-  </h3>
-   <p class="govuk-body">{{lang.people_digital_authorisation_paragraph}}</p>
-   <p class="govuk-body">{{lang.people_digital_authorisation_ending_paragraph}}</p>
+        <h3 class="govuk-notification-banner__heading">
+        {{lang.restore_people_digital_authorisation_title}}
+        </h3>
+        <p class="govuk-body">{{lang.people_digital_authorisation_paragraph}}</p>
+        <p class="govuk-body">{{lang.people_digital_authorisation_ending_paragraph}}</p>
 {% endset %}
 
-{{ govukNotificationBanner({
-  html: html,
-  titleId: "gov-uk-important-banner",
-  titleText: lang.important
-}) }}
+<div class="govuk-grid-column-three-quarters">
+    {{ govukNotificationBanner({
+    html: html,
+    titleId: "gov-uk-important-banner",
+    titleText: lang.important
+    }) }}
+</div>
