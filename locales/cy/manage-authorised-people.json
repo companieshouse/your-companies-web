@@ -20,7 +20,7 @@
     "is_no_longer_digitally_authorised": " bellach wedi’i hawdurdodi’n ddigidol i ffeilio ar-lein ar gyfer ",
     "link_to_remove_user_from_digitaly_authorised_end": " [CY] from people digitally authorised to file online for ",
     "name": "Enw",
-    "not_authorised_authorised": "[CY] Not authorised",
+    "not_authorised": "[CY] Not authorised",
     "not_provided": "Heb ei ddarparu",
     "people_digital_authorisation_ending_paragraph": "[CY] You can do this by selecting ‘restore authorisation’, or people can restore themselves (if they have the current authentication code). You can also remove people.",
     "people_digital_authorisation_paragraph": "[CY] Anyone who has a ‘not authorised’ status, and still needs to be digitally authorised for this company, will need to have their authorisation restored.",
