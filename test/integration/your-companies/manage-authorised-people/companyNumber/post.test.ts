@@ -85,7 +85,6 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
             expect(response.text).toContain(lang.email_address);
             expect(response.text).toContain(lang.name);
             expect(response.text).toContain(lang.authorisation_status);
-            //  expect(response.text).toContain(lang.remove);
             expect(response.text).toContain(langCommon.back_to_your_companies);
             expect(response.text).toContain(lang.match_found_for + " 'bob@bob.com'");
             expect(response.text).not.toContain(langCommon.success);
@@ -107,7 +106,7 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
 
     });
 
-    it("should set search string email to session when values are present in the post request", async () => {
+    it("should call setSearchStringEmail to save the form input to session when values are present in the post request", async () => {
         // Given
         getSearchStringEmailSpy.mockReturnValue("bob@example.com");
         searchForCompanyAssociationByEmailSpy.mockReturnValue(Promise.resolve(null));
@@ -117,6 +116,18 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
         await router.post(`${url}`).send({ searchEmail: "bob@example.com", action: "trySearch" });
         // Then
         expect(setSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Object), "bob@example.com", "NI038379");
+
+    });
+
+    it("should display an error on the page when a invlid email is entered", async () => {
+        // Given
+        getSearchStringEmailSpy.mockReturnValue("invalid-email");
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
+
+        // When
+        const response = await router.post(`${url}`).send({ searchEmail: "invalid-email", action: "trySearch" });
+        // Then
+        expect(response.text).toContain(en.errors_email_invalid);
 
     });
 
