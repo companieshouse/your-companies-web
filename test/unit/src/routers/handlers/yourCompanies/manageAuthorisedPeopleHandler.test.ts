@@ -320,7 +320,6 @@ describe("ManageAuthorisedPeopleHandler", () => {
             getManageAuthorisedPeopleFullUrlSpy
                 .mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
                 .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
-            //       .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
             const finalViewData = {
                 templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
                 backLinkHref: constants.LANDING_URL,
@@ -469,7 +468,6 @@ describe("ManageAuthorisedPeopleHandler", () => {
             getManageAuthorisedPeopleFullUrlSpy.mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
                 .mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
                 .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
-            //       .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
             const finalViewData = {
                 templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
                 backLinkHref: constants.LANDING_URL,

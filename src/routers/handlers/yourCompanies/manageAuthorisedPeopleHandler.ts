@@ -160,7 +160,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         companyAssociations: AssociationList,
         pageNumber: number,
         lang: AnyRecord
-        //  viewData: ManageAuthorisedPeopleViewData
     ) {
         const emailArray: string[] = [];
         const associationIdArray: string[] = [];

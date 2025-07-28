@@ -41,7 +41,8 @@ const setSessionData = (req: Request, companyNumber: string): void => {
 };
 
 /**
- * Handles the Post request for managing authorised people.
+ * Handles the Post request for managing authorised people
+ * which handles the form data for searching users by email.
  *
  * @param req - The HTTP request object.
  * @param res - The HTTP response object.
@@ -56,7 +57,7 @@ export const manageAuthorisedPeopleControllerPost = async (req: Request, res: Re
     const handler = new ManageAuthorisedPeopleHandler();
     const viewData = await handler.execute(req);
 
-    logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerGet.name, "Rendering (Post request) manage authorised people search results page"));
+    logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerPost.name, "Rendering (Post request) manage authorised people search results page"));
     res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, viewData);
 };
 
