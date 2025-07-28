@@ -35,9 +35,9 @@ describe("associationsService", () => {
                 resource: singleAwaitingApprovalAssociation
             };
             mockSearchForCompanyAssociation.mockResolvedValueOnce(sdkResource);
-            //      When;
+            //      When
             const result = await searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress);
-            //     Then;
+            //     Then
             expect(result).toEqual(sdkResource.resource);
         });
 
@@ -64,9 +64,9 @@ describe("associationsService", () => {
                 resource: { errors: [] }
             };
             mockSearchForCompanyAssociation.mockResolvedValueOnce(sdkResource);
-            //      When;
+            //      When
             const result = await searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress);
-            //     Then;
+            //     Then
             expect(result).toEqual(null);
         });
 

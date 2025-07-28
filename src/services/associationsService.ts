@@ -386,7 +386,7 @@ export const searchForCompanyAssociationByEmail = async (companyNumber: string, 
         AssociationStatus.MIGRATED,
         AssociationStatus.UNAUTHORISED
     ];
-    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses) as Resource<Association | Errors>;
+    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses);
 
     if (sdkResponse?.httpStatusCode === StatusCodes.OK) {
         return sdkResponse.resource as Association;

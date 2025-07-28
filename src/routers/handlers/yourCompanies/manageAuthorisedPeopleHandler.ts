@@ -260,7 +260,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         if (result === null) {
             this.viewData.resultsFound = false;
-            this.viewData.companyName = getCompanyNameFromCollection(req.session as Session, companyNumber) || "";
+            this.viewData.companyName = getCompanyNameFromCollection(req.session as Session, companyNumber) ?? "";
             this.viewData.companyAssociations = {
                 items: [],
                 itemsPerPage: 1,
