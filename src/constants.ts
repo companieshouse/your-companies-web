@@ -182,11 +182,11 @@ export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 export const MATOMO_ADD_COMPANY_GOAL_ID = getEnvironmentValue("MATOMO_ADD_COMPANY_GOAL_ID");
 export const MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID = getEnvironmentValue("MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID");
 /**
- * This is the default number of associations per page that API uses if nothing is provided.
+ * The default number of associations per page that API uses if nothing is provided is 15.
  * It is used by the pagination component and it will normally be max number
  * of associations being displayed at any one time on the your-companies page
  */
-export const ITEMS_PER_PAGE = 15;
+export const ITEMS_PER_PAGE = 10;
 /**
  * The company number contains 6 to 10 characters, consisting only of uppercase letters and numbers.
  * At least one character must be entered for the search. The regex is /^[0-9A-Z]{1,10}$/

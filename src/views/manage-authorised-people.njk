@@ -224,6 +224,10 @@
 
                     {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
 
+                    {% set resendHref = prepareHref(resendEmailUrl, {
+                        userEmail: userEmail 
+                    }) %}
+
                     {% set awaitingConfirmation %}
                     <div class="govuk-!-padding-bottom-2">
                         <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
@@ -266,9 +270,21 @@
                             },
                             value: {
                                 html: awaitingConfirmation
+                            },
+                            actions: {
+                                items: [
+                                {
+                                    href: resendHref,
+                                    text: lang.resend_email,
+                                    visuallyHiddenText: resendEmailLinkVisuallyHiddenText,
+                                    attributes:
+                                        {
+                                            "data-event-id": "resend-invite-email"
+                                        }
+                                }
+                                ]
                             }
-                            }
-                        ]
+                        ]}
                     }) }}
 
                 {% endif %}
