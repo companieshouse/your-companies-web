@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { ManageAuthorisedPeopleHandler } from "../handlers/yourCompanies/manageAuthorisedPeopleHandler";
 import * as constants from "../../constants";
-import { deleteExtraData, getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData, getExtraData, setExtraData, deleteSearchStringEmail, setSearchStringEmail } from "../../lib/utils/sessionUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
+import { Session } from "@companieshouse/node-session-handler";
 
 /**
  * Handles the GET request for managing authorised people.
@@ -14,7 +15,7 @@ import logger, { createLogMessage } from "../../lib/Logger";
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response): Promise<void> => {
     if (isCancelSearch(req)) {
         logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerGet.name, "User cancelled search"));
-        deleteSearchStringEmail(req, req.params.companyNumber);
+        deleteSearchStringEmail(req.session as Session, req.params.companyNumber);
     }
     const handler = new ManageAuthorisedPeopleHandler();
     const viewData = await handler.execute(req);
@@ -39,27 +40,6 @@ const setSessionData = (req: Request, companyNumber: string): void => {
     setExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR, companyNumber);
 };
 
-export const setSearchStringEmail = (req: Request, email: string, companyNumber:string): void => {
-    const emailSearchCollection = getExtraData(req.session, constants.SEARCH_STRING_EMAIL) || {};
-
-    emailSearchCollection[companyNumber] = email;
-    setExtraData(req.session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
-};
-
-export const getSearchStringEmail = (req: Request, companyNumber: string): string | undefined => {
-    const emailSearchCollection = getExtraData(req.session, constants.SEARCH_STRING_EMAIL);
-    return emailSearchCollection?.[companyNumber];
-};
-
-export const deleteSearchStringEmail = (req: Request, companyNumber:string): void => {
-    const emailSearchCollection = getExtraData(req.session, constants.SEARCH_STRING_EMAIL);
-    if (!emailSearchCollection) {
-        return;
-    }
-    delete emailSearchCollection[companyNumber];
-    setExtraData(req.session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
-};
-
 /**
  * Handles the Post request for managing authorised people.
  *
@@ -71,7 +51,7 @@ export const manageAuthorisedPeopleControllerPost = async (req: Request, res: Re
 
     if (req.body?.action === "trySearch") {
         const searchEmail = req.body?.searchEmail?.trim();
-        setSearchStringEmail(req, searchEmail, req.params.companyNumber);
+        setSearchStringEmail(req?.session as Session, searchEmail, req.params.companyNumber);
     }
     const handler = new ManageAuthorisedPeopleHandler();
     const viewData = await handler.execute(req);

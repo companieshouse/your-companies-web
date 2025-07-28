@@ -388,13 +388,13 @@ export const searchForCompanyAssociationByEmail = async (companyNumber: string, 
     ];
     const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses) as Resource<Association | Errors>;
 
-    if (sdkResponse.httpStatusCode === StatusCodes.OK) {
+    if (sdkResponse?.httpStatusCode === StatusCodes.OK) {
         return sdkResponse.resource as Association;
-    } else if (sdkResponse.httpStatusCode === StatusCodes.NOT_FOUND && sdkResponse.resource && Object.hasOwn(sdkResponse.resource, "errors")) {
+    } else if (sdkResponse?.httpStatusCode === StatusCodes.NOT_FOUND && sdkResponse?.resource && Object.hasOwn(sdkResponse.resource, "errors")) {
         return null;
     } else {
         const errMsg = `${searchForCompanyAssociationByEmail.name} Unexpected status code: ${sdkResponse?.resource?.toString()}`;
         logger.error(errMsg);
-        throw createError(sdkResponse.httpStatusCode, errMsg);
+        throw createError(sdkResponse?.httpStatusCode || 400, errMsg);
     }
 };

@@ -4,9 +4,9 @@ import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
-import { Association, AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
+import { AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, searchForCompanyAssociationByEmail } from "../../../services/associationsService";
-import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, getCompanyNameFromCollection, getExtraData, setCompanyNameInCollection, setExtraData, getSearchStringEmail } from "../../../lib/utils/sessionUtils";
 import { ViewDataWithBackLink, AnyRecord } from "../../../types/utilTypes";
 import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
 import { validateEmailString, validatePageNumber } from "../../../lib/validation/generic";
@@ -14,7 +14,7 @@ import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "..
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { Pagination } from "../../../types/pagination";
-import { getSearchStringEmail } from "../../../routers/controllers/manageAuthorisedPeopleController";
+import { Session } from "@companieshouse/node-session-handler";
 
 interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Pagination {
     buttonHref: string;
@@ -41,17 +41,6 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     manageAuthorisedPeopleUrl: string;
     }
 
-export const setCompanyName = (req: Request, companyName: string, companyNumber:string): void => {
-
-    const companyNameCollection = getExtraData(req.session, "companyNameCollection") || {};
-    companyNameCollection[companyNumber] = companyName;
-    setExtraData(req.session, "companyNameCollection", companyNameCollection);
-};
-
-export const getCompanyName = (req: Request, companyNumber: string): string | undefined => {
-    const companyNameCollection = getExtraData(req.session, "companyNameCollection");
-    return companyNameCollection?.[companyNumber];
-};
 /**
  * Handler for managing authorised people associated with a company.
  */
@@ -121,7 +110,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         await this.preventUnauthorisedAccess(req, companyNumber);
 
-        const searchEmail = getSearchStringEmail(req, companyNumber);
+        const searchEmail = getSearchStringEmail(req.session as Session, companyNumber);
 
         const isSearchString = typeof searchEmail === "string";
         this.viewData.searchEmail = isSearchString ? searchEmail : null;
@@ -137,11 +126,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
             companyAssociations = await this.getValidCompanyAssociations(req, companyNumber, pageNumber);
             if (companyAssociations?.items?.[0]?.companyName) {
-
                 this.viewData.companyName = companyAssociations.items[0].companyName;
-
-                setCompanyName(req, companyAssociations.items[0].companyName, companyNumber);
-
+                setCompanyNameInCollection(req.session as Session, companyAssociations.items[0].companyName, companyNumber);
             }
         } else {
             this.viewData.validSearch = true;
@@ -275,7 +261,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         if (result === null) {
             this.viewData.resultsFound = false;
-            this.viewData.companyName = getCompanyName(req, companyNumber) || "";
+            this.viewData.companyName = getCompanyNameFromCollection(req.session as Session, companyNumber) || "";
             this.viewData.companyAssociations = {
                 items: [],
                 itemsPerPage: 1,
@@ -288,7 +274,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
 
         this.viewData.resultsFound = true;
-        this.viewData.companyName = result.companyName || "";
+        this.viewData.companyName = result.companyName;
         this.viewData.companyAssociations = {
             items: [result],
             itemsPerPage: 1,

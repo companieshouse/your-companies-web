@@ -46,6 +46,7 @@ router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as Request
 
 // Manage Authorised People
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
+// MIGHT NEED TO ADD NAVIGATION MIDDLEWARE HERE
 router.post(constants.MANAGE_AUTHORISED_PEOPLE_URL, manageAuthorisedPeopleControllerPost as RequestHandler);
 
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);

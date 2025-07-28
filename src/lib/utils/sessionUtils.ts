@@ -5,7 +5,7 @@ import { UserProfileKeys } from "@companieshouse/node-session-handler/lib/sessio
 import { Session } from "@companieshouse/node-session-handler";
 import { AccessTokenKeys } from "@companieshouse/node-session-handler/lib/session/keys/AccessTokenKeys";
 import logger from "../../lib/Logger";
-
+import * as constants from "../../constants";
 /**
  * Retrieves the sign-in information from the session.
  * @param session The session object, or undefined if no session exists.
@@ -102,4 +102,36 @@ export const setAccessToken = (session: Session, accessToken: string): void => {
         logger.error(`${setAccessToken.name}: ${errorMessage}`);
         throw new Error(errorMessage);
     }
+};
+
+export const setCompanyNameInCollection = (session: Session, companyName: string, companyNumber:string): void => {
+    const companyNameCollection = getExtraData(session, constants.COMPANY_NAME_COLLECTION) || {};
+    companyNameCollection[companyNumber] = companyName;
+    setExtraData(session, constants.COMPANY_NAME_COLLECTION, companyNameCollection);
+};
+
+export const getCompanyNameFromCollection = (session: Session, companyNumber: string): string | undefined => {
+    const companyNameCollection = getExtraData(session, constants.COMPANY_NAME_COLLECTION);
+    return companyNameCollection?.[companyNumber];
+};
+
+export const setSearchStringEmail = (session: Session, email: string, companyNumber:string): void => {
+    const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL) || {};
+
+    emailSearchCollection[companyNumber] = email;
+    setExtraData(session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
+};
+
+export const getSearchStringEmail = (session: Session, companyNumber: string): string | undefined => {
+    const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
+    return emailSearchCollection?.[companyNumber];
+};
+
+export const deleteSearchStringEmail = (session: Session, companyNumber:string): void => {
+    const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
+    if (!emailSearchCollection) {
+        return;
+    }
+    delete emailSearchCollection[companyNumber];
+    setExtraData(session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
 };

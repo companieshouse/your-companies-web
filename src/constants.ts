@@ -24,6 +24,7 @@ export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
 export const REMOVE_PAGE_ERRORS = "removePageErrors";
 export const SEARCH_STRING_EMAIL = "searchStringEmail";
+export const COMPANY_NAME_COLLECTION = "companyNameCollection";
 
 export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
 export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";

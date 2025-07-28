@@ -60,8 +60,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
             // Given
             getExtraDataSpy.mockReturnValueOnce(undefined)
                 .mockReturnValueOnce(undefined) // company name collection
-                .mockReturnValueOnce(undefined)
-                .mockReturnValueOnce(undefined)
+            //      .mockReturnValueOnce(undefined)
                 .mockReturnValueOnce(resentSuccessEmail);
 
             // When

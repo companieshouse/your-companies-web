@@ -11,8 +11,11 @@ import {
     getLoggedInUserEmail,
     getRefreshToken,
     setAccessToken,
-    setExtraData
+    setExtraData,
+    setCompanyNameInCollection,
+    getCompanyNameFromCollection
 } from "../../../../../src/lib/utils/sessionUtils";
+import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 
 describe("Session Utils", () => {
     describe("getLoggedInUserEmail", () => {
@@ -184,6 +187,110 @@ describe("Session Utils", () => {
             // Then
             expect(() => setAccessToken(session, accessToken))
                 .toThrow("SignInInfo not present in the session");
+        });
+    });
+    describe("getCompanyNameFromCollection", () => {
+        it("should get company name from collection", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "AB123456";
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce({ AB123456: "Mocked Company Name" });
+            // When
+            const companyName = getCompanyNameFromCollection(session, companyNumber);
+            // Then
+            expect(companyName).toEqual("Mocked Company Name");
+        });
+
+        it("should return undefined if company number not in collection", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "NOT_FOUND";
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce({ AB123456: "Mocked Company Name" });
+            // When
+            const companyName = getCompanyNameFromCollection(session, companyNumber);
+            // Then
+            expect(companyName).toBeUndefined();
+        });
+
+        it("should return undefined if collection is undefined", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "ANY";
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce(undefined);
+            // When
+            const companyName = getCompanyNameFromCollection(session, companyNumber);
+            // Then
+            expect(companyName).toBeUndefined();
+        });
+    });
+
+    describe("setCompanyNameInCollection", () => {
+        it("should set company name in collection", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "YZ98765";
+
+            const setExtraDataMock = jest
+                .spyOn(sessionUtils, "setExtraData");
+
+            // When
+            setCompanyNameInCollection(session, "Mocked Company Name", companyNumber);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "companyNameCollection",
+                { [companyNumber]: "Mocked Company Name" }
+            );
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should add company name to existing collection", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "NEW123";
+            const existingCollection = { OLD456: "Old Company" };
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce(existingCollection);
+
+            const setExtraDataMock = jest
+                .spyOn(sessionUtils, "setExtraData");
+            // When
+            setCompanyNameInCollection(session, "New Company", companyNumber);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "companyNameCollection",
+                { ...existingCollection, [companyNumber]: "New Company" }
+            );
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should create new collection if none exists", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "FIRST1";
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce(undefined);
+
+            const setExtraDataMock = jest
+                .spyOn(sessionUtils, "setExtraData");
+            // When
+            setCompanyNameInCollection(session, "First Company", companyNumber);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "companyNameCollection",
+                { [companyNumber]: "First Company" }
+            );
+            setExtraDataMock.mockRestore();
         });
     });
 });
