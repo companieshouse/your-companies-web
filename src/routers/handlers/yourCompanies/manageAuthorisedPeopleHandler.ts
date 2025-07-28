@@ -145,6 +145,15 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         return this.viewData;
     }
 
+    /**
+   * Retrieves a paginated list of valid company associations for a given company number.
+   * If the provided page number is invalid, it defaults to the first page.
+   *
+   * @param req - The Express request object.
+   * @param companyNumber - The unique identifier for the company.
+   * @param pageNumber - The requested page number (1-based index).
+   * @returns A promise that resolves to an {@link AssociationList} containing the company associations for the specified page.
+   */
     private async getValidCompanyAssociations (req: Request, companyNumber: string, pageNumber: number): Promise<AssociationList> {
         let companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
@@ -154,6 +163,20 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         return companyAssociations;
     }
 
+    /**
+   * Sets up association-related data for the current request and view.
+   *
+   * This method processes the list of company associations, extracts relevant information
+   * (such as user emails and association IDs), and stores them in the session for later use.
+   * It also prepares pagination data if there are multiple pages of associations, and sets
+   * various session values required for navigation and validation middleware.
+   *
+   * @param req - The Express request object, used to access the session and original URL.
+   * @param companyNumber - The unique identifier for the company whose associations are being managed.
+   * @param companyAssociations - The list of associations (users) related to the company, including pagination info.
+   * @param pageNumber - The current page number being viewed.
+   * @param lang - An object containing language-specific strings for localization.
+   */
     private setupAssociationsData (
         req: Request,
         companyNumber: string,
@@ -255,6 +278,15 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         }
     }
 
+    /**
+   * Searches for a company association by email address for a given company number,
+   * updates the view data with the search results, and sets relevant metadata for rendering.
+   *
+   * @param req - The Express request object, used to access session data.
+   * @param companyNumber - The unique identifier of the company to search within.
+   * @param searchStringEmail - The email address to search for, case-insensitive.
+   * @returns A promise that resolves when the search and view data update are complete.
+   */
     private async handleSearch (req: Request, companyNumber: string, searchStringEmail: string): Promise<void> {
         const result = await searchForCompanyAssociationByEmail(companyNumber, searchStringEmail.toLowerCase());
 

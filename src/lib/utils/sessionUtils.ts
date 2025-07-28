@@ -104,17 +104,45 @@ export const setAccessToken = (session: Session, accessToken: string): void => {
     }
 };
 
+/**
+ * Sets the company name for a given company number in the session's company name collection.
+ *
+ * Retrieves the existing company name collection from the session, updates or adds the
+ * company name for the specified company number, and saves the updated collection back
+ * into the session.
+ *
+ * @param session - The current user session object.
+ * @param companyName - The name of the company to store.
+ * @param companyNumber - The unique identifier for the company.
+ */
 export const setCompanyNameInCollection = (session: Session, companyName: string, companyNumber:string): void => {
     const companyNameCollection = getExtraData(session, constants.COMPANY_NAME_COLLECTION) || {};
     companyNameCollection[companyNumber] = companyName;
     setExtraData(session, constants.COMPANY_NAME_COLLECTION, companyNameCollection);
 };
 
+/**
+ * Retrieves the company name associated with a given company number from the session's company name collection.
+ *
+ * @param session - The current user session object.
+ * @param companyNumber - The unique identifier for the company.
+ * @returns The company name if found; otherwise, `undefined`.
+ */
 export const getCompanyNameFromCollection = (session: Session, companyNumber: string): string | undefined => {
     const companyNameCollection = getExtraData(session, constants.COMPANY_NAME_COLLECTION);
     return companyNameCollection?.[companyNumber];
 };
 
+/**
+ * Sets the search string email for a specific company number in the session's extra data.
+ *
+ * Retrieves the current email search collection from the session, updates or adds the email
+ * associated with the given company number, and saves the updated collection back to the session.
+ *
+ * @param session - The current user session object.
+ * @param email - The email address to associate with the company number.
+ * @param companyNumber - The unique identifier for the company.
+ */
 export const setSearchStringEmail = (session: Session, email: string, companyNumber:string): void => {
     const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL) || {};
 
@@ -122,11 +150,28 @@ export const setSearchStringEmail = (session: Session, email: string, companyNum
     setExtraData(session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
 };
 
+/**
+ * Retrieves the search string email associated with a specific company number from the session.
+ *
+ * @param session - The current user session object.
+ * @param companyNumber - The unique identifier for the company.
+ * @returns The search string email for the given company number, or `undefined` if not found.
+ */
 export const getSearchStringEmail = (session: Session, companyNumber: string): string | undefined => {
     const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
     return emailSearchCollection?.[companyNumber];
 };
 
+/**
+ * Deletes the search string email associated with a specific company number from the session.
+ *
+ * Retrieves the email search collection from the session's extra data using the
+ * `SEARCH_STRING_EMAIL` constant. If the collection exists, removes the entry for the
+ * provided company number and updates the session's extra data accordingly.
+ *
+ * @param session - The current user session object.
+ * @param companyNumber - The company number whose associated search string email should be deleted.
+ */
 export const deleteSearchStringEmail = (session: Session, companyNumber:string): void => {
     const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
     if (!emailSearchCollection) {

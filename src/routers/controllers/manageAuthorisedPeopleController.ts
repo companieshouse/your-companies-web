@@ -41,12 +41,15 @@ const setSessionData = (req: Request, companyNumber: string): void => {
 };
 
 /**
- * Handles the Post request for managing authorised people
- * which handles the form data for searching users by email.
+ * Handles POST requests for managing authorised people.
  *
- * @param req - The HTTP request object.
- * @param res - The HTTP response object.
- * @returns A Promise that resolves when the response is sent.
+ * - If the form action is "trySearch", it processes the search email and updates the session.
+ * - Instantiates `ManageAuthorisedPeopleHandler` to execute business logic and retrieve view data.
+ * - Renders the manage authorised people page with the obtained view data.
+ *
+ * @param req - The Express request object.
+ * @param res - The Express response object.
+ * @returns A promise that resolves when the response has been rendered.
  */
 export const manageAuthorisedPeopleControllerPost = async (req: Request, res: Response): Promise<void> => {
 
@@ -61,4 +64,10 @@ export const manageAuthorisedPeopleControllerPost = async (req: Request, res: Re
     res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, viewData);
 };
 
+/**
+ * Determines if the cancel search action has been triggered based on the request query parameters.
+ *
+ * @param req - The Express request object containing query parameters.
+ * @returns `true` if the `CANCEL_SEARCH` constant is present in the query parameters, otherwise `false`.
+ */
 export const isCancelSearch = (req: Request): boolean => Object.hasOwn(req.query, constants.CANCEL_SEARCH);

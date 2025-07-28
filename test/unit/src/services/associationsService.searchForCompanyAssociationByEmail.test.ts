@@ -28,7 +28,7 @@ describe("associationsService", () => {
             jest.clearAllMocks();
         });
 
-        it("should return an association link when an association is found", async () => {
+        it("should return an association when an association is found", async () => {
             //    Given
             const sdkResource: Resource<Association> = {
                 httpStatusCode: StatusCodes.OK,
