@@ -378,6 +378,18 @@ export const getAssociationById = async (
     return sdkResponse.resource as Association;
 };
 
+/**
+ * Searches for a company association by company number and email address.
+ *
+ * Queries the associations service for an association matching the provided company number and email,
+ * filtering by specific association statuses. Returns the association if found, or `null` if not found.
+ * Throws an error for unexpected status codes.
+ *
+ * @param companyNumber - The unique identifier of the company to search for.
+ * @param email - The email address associated with the company.
+ * @returns A promise that resolves to the found `Association` object, or `null` if not found.
+ * @throws Will throw an error if an unexpected status code is returned from the API.
+ */
 export const searchForCompanyAssociationByEmail = async (companyNumber: string, email:string): Promise<Association | null> => {
     const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const statuses = [
