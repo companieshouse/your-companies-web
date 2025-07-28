@@ -13,7 +13,10 @@ import {
     setAccessToken,
     setExtraData,
     setCompanyNameInCollection,
-    getCompanyNameFromCollection
+    getCompanyNameFromCollection,
+    setSearchStringEmail,
+    getSearchStringEmail,
+    deleteSearchStringEmail
 } from "../../../../../src/lib/utils/sessionUtils";
 import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 
@@ -289,6 +292,136 @@ describe("Session Utils", () => {
                 session,
                 "companyNameCollection",
                 { [companyNumber]: "First Company" }
+            );
+            setExtraDataMock.mockRestore();
+        });
+    });
+
+    describe("setSearchStringEmail", () => {
+        it("should set email for a company number in collection when collection exists", () => {
+            // Given
+            const session: Session = new Session();
+            const existingCollection = { OLD1: "old@example.com" };
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce(existingCollection);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const companyNumber = "NEW123";
+            const email = "bob@bob.com";
+            // When
+            setSearchStringEmail(session, email, companyNumber);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "searchStringEmail",
+                { ...existingCollection, [companyNumber]: email }
+            );
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should create new collection if none exists", () => {
+            // Given
+            const session: Session = new Session();
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(undefined);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const companyNumber = "NEW123";
+            const email = "bob@bob.com";
+            // When
+            setSearchStringEmail(session, email, companyNumber);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "searchStringEmail",
+                { [companyNumber]: email }
+            );
+            setExtraDataMock.mockRestore();
+        });
+    });
+
+    describe("getSearchStringEmail", () => {
+        it("should return email for company number if present", () => {
+            // Given
+            const session: Session = new Session();
+            const companyNumber = "NEW123";
+            const email = "bob@bob.com";
+            const collection = { [companyNumber]: email };
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
+            // When
+            const result = getSearchStringEmail(session, companyNumber);
+            // Then
+            expect(result).toEqual(email);
+        });
+
+        it("should return undefined if company number not present", () => {
+            // Given
+            const session: Session = new Session();
+            const collection = { OTHER: "other@example.com" };
+            const companyNumber = "NEW123";
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
+            // When
+            const result = getSearchStringEmail(session, companyNumber);
+            // Then
+            expect(result).toBeUndefined();
+        });
+
+        it("should return undefined if collection is undefined", () => {
+            // Given
+            const session: Session = new Session();
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(undefined);
+            const companyNumber = "NEW123";
+            // When
+            const result = getSearchStringEmail(session, companyNumber);
+            // Then
+            expect(result).toBeUndefined();
+        });
+    });
+
+    describe("deleteSearchStringEmail", () => {
+        const companyNumber = "ABC123";
+        const email = "rob@example.com";
+        it("should delete email for company number if present", () => {
+            // Given
+            const session: Session = new Session();
+            const collection = { [companyNumber]: email, OTHER: "other@example.com" };
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            // When
+            deleteSearchStringEmail(session, companyNumber);
+            // Then
+            const expected = { OTHER: "other@example.com" };
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "searchStringEmail",
+                expected
+            );
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should do nothing if collection is undefined", () => {
+            // Given
+            const session: Session = new Session();
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(undefined);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            // When
+            deleteSearchStringEmail(session, companyNumber);
+            // Then
+            expect(setExtraDataMock).not.toHaveBeenCalled();
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should do nothing if company number not present", () => {
+            // Given
+            const session: Session = new Session();
+            const collection = { OTHER: "other@example.com" };
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            // When
+            deleteSearchStringEmail(session, companyNumber);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "searchStringEmail",
+                collection
             );
             setExtraDataMock.mockRestore();
         });

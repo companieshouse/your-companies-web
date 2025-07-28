@@ -15,6 +15,7 @@ const router = supertest(app);
 
 jest.mock("../../../../../src/lib/Logger");
 const getSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getSearchStringEmail");
+const setSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setSearchStringEmail");
 
 jest.mock("../../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../../src/lib/utils/sessionUtils");
@@ -103,6 +104,19 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
         const response = await router.post(`${url}`);
         // Then
         expect(response.text).toContain(en.no_results_found);
+
+    });
+
+    it("should set search string email to session when values are present in the post request", async () => {
+        // Given
+        getSearchStringEmailSpy.mockReturnValue("bob@example.com");
+        searchForCompanyAssociationByEmailSpy.mockReturnValue(Promise.resolve(null));
+
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
+        // When
+        await router.post(`${url}`).send({ searchEmail: "bob@example.com", action: "trySearch" });
+        // Then
+        expect(setSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Object), "bob@example.com", "NI038379");
 
     });
 

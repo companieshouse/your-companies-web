@@ -9,8 +9,11 @@ import enCommon from "../../../../../locales/en/common.json";
 import cyCommon from "../../../../../locales/cy/common.json";
 import { AssociationState, AssociationStateResponse } from "../../../../../src/types/associations";
 import * as constants from "../../../../../src/constants";
+import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
+
+const deleteSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "deleteSearchStringEmail");
 
 jest.mock("../../../../../src/lib/Logger");
 jest.mock("../../../../../src/lib/utils/sessionUtils", () => {
@@ -137,5 +140,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // Then
         expect(response.text).toContain(cyCommon.next);
         expect(response.text).toContain(cyCommon.previous);
+    });
+
+    it("should call deleteSearchStringEmail function with correct data when url has cancelSearch query param", async () => {
+        // When
+        await router.get(`${url}?cancelSearch`);
+        // Then
+        expect(deleteSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Object), "NI038379");
+
     });
 });
