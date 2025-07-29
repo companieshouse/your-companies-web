@@ -99,7 +99,7 @@ describe("YourCompaniesHandler", () => {
                 userHasCompanies: constants.TRUE,
                 removeCompanyUrl: undefined,
                 viewAndManageUrl: undefined,
-                companyInformationUrl: undefined,
+                companyInformationUrl: constants.COMPANY_INFORMATION_URL,
                 showNumOfMatches: true,
                 pagination: {
                     previous: { href: "href" },
@@ -327,7 +327,7 @@ describe("YourCompaniesHandler", () => {
             expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
             if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-                getFullUrlCounter = 7;
+                getFullUrlCounter = 6;
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);

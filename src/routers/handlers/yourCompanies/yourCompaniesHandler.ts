@@ -204,7 +204,7 @@ export class YourCompaniesHandler extends GenericHandler {
             this.viewData.userHasCompanies = constants.TRUE;
             this.viewData.viewAndManageUrl = getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL);
             this.viewData.removeCompanyUrl = getFullUrl(constants.REMOVE_COMPANY_URL);
-            this.viewData.companyInformationUrl = getFullUrl(constants.COMPANY_INFORMATION_URL);
+            this.viewData.companyInformationUrl = constants.COMPANY_INFORMATION_URL;
             this.viewData.removeAuthorisationUrl = getFullUrl(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
             this.viewData.restoreDigitalAuthUrl = getFullUrl(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL);
             setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, navigationMiddlewareCheckCompanyNumber);
