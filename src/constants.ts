@@ -121,6 +121,8 @@ export const MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORE
 export const CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing#changing-or-cancelling-your-code";
 export const CHANGE_COMPANY_AUTH_CODE_URL_WELSH = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing.cy#newid-neu-ganslo-eich-cod";
 export const AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL = "https://www.gov.uk/guidance/company-authentication-codes-for-online-filing";
+export const COMPANY_INFORMATION_URL = `/company/:${COMPANY_NUMBER}`;
+
 // Error message keys
 export const ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE = "enter_a_company_number_for_a_company_that_is_active";
 export const ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG = "enter_a_company_number_that_is_8_characters_long";
