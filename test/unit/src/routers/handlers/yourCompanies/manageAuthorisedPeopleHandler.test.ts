@@ -52,7 +52,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
         {
             page: "1",
             pageNumber: 1,
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             viewData: {
                 pageNumber: 0,
@@ -64,7 +64,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
         {
             page: "12345",
             pageNumber: 12345,
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: false,
             viewData: {
                 pageNumber: 0,
@@ -76,7 +76,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
         {
             page: "2",
             pageNumber: 2,
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 1, companyAssociations.items.length + 15, 2),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 1, companyAssociations.items.length + 15, 2),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl,
             pagination: {
@@ -181,9 +181,9 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.RESENT_SUCCESS_EMAIL);
             let getCompanyAssociationsCounter = 1;
-            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
+            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
             if (!isValidPageNumber) {
-                expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, 0);
+                expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, 0, constants.ITEMS_PER_PAGE);
                 getCompanyAssociationsCounter = ++getCompanyAssociationsCounter;
             }
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
@@ -222,7 +222,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 userEmail: companyAssociations.items[0].userEmail,
                 companyNumber: companyAssociations.items[0].companyNumber
             },
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl,
             viewData: {
@@ -240,7 +240,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 userEmail: companyAssociations.items[0].userEmail,
                 companyNumber: companyAssociations.items[0].companyNumber
             },
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl + constants.CONFIRMATION_PERSON_REMOVED_URL,
             viewData: {
@@ -257,7 +257,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 userName: "John Smith",
                 companyNumber: companyAssociations.items[0].companyNumber
             },
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl + constants.CONFIRMATION_PERSON_REMOVED_URL,
             viewData: {
@@ -368,7 +368,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
             }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
-            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
+            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
@@ -378,7 +378,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
 
     test.each([
         {
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl,
             authorisedPerson: {
@@ -390,7 +390,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             condition: "there is authorised person but original URL does not contain confirmation-person-added"
         },
         {
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl + constants.CONFIRMATION_PERSON_ADDED_URL,
             authorisedPerson: {
@@ -508,7 +508,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
             }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
-            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
+            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
@@ -518,7 +518,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
 
     test.each([
         {
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl,
             resentSuccessEmail: companyAssociations.items[0].userEmail,
@@ -527,7 +527,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             condition: "there is resent email success but original URL does not contain authorisation-email-resent"
         },
         {
-            companyAssociations: getAssociationList(companyAssociations.items, 15, 0, companyAssociations.items.length, 1),
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
             isValidPageNumber: true,
             originalUrl: manageAuthorisedPeopleFullUrl + constants.AUTHORISATION_EMAIL_RESENT_URL,
             resentSuccessEmail: companyAssociations.items[0].userEmail,
@@ -641,7 +641,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
             }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
-            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1);
+            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
