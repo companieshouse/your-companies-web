@@ -51,7 +51,6 @@ router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as Request
 // Manage Authorised People
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 router.get(constants.AUTHORISED_PERSON_ADDED_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
-router.get(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);
 
 // Add Company
 router.get(constants.ADD_COMPANY_URL, navigationMiddleware, addCompanyControllerGet as RequestHandler);

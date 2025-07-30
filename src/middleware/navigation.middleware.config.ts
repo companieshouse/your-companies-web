@@ -120,8 +120,7 @@ const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
 
 const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
     constants.MANAGE_AUTHORISED_PEOPLE_URL,
-    constants.AUTHORISED_PERSON_ADDED_URL,
-    constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
+    constants.AUTHORISED_PERSON_ADDED_URL
 ];
 
 const routeConfigs: RouteConfig[] = [
@@ -396,10 +395,10 @@ const routeConfigs: RouteConfig[] = [
 
     // 2) Confirmation digital authorisation restored
     {
-        routePattern: constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL,
+        routePattern: constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_URL,
         allowedPages: [
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_URL
             ]),
             ...allowedPagesWithAssociationsIdGuard([
                 constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL
