@@ -94,11 +94,11 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.lang = lang;
         this.viewData.buttonHref = getAddPresenterFullUrl(companyNumber) + constants.CLEAR_FORM_TRUE;
 
-        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        let companyAssociations: AssociationList = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
 
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
             pageNumber = 1;
-            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
         }
 
         this.handleConfirmationPersonAdded(req);
