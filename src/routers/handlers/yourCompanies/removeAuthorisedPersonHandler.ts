@@ -200,10 +200,21 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         logger.info(createLogMessage(req.session, this.handleOtherUserRemoval.name,
             `Association ${association.id} removed`));
 
-        const redirectUrl = association.status === AssociationStatus.AWAITING_APPROVAL
-            ? getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL)
-            : getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
+        const redirectUrl = this.getRedirectUrl(association.status);
         res.redirect(redirectUrl);
+    }
+
+    private getRedirectUrl (status: AssociationStatus): string {
+        switch (status) {
+        case AssociationStatus.AWAITING_APPROVAL:
+            return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL);
+        case AssociationStatus.MIGRATED:
+            return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL);
+        case AssociationStatus.CONFIRMED:
+            return getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
+        default:
+            throw new Error("Unexpected association status");
+        }
     }
 
     private getSessionKey (req: Request): string {
@@ -219,13 +230,15 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     public getTemplateViewName (): string {
-        if (this.viewData.currentStatus === AssociationStatus.MIGRATED) {
+        switch (this.viewData.currentStatus) {
+        case AssociationStatus.MIGRATED:
             return constants.REMOVE_DO_NOT_RESTORE_PAGE;
-        } else if (this.viewData.currentStatus === AssociationStatus.CONFIRMED) {
+        case AssociationStatus.CONFIRMED:
             return constants.REMOVE_AUTHORISED_PERSON_PAGE;
-        } else if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
+        case AssociationStatus.AWAITING_APPROVAL:
             return constants.CANCEL_PERSON_PAGE;
+        default:
+            throw new Error("Unexpected association status");
         }
-        throw new Error("Unexpected association status");
     }
 }

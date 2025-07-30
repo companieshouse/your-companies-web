@@ -38,6 +38,7 @@ import { confirmationPersonRemovedControllerGet } from "./controllers/confirmati
 import { confirmationAuthorisationEmailResentControllerGet } from "./controllers/confirmationAuthorisationEmailResentController";
 import { confirmationPersonsDigitalAuthorisationCancelledControllerGet } from "./controllers/confirmationPersonsDigitalAuthorisationCancelledController";
 import { confirmationPersonsDigitalAuthorisationRestoredControllerGet } from "./controllers/confirmationPersonsDigitalAuthorisationRestoredController";
+import { confirmationPersonsDigitalAuthorisationRemovedNotRestoredControllerGet } from "./controllers/confirmationPersonsDigitalAuthorisationRemovedNotRestoredController";
 
 const router: Router = Router();
 
@@ -132,5 +133,8 @@ router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL, c
 
 // Confirmation Person's Digital Authorisation Restored
 router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_URL, confirmationPersonsDigitalAuthorisationRestoredControllerGet);
+
+// Confirmation Person's Digital Authorisation Removed Not Restored
+router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL, confirmationPersonsDigitalAuthorisationRemovedNotRestoredControllerGet);
 
 export default router;
