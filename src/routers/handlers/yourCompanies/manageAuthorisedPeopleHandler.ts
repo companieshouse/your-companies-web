@@ -155,10 +155,10 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
    * @returns A promise that resolves to an {@link AssociationList} containing the company associations for the specified page.
    */
     private async getValidCompanyAssociations (req: Request, companyNumber: string, pageNumber: number): Promise<AssociationList> {
-        let companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+        let companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
         if (!validatePageNumber(pageNumber, companyAssociations.totalPages)) {
             pageNumber = 1;
-            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1);
+            companyAssociations = await getCompanyAssociations(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
         }
         return companyAssociations;
     }

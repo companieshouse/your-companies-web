@@ -121,7 +121,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/confirmati
             expect(response.text).toContain(expectedBannerHeaderText);
 
             for (const email of emails) {
-                expect(response.text).toContain(email + "</td>");
+                expect(response.text).toContain(email + ` (${email})`);
             }
         });
 

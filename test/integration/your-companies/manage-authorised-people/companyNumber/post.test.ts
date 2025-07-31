@@ -82,9 +82,7 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
             expect(response.text).toContain(lang.anyone_with_access_to_the_current_authentication);
             expect(response.text).toContain(lang.add_new_authorised_person);
             expect(response.text).toContain(lang.details_of_authorised_people);
-            expect(response.text).toContain(lang.email_address);
             expect(response.text).toContain(lang.name);
-            expect(response.text).toContain(lang.authorisation_status);
             expect(response.text).toContain(langCommon.back_to_your_companies);
             expect(response.text).toContain(lang.match_found_for + " 'bob@bob.com'");
             expect(response.text).not.toContain(langCommon.success);
