@@ -24,12 +24,12 @@ jest.mock("../../../../../../src/lib/utils/sessionUtils", () => {
         deleteExtraData: jest.fn()
     };
 });
+const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 
 describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisation-email-resent", () => {
     const companyNumber = "NI038379";
     const url = `/your-companies/manage-authorised-people/${companyNumber}/authorisation-email-resent`;
     const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
-    const sessionUtilsSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
     const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
     const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
     const resentSuccessEmail = "bob@bob.com";
@@ -58,7 +58,10 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
     ])("should return status 200 and expected $langInfo content if language version set to $langVersion",
         async ({ langVersion, lang }) => {
             // Given
-            sessionUtilsSpy.mockReturnValue(resentSuccessEmail);
+            getExtraDataSpy.mockReturnValueOnce(undefined)
+                .mockReturnValueOnce(undefined) // company name collection
+                .mockReturnValueOnce(resentSuccessEmail);
+
             // When
             const response = await router.get(`${url}?lang=${langVersion}`);
             // Then
@@ -71,7 +74,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber/authorisat
 
     it("should not display banner if no authorised person details saved in session", async () => {
         // Given
-        sessionUtilsSpy.mockReturnValue(undefined);
+        getExtraDataSpy.mockReturnValue(undefined);
         // When
         const response = await router.get(`${url}?lang=en`);
         // Then

@@ -1,5 +1,5 @@
 import mocks from "../../../../mocks/all.middleware.mock";
-import { companyAssociationsPage2, companyAssociationsPage1, companyAssociations } from "../../../../mocks/associations.mock";
+import { companyAssociationsPage1, companyAssociations } from "../../../../mocks/associations.mock";
 import app from "../../../../../src/app";
 import * as associationsService from "../../../../../src/services/associationsService";
 import supertest from "supertest";
@@ -13,9 +13,10 @@ import * as sessionUtils from "../../../../../src/lib/utils/sessionUtils";
 
 const router = supertest(app);
 
-const deleteSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "deleteSearchStringEmail");
-
 jest.mock("../../../../../src/lib/Logger");
+const getSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getSearchStringEmail");
+const setSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setSearchStringEmail");
+
 jest.mock("../../../../../src/lib/utils/sessionUtils", () => {
     const originalModule = jest.requireActual("../../../../../src/lib/utils/sessionUtils");
 
@@ -29,9 +30,10 @@ jest.mock("../../../../../src/lib/utils/sessionUtils", () => {
 });
 
 const getCompanyAssociationsSpy: jest.SpyInstance = jest.spyOn(associationsService, "getCompanyAssociations");
+const searchForCompanyAssociationByEmailSpy: jest.SpyInstance = jest.spyOn(associationsService, "searchForCompanyAssociationByEmail");
 const isOrWasCompanyAssociatedWithUserSpy: jest.SpyInstance = jest.spyOn(associationsService, "isOrWasCompanyAssociatedWithUser");
 
-describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
+describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
     const companyNumber = "NI038379";
     const url = `/your-companies/manage-authorised-people/${companyNumber}`;
     const isAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "" };
@@ -45,7 +47,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // Given
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
         // When
-        await router.get(url);
+        await router.post(url);
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -56,7 +58,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         const notAssociated: AssociationStateResponse = { state: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER, associationId: "" };
         isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(notAssociated);
         // When
-        const response = await router.get(url);
+        const response = await router.post(url);
         // Then
         expect(response.status).toEqual(302);
         expect(response.header.location).toEqual(constants.LANDING_URL);
@@ -66,12 +68,13 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         { langInfo: "English", langVersion: "en", lang: en, langCommon: enCommon },
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
-    ])("should return status 200 and expected $langInfo content if language version set to '$langVersion'",
+    ])("should return status 200 and expected $langInfo match found content if language version set to '$langVersion'",
         async ({ langVersion, lang, langCommon }) => {
             // Given
-            getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
+            searchForCompanyAssociationByEmailSpy.mockReturnValue(Promise.resolve(companyAssociations.items[0]));
+            getSearchStringEmailSpy.mockReturnValue("bob@bob.com");
             // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
+            const response = await router.post(`${url}?lang=${langVersion}`);
             // Then
             expect(response.status).toEqual(200);
             expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
@@ -80,72 +83,50 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
             expect(response.text).toContain(lang.add_new_authorised_person);
             expect(response.text).toContain(lang.details_of_authorised_people);
             expect(response.text).toContain(lang.name);
-            expect(response.text).toContain(lang.digital_authorisation_status);
-            expect(response.text).toContain(lang.remove);
             expect(response.text).toContain(langCommon.back_to_your_companies);
+            expect(response.text).toContain(lang.match_found_for + " 'bob@bob.com'");
             expect(response.text).not.toContain(langCommon.success);
             expect(response.text).not.toContain(lang.digital_authorisation_cancelled);
             expect(response.text).toContain(companyAssociations.items[0].userEmail);
-            expect(response.text).toContain(companyAssociations.items[1].userEmail);
-            expect(response.text).toContain(companyAssociations.items[2].userEmail);
-            expect(response.text).toContain(companyAssociations.items[3].userEmail);
+
         });
 
-    it("should display all 15 associations for page 1 with a next button", async () => {
+    it("should display no results found when email search is not found by api service", async () => {
         // Given
+        getSearchStringEmailSpy.mockReturnValue("rob@rob.com");
+        searchForCompanyAssociationByEmailSpy.mockReturnValue(Promise.resolve(null));
+
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
         // When
-        const response = await router.get(`${url}`);
+        const response = await router.post(`${url}`);
         // Then
-        companyAssociationsPage1.items.forEach((association) => {
-            expect(response.text).toContain(association.userEmail);
-        });
-        expect(response.text).toContain(enCommon.next);
-        expect(response.text).not.toContain(enCommon.previous);
+        expect(response.text).toContain(en.no_results_found);
+
     });
 
-    it("should display the assocations for the last paginated page", async () => {
+    it("should call setSearchStringEmail to save the form input to session when values are present in the post request", async () => {
         // Given
-        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage2));
+        getSearchStringEmailSpy.mockReturnValue("bob@example.com");
+        searchForCompanyAssociationByEmailSpy.mockReturnValue(Promise.resolve(null));
+
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
         // When
-        const response = await router.get(`${url}?page=2`);
+        await router.post(`${url}`).send({ searchEmail: "bob@example.com", action: "trySearch" });
         // Then
-        companyAssociationsPage2.items.forEach((association) => {
-            expect(response.text).toContain(association.userEmail + ` (${association.userEmail})`);
-        });
-        expect(response.text).not.toContain(enCommon.next);
-        expect(response.text).toContain(enCommon.previous);
+        expect(setSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Object), "bob@example.com", "NI038379");
+
     });
 
-    it("should not display pagination when there is one page of associations", async () => {
+    it("should display an error on the page when a invlid email is entered", async () => {
         // Given
-        const mockCompanyAssociations = { ...companyAssociationsPage1 };
-        mockCompanyAssociations.totalPages = 1;
-        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(mockCompanyAssociations));
-        // When
-        const response = await router.get(`${url}?page=2`);
-        // Then
-        expect(response.text).not.toContain(enCommon.next);
-        expect(response.text).not.toContain(enCommon.previous);
-    });
+        getSearchStringEmailSpy.mockReturnValue("invalid-email");
+        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
 
-    it("should display the pagination links in welsh", async () => {
-        // Given
-        const mockCompanyAssociations = { ...companyAssociationsPage1 };
-        mockCompanyAssociations.totalPages = 10;
-        getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(mockCompanyAssociations));
         // When
-        const response = await router.get(`${url}?page=4&lang=cy`);
+        const response = await router.post(`${url}`).send({ searchEmail: "invalid-email", action: "trySearch" });
         // Then
-        expect(response.text).toContain(cyCommon.next);
-        expect(response.text).toContain(cyCommon.previous);
-    });
-
-    it("should call deleteSearchStringEmail function with correct data when url has cancelSearch query param", async () => {
-        // When
-        await router.get(`${url}?cancelSearch`);
-        // Then
-        expect(deleteSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Object), "NI038379");
+        expect(response.text).toContain(en.errors_email_invalid);
 
     });
+
 });

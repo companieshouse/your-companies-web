@@ -23,6 +23,8 @@ export const CURRENT_COMPANY_NUM = "currentCompanyNumber";
 export const LAST_REMOVED_COMPANY_NAME = "lastRemovedCompanyName";
 export const LAST_REMOVED_COMPANY_NUMBER = "lastRemovedCompanyNumber";
 export const REMOVE_PAGE_ERRORS = "removePageErrors";
+export const SEARCH_STRING_EMAIL = "searchStringEmail";
+export const COMPANY_NAME_COLLECTION = "companyNameCollection";
 
 export const REMOVE_AUTHORISATION_COMPANY_NAME = "removeAuthorisationCompanyName";
 export const REMOVE_AUTHORISATION_COMPANY_NUMBER = "removeAuthorisationCompanyNumber";
@@ -42,6 +44,7 @@ export const REMOVE_URL_EXTRA = "removePersonUrlExtraData";
 export const REMOVE_COMPANY_URL_EXTRA = "removeCompanyUrlExtraData";
 export const CSRF_ERRORS = "csrfErrors";
 export const REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL_EXTRA = "removeAuthorisationDoNotRestoreUrlExtraData";
+export const CANCEL_SEARCH = "cancelSearch";
 
 // Paths to Nunjucks template files
 export const SERVICE_UNAVAILABLE_TEMPLATE = "partials/service_unavailable";
