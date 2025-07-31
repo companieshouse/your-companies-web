@@ -119,8 +119,7 @@ const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
 // --- Centralized navigation configuration for all journeys ---
 
 const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
-    constants.MANAGE_AUTHORISED_PEOPLE_URL,
-    constants.AUTHORISED_PERSON_ADDED_URL
+    constants.MANAGE_AUTHORISED_PEOPLE_URL
 ];
 
 const routeConfigs: RouteConfig[] = [
@@ -330,10 +329,12 @@ const routeConfigs: RouteConfig[] = [
 
     // 3a) Authorised person added (alternative step)
     {
-        routePattern: constants.AUTHORISED_PERSON_ADDED_URL,
+        routePattern: constants.CONFIRMATION_PERSON_ADDED_URL,
         allowedPages: [
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_PERSON_ADDED_URL
+            ]),
             ...allowedPagesWithCompanyNumberGuard([
-                constants.AUTHORISED_PERSON_ADDED_URL,
                 constants.CHECK_PRESENTER_URL
             ])
         ],

@@ -83,6 +83,7 @@ export const CONFIRMATION_AUTHORISATION_EMAIL_RESENT_PAGE = "confirmation-author
 export const CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_PAGE = "confirmation-persons-digital-authorisation-cancelled";
 export const CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_PAGE = "confirmation-persons-digital-authorisation-restored";
 export const CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_PAGE = "confirmation-persons-digital-authorisation-removed-not-restored";
+export const CONFIRMATION_PERSON_ADDED_PAGE = "confirmation-person-added";
 
 // Routing paths
 export const LANDING_URL = "/your-companies";
@@ -94,8 +95,7 @@ export const COMPANY_ADDED_SUCCESS_URL = `/${COMPANY_ADD_SUCCESS_PAGE}`;
 export const REMOVE_COMPANY_CONFIRMED_URL = `/${REMOVE_COMPANY_CONFIRMED}`;
 export const CREATE_COMPANY_ASSOCIATION_URL = `${COMPANY_AUTH_PROTECTED_BASE}/create-company-association`;
 export const MANAGE_AUTHORISED_PEOPLE_URL = `/${MANAGE_AUTHORISED_PEOPLE_PAGE}/:${COMPANY_NUMBER}`;
-export const CONFIRMATION_PERSON_ADDED_URL = "/confirmation-person-added";
-export const AUTHORISED_PERSON_ADDED_URL = `${MANAGE_AUTHORISED_PEOPLE_URL}${CONFIRMATION_PERSON_ADDED_URL}`;
+export const CONFIRMATION_PERSON_ADDED_URL = `/${CONFIRMATION_PERSON_ADDED_PAGE}`;
 export const PRESENTER_ALREADY_ADDED_URL = `/${PRESENTER_ALREADY_ADDED_PAGE}/:${COMPANY_NUMBER}`;
 export const ADD_NEW_AUTHORISED_PERSON_URL = `/${ADD_PRESENTER_PAGE}`;
 export const MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL = `/manage-authorised-people-email-resent/:${USER_EMAIL}`;
