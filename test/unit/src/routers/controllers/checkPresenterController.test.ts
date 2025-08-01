@@ -75,7 +75,7 @@ describe("checkPresenterControllerPost", () => {
         {
             where: "authorised person added page",
             condition: "an error does not present in view data",
-            urlArg: constants.AUTHORISED_PERSON_ADDED_URL,
+            urlArg: constants.CONFIRMATION_PERSON_ADDED_URL,
             expectedViewData: {
                 companyNumber: "12345",
                 associationAlreadyExist: false

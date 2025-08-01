@@ -26,7 +26,7 @@ describe("GET /your-companies/manage-authorised-people-email-resent/:userEmail",
     it("should call redirect to resent email success page when email is valid and is associated", async () => {
         // Given
         const url = "/your-companies/manage-authorised-people-email-resent/bob1@bob.com";
-        const expectedRedirectUrl = "/your-companies/manage-authorised-people/1234567/authorisation-email-resent";
+        const expectedRedirectUrl = "/your-companies/confirmation-authorisation-email-resent";
         inviteUserSpy.mockReturnValue({ association_id: "123456" });
         // When
         const response = await router.get(url);

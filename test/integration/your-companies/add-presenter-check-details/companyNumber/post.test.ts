@@ -36,7 +36,7 @@ describe("POST /your-companies/add-presenter-check-details/:companyNumber", () =
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("should redirect to the manage authorised person added success page", async () => {
+    it("should redirect to the person added success page", async () => {
         // Given
         const email = "bruce@bruce.com";
         session.data.extra_data.authorisedPersonEmail = email;
@@ -46,8 +46,6 @@ describe("POST /your-companies/add-presenter-check-details/:companyNumber", () =
         const response = await router.post(url);
         // Then
         expect(response.status).toEqual(302);
-        expect(response.header.location).toContain(getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL).replace(
-            `:${constants.COMPANY_NUMBER}`, "12345678"
-        ));
+        expect(response.header.location).toContain(getFullUrl(constants.CONFIRMATION_PERSON_ADDED_URL));
     });
 });

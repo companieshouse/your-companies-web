@@ -2,22 +2,14 @@ import {
     addLangToUrl,
     getAddPresenterFullUrl,
     getAddPresenterUrl,
-    getAuthenticationCodeRemoveUrl,
-    getAuthorisedPersonAddedFullUrl,
     getCheckPresenterFullUrl,
     getCheckPresenterUrl,
-    getCompanyAuthProtectedAuthenticationCodeRemoveUrl,
     getCompanyInvitationsAcceptFullUrl,
     getCompanyInvitationsDeclineFullUrl,
     getCreateCompanyAssociationFullUrl,
     getFullUrl,
-    getManageAuthorisedPeopleConfirmationEmailResentUrl,
     getManageAuthorisedPeopleFullUrl,
-    getPresenterAlreadyAddedUrl,
-    getRemoveAuthorisationDoNotRestoreUrl,
-    getRemoveCompanyUrl,
-    getSendEmailToBeDigitallyAuthorisedFullUrl,
-    isReferrerIncludes,
+    getManageAuthorisedPeopleUrl,
     isWhitelistedUrl
 } from "../../../../../src/lib/utils/urlUtils";
 import * as constants from "../../../../../src/constants";
@@ -37,32 +29,6 @@ describe("addLangToUrl", () => {
         const result = addLangToUrl(url, lang);
         // Then
         expect(result).toEqual(expectedUrl);
-    });
-});
-
-describe("getManageAuthorisedPeopleUrl should return correct url", () => {
-    it.each([
-        { url: "/confirmation-person-removed", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-removed" },
-        { url: "/authorisation-email-resent", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/authorisation-email-resent" },
-        { url: "/confirmation-person-added", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456/confirmation-person-added" },
-        { url: "/any-other-url", companyNumber: "AB123456", expected: "/your-companies/manage-authorised-people/AB123456" }
-    ])("should return $expected for $url, $companyNumber", ({ url, companyNumber, expected }) => {
-        expect(getManageAuthorisedPeopleFullUrl(url, companyNumber)).toEqual(expected);
-    });
-});
-
-describe("isReferrerIncludes", () => {
-    it.each([
-        // Given
-        [true, "http://some-service.com/confirmation-person-removed"],
-        [true, "http://some-service.com/confirmation-person-added"],
-        [true, "http://some-service.com/authorisation-email-resent"],
-        [false, "http://some-service.com/something-else"]
-    ])("should return %s for %s", (expectedResult, referrer) => {
-        // When
-        const result = isReferrerIncludes(referrer);
-        // Then
-        expect(result).toEqual(expectedResult);
     });
 });
 
@@ -107,11 +73,6 @@ describe("URL generation function", () => {
         ["getCheckPresenterUrl", `/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterUrl],
         ["getCheckPresenterFullUrl", `${constants.LANDING_URL}/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterFullUrl],
         ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl],
-        ["getPresenterAlreadyAddedUrl", `/${constants.PRESENTER_ALREADY_ADDED_PAGE}/abc123`, "abc123", getPresenterAlreadyAddedUrl],
-        ["getAuthorisedPersonAddedFullUrl", `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.CONFIRMATION_PERSON_ADDED_URL}`, "abc123", getAuthorisedPersonAddedFullUrl],
-        ["getManageAuthorisedPeopleConfirmationEmailResentUrl", `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`, "abc123", getManageAuthorisedPeopleConfirmationEmailResentUrl],
-        ["getAuthenticationCodeRemoveUrl", `/authentication-code-remove/test@test.com`, "test@test.com", getAuthenticationCodeRemoveUrl],
-        ["getRemoveCompanyUrl", `/${constants.REMOVE_COMPANY_PAGE}/abc123`, "abc123", getRemoveCompanyUrl],
         [
             "getFullUrl",
             `${constants.LANDING_URL}/test/path`,
@@ -161,69 +122,21 @@ describe("URL generation function", () => {
             getCreateCompanyAssociationFullUrl
         ],
         [
-            "getPresenterAlreadyAddedUrl",
-            `/${constants.PRESENTER_ALREADY_ADDED_PAGE}/abc123`,
+            "getManageAuthorisedPeopleUrl",
+            `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123`,
             "abc123",
-            getPresenterAlreadyAddedUrl
+            getManageAuthorisedPeopleUrl
         ],
         [
-            "getAuthorisedPersonAddedFullUrl",
-            `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.CONFIRMATION_PERSON_ADDED_URL}`,
+            "getManageAuthorisedPeopleFullUrl",
+            `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123`,
             "abc123",
-            getAuthorisedPersonAddedFullUrl
-        ],
-        [
-            "getManageAuthorisedPeopleConfirmationEmailResentUrl",
-            `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/abc123${constants.AUTHORISATION_EMAIL_RESENT_URL}`,
-            "abc123",
-            getManageAuthorisedPeopleConfirmationEmailResentUrl
-        ],
-        [
-            "getAuthenticationCodeRemoveUrl",
-            `/authentication-code-remove/test@test.com`,
-            "test@test.com",
-            getAuthenticationCodeRemoveUrl
-        ],
-        [
-            "getRemoveCompanyUrl",
-            `/${constants.REMOVE_COMPANY_PAGE}/abc123`,
-            "abc123",
-            getRemoveCompanyUrl
-        ],
-        [
-            "getSendEmailToBeDigitallyAuthorisedFullUrl",
-            `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}/1234567890`,
-            "1234567890",
-            getSendEmailToBeDigitallyAuthorisedFullUrl
-        ],
-        [
-            "getRemoveAuthorisationDoNotRestoreUrl",
-            `/${constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE}/abc123`,
-            "abc123",
-            getRemoveAuthorisationDoNotRestoreUrl
+            getManageAuthorisedPeopleFullUrl
         ]
     ])("%s should generate URL: '%s'",
         (_functionName, expectedFullUrl, argument, testedFunction) => {
             // When
             const result = testedFunction(argument);
-            // Then
-            expect(result).toEqual(expectedFullUrl);
-        });
-
-    test.each([
-        // Given
-        ["getCompanyAuthProtectedAuthenticationCodeRemoveUrl", `/company/12345/authentication-code-remove/test@test.com`, "12345", "test@test.com", getCompanyAuthProtectedAuthenticationCodeRemoveUrl],
-        [
-            "getCompanyAuthProtectedAuthenticationCodeRemoveUrl",
-            `/company/12345/authentication-code-remove/test@test.com`,
-            "12345",
-            "test@test.com",
-            getCompanyAuthProtectedAuthenticationCodeRemoveUrl
-        ]
-    ])("%s should generate URL: '%s'",
-        (_functionName, expectedFullUrl, companyNumber, userEmail, testedFunction) => {
-            // When
-            const result = testedFunction(companyNumber, userEmail);
             // Then
             expect(result).toEqual(expectedFullUrl);
         });

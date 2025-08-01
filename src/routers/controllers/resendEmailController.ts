@@ -37,10 +37,7 @@ export const resendEmailController = async (req: Request, res: Response): Promis
     if (emailSendResponse) {
         setExtraData(req.session, constants.RESENT_SUCCESS_EMAIL, email);
         res.redirect(
-            getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL).replace(
-                `:${constants.COMPANY_NUMBER}`,
-                companyNumber
-            )
+            getFullUrl(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL)
         );
     }
 };

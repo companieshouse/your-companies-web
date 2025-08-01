@@ -77,10 +77,7 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
                 ? String(translations.not_provided)
                 : association.displayName;
 
-        const managePeopleUrl = getManageAuthorisedPeopleFullUrl(
-            constants.MANAGE_AUTHORISED_PEOPLE_URL,
-            companyNumber
-        );
+        const managePeopleUrl = getManageAuthorisedPeopleFullUrl(companyNumber);
         this.viewData.backLinkHref = this.viewData.cancelLinkHref = managePeopleUrl;
 
         if (method === constants.POST) {

@@ -1,0 +1,42 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.page_header + lang.title_end %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% set bannerText = userNameOrEmail + " " + lang.is_no_longer_digitally_authorised + " " + companyName + "." %}
+            {{ govukNotificationBanner({
+                text: bannerText,
+                type: "success"
+            }) }}
+
+            <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-6">
+                {{ lang.page_header }}
+            </h1>
+            <p class="govuk-body">{{lang.weve_emailed}}
+                {{userNameOrEmail}}
+                {{lang.to_let_them_know}}</p>
+            <p class="govuk-body">{{lang.you_may_wish_to}}
+                <a href={{changeAuthenticationCodeHref}} data-event-id="change-authentication-code" class="govuk-link govuk-link--no-visited-state" target="_blank">{{ lang.change_the_authentication_code }}</a>
+                {{lang.for_this_company_if}}
+                {{userNameOrEmail}}
+                {{lang.still_has_access_to_it}}
+            </p>
+
+            {{ govukButton({
+                    text: lang.go_to_digitally_authorised_people,
+                    href: managePeopleHref,
+                    attributes: {  
+                        "data-event-id": "go-to-digitally-authorised-people"
+                    }
+                })
+            }}
+
+        </div>
+    </div>
+{% endblock %}

@@ -6,3 +6,9 @@ export interface Removal {
     companyNumber: string;
     status: AssociationStatus;
 }
+
+export interface PersonRemovedConfirmation {
+    userNameOrEmail: string;
+    companyNumber: string;
+    companyName: string;
+}
