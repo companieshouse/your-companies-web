@@ -4,6 +4,8 @@
 
 {% extends "layouts/default.njk" %}
 
+{% set title = lang.page_header + lang.title_end %}
+
 {% block back_link %}
     <div role="navigation" aria-label="{{lang.back_to_your_companies}}">
         {{ govukBackLink({
