@@ -124,21 +124,21 @@ router.post(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL, removeAuthorisati
 router.get(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL, navigationMiddleware, confirmationAuthorisationRemovedControllerGet);
 
 // Confirmation Person Removed
-router.get(constants.CONFIRMATION_PERSON_REMOVED_URL, confirmationPersonRemovedControllerGet);
+router.get(constants.CONFIRMATION_PERSON_REMOVED_URL, navigationMiddleware, confirmationPersonRemovedControllerGet);
 
 // Confirmation Authorisation Email Resent
-router.get(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL, confirmationAuthorisationEmailResentControllerGet);
+router.get(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL, navigationMiddleware, confirmationAuthorisationEmailResentControllerGet);
 
 // Confirmation Person's Digital Authorisation Cancelled
-router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL, confirmationPersonsDigitalAuthorisationCancelledControllerGet);
+router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL, navigationMiddleware, confirmationPersonsDigitalAuthorisationCancelledControllerGet);
 
 // Confirmation Person's Digital Authorisation Restored
-router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_URL, confirmationPersonsDigitalAuthorisationRestoredControllerGet);
+router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_URL, navigationMiddleware, confirmationPersonsDigitalAuthorisationRestoredControllerGet);
 
 // Confirmation Person's Digital Authorisation Removed Not Restored
-router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL, confirmationPersonsDigitalAuthorisationRemovedNotRestoredControllerGet);
+router.get(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL, navigationMiddleware, confirmationPersonsDigitalAuthorisationRemovedNotRestoredControllerGet);
 
 // Confirmation Person Added
-router.get(constants.CONFIRMATION_PERSON_ADDED_URL, confirmationPersonAddedControllerGet);
+router.get(constants.CONFIRMATION_PERSON_ADDED_URL, navigationMiddleware, confirmationPersonAddedControllerGet);
 
 export default router;

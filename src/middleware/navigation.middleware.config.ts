@@ -118,10 +118,6 @@ const allowedPagesNoGuards = (patterns: string[]): AllowedPageConfig[] => {
 
 // --- Centralized navigation configuration for all journeys ---
 
-const MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES = [
-    constants.MANAGE_AUTHORISED_PEOPLE_URL
-];
-
 const routeConfigs: RouteConfig[] = [
     // Add a company journey
     // 1) Confirm company details
@@ -309,7 +305,7 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithCompanyNumberGuard([
                 constants.ADD_PRESENTER_URL,
                 constants.CHECK_PRESENTER_URL,
-                ...MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES
+                constants.MANAGE_AUTHORISED_PEOPLE_URL
             ])
         ],
         defaultRedirect: constants.LANDING_URL
@@ -361,7 +357,9 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithUserEmailGuard([
                 constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL
             ]),
-            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -376,7 +374,9 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithUserEmailGuard([
                 constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL
             ]),
-            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -389,7 +389,9 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithAssociationsIdGuard([
                 constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL
             ]),
-            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_URL
+            ])
         ],
         defaultRedirect: constants.LANDING_URL
     },
@@ -416,13 +418,15 @@ const routeConfigs: RouteConfig[] = [
             ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
                 constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
             ]),
-            ...allowedPagesWithCompanyNumberGuard(MANAGE_AUTHORISED_PEOPLE_PREVIOUS_PAGES)
+            ...allowedPagesWithCompanyNumberGuard([
+                constants.MANAGE_AUTHORISED_PEOPLE_URL
+            ])
         ],
         sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE,
         defaultRedirect: constants.LANDING_URL
     },
 
-    // 3a) Removed themselves (alternative step)
+    // 2a) Removed themselves (alternative step)
     {
         routePattern: constants.REMOVED_THEMSELVES_URL,
         allowedPages: [
@@ -436,7 +440,7 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // 3b) Confirmation person removed (alternative step)
+    // 2b) Confirmation person removed (alternative step)
     {
         routePattern: constants.CONFIRMATION_PERSON_REMOVED_URL,
         allowedPages: [
@@ -445,6 +449,34 @@ const routeConfigs: RouteConfig[] = [
             ]),
             ...allowedPagesNoGuards([
                 constants.CONFIRMATION_PERSON_REMOVED_URL
+            ])
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+
+    // 2c) Confirmation person cancelled (alternative step)
+    {
+        routePattern: constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL,
+        allowedPages: [
+            ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
+                constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
+            ]),
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL
+            ])
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+
+    // 2d) Confirmation person removed not restored (alternative step)
+    {
+        routePattern: constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL,
+        allowedPages: [
+            ...allowedPagesWithCompanyNumberAndAssociationIdGuard([
+                constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL
+            ]),
+            ...allowedPagesNoGuards([
+                constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL
             ])
         ],
         defaultRedirect: constants.LANDING_URL
