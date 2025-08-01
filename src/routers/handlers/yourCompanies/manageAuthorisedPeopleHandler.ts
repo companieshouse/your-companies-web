@@ -18,7 +18,6 @@ import {
 import {
     deleteExtraData,
     getCompanyNameFromCollection,
-    getExtraData,
     getSearchStringEmail,
     setCompanyNameInCollection,
     setExtraData
@@ -30,7 +29,7 @@ import {
     stringToPositiveInteger
 } from "../../../lib/helpers/buildPaginationHelper";
 import { validateEmailString, validatePageNumber } from "../../../lib/validation/generic";
-import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../types/associations";
+import { AssociationState, AssociationStateResponse } from "../../../types/associations";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { Pagination } from "../../../types/pagination";
@@ -154,8 +153,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             await this.handleSearch(req, companyNumber, searchEmail);
         }
 
-        this.handleConfirmationPersonAdded(req);
-
         if (companyAssociations) {
             this.setupAssociationsData(req, companyNumber, companyAssociations, pageNumber, this.viewData.lang);
         }
@@ -246,22 +243,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             return Promise.reject(createError(StatusCodes.FORBIDDEN, errorText, { redirctToYourCompanies: true }));
         }
         return Promise.resolve();
-    }
-
-    /**
-     * Handles the confirmation of a person being added.
-     * @param req - The HTTP request object.
-     */
-    private handleConfirmationPersonAdded (req: Request) {
-        const authorisedPerson: AuthorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
-
-        if (authorisedPerson &&
-            req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL)
-        ) {
-            this.viewData.authorisedPersonSuccess = true;
-            this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;
-            this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
-        }
     }
 
     /**

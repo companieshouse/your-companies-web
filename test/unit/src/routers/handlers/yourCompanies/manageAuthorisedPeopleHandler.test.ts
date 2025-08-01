@@ -23,7 +23,6 @@ const stringToPositiveIntegerSpy: jest.SpyInstance = jest.spyOn(buildPaginationH
 const buildPaginationElementSpy: jest.SpyInstance = jest.spyOn(buildPaginationHelper, "buildPaginationElement");
 const setLangForPaginationSpy: jest.SpyInstance = jest.spyOn(buildPaginationHelper, "setLangForPagination");
 const deleteExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "deleteExtraData");
-const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
 const getSearchStringEmailSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getSearchStringEmail");
 const getCompanyNameFromCollectionSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getCompanyNameFromCollection");
@@ -127,8 +126,6 @@ describe("ManageAuthorisedPeopleHandler", () => {
             getTranslationsForViewSpy.mockReturnValue(translations);
             const addPresenterFullUrl = `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
             getAddPresenterFullUrlSpy.mockReturnValue(addPresenterFullUrl);
-            getExtraDataSpy
-                .mockReturnValueOnce(undefined);
             getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
             validatePageNumberSpy.mockReturnValue(isValidPageNumber);
             const manageAuthorisedPeopleFullUrl = `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
@@ -186,8 +183,6 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
             expect(getAddPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
             expect(getAddPresenterFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
             let getCompanyAssociationsCounter = 1;
             expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
             if (!isValidPageNumber) {
