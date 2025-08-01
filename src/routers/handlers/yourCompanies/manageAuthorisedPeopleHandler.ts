@@ -120,7 +120,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const pageNumber = stringToPositiveInteger(req.query.page as string);
         this.viewData = {
             ...this.viewData,
-            cancelSearchHref: `${getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)}?${constants.CANCEL_SEARCH}`,
+            cancelSearchHref: `${getManageAuthorisedPeopleFullUrl(companyNumber)}?${constants.CANCEL_SEARCH}`,
             companyNumber,
             lang: getTranslationsForView(req.lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE),
             buttonHref: getAddPresenterFullUrl(companyNumber) + constants.CLEAR_FORM_TRUE,
@@ -209,18 +209,16 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         this.viewData.companyAssociations = companyAssociations;
 
-        if (companyAssociations.totalPages > 1) {
+        const href = getManageAuthorisedPeopleFullUrl(companyNumber);
 
-            const urlPrefix = getManageAuthorisedPeopleFullUrl(req.originalUrl, companyNumber);
-            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
+        if (companyAssociations.totalPages > 1) {
+            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, href, "");
 
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;
             this.viewData.pageNumber = pageNumber;
             this.viewData.numberOfPages = companyAssociations.totalPages;
         }
-
-        const href = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
 
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);

@@ -191,11 +191,8 @@ describe("ManageAuthorisedPeopleHandler", () => {
             }
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);
-            let getManageAuthorisedPeopleFullUrlCounter = 2;
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
+            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
             if (companyAssociations.totalPages > 1) {
-                expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(originalUrl, companyNumber);
-                getManageAuthorisedPeopleFullUrlCounter = ++getManageAuthorisedPeopleFullUrlCounter;
                 expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
                 expect(buildPaginationElementSpy).toHaveBeenCalledWith(isValidPageNumber ? pageNumber : 1, companyAssociations.totalPages, modifiedOriginalUrl, "");
                 expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
@@ -214,7 +211,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
             }
             expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(getCompanyAssociationsCounter);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(getManageAuthorisedPeopleFullUrlCounter);
+            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(2);
             expect(getSearchStringEmailSpy).toHaveBeenCalledTimes(1);
             expect(getSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Session), companyNumber);
             expect(getCompanyNameFromCollectionSpy).toHaveBeenCalledTimes(0);

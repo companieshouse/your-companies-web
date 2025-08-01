@@ -57,7 +57,7 @@ export class ConfirmationPersonsDigitalAuthorisationRestoredHandler extends Gene
             companyName: authorisedPersonCompanyName,
             companyNumber,
             userEmail: authorisedPersonEmailAddress,
-            managePeopleHref: getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)
+            managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)
         };
 
         return this.viewData;

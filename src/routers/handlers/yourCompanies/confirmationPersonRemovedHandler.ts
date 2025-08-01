@@ -60,7 +60,7 @@ export class ConfirmationPersonRemovedHandler extends GenericHandler {
             companyName,
             companyNumber,
             userNameOrEmail,
-            managePeopleHref: getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber),
+            managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber),
             changeAuthenticationCodeHref: req.lang === "cy"
                 ? constants.CHANGE_COMPANY_AUTH_CODE_URL_WELSH
                 : constants.CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH

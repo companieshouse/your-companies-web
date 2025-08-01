@@ -61,7 +61,7 @@ describe("ConfirmationPersonAddedHandler", () => {
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSON_ADDED_PAGE);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
+            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
             expect(response).toEqual(viewData);
         });
 });

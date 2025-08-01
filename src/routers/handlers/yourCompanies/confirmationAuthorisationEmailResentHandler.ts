@@ -58,7 +58,7 @@ export class ConfirmationAuthorisationEmailResentHandler extends GenericHandler 
             companyName,
             companyNumber,
             userEmail,
-            managePeopleHref: getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)
+            managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)
         };
 
         return this.viewData;

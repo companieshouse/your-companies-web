@@ -59,7 +59,7 @@ export class ConfirmationPersonsDigitalAuthorisationRemovedNotRestoredHandler ex
             companyName,
             companyNumber,
             userNameOrEmail,
-            managePeopleHref: getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)
+            managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)
         };
 
         return this.viewData;

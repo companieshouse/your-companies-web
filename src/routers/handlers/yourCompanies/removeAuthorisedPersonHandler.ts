@@ -96,8 +96,8 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         this.viewData.currentStatus = association.status;
         this.viewData.companyNumber = association.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
-        this.viewData.cancelLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, this.viewData.companyNumber);
-        this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, this.viewData.companyNumber);
+        this.viewData.cancelLinkHref = getManageAuthorisedPeopleFullUrl(this.viewData.companyNumber);
+        this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(this.viewData.companyNumber);
         this.viewData.companyName = association.companyName;
         this.viewData.userName = this.getNameOrEmail(association.displayName, association.userEmail);
         this.viewData.userEmail = association.userEmail;
@@ -117,7 +117,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         } else if (req.body.confirmRemoval === constants.NO) {
             deleteExtraData(req.session, this.getSessionKey(req));
             logger.info(createLogMessage(req.session, this.handlePostRequest.name, "User chose not to confirm removal"));
-            return res.redirect(getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, req.params[constants.COMPANY_NUMBER]));
+            return res.redirect(getManageAuthorisedPeopleFullUrl(req.params[constants.COMPANY_NUMBER]));
         } else {
             return await this.handleUnconfirmedRemoval(req, res);
         }

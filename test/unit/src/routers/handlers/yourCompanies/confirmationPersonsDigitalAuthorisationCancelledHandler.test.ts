@@ -59,7 +59,7 @@ describe("ConfirmationPersonsDigitalAuthorisationCancelledHandler", () => {
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_PAGE);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
+            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
             expect(response).toEqual(viewData);
 
         });

@@ -56,7 +56,7 @@ export class ConfirmationPersonsDigitalAuthorisationCancelledHandler extends Gen
             companyName,
             companyNumber,
             userEmail: userNameOrEmail,
-            managePeopleHref: getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)
+            managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)
         };
 
         return this.viewData;
