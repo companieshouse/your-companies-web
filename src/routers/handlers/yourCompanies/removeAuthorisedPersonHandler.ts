@@ -182,12 +182,6 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     private async handleOtherUserRemoval (req: Request, res: Response, association: Association): Promise<void> {
         const userNameOrEmail = this.getNameOrEmail(association.displayName, association.userEmail);
-        const removal: Removal = {
-            userEmail: association.userEmail,
-            userName: userNameOrEmail,
-            companyNumber: req.params[constants.COMPANY_NUMBER],
-            status: association.status
-        };
 
         const personRemovedConfirmationData: PersonRemovedConfirmation = {
             userNameOrEmail,
@@ -195,7 +189,6 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             companyName: association.companyName
         };
 
-        setExtraData(req.session, constants.REMOVE_PERSON, removal);
         setExtraData(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, personRemovedConfirmationData);
         logger.info(createLogMessage(req.session, this.handleOtherUserRemoval.name,
             `Association ${association.id} removed`));

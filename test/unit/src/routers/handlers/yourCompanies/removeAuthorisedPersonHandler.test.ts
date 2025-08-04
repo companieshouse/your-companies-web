@@ -371,39 +371,55 @@ describe("RemoveAuthorisedPersonHandler", () => {
             expect(res.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/NI038379");
         });
 
-        it("should process association removal, save details to session and redirect to confirmation when user has selected to confirm", async () => {
-            // Given
-            const lang = "en";
-            const companyNumber = "NI038379";
-            const associationId = "1234567890";
-            const session = new Session();
-            const req: Request = mockParametrisedRequest({
-                session,
-                lang,
-                params: {
-                    companyNumber,
-                    associationId
-                },
-                body: {
-                    confirmRemoval: "confirm"
-                }
+        test.each([
+            {
+                info: "association removal",
+                association: singleConfirmedAssociation,
+                redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSON_REMOVED_URL}`
+            },
+            {
+                info: "migrated association removal",
+                association: singleMigratedAssociation,
+                redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL}`
+            },
+            {
+                info: "association cancellation",
+                association: singleAwaitingApprovalAssociation,
+                redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL}`
+            }
+        ])("should process $info, save details to session and redirect to confirmation when user has selected to confirm",
+            async ({ association, redirectionUrl }) => {
+                // Given
+                const lang = "en";
+                const companyNumber = "NI038379";
+                const associationId = "1234567890";
+                const session = new Session();
+                const req: Request = mockParametrisedRequest({
+                    session,
+                    lang,
+                    params: {
+                        companyNumber,
+                        associationId
+                    },
+                    body: {
+                        confirmRemoval: "confirm"
+                    }
+                });
+                const expectedSavedRemovalForConfirmationPage = {
+                    userNameOrEmail: association.userEmail,
+                    companyNumber: association.companyNumber,
+                    companyName: association.companyName
+                };
+                const res = mockResponse();
+                getExtraDataSpy
+                    .mockReturnValueOnce(association);
+                // When
+                await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                // Then
+                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
+                expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, expectedSavedRemovalForConfirmationPage);
+                expect(res.redirect).toHaveBeenCalledWith(redirectionUrl);
             });
-            const expectedSavedRemovalForConfirmationPage = {
-                userEmail: singleConfirmedAssociation.userEmail,
-                userName: singleConfirmedAssociation.userEmail,
-                companyNumber: singleConfirmedAssociation.companyNumber,
-                status: singleConfirmedAssociation.status
-            };
-            const res = mockResponse();
-            getExtraDataSpy
-                .mockReturnValueOnce(singleConfirmedAssociation);
-            // When
-            await removeAuthorisedPersonHandler.handlePostRequest(req, res);
-            // Then
-            expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, "removePerson", expectedSavedRemovalForConfirmationPage);
-            expect(res.redirect).toHaveBeenCalledWith("/your-companies/confirmation-person-removed");
-        });
 
         it("should handle self removal", async () => {
             // Given
