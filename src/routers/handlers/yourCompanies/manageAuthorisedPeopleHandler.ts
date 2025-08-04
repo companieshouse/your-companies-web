@@ -42,13 +42,8 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     restoreDigitalAuthBaseUrl: string;
     matomoAddNewAuthorisedPersonGoalId: string;
     companyAssociations: AssociationList | undefined;
-    cancelledPerson: string;
-    removedPerson: string;
-    notRestoredPerson: string;
     changeCompanyAuthCodeUrl: string | undefined;
-    showEmailResentSuccess: boolean;
     resentSuccessEmail: string;
-    authorisedPersonSuccess: boolean;
     authorisedPersonEmailAddress: string | undefined;
     authorisedPersonCompanyName: string | undefined;
     companyName: string;
@@ -88,13 +83,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             pagination: undefined,
             pageNumber: 0,
             numberOfPages: 0,
-            cancelledPerson: "",
-            removedPerson: "",
-            notRestoredPerson: "",
             changeCompanyAuthCodeUrl: undefined,
-            showEmailResentSuccess: false,
             resentSuccessEmail: "",
-            authorisedPersonSuccess: false,
             authorisedPersonEmailAddress: undefined,
             authorisedPersonCompanyName: undefined,
             companyName: "",
