@@ -6,7 +6,12 @@ import { RemoveAuthorisedPersonHandler } from "../../../../../../src/routers/han
 import { Session } from "@companieshouse/node-session-handler";
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import * as associationsService from "../../../../../../src/services/associationsService";
-import { singleAwaitingApprovalAssociation, singleConfirmedAssociation, singleMigratedAssociation } from "../../../../../mocks/associations.mock";
+import {
+    singleAwaitingApprovalAssociation,
+    singleConfirmedAssociation,
+    singleMigratedAssociation,
+    singleUnauthorisedAssociation
+} from "../../../../../mocks/associations.mock";
 import { mockResponse } from "../../../../../mocks/response.mock";
 import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
@@ -420,6 +425,30 @@ describe("RemoveAuthorisedPersonHandler", () => {
                 expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, expectedSavedRemovalForConfirmationPage);
                 expect(res.redirect).toHaveBeenCalledWith(redirectionUrl);
             });
+
+        it("should throw an exception if association has unexpected status", async () => {
+            // Given
+            const lang = "en";
+            const companyNumber = "NI038379";
+            const associationId = "1234567890";
+
+            const req: Request = mockParametrisedRequest({
+                session: new Session(),
+                lang,
+                params: {
+                    companyNumber,
+                    associationId
+                },
+                body: {
+                    confirmRemoval: "confirm"
+                }
+            });
+            const res = mockResponse();
+            getExtraDataSpy
+                .mockReturnValueOnce(singleUnauthorisedAssociation);
+            // Then
+            await expect(removeAuthorisedPersonHandler.handlePostRequest(req, res)).rejects.toThrow("Unexpected association status");
+        });
 
         it("should handle self removal", async () => {
             // Given
