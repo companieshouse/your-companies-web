@@ -258,90 +258,67 @@ describe("RemoveAuthorisedPersonHandler", () => {
     });
 
     describe("RemoveAuthorisedPersonHandler - handlePostRequest", () => {
-        it("should re-render page by calling res.render with correct template and viewData with errors populated if removal unconfirmed", async () => {
-            // Given
-            const lang = "en";
-            const companyNumber = "NI038379";
-
-            const associationId = "1234567890";
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: {
-                    companyNumber,
-                    associationId
-                }
-            });
-
-            const res = mockResponse();
-
-            getExtraDataSpy
-                .mockReturnValueOnce(undefined);
-
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValueOnce(translations);
-            const expectedViewData = {
+        test.each([
+            {
+                reason: "removal unconfirmed",
                 templateName: constants.REMOVE_AUTHORISED_PERSON_PAGE,
-                backLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                lang: translations,
-                companyName: singleConfirmedAssociation.companyName,
-                companyNumber: singleConfirmedAssociation.companyNumber,
-                userEmail: singleConfirmedAssociation.userEmail,
-                cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                currentStatus: singleConfirmedAssociation.status,
-                userName: singleConfirmedAssociation.userEmail,
-                errors: { confirmRemoval: { text: "select_if_you_confirm_that_you_have_read" } }
-
-            };
-            getAssociationByIdSpy.mockResolvedValueOnce(singleConfirmedAssociation);
-            // When
-            await removeAuthorisedPersonHandler.handlePostRequest(req, res);
-            // Then
-            expect(res.render).toHaveBeenCalledWith(constants.REMOVE_AUTHORISED_PERSON_PAGE, expectedViewData);
-        });
-
-        it("should re-render page by calling res.render with cancel template and viewData with the cancel errors populated if cancellation unconfirmed", async () => {
-            // Given
-            const lang = "en";
-            const companyNumber = "NI038379";
-
-            const associationId = "1234567890";
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: {
-                    companyNumber,
-                    associationId
-                }
-            });
-
-            const res = mockResponse();
-
-            getExtraDataSpy
-                .mockReturnValueOnce(undefined);
-
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValueOnce(translations);
-            const expectedViewData = {
+                association: singleConfirmedAssociation,
+                errors: { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } }
+            },
+            {
+                reason: "removal for migrated association unconfirmed",
+                templateName: constants.REMOVE_DO_NOT_RESTORE_PAGE,
+                association: singleMigratedAssociation,
+                errors: { confirmRemoval: { text: constants.CONFIRM_YOU_HAVE_READ } }
+            },
+            {
+                reason: "cancellation unconfirmed",
                 templateName: constants.CANCEL_PERSON_PAGE,
-                backLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                lang: translations,
-                companyName: singleAwaitingApprovalAssociation.companyName,
-                companyNumber: singleAwaitingApprovalAssociation.companyNumber,
-                userEmail: singleAwaitingApprovalAssociation.userEmail,
-                cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                currentStatus: singleAwaitingApprovalAssociation.status,
-                userName: singleAwaitingApprovalAssociation.userEmail,
+                association: singleAwaitingApprovalAssociation,
                 errors: { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
+            }
+        ])("should re-render page by calling res.render with correct template and viewData with errors populated if $reason",
+            async ({ templateName, association, errors }) => {
+                // Given
+                const lang = "en";
+                const companyNumber = "NI038379";
 
-            };
-            getAssociationByIdSpy.mockResolvedValueOnce(singleAwaitingApprovalAssociation);
-            // When
-            await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                const associationId = "1234567890";
+                const req: Request = mockParametrisedRequest({
+                    session: new Session(),
+                    lang,
+                    params: {
+                        companyNumber,
+                        associationId
+                    }
+                });
 
-            // Then
-            expect(res.render).toHaveBeenCalledWith("cancel-person", expectedViewData);
-        });
+                const res = mockResponse();
+
+                getExtraDataSpy
+                    .mockReturnValueOnce(undefined);
+
+                const translations = { key: "value" };
+                getTranslationsForViewSpy.mockReturnValueOnce(translations);
+                const expectedViewData = {
+                    templateName,
+                    backLinkHref: "/your-companies/manage-authorised-people/NI038379",
+                    lang: translations,
+                    companyName: association.companyName,
+                    companyNumber: association.companyNumber,
+                    userEmail: association.userEmail,
+                    cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
+                    currentStatus: association.status,
+                    userName: association.userEmail,
+                    errors
+
+                };
+                getAssociationByIdSpy.mockResolvedValueOnce(association);
+                // When
+                await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                // Then
+                expect(res.render).toHaveBeenCalledWith(templateName, expectedViewData);
+            });
 
         it("should error when association company number does not match company no in url", async () => {
             // Given
