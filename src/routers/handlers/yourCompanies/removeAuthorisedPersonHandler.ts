@@ -13,7 +13,7 @@ import {
 import { getFullUrl, getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 import { getAssociationById, removeUserFromCompanyAssociations } from "../../../services/associationsService";
 import logger, { createLogMessage } from "../../../lib/Logger";
-import { PersonRemovedConfirmation, Removal } from "../../../types/removal";
+import { PersonRemovedConfirmation } from "../../../types/removal";
 
 /**
  * Interface representing the view data for the Remove Authorised Person page.
