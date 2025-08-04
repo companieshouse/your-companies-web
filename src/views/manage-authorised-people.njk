@@ -25,25 +25,8 @@
     {% set company_association = null %}
 {% endif %}
 
-{% if authorisedPersonSuccess %}
-    {% set title_middle_part = lang.title_email_sent %}
-{% elif removedPerson %}
-    {% set title_middle_part = lang.title_authorisation_removed %}
-{% elif cancelledPerson %}
-    {% set title_middle_part = lang.title_authorisation_cancelled %}
-{% elif notRestoredPerson %}
-    {% set title_middle_part = lang.title_authorisation_not_restored %}
-{% elif showEmailResentSuccess %}
-    {% set title_middle_part = lang.title_email_resent %}
-{% endif %}
 {% if pagination and pagination.items | length %}
-    {% if title_middle_part %}
-        {% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
-    {% else %}
-        {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
-    {% endif %}
-{% elif title_middle_part and not pagination %}
-    {% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_manage_authorised_people_finish %}
+    {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
 {% else %}
     {% set title = lang.title_manage_authorised_people %}
 {% endif %}
