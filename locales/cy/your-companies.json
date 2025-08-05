@@ -4,6 +4,7 @@
     "authorisation_banner_no_auth_code": "[CY] If you do not have the authentication code, you’ll either need someone who is digitally authorised to add you, or",
     "authorisation_banner_request_authentication_code": "[CY] request the authentication code (opens in a new tab).",
     "authorisation_status": "[CY] Authorisation status",
+    "authorised": "[CY] Authorised",
     "bullet_list": [
         "ffeilio ar gyfer y cwmni ar-lein",
         "awdurdodi pobl eraill yn ddigidol i ffeilio ar-lein ar gyfer y cwmni"
@@ -14,7 +15,6 @@
     "company_status": "[CY] Company status",
     "digital_authorisation_for": "[CY] digital authorisation for ",
     "digital_authorisation_status": "[CY] Digital authorisation status",
-    "authorised": "[CY] Authorised",
     "digitally_authorised_people": "[CY] Digitally authorised people",
     "enter_a_company_number_or_part": "Cofnodwch rif y cwmni, neu ran o rif y cwmni.",
     "enter_company_num": "Cofnodwch rif y cwmni, neu ran o rif cwmni.",

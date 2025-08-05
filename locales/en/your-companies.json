@@ -4,6 +4,7 @@
     "authorisation_banner_no_auth_code": "If you do not have the authentication code, you’ll either need someone who is digitally authorised to add you, or",
     "authorisation_banner_request_authentication_code": "request the authentication code (opens in a new tab).",
     "authorisation_status": "Authorisation status",
+    "authorised": "Authorised",
     "bullet_list": [
         "file for the company online",
         "digital authorise other people to file online for the company"
@@ -14,7 +15,6 @@
     "company_status": "Company status",
     "digital_authorisation_for": " digital authorisation for ",
     "digital_authorisation_status": "Digital authorisation status",
-    "authorised": "Authorised",
     "digitally_authorised_people": "Digitally authorised people",
     "enter_a_company_number_or_part": "Enter a company number, or part of a company number",
     "enter_company_num": "Enter the company number, or part of a company number.",
