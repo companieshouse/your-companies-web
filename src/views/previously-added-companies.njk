@@ -75,104 +75,121 @@
                 companyNumber: elem.company_number
             } %}
 
-            {% set companyNameUpper = elem.company_name  | upper %}
+            {% set companyNameUpper = elem.company_name | upper %}
             {% set visuallyHiddenText = elem.company_name %}
+            {% set companyStatusUpper = elem.company_status | capitalize %}
             {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
             {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
             {% set companyInfoLink = link(companyNameUpper, visuallyHiddenText, companyInformationUrl, "company-information", params) %}
 
-        {% if elem.status == "confirmed" %}
-            <div class="govuk-summary-card">
-                <div class="govuk-summary-card__title-wrapper">
-                    <h2 class="govuk-summary-card__title">
-                    {{companyInfoLink}}
-                    </h2>
-                    <ul class="govuk-summary-card__actions">
-                    <li class="govuk-summary-card__action">
-                        {{remove_link}}
-                    </li>
-                    </ul>
+            {% if elem.status == "confirmed" %}
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            {{companyInfoLink}}
+                        </h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                {{remove_link}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.company_number}}
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    {{elem.company_number}}
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.company_status}}
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    {{companyStatusUpper}}
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.digital_authorisation_status}}
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--green">
+                                        {{lang.authorised}}
+                                    </strong>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.digitally_authorised_people}}
+                                </dt>
+                                <dd class="govuk-summary-list__actions">
+                                    {{view_and_manage_link}}
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
-                <div class="govuk-summary-card__content">
-                    <dl class="govuk-summary-list">
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                {{lang.company_number}}
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                            {{elem.company_number}}
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                            {{lang.digital_authorisation_status}}
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                            <strong class="govuk-tag govuk-tag--green">
-                                    {{lang.authorised}}
-                                </strong>
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                            {{lang.digitally_authorised_people}}
-                            </dt>
-                            <dd class="govuk-summary-list__actions">
-                                {{view_and_manage_link}}
-                            </dd>
-                        </div>
-                    </dl>
-                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-        {% if elem.status == "migrated" %}
-            {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + elem.company_name %}
-            {% set visuallyHiddenRestoreText = lang.for + elem.company_name %}
+            {% if elem.status == "migrated" %}
+                {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + elem.company_name %}
+                {% set visuallyHiddenRestoreText = lang.for + elem.company_name %}
 
-            {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeAuthorisationUrl, "remove-company", params) %}
-            {% set restore_link = link(lang.restore_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation", params) %}
+                {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeAuthorisationUrl, "remove-company", params) %}
+                {% set restore_link = link(lang.restore_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation", params) %}
 
-            <div class="govuk-summary-card">
-                <div class="govuk-summary-card__title-wrapper">
-                    <h2 class="govuk-summary-card__title">
-                        {{companyInfoLink}}                    
-                    </h2>
-                    <ul class="govuk-summary-card__actions">
-                        <li class="govuk-summary-card__action">
-                            {{remove_not_restore}}
-                        </li>
-                    </ul>
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            {{companyInfoLink}}
+                        </h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                {{remove_not_restore}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.company_number}}
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    {{elem.company_number}}
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.company_status}}
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    {{companyStatusUpper}}
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    {{lang.digital_authorisation_status}}
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--red">
+                                        {{lang.not_authorised}}
+                                    </strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    {{restore_link}}
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
-                <div class="govuk-summary-card__content">
-                    <dl class="govuk-summary-list">
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                {{lang.company_number}}
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                {{elem.company_number}}
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                {{lang.digital_authorisation_status}}
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                <strong class="govuk-tag govuk-tag--red">
-                                    {{lang.not_authorised}}
-                                </strong>
-                            </dd>
-                            <dd class="govuk-summary-list__actions">
-                                {{restore_link}}
-                            </dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
 
-        {% endif %}
-    {% endfor %}
+            {% endif %}
+        {% endfor %}
 
         {% if pagination and pagination.items | length %}
             {{ govukPagination(pagination) }}
