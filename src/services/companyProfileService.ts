@@ -3,6 +3,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import { createKeyApiClient } from "./apiClientService";
+import createError from "http-errors";
 
 /**
  * Retrieves the company profile for a given company number.
@@ -40,7 +41,8 @@ export const getCompanyProfile = async (companyNumber: string): Promise<CompanyP
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`;
         logger.error(`${getCompanyProfile.name}: ${errorMessage}`);
-        return Promise.reject(new Error(errorMessage));
+        const error = createError(sdkResponse.httpStatusCode, errorMessage);
+        return Promise.reject(error);
     }
 
     if (!sdkResponse.resource) {
