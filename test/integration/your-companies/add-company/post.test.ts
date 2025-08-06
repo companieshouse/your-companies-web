@@ -20,6 +20,7 @@ import { Session } from "@companieshouse/node-session-handler";
 import { setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { AssociationState, AssociationStateResponse } from "../../../../src/types/associations";
 import * as associationService from "../../../../src/services/associationsService";
+import createError from "http-errors";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -140,7 +141,7 @@ describe("POST /your-companies/add-company", () => {
             lang: en,
             langCommon: enCommon,
             condition: "company number is incorrect",
-            companyProfileResource: { httpStatusCode: StatusCodes.BAD_REQUEST } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.BAD_REQUEST),
             message: en.enter_a_company_number_that_is_8_characters_long,
             companyNumber: "%£$£$£5343"
         },
@@ -150,7 +151,7 @@ describe("POST /your-companies/add-company", () => {
             lang: cy,
             langCommon: cyCommon,
             condition: "company number is incorrect",
-            companyProfileResource: { httpStatusCode: StatusCodes.BAD_REQUEST } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.BAD_REQUEST),
             message: cy.enter_a_company_number_that_is_8_characters_long,
             companyNumber: "%£$£$£5343"
         },
@@ -160,7 +161,7 @@ describe("POST /your-companies/add-company", () => {
             lang: en,
             langCommon: enCommon,
             condition: "there is no company with provided number",
-            companyProfileResource: { httpStatusCode: StatusCodes.NOT_FOUND } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.NOT_FOUND),
             message: en.enter_a_company_number_that_is_8_characters_long,
             companyNumber: "11111111"
         },
@@ -170,7 +171,7 @@ describe("POST /your-companies/add-company", () => {
             lang: cy,
             langCommon: cyCommon,
             condition: "there is no company with provided number",
-            companyProfileResource: { httpStatusCode: StatusCodes.NOT_FOUND } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.NOT_FOUND),
             message: cy.enter_a_company_number_that_is_8_characters_long,
             companyNumber: "11111111"
         },
@@ -180,7 +181,7 @@ describe("POST /your-companies/add-company", () => {
             lang: en,
             langCommon: enCommon,
             condition: "there is no company number provided",
-            companyProfileResource: { httpStatusCode: StatusCodes.NOT_FOUND } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.NOT_FOUND),
             message: en.enter_a_company_number,
             companyNumber: ""
         },
@@ -190,18 +191,18 @@ describe("POST /your-companies/add-company", () => {
             lang: cy,
             langCommon: cyCommon,
             condition: "there is no company number provided",
-            companyProfileResource: { httpStatusCode: StatusCodes.NOT_FOUND } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.NOT_FOUND),
             message: cy.enter_a_company_number,
             companyNumber: ""
         }
     ])("should return expected $langInfo error message if $condition and language version set to '$langVersion'",
-        async ({ langVersion, lang, langCommon, companyProfile, condition, message, companyNumber, companyProfileResource }) => {
+        async ({ langVersion, lang, langCommon, companyProfile, condition, message, companyNumber, httpError }) => {
             // Given
             if (companyProfile) {
                 companyProfileSpy.mockReturnValue(companyProfile);
             }
-            if (companyProfileResource) {
-                companyProfileSpy.mockRejectedValue(companyProfileResource);
+            if (httpError) {
+                companyProfileSpy.mockRejectedValue(httpError);
             }
             if (condition === "company number is correct but company has already been added to user account") {
                 const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "12345678" };

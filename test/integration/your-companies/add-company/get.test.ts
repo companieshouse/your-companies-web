@@ -3,8 +3,6 @@ import mocks from "../../../mocks/all.middleware.mock";
 import {
     validActiveCompanyProfile
 } from "../../../mocks/companyProfile.mock";
-import { Resource } from "@companieshouse/api-sdk-node";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import app from "../../../../src/app";
 import supertest from "supertest";
 import { NextFunction, Request, Response } from "express";
@@ -19,6 +17,7 @@ import cyCommon from "../../../../locales/cy/common.json";
 import { Session } from "@companieshouse/node-session-handler";
 import { getExtraData, setExtraData } from "../../../../src/lib/utils/sessionUtils";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
+import createError from "http-errors";
 
 const router = supertest(app);
 const session: Session = new Session();
@@ -80,9 +79,7 @@ describe("GET /your-companies/add-company", () => {
         // Given
         const expectedInput = "bad num";
         session.setExtraData(PROPOSED_COMPANY_NUM, expectedInput);
-        companyProfileSpy.mockRejectedValue({
-            httpStatusCode: StatusCodes.BAD_REQUEST
-        } as Resource<CompanyProfile>);
+        companyProfileSpy.mockRejectedValue(createError(StatusCodes.BAD_REQUEST));
         // When
         const response = await router.get("/your-companies/add-company?lang=en");
         // Then

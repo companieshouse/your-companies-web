@@ -12,8 +12,7 @@ import { AssociationState } from "../../../../../../src/types/associations";
 import { AddCompanyHandler } from "../../../../../../src/routers/handlers/yourCompanies/addCompanyHandler";
 import { Session } from "@companieshouse/node-session-handler";
 import { StatusCodes } from "http-status-codes";
-import { Resource } from "@companieshouse/api-sdk-node";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import createError from "http-errors";
 
 jest.mock("../../../../../../src/services/companyProfileService");
 jest.mock("../../../../../../src/lib/Logger");
@@ -258,7 +257,7 @@ describe("AddCompanyHandler", () => {
             method: constants.POST,
             body: { companyNumber: validActiveCompanyProfile.companyNumber },
             query: { [constants.CLEAR_FORM]: "true" },
-            companyProfileResponse: { httpStatusCode: StatusCodes.NOT_FOUND } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.NOT_FOUND),
             isAssociated: {
                 state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
                 associationId: "12345678"
@@ -277,7 +276,7 @@ describe("AddCompanyHandler", () => {
             method: constants.POST,
             body: { companyNumber: validActiveCompanyProfile.companyNumber },
             query: { [constants.CLEAR_FORM]: "true" },
-            companyProfileResponse: { httpStatusCode: StatusCodes.BAD_REQUEST } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.BAD_REQUEST),
             isAssociated: {
                 state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
                 associationId: "12345678"
@@ -296,7 +295,7 @@ describe("AddCompanyHandler", () => {
             method: constants.POST,
             body: { companyNumber: validActiveCompanyProfile.companyNumber },
             query: { [constants.CLEAR_FORM]: "true" },
-            companyProfileResponse: { httpStatusCode: StatusCodes.FORBIDDEN } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.FORBIDDEN),
             isAssociated: {
                 state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
                 associationId: "12345678"
@@ -315,7 +314,7 @@ describe("AddCompanyHandler", () => {
             method: constants.POST,
             body: { companyNumber: validActiveCompanyProfile.companyNumber },
             query: { [constants.CLEAR_FORM]: "true" },
-            companyProfileResponse: { httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR } as Resource<CompanyProfile>,
+            httpError: createError(StatusCodes.INTERNAL_SERVER_ERROR),
             isAssociated: {
                 state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
                 associationId: "12345678"
@@ -334,7 +333,7 @@ describe("AddCompanyHandler", () => {
             body,
             query,
             companyProfile,
-            companyProfileResponse,
+            httpError,
             method,
             isAssociated,
             viewData,
@@ -353,10 +352,10 @@ describe("AddCompanyHandler", () => {
                 .mockReturnValueOnce(companyProfile)
                 .mockReturnValueOnce(currentCompanyNumber);
             isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-            if (!companyProfileResponse) {
+            if (!httpError) {
                 getCompanyProfileSpy.mockReturnValue(companyProfile);
             } else {
-                getCompanyProfileSpy.mockRejectedValue(companyProfileResponse);
+                getCompanyProfileSpy.mockRejectedValue(httpError);
             }
 
             // When

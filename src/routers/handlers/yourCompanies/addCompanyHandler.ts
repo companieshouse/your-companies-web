@@ -12,6 +12,7 @@ import { ViewDataWithBackLink } from "../../../types/utilTypes";
 import { validateClearForm } from "../../../lib/validation/generic";
 import { AssociationState, AssociationStateResponse } from "../../../types/associations";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
+import { HttpError } from "http-errors";
 
 interface AddCompanyViewData extends ViewDataWithBackLink {
     proposedCompanyNumber: string | undefined;
@@ -83,7 +84,7 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             }
         } catch (err: any) {
-            if ([StatusCodes.NOT_FOUND, StatusCodes.BAD_REQUEST, StatusCodes.FORBIDDEN].includes(err.httpStatusCode)) {
+            if (err instanceof HttpError && [StatusCodes.NOT_FOUND, StatusCodes.BAD_REQUEST, StatusCodes.FORBIDDEN].includes(err.statusCode)) {
                 this.viewData.errors = {
                     companyNumber: {
                         text: constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
