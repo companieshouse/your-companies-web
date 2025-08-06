@@ -19,6 +19,17 @@ $govuk-image-url-function: 'custom-image-url-handler';
   font-family: "GDS Transport", Arial, sans-serif;
 }
 
+.govuk-footer__copyright-logo::before {
+    background-image: url("/images/govuk-crest.png");
+    mask-image: url("/images/govuk-crest.png");
+    mask-position: center;
+    background-position: center;
+}
+
+.govuk-footer {
+    border-top: 0;
+}
+
 .border-box {
     border-style: solid;
     border-width: thin;
@@ -57,11 +68,7 @@ $govuk-image-url-function: 'custom-image-url-handler';
     margin-bottom: 10px;
 }
 
-.new-border-bottom{
-    border-bottom: 10px solid #005ea5;
-}
-
-.does-not-verify-link-spacing{
+.does-not-verify-link-spacing {
     padding: 12px 0 8px 0;
 }
 
