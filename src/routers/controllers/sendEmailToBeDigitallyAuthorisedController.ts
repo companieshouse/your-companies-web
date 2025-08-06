@@ -4,7 +4,7 @@ import {
     SendEmailToBeDigitallyAuthorisedViewData
 } from "../handlers/yourCompanies/sendEmailToBeDigitallyAuthorisedHandler";
 import * as constants from "../../constants";
-import { getManageAuthorisedPeopleFullUrl } from "../../lib/utils/urlUtils";
+import { getFullUrl } from "../../lib/utils/urlUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
@@ -40,11 +40,8 @@ export const sendEmailToBeDigitallyAuthorisedControllerPost = async (
     req: Request,
     res: Response
 ): Promise<void> => {
-    const viewData = await executeHandler(req, constants.POST);
-    const redirectUrl = getManageAuthorisedPeopleFullUrl(
-        constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL,
-        viewData.companyNumber
-    );
+    await executeHandler(req, constants.POST);
+    const redirectUrl = getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_URL);
 
     logger.info(
         createLogMessage(

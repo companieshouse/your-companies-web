@@ -6,7 +6,12 @@ import { RemoveAuthorisedPersonHandler } from "../../../../../../src/routers/han
 import { Session } from "@companieshouse/node-session-handler";
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import * as associationsService from "../../../../../../src/services/associationsService";
-import { singleAwaitingApprovalAssociation, singleConfirmedAssociation, singleMigratedAssociation } from "../../../../../mocks/associations.mock";
+import {
+    singleAwaitingApprovalAssociation,
+    singleConfirmedAssociation,
+    singleMigratedAssociation,
+    singleUnauthorisedAssociation
+} from "../../../../../mocks/associations.mock";
 import { mockResponse } from "../../../../../mocks/response.mock";
 import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 
@@ -258,90 +263,67 @@ describe("RemoveAuthorisedPersonHandler", () => {
     });
 
     describe("RemoveAuthorisedPersonHandler - handlePostRequest", () => {
-        it("should re-render page by calling res.render with correct template and viewData with errors populated if removal unconfirmed", async () => {
-            // Given
-            const lang = "en";
-            const companyNumber = "NI038379";
-
-            const associationId = "1234567890";
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: {
-                    companyNumber,
-                    associationId
-                }
-            });
-
-            const res = mockResponse();
-
-            getExtraDataSpy
-                .mockReturnValueOnce(undefined);
-
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValueOnce(translations);
-            const expectedViewData = {
+        test.each([
+            {
+                reason: "removal unconfirmed",
                 templateName: constants.REMOVE_AUTHORISED_PERSON_PAGE,
-                backLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                lang: translations,
-                companyName: singleConfirmedAssociation.companyName,
-                companyNumber: singleConfirmedAssociation.companyNumber,
-                userEmail: singleConfirmedAssociation.userEmail,
-                cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                currentStatus: singleConfirmedAssociation.status,
-                userName: singleConfirmedAssociation.userEmail,
-                errors: { confirmRemoval: { text: "select_if_you_confirm_that_you_have_read" } }
-
-            };
-            getAssociationByIdSpy.mockResolvedValueOnce(singleConfirmedAssociation);
-            // When
-            await removeAuthorisedPersonHandler.handlePostRequest(req, res);
-            // Then
-            expect(res.render).toHaveBeenCalledWith(constants.REMOVE_AUTHORISED_PERSON_PAGE, expectedViewData);
-        });
-
-        it("should re-render page by calling res.render with cancel template and viewData with the cancel errors populated if cancellation unconfirmed", async () => {
-            // Given
-            const lang = "en";
-            const companyNumber = "NI038379";
-
-            const associationId = "1234567890";
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: {
-                    companyNumber,
-                    associationId
-                }
-            });
-
-            const res = mockResponse();
-
-            getExtraDataSpy
-                .mockReturnValueOnce(undefined);
-
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValueOnce(translations);
-            const expectedViewData = {
+                association: singleConfirmedAssociation,
+                errors: { confirmRemoval: { text: constants.SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ } }
+            },
+            {
+                reason: "removal for migrated association unconfirmed",
+                templateName: constants.REMOVE_DO_NOT_RESTORE_PAGE,
+                association: singleMigratedAssociation,
+                errors: { confirmRemoval: { text: constants.CONFIRM_YOU_HAVE_READ } }
+            },
+            {
+                reason: "cancellation unconfirmed",
                 templateName: constants.CANCEL_PERSON_PAGE,
-                backLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                lang: translations,
-                companyName: singleAwaitingApprovalAssociation.companyName,
-                companyNumber: singleAwaitingApprovalAssociation.companyNumber,
-                userEmail: singleAwaitingApprovalAssociation.userEmail,
-                cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                currentStatus: singleAwaitingApprovalAssociation.status,
-                userName: singleAwaitingApprovalAssociation.userEmail,
+                association: singleAwaitingApprovalAssociation,
                 errors: { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
+            }
+        ])("should re-render page by calling res.render with correct template and viewData with errors populated if $reason",
+            async ({ templateName, association, errors }) => {
+                // Given
+                const lang = "en";
+                const companyNumber = "NI038379";
 
-            };
-            getAssociationByIdSpy.mockResolvedValueOnce(singleAwaitingApprovalAssociation);
-            // When
-            await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                const associationId = "1234567890";
+                const req: Request = mockParametrisedRequest({
+                    session: new Session(),
+                    lang,
+                    params: {
+                        companyNumber,
+                        associationId
+                    }
+                });
 
-            // Then
-            expect(res.render).toHaveBeenCalledWith("cancel-person", expectedViewData);
-        });
+                const res = mockResponse();
+
+                getExtraDataSpy
+                    .mockReturnValueOnce(undefined);
+
+                const translations = { key: "value" };
+                getTranslationsForViewSpy.mockReturnValueOnce(translations);
+                const expectedViewData = {
+                    templateName,
+                    backLinkHref: "/your-companies/manage-authorised-people/NI038379",
+                    lang: translations,
+                    companyName: association.companyName,
+                    companyNumber: association.companyNumber,
+                    userEmail: association.userEmail,
+                    cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
+                    currentStatus: association.status,
+                    userName: association.userEmail,
+                    errors
+
+                };
+                getAssociationByIdSpy.mockResolvedValueOnce(association);
+                // When
+                await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                // Then
+                expect(res.render).toHaveBeenCalledWith(templateName, expectedViewData);
+            });
 
         it("should error when association company number does not match company no in url", async () => {
             // Given
@@ -394,14 +376,64 @@ describe("RemoveAuthorisedPersonHandler", () => {
             expect(res.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/NI038379");
         });
 
-        it("should process association removal, save details to session and redirect to confirmation when user has selected to confirm", async () => {
+        test.each([
+            {
+                info: "association removal",
+                association: singleConfirmedAssociation,
+                redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSON_REMOVED_URL}`
+            },
+            {
+                info: "migrated association removal",
+                association: singleMigratedAssociation,
+                redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL}`
+            },
+            {
+                info: "association cancellation",
+                association: singleAwaitingApprovalAssociation,
+                redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL}`
+            }
+        ])("should process $info, save details to session and redirect to confirmation when user has selected to confirm",
+            async ({ association, redirectionUrl }) => {
+                // Given
+                const lang = "en";
+                const companyNumber = "NI038379";
+                const associationId = "1234567890";
+                const session = new Session();
+                const req: Request = mockParametrisedRequest({
+                    session,
+                    lang,
+                    params: {
+                        companyNumber,
+                        associationId
+                    },
+                    body: {
+                        confirmRemoval: "confirm"
+                    }
+                });
+                const expectedSavedRemovalForConfirmationPage = {
+                    userNameOrEmail: association.userEmail,
+                    companyNumber: association.companyNumber,
+                    companyName: association.companyName
+                };
+                const res = mockResponse();
+                getExtraDataSpy
+                    .mockReturnValueOnce(association);
+                // When
+                await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                // Then
+                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
+                expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, expectedSavedRemovalForConfirmationPage);
+                expect(res.redirect).toHaveBeenCalledWith(redirectionUrl);
+            });
+
+        it("should throw an exception if association has unexpected status", async () => {
             // Given
             const lang = "en";
             const companyNumber = "NI038379";
             const associationId = "1234567890";
-            const session = new Session();
+
             const req: Request = mockParametrisedRequest({
-                session,
+                session: new Session(),
                 lang,
                 params: {
                     companyNumber,
@@ -411,21 +443,11 @@ describe("RemoveAuthorisedPersonHandler", () => {
                     confirmRemoval: "confirm"
                 }
             });
-            const expectedSavedRemovalForConfirmationPage = {
-                userEmail: singleConfirmedAssociation.userEmail,
-                userName: singleConfirmedAssociation.userEmail,
-                companyNumber: singleConfirmedAssociation.companyNumber,
-                status: singleConfirmedAssociation.status
-            };
             const res = mockResponse();
             getExtraDataSpy
-                .mockReturnValueOnce(singleConfirmedAssociation);
-            // When
-            await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+                .mockReturnValueOnce(singleUnauthorisedAssociation);
             // Then
-            expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, "removePerson", expectedSavedRemovalForConfirmationPage);
-            expect(res.redirect).toHaveBeenCalledWith("/your-companies/manage-authorised-people/NI038379/confirmation-person-removed");
+            await expect(removeAuthorisedPersonHandler.handlePostRequest(req, res)).rejects.toThrow("Unexpected association status");
         });
 
         it("should handle self removal", async () => {

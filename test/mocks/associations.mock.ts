@@ -1822,3 +1822,25 @@ export const singleRemovedAssociation: Association = {
         self: "/12345"
     }
 };
+
+export const singleUnauthorisedAssociation: Association = {
+    etag: "ABC",
+    id: "1234567890",
+    userId: "qwertyiop",
+    userEmail: "demo@ch.gov.uk",
+    displayName: "Not provided",
+    companyNumber: "NI038379",
+    companyName: "THE POLISH BREWERY",
+    companyStatus: CompanyStatuses.ACTIVE,
+    status: AssociationStatus.UNAUTHORISED,
+    createdAt: "2022-03-05T11:41:09.568+00:00 UTC",
+    approvedAt: "",
+    removedAt: "",
+    kind: "association",
+    approvalRoute: ApprovalRoute.INVITATION,
+    approvalExpiryAt: "2022-05-05T11:41:09.568+00:00 UTC",
+    unauthorisedAt: "",
+    links: {
+        self: "/12345"
+    }
+};

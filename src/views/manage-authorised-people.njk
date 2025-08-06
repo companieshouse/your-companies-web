@@ -3,7 +3,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
-{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
 {% from "macros/link.njk" import prepareHref %}
 {% from "macros/providedTextOrDefault.njk" import providedTextOrDefault %}
@@ -20,33 +19,14 @@
     {% endif %}
 {% endfor %}
 
-
 {% if companyAssociations and companyAssociations.items %}
-  {% set company_association = companyAssociations.items | first %}
+    {% set company_association = companyAssociations.items | first %}
 {% else %}
-  {% set company_association = null %}
+    {% set company_association = null %}
 {% endif %}
 
-
-{% if authorisedPersonSuccess %}
-    {% set title_middle_part = lang.title_email_sent %}
-{% elif removedPerson %}
-    {% set title_middle_part = lang.title_authorisation_removed %}
-{% elif cancelledPerson %}
-    {% set title_middle_part = lang.title_authorisation_cancelled %}
-{% elif notRestoredPerson %}
-    {% set title_middle_part = lang.title_authorisation_not_restored %}
-{% elif showEmailResentSuccess %}
-    {% set title_middle_part = lang.title_email_resent %}
-{% endif %}
 {% if pagination and pagination.items | length %}
-    {% if title_middle_part %}
-        {% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
-    {% else %}
-        {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
-    {% endif %}
-{% elif title_middle_part and not pagination %}
-    {% set title = lang.title_manage_authorised_people_start + title_middle_part + lang.title_manage_authorised_people_finish %}
+    {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
 {% else %}
     {% set title = lang.title_manage_authorised_people %}
 {% endif %}
@@ -64,98 +44,6 @@
 
 {% block main_content %}
     {%include "partials/others_digital_auth_banner.njk"%}
-
-    {% if cancelledPerson %}
-        {% set removeSuccessHtml %}
-        <h3 class="govuk-notification-banner__heading">{{lang.digital_authorisation_cancelled}}</h3>
-        <p class="govuk-body">
-            {{lang.you_have_successfully_cancelled_digital_authorisation_start}}
-            <span class="govuk-body govuk-!-font-weight-bold">{{cancelledPerson}}</span>
-            {{lang.you_have_successfully_cancelled_digital_authorisation_end}}
-            {{company_association.companyName}}
-        </p>
-        <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
-        {% endset %}
-    {% endif %}
-
-    {% if removedPerson %}
-        {% set removed_person_header = removedPerson + lang.is_no_longer_digitally_authorised + company_association.companyName + "."%}
-        {% set heading_text = lang.remove_person_header_start + removed_person_header %}
-
-        {% set removeSuccessHtml %}
-            <h3 class="govuk-notification-banner__heading">{{heading_text}}</h3>
-            <p class="govuk-body">{{lang.weve_sent_an_email_to_the_company}}</p>
-            <p class="govuk-body">
-                {{lang.you_may_wish_to}}
-                <a id="change-company-auth-code-link" class="govuk-notification-banner__link" data-event-id="change-authentication-code" href="{{changeCompanyAuthCodeUrl}}" target="_blank" rel="noopener noreferrer">{{lang.change_the_authentication_code}}</a>
-                {{lang.for_this_company_if}}{{removedPerson}}{{lang.still_has_access_to_it}}
-            </p>
-        {% endset%}
-    {% endif %}
-
-    {% if notRestoredPerson %}
-        {% set removeSuccessHtml %}
-            <h3 class="govuk-notification-banner__heading">{{lang.digital_authorisation_not_restored}}</h3>
-            <p class="govuk-body">{{lang.you_have_confirmed_you_do_not}}{{notRestoredPerson}}{{lang.digital_authorisation_to_file}}{{company_association.companyName}}.</p>
-            <p class="govuk-body">
-               {{lang.weve_emailed}}{{notRestoredPerson}}{{lang.to_let_them_know}}
-            </p>
-        {% endset%}
-    {% endif %}
-
-    {% if removeSuccessHtml %}
-        <div class="govuk-grid-column-two-thirds">
-            {{
-                govukNotificationBanner({
-                    html: removeSuccessHtml,
-                    type: "success",
-                    titleText: lang.success
-                })
-            }}
-        </div>
-    {% endif %}
-
-
-    {% if authorisedPersonSuccess %}
-        {% set successHtml %}
-        <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
-        <p class="govuk-body">
-            {{lang.authorised_person_success_msg1}}
-            <span class="govuk-body govuk-!-font-weight-bold">{{authorisedPersonEmailAddress}}</span>
-            {{lang.authorised_person_success_msg2}}
-            {{authorisedPersonCompanyName}}.
-        </p>
-        {% endset %}
-        <div class="govuk-grid-column-two-thirds">
-            {{
-                govukNotificationBanner({
-                    html: successHtml,
-                    type: "success",
-                    titleText: lang.success
-                })
-            }}
-        </div>
-    {% endif %}
-
-    {% if showEmailResentSuccess %}
-        {% set successHtml %}
-        <h3 class="govuk-notification-banner__heading">{{lang.authorised_person_success_heading}}</h3>
-        <p class="govuk-body">
-            {{lang.email_resent_success_success_msg1}}
-            <span class="govuk-body govuk-!-font-weight-bold">{{resentSuccessEmail}}</span>.{{lang.email_resent_success_success_msg2}}
-            {{company_association.companyName}}.
-        </p>
-        {% endset %}
-        <div class="govuk-grid-column-two-thirds">
-            {{
-                govukNotificationBanner({
-                    html: successHtml,
-                    type: "success",
-                    titleText: lang.success
-                })
-            }}
-        </div>
-    {% endif %}
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-quarters">
@@ -178,68 +66,66 @@
         </div>
     </div>
 
-      {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
-            {% set inputClasses = "govuk-input govuk-input--error govuk-!-margin-right-1 govuk-input--width-20" if message else "govuk-input govuk-input--width-20 govuk-!-margin-right-1" %}
+    {% set formClasses = "govuk-form-group govuk-form-group--error" if message else "govuk-form-group" %}
+    {% set inputClasses = "govuk-input govuk-input--error govuk-!-margin-right-1 govuk-input--width-20" if message else "govuk-input govuk-input--width-20 govuk-!-margin-right-1" %}
 
- 
-            <form method="post" action="{{manageAuthorisedPeopleUrl}}" novalidate>
-                {% include "partials/csrf_token.njk" %}
-                <div class="{{formClasses}}">
-                    <label class="govuk-label govuk-label--m" for="search">
-                        {{lang.search_for_an_authorised_person}}
-                    </label>
-                    <div id="event-name-hint" class="govuk-hint">
-                        {{lang.enter_an_email_address}}
-                    </div>
-                    {% if message %}
-                        {{ govukErrorMessage({
+    <form method="post" action="{{manageAuthorisedPeopleUrl}}" novalidate>
+        {% include "partials/csrf_token.njk" %}
+        <div class="{{formClasses}}">
+            <label class="govuk-label govuk-label--m" for="search">
+                {{lang.search_for_an_authorised_person}}
+            </label>
+            <div id="event-name-hint" class="govuk-hint">
+                {{lang.enter_an_email_address}}
+            </div>
+            {% if message %}
+                {{ govukErrorMessage({
                             text: message
                         })
                     }}
-                    {% endif %}
-                    <div id="search-input-group">
-                        <input class="{{inputClasses}}" id="search" name="searchEmail" type="email" aria-describedby="event-name-hint" value="{{searchEmail}}">
-                        <button type="submit" name="action" value="trySearch" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
-                        </button>
-                        {% if searchEmail != null %}
-                        <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.cancel_search}}</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </form>
-
-        {% if validSearch %}
-            {% if not resultsFound %}
-                <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{searchEmail}}'</h2>
-                <p class="govuk-body">{{lang.no_results_that_match}}</p>
-            {% else %}
-                <h2 class="govuk-heading-s"> {{lang.match_found_for}} '{{searchEmail}}'</h2>
             {% endif %}
+            <div id="search-input-group">
+                <input class="{{inputClasses}}" id="search" name="searchEmail" type="email" aria-describedby="event-name-hint" value="{{searchEmail}}">
+                <button type="submit" name="action" value="trySearch" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
+                </button>
+                {% if searchEmail != null %}
+                    <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.cancel_search}}</a>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+
+    {% if validSearch %}
+        {% if not resultsFound %}
+            <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{searchEmail}}'</h2>
+            <p class="govuk-body">{{lang.no_results_that_match}}</p>
+        {% else %}
+            <h2 class="govuk-heading-s">
+                {{lang.match_found_for}} '{{searchEmail}}'</h2>
         {% endif %}
+    {% endif %}
 
+    {% if validSearch == false or resultsFound == true %}
 
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
 
-        {% if validSearch == false or resultsFound == true %}
+                <h2 class="govuk-heading-m govuk-!-margin-top-4">{{lang.details_of_authorised_people}}</h2>
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-three-quarters">
-
-            <h2 class="govuk-heading-m govuk-!-margin-top-4">{{lang.details_of_authorised_people}}</h2>
-
-            {% for association in companyAssociations.items %}
-                {% set userEmail = association.userEmail %}
-                {% set defaultDisplayName = lang.not_provided %}
-                {% set displayNameText =  providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)%}
-                {% set removeHref = prepareHref(removeUrl, {
+                {% for association in companyAssociations.items %}
+                    {% set userEmail = association.userEmail %}
+                    {% set defaultDisplayName = lang.not_provided %}
+                    {% set displayNameText =  providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)%}
+                    {% set removeHref = prepareHref(removeUrl, {
                         associationId: association.id,
                         companyNumber: association.companyNumber
                     }) %}
-        
-                {% if association.status === confirmed %}
-                    {% set tag = govukTag({text: lang.authorised, classes: "govuk-tag--green"}) %}
-                    {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
-                    
-                    {{ govukSummaryList({
+
+                    {% if association.status === confirmed %}
+                        {% set tag = govukTag({text: lang.authorised, classes: "govuk-tag--green"}) %}
+                        {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
+
+                        {{ govukSummaryList({
                     card: {
                         title: {
                             text: userEmail
@@ -277,25 +163,23 @@
                         }
                     ]
                     }) }}
-                {% endif %}
+                    {% endif %}
 
-                {% if association.status === "awaiting-approval" %}
+                    {% if association.status === "awaiting-approval" %}
 
-                    {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
+                        {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
 
-                    {% set resendHref = prepareHref(resendEmailUrl, {
-                        userEmail: userEmail 
-                    }) %}
+                        {% set resendHref = prepareHref(resendEmailUrl, {userEmail: userEmail}) %}
 
-                    {% set awaitingConfirmation %}
-                    <div class="govuk-!-padding-bottom-2">
-                        <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
-                    </div>
-                    {% endset %}
+                        {% set awaitingConfirmation %}
+                        <div class="govuk-!-padding-bottom-2">
+                            <strong class="govuk-tag govuk-tag--yellow">{{lang.awaiting_confirmation }}</strong>
+                        </div>
+                        {% endset %}
 
-                    {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
+                        {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
 
-                    {{ govukSummaryList({
+                        {{ govukSummaryList({
                         card: {
                             title: {
                                 text: userEmail
@@ -346,22 +230,22 @@
                         ]}
                     }) }}
 
-                {% endif %}
+                    {% endif %}
 
-                {% if association.status === "migrated" %}
+                    {% if association.status === "migrated" %}
 
-                    {% set migratedText %}
-                    <div class="govuk-!-padding-bottom-2">
-                        <strong class="govuk-tag govuk-tag--red">{{lang.not_authorised }}</strong>
-                    </div>
-                    {% endset %}
+                        {% set migratedText %}
+                        <div class="govuk-!-padding-bottom-2">
+                            <strong class="govuk-tag govuk-tag--red">{{lang.not_authorised }}</strong>
+                        </div>
+                        {% endset %}
 
-                    {% set visuallyHiddenRestoreText = lang.for + association.userEmail %}
-                    {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
+                        {% set visuallyHiddenRestoreText = lang.for + association.userEmail %}
+                        {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
 
-                    {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
-                    
-                    {{ govukSummaryList({
+                        {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
+
+                        {{ govukSummaryList({
                         card: {
                             title: {
                                 text: userEmail
@@ -408,22 +292,22 @@
                             }
                         ]
                             }) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="govuk-grid-row govuk-!-padding-top-2">
+            <div class="govuk-grid-column-three-quarters">
+
+                {% if pagination and pagination.items | length %}
+                    {{ govukPagination(pagination) }}
                 {% endif %}
-            {% endfor %}
+            </div>
         </div>
-    </div>
 
-    <div class="govuk-grid-row govuk-!-padding-top-2">
-        <div class="govuk-grid-column-three-quarters">
+    {% endif %}
 
-            {% if pagination and pagination.items | length %}
-                {{ govukPagination(pagination) }}
-            {% endif %}
-        </div>
-    </div>
-
-{% endif %}
-    
     <script nonce={{ nonce | dump | safe }}>
         trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
     </script>

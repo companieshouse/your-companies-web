@@ -3,14 +3,33 @@ import { GenericHandler } from "../genericHandler";
 import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { getManageAuthorisedPeopleFullUrl, getFullUrl, getAddPresenterFullUrl, getManageAuthorisedPeopleUrl } from "../../../lib/utils/urlUtils";
-import { AssociationList, AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
-import { getCompanyAssociations, isOrWasCompanyAssociatedWithUser, searchForCompanyAssociationByEmail } from "../../../services/associationsService";
-import { deleteExtraData, getCompanyNameFromCollection, getExtraData, setCompanyNameInCollection, setExtraData, getSearchStringEmail } from "../../../lib/utils/sessionUtils";
-import { ViewDataWithBackLink, AnyRecord } from "../../../types/utilTypes";
-import { buildPaginationElement, setLangForPagination, stringToPositiveInteger } from "../../../lib/helpers/buildPaginationHelper";
+import {
+    getManageAuthorisedPeopleFullUrl,
+    getFullUrl,
+    getAddPresenterFullUrl,
+    getManageAuthorisedPeopleUrl
+} from "../../../lib/utils/urlUtils";
+import { AssociationList } from "@companieshouse/api-sdk-node/dist/services/associations/types";
+import {
+    getCompanyAssociations,
+    isOrWasCompanyAssociatedWithUser,
+    searchForCompanyAssociationByEmail
+} from "../../../services/associationsService";
+import {
+    deleteExtraData,
+    getCompanyNameFromCollection,
+    getSearchStringEmail,
+    setCompanyNameInCollection,
+    setExtraData
+} from "../../../lib/utils/sessionUtils";
+import { AnyRecord, ViewDataWithBackLink } from "../../../types/utilTypes";
+import {
+    buildPaginationElement,
+    setLangForPagination,
+    stringToPositiveInteger
+} from "../../../lib/helpers/buildPaginationHelper";
 import { validateEmailString, validatePageNumber } from "../../../lib/validation/generic";
-import { AssociationState, AssociationStateResponse, AuthorisedPerson } from "../../../types/associations";
+import { AssociationState, AssociationStateResponse } from "../../../types/associations";
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { Pagination } from "../../../types/pagination";
@@ -23,13 +42,8 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     restoreDigitalAuthBaseUrl: string;
     matomoAddNewAuthorisedPersonGoalId: string;
     companyAssociations: AssociationList | undefined;
-    cancelledPerson: string;
-    removedPerson: string;
-    notRestoredPerson: string;
     changeCompanyAuthCodeUrl: string | undefined;
-    showEmailResentSuccess: boolean;
     resentSuccessEmail: string;
-    authorisedPersonSuccess: boolean;
     authorisedPersonEmailAddress: string | undefined;
     authorisedPersonCompanyName: string | undefined;
     companyName: string;
@@ -37,9 +51,9 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     searchEmail: string | null;
     validSearch?: boolean;
     resultsFound?: boolean;
-    cancelSearchHref:string;
+    cancelSearchHref: string;
     manageAuthorisedPeopleUrl: string;
-    }
+}
 
 /**
  * Handler for managing authorised people associated with a company.
@@ -69,13 +83,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             pagination: undefined,
             pageNumber: 0,
             numberOfPages: 0,
-            cancelledPerson: "",
-            removedPerson: "",
-            notRestoredPerson: "",
             changeCompanyAuthCodeUrl: undefined,
-            showEmailResentSuccess: false,
             resentSuccessEmail: "",
-            authorisedPersonSuccess: false,
             authorisedPersonEmailAddress: undefined,
             authorisedPersonCompanyName: undefined,
             companyName: "",
@@ -101,7 +110,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const pageNumber = stringToPositiveInteger(req.query.page as string);
         this.viewData = {
             ...this.viewData,
-            cancelSearchHref: `${getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber)}?${constants.CANCEL_SEARCH}`,
+            cancelSearchHref: `${getManageAuthorisedPeopleFullUrl(companyNumber)}?${constants.CANCEL_SEARCH}`,
             companyNumber,
             lang: getTranslationsForView(req.lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE),
             buttonHref: getAddPresenterFullUrl(companyNumber) + constants.CLEAR_FORM_TRUE,
@@ -133,10 +142,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             this.viewData.validSearch = true;
             await this.handleSearch(req, companyNumber, searchEmail);
         }
-
-        this.handleRemoveConfirmation(req);
-        this.handleConfirmationPersonAdded(req);
-        this.handleResentSuccessEmail(req);
 
         if (companyAssociations) {
             this.setupAssociationsData(req, companyNumber, companyAssociations, pageNumber, this.viewData.lang);
@@ -194,18 +199,16 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
         this.viewData.companyAssociations = companyAssociations;
 
-        if (companyAssociations.totalPages > 1) {
+        const href = getManageAuthorisedPeopleFullUrl(companyNumber);
 
-            const urlPrefix = getManageAuthorisedPeopleFullUrl(req.originalUrl, companyNumber);
-            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, urlPrefix, "");
+        if (companyAssociations.totalPages > 1) {
+            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, href, "");
 
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;
             this.viewData.pageNumber = pageNumber;
             this.viewData.numberOfPages = companyAssociations.totalPages;
         }
-
-        const href = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
 
         setExtraData(req.session, constants.REFERER_URL, href);
         setExtraData(req.session, constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
@@ -228,54 +231,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             return Promise.reject(createError(StatusCodes.FORBIDDEN, errorText, { redirctToYourCompanies: true }));
         }
         return Promise.resolve();
-    }
-
-    /**
-     * Handles the confirmation of a person being removed.
-     * @param req - The HTTP request object.
-     */
-    private handleRemoveConfirmation (req: Request) {
-        const removal = getExtraData(req.session, constants.REMOVE_PERSON);
-        if (removal && req.originalUrl.includes(constants.CONFIRMATION_PERSON_REMOVED_URL)) {
-            if (removal.status === AssociationStatus.AWAITING_APPROVAL) {
-                this.viewData.cancelledPerson = removal.userEmail;
-            } else if (removal.status === AssociationStatus.CONFIRMED) {
-                this.viewData.removedPerson = removal.userName;
-                this.viewData.changeCompanyAuthCodeUrl = req.lang === "en" ? constants.CHANGE_COMPANY_AUTH_CODE_URL_ENGLISH : constants.CHANGE_COMPANY_AUTH_CODE_URL_WELSH;
-            } else if (removal.status === AssociationStatus.MIGRATED) {
-                this.viewData.notRestoredPerson = removal.userName;
-            }
-        }
-    }
-
-    /**
-     * Handles the success message for a resent email.
-     * @param req - The HTTP request object.
-     */
-    private handleResentSuccessEmail (req: Request) {
-        const resentSuccessEmail: string = getExtraData(req.session, constants.RESENT_SUCCESS_EMAIL);
-
-        if (resentSuccessEmail && req.originalUrl.includes(constants.AUTHORISATION_EMAIL_RESENT_URL)) {
-            this.viewData.showEmailResentSuccess = true;
-            this.viewData.resentSuccessEmail = resentSuccessEmail;
-        }
-    }
-
-    /**
-     * Handles the confirmation of a person being added.
-     * @param req - The HTTP request object.
-     */
-    private handleConfirmationPersonAdded (req: Request) {
-        const authorisedPerson: AuthorisedPerson = getExtraData(req.session, constants.AUTHORISED_PERSON);
-
-        if (authorisedPerson &&
-            (req.originalUrl.includes(constants.CONFIRMATION_PERSON_ADDED_URL) ||
-                req.originalUrl.includes(constants.CONFIRMATION_DIGITAL_AUTHORISATION_RESTORED_URL))
-        ) {
-            this.viewData.authorisedPersonSuccess = true;
-            this.viewData.authorisedPersonEmailAddress = authorisedPerson.authorisedPersonEmailAddress;
-            this.viewData.authorisedPersonCompanyName = authorisedPerson.authorisedPersonCompanyName;
-        }
     }
 
     /**

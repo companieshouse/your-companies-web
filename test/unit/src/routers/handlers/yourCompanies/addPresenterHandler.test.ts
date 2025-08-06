@@ -147,7 +147,7 @@ describe("AddPresenterHandler", () => {
             expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.ADD_PRESENTER_PAGE);
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
+            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
             expect(validateClearFormSpy).toHaveBeenCalledTimes(1);
             expect(validateClearFormSpy).toHaveBeenCalledWith(cf);
             let deleteExtraDataCallCounter = 0;

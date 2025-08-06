@@ -12,7 +12,7 @@ export const confirmationAuthorisationRemovedControllerGet = async (
     logger.info(
         createLogMessage(
             req.session,
-            ConfirmationAuthorisationRemovedHandler.name,
+            confirmationAuthorisationRemovedControllerGet.name,
             "Rendering confirmation authorisation removed page"
         )
     );

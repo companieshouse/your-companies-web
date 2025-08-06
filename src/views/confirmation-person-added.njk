@@ -1,0 +1,61 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.page_header + lang.title_end %}
+
+{% block back_link %}
+    <div role="navigation" aria-label="{{lang.back_to_your_companies}}">
+        {{ govukBackLink({
+                text: lang.go_back_to_your_companies2,
+                href: backLinkHref,
+                attributes: {
+                    id: "back-link-to-your-companies-page",
+                    "data-event-id": "back-link-to-your-companies-page"
+                }
+            })
+        }}
+    </div>
+{% endblock %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% set emailSentBannerHtml %}
+            <h3 class="govuk-notification-banner__heading">
+                {{lang.email_sent}}
+            </h3>
+            <p class="govuk-body">{{lang.weve_sent_an_email_to}}
+                <span class="govuk-body govuk-!-font-weight-bold">{{userEmail}}</span>
+                {{lang.inviting_them_to_be_digitally_authorised}}</p>
+            <p class="govuk-body">{{lang.weve_also_sent_an_email}}</p>
+            {% endset %}
+
+            {{ govukNotificationBanner({
+                    html: emailSentBannerHtml,
+                    type: "success"
+                })
+            }}
+
+            <span class="govuk-caption-l">{{ companyName + " (" + companyNumber + ")" }}</span>
+            <h1 class="govuk-heading-l">{{ lang.page_header }}</h1>
+
+            <p class="govuk-body">{{ lang.they_will_need_to_either_accept_or_decline }}</p>
+
+            <div class="govuk-button-group govuk-!-padding-top-3">
+                {{ govukButton({
+                        text: lang.go_to_digitally_authorised_people,
+                        href: managePeopleHref,
+                        classes: "govuk-button",
+                        attributes: {
+                            "data-module": "govuk-button", 
+                            "data-event-id": "go-to-digitally-authorised-people"
+                        }
+                    })
+                }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

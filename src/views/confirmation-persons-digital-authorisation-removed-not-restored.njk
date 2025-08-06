@@ -1,0 +1,64 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% extends "layouts/default.njk" %}
+
+{% set title = lang.page_header + lang.title_end %}
+
+{% block back_link %}
+    <div role="navigation" aria-label="{{lang.back_to_your_companies}}">
+        {{ govukBackLink({
+                text: lang.go_back_to_your_companies2,
+                href: backLinkHref,
+                attributes: {
+                    id: "back-link-to-your-companies-page",
+                    "data-event-id": "back-link-to-your-companies-page"
+                }
+            })
+        }}
+    </div>
+{% endblock %}
+
+{% block main_content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% set paragraphText = lang.you_have_confirmed_you_do_not_want_to_restore + " " + userNameOrEmail + lang.digital_authorisation_to_file_online_for + " " + companyName + "." %}
+            {% set emailSentBannerHtml %}
+            <h3 class="govuk-notification-banner__heading">
+                {{lang.digital_authorisation_not_restored}}
+            </h3>
+            <p class="govuk-body">{{paragraphText}}</p>
+            {% endset %}
+
+            {{ govukNotificationBanner({
+                    html: emailSentBannerHtml,
+                    type: "success"
+                })
+            }}
+
+            <span class="govuk-caption-l">{{ companyName + " (" + companyNumber + ")" }}</span>
+            <h1 class="govuk-heading-l">{{ lang.page_header }}</h1>
+
+            <p class="govuk-body">{{ lang.weve_emailed }}
+                {{userNameOrEmail}}
+                {{lang.to_let_them_know}}</p>
+
+            <p class="govuk-body">{{userNameOrEmail}}
+                {{lang.has_been_removed_from_the_list}}</p>
+
+            <div class="govuk-button-group govuk-!-padding-top-3">
+                {{ govukButton({
+                        text: lang.go_to_digitally_authorised_people,
+                        href: managePeopleHref,
+                        classes: "govuk-button",
+                        attributes: {
+                            "data-module": "govuk-button", 
+                            "data-event-id": "go-to-digitally-authorised-people"
+                        }
+                    })
+                }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

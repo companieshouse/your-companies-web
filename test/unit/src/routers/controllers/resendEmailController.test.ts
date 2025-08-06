@@ -68,8 +68,8 @@ describe("resendEmailController", () => {
             validateEmailStringSpy.mockReturnValue(true);
             const response = "54321";
             inviteUserSpy.mockReturnValue(response);
-            const expectedUrl = `${constants.LANDING_URL}/manage-authorised-people/12345/authorisation-email-resent`;
-            getFullUrlSpy.mockReturnValue(`${constants.LANDING_URL}${constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL}`);
+            const expectedUrl = `${constants.LANDING_URL}/confirmation-authorisation-email-resent`;
+            getFullUrlSpy.mockReturnValue(`${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL}`);
             // When
             await resendEmailController(req as Request, res as Response);
             // Then
@@ -80,7 +80,7 @@ describe("resendEmailController", () => {
             expect(inviteUserSpy).toHaveBeenCalledTimes(1);
             expect(inviteUserSpy).toHaveBeenCalledWith(req, companyNumber, email);
             expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_CONFIRMATION_EMAIL_RESENT_URL);
+            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL);
             expect(redirectMock).toHaveBeenCalledTimes(1);
             expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
         });

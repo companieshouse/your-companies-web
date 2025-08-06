@@ -55,6 +55,6 @@ describe("POST /your-companies/send-email-invitation-to-be-digitally-authorised/
         const response = await router.post(url);
         // Then
         expect(response.status).toEqual(302);
-        expect(response.header.location).toEqual(`/your-companies/manage-authorised-people/${companyNumber}/confirmation-digital-authorisation-restored`);
+        expect(response.header.location).toEqual(`/your-companies/confirmation-persons-digital-authorisation-restored`);
     });
 });

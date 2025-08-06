@@ -67,7 +67,7 @@ export class AddPresenterHandler extends GenericHandler {
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
 
         this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
-        this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_URL, companyNumber);
+        this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(companyNumber);
         this.viewData.companyName = companyName;
         this.viewData.companyNumber = companyNumber;
     }

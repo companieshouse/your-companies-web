@@ -68,7 +68,7 @@ const hasErrors = (viewData: CheckPresenterViewData): boolean => {
 const determineRedirectUrl = (viewData: CheckPresenterViewData): string => {
     const baseUrl = viewData.associationAlreadyExist
         ? constants.PRESENTER_ALREADY_ADDED_URL
-        : constants.AUTHORISED_PERSON_ADDED_URL;
+        : constants.CONFIRMATION_PERSON_ADDED_URL;
 
     return getFullUrl(baseUrl).replace(
         `:${constants.COMPANY_NUMBER}`,
