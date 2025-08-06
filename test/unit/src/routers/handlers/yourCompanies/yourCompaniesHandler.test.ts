@@ -86,11 +86,13 @@ describe("YourCompaniesHandler", () => {
                 associationData: [{
                     company_name: userAssociations.items[0].companyName,
                     company_number: userAssociations.items[0].companyNumber,
+                    company_status: userAssociations.items[0].companyStatus,
                     status: userAssociations.items[0].status
                 },
                 {
                     company_name: userAssociations.items[1].companyName,
                     company_number: userAssociations.items[1].companyNumber,
+                    company_status: userAssociations.items[1].companyStatus,
                     status: userAssociations.items[1].status
                 }],
                 numOfMatches: userAssociations.totalResults,
