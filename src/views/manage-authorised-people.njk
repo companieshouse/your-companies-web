@@ -232,9 +232,9 @@
 
                     {% endif %}
 
-                    {% if association.status === "migrated" %}
+                    {% if (association.status === "migrated" or association.status === "unauthorised") %}
 
-                        {% set migratedText %}
+                        {% set notAuthorisedText %}
                         <div class="govuk-!-padding-bottom-2">
                             <strong class="govuk-tag govuk-tag--red">{{lang.not_authorised }}</strong>
                         </div>
@@ -278,7 +278,7 @@
                                 text: lang.digital_authorisation_status
                             },
                             value: {
-                                html: migratedText
+                                html: notAuthorisedText
                             },
                             actions: {
                                 items: [

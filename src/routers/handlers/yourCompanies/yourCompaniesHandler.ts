@@ -107,9 +107,10 @@ export class YourCompaniesHandler extends GenericHandler {
             errorMassage = constants.COMPANY_NUMBER_MUST_ONLY_INCLUDE;
         }
 
+        const associationStatuses = [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED];
         let confirmedUserAssociations: AssociationList = await getUserAssociations(
             req,
-            [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED],
+            associationStatuses,
             errorMassage ? undefined : search,
             pageNumber - 1,
             constants.ITEMS_PER_PAGE
@@ -118,7 +119,7 @@ export class YourCompaniesHandler extends GenericHandler {
             pageNumber = 1;
             confirmedUserAssociations = await getUserAssociations(
                 req,
-                [AssociationStatus.CONFIRMED],
+                associationStatuses,
                 errorMassage ? undefined : search,
                 pageNumber - 1,
                 constants.ITEMS_PER_PAGE
