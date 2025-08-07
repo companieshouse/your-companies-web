@@ -286,13 +286,13 @@ describe("YourCompaniesHandler", () => {
             }
 
             let getUserAssociationsCounter = 1;
-            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
+            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
             expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
             expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
 
             if (!isValidPageNumber) {
                 getUserAssociationsCounter = 2;
-                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
+                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
             }
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);

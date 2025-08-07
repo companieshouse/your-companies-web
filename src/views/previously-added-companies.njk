@@ -135,7 +135,7 @@
                 </div>
             {% endif %}
 
-            {% if elem.status == "migrated" %}
+            {% if (elem.status == "migrated" or elem.status == "unauthorised") %}
                 {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + elem.company_name %}
                 {% set visuallyHiddenRestoreText = lang.for + elem.company_name %}
 
