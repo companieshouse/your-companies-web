@@ -19,5 +19,5 @@ export const USE_DIRECT_CONNECTION = IS_LOCAL;
 export const DEFAULT_PASSWORD = process.env.DEFAULT_PASSWORD || "$2a$10$6a..eerV1kSiNW3sBlcYv.VmEXyI7ABWuoo3w7zKzcdh18YKyvPbm";
 export const AUTH_CODE = "$2a$10$uS7dsFz8iIuNvXQK6dG1v.F//uQajFz0BLc60/B8qrGqsdFrU77MO";
 export const NO_USERS_TO_CREATE = process.env.NO_USERS_TO_CREATE ? parseInt(process.env.NO_USERS_TO_CREATE, 10) : 50;
-export const NO_COMPANIES_TO_CREATE = process.env.NO_USERS_TO_CREATE ? parseInt(process.env.NO_USERS_TO_CREATE, 10) : 10;
+export const NO_COMPANIES_TO_CREATE = process.env.NO_COMPANIES_TO_CREATE ? parseInt(process.env.NO_COMPANIES_TO_CREATE, 10) : 10;
 export { MONGODB_URI };

@@ -12,6 +12,7 @@
     "digital_authorisation_status": "Digital authorisation status",
     "enter_an_email_address": "Enter an email address",
     "errors_email_invalid": "Enter an email address in the correct format, like name@example.com",
+    "errors_email_not_provided": "Enter an email address",
     "for": " for ",
     "for_this_company_if": " for this company if ",
     "is_no_longer_digitally_authorised": " is no longer digitally authorised to file online for ",

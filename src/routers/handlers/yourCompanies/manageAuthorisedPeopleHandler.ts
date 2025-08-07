@@ -126,7 +126,8 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         this.viewData.validSearch = isSearchString && validateEmailString(searchEmail);
 
         if (isSearchString && !this.viewData.validSearch) {
-            this.viewData.errors = { searchEmail: { text: constants.ERRORS_EMAIL_INVALID } };
+            const errorMessageKey = searchEmail.length === 0 ? constants.ERRORS_EMAIL_NOT_PROVIDED : constants.ERRORS_EMAIL_INVALID;
+            this.viewData.errors = { searchEmail: { text: errorMessageKey } };
             this.viewData.resultsFound = false;
         }
 
