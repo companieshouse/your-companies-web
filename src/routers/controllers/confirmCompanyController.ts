@@ -3,7 +3,7 @@ import { ConfirmCorrectCompanyHandler } from "../handlers/yourCompanies/confirmC
 import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
-import { getCreateCompanyAssociationFullUrl } from "../../lib/utils/urlUtils";
+import { getCompanyAddedSuccessFullUrl } from "../../lib/utils/urlUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
 
 /**
@@ -42,7 +42,7 @@ export const confirmCompanyControllerPost = async (req: Request, res: Response):
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
     setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
 
-    const nextPageUrl = getCreateCompanyAssociationFullUrl(company.companyNumber);
+    const nextPageUrl = getCompanyAddedSuccessFullUrl(company.companyNumber);
     logger.info(createLogMessage(req.session, confirmCompanyControllerPost.name, `Redirecting to ${nextPageUrl}`));
     res.redirect(nextPageUrl);
 };
