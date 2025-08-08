@@ -119,7 +119,7 @@
                     {% set removeHref = prepareHref(removeUrl, {
                         associationId: association.id,
                         companyNumber: association.companyNumber
-                    }) %}
+                    }) | trim %}
 
                     {% if association.status === confirmed %}
                         {% set tag = govukTag({text: lang.authorised, classes: "govuk-tag--green"}) %}
@@ -169,7 +169,7 @@
 
                         {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
 
-                        {% set resendHref = prepareHref(resendEmailUrl, {userEmail: userEmail}) %}
+                        {% set resendHref = prepareHref(resendEmailUrl, {userEmail: userEmail}) | trim %}
 
                         {% set awaitingConfirmation %}
                         <div class="govuk-!-padding-bottom-2">
