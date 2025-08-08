@@ -1,16 +1,16 @@
-import mocks from "../../../mocks/all.middleware.mock";
-import app from "../../../../src/app";
+import mocks from "../../../../../mocks/all.middleware.mock";
+import app from "../../../../../../src/app";
 import supertest from "supertest";
 import { Session } from "@companieshouse/node-session-handler";
 import { NextFunction, Request, Response } from "express";
-import { LANDING_URL } from "../../../../src/constants";
-import en from "../../../../locales/en/confirmation-company-added.json";
-import cy from "../../../../locales/cy/confirmation-company-added.json";
-import enCommon from "../../../../locales/en/common.json";
-import cyCommon from "../../../../locales/cy/common.json";
+import { LANDING_URL } from "../../../../../../src/constants";
+import en from "../../../../../../locales/en/confirmation-company-added.json";
+import cy from "../../../../../../locales/cy/confirmation-company-added.json";
+import enCommon from "../../../../../../locales/en/common.json";
+import cyCommon from "../../../../../../locales/cy/common.json";
 
 const router = supertest(app);
-const url = "/your-companies/confirmation-company-added";
+const url = "/your-companies/company/1122334455/confirmation-company-added";
 const companyNumber = "1122334455";
 const companyName = "Acme Ltd";
 const session: Session = new Session();
@@ -20,7 +20,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
     req.session = session;
     return next();
 });
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../../../src/lib/Logger");
 
 describe("GET /your-companies/confirmation-company-added", () => {
 

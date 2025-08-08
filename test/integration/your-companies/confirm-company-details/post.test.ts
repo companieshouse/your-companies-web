@@ -39,6 +39,6 @@ describe("POST /your-companies/confirm-company-details", () => {
         const resp = await router.post(url);
         // Then
         expect(resp.status).toEqual(302);
-        expect(resp.header.location).toEqual("/your-companies/company/12345678/create-company-association");
+        expect(resp.header.location).toEqual("/your-companies/company/12345678/confirmation-company-added");
     });
 });

@@ -132,34 +132,13 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
-    // 2) Create company association
-    {
-        routePattern: constants.CREATE_COMPANY_ASSOCIATION_URL,
-        allowedPages: [
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.CREATE_COMPANY_ASSOCIATION_URL
-            ]),
-            ...allowedPagesNoGuards([
-                constants.CONFIRM_COMPANY_DETAILS_URL
-            ])
-        ],
-        allowedExternalUrls: [
-            constants.ACCOUNT_URL
-        ],
-        sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS,
-        defaultRedirect: constants.LANDING_URL
-    },
-
-    // 3) Company added success
+    // 2) Company added success
     {
         routePattern: constants.COMPANY_ADDED_SUCCESS_URL,
         allowedPages: [
             ...allowedPagesNoGuards([
                 constants.COMPANY_ADDED_SUCCESS_URL,
                 constants.CONFIRM_COMPANY_DETAILS_URL
-            ]),
-            ...allowedPagesWithCompanyNumberGuard([
-                constants.CREATE_COMPANY_ASSOCIATION_URL
             ])
         ],
         sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS,

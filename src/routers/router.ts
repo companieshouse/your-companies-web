@@ -1,5 +1,4 @@
 import { RequestHandler, Router } from "express";
-import { createCompanyAssociationControllerGet } from "./controllers/createCompanyAssociationController";
 import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "./controllers/confirmCompanyController";
 import { companyAddedControllerGet } from "./controllers/companyAddedController";
 import * as constants from "../constants";
@@ -74,11 +73,8 @@ router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, navigationMiddleware, removeC
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, navigationMiddleware, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
-// Create Company Association
-router.get(constants.CREATE_COMPANY_ASSOCIATION_URL, companyAuthenticationMiddleware, navigationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
-
 // Company Added
-router.get(constants.COMPANY_ADDED_SUCCESS_URL, navigationMiddleware, companyAddedControllerGet as RequestHandler);
+router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAuthenticationMiddleware, navigationMiddleware, companyAddedControllerGet as RequestHandler);
 
 // Add Presenter
 router.get(constants.ADD_PRESENTER_URL, navigationMiddleware, addPresenterControllerGet as RequestHandler);
