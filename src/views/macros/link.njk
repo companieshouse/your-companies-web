@@ -1,49 +1,59 @@
 {#
-This macro creates a hyperlink with a visually hidden text
-@param text - (string, required) is the text to enclose in <a></a> tags
-@param visuallyHiddenText - (string, required) is the visually hidden text for screen readers
-@param href - (string, required) is the URL that the hyperlink points to
-@param matomoTagName - (string, required) contains matomo tag name used to track a click event.
-@param urlParams - ({ [key: string]: string }, optional) contains key/value pairs
-                to replace the route parameters in href
-@param queryParams - ({ [key: string]: string }, optional) contains key/value pairs
-                to replace the query parameters in href
+Creates a hyperlink with optional route and query parameter substitution, and includes visually hidden text for accessibility.
+
+@param text - (string, required) The visible text enclosed within <a></a> tags.
+@param visuallyHiddenText - (string, required) Additional text for screen readers, rendered inside a visually hidden <span>.
+@param href - (string, required) The base URL the hyperlink points to. Can include route parameters (e.g., /user/:id).
+@param matomoTagName - (string, required) The Matomo tag name used to track click events.
+@param urlParams - (object: { [key: string]: string }, optional) Key/value pairs used to replace route parameters in the href.
+@param queryParams - (object: { [key: string]: string }, optional) Key/value pairs appended as query parameters to the href.
 #}
 
 {% macro link(text, visuallyHiddenText, href, matomoTagName, urlParams, queryParams) %}
     {% set href = prepareHref(href, urlParams, queryParams) %}
-    <a href="{{href | replace(r/\s/g, "")}}" class="govuk-link govuk-link--no-visited-state" data-event-id="{{matomoTagName}}">
-        {{text}}
-        <span class="govuk-visually-hidden">{{visuallyHiddenText}}</span>
+    <a href="{{ href | trim }}" class="govuk-link govuk-link--no-visited-state" data-event-id="{{ matomoTagName }}">
+        {{ text }}
+        <span class="govuk-visually-hidden">{{ visuallyHiddenText }}</span>
     </a>
 {% endmacro %}
 
-{% macro prepareHref(href, urlParams, queryParams) %}
+{#
+Generates a complete href string by replacing route parameters and appending query parameters.
+
+This macro is intended to be used by the `link` macro, but can also be used independently
+to construct URLs dynamically with clean formatting and whitespace handling.
+
+Note: When using this macro directly in templates (e.g., {{ prepareHref(...) }}), 
+you must apply the `trim` filter to the output to remove unintended whitespace:
+    {{ prepareHref(...) | trim }}
+
+@param baseHref - (string, required) The base URL, which may include route parameters (e.g., /user/:id).
+@param urlParams - (object: { [key: string]: string }, optional) Key/value pairs used to replace route parameters in the baseHref.
+@param queryParams - (object: { [key: string]: string }, optional) Key/value pairs appended as query parameters to the final href.
+@return - (string) A fully constructed href string with all substitutions applied.
+#}
+
+{% macro prepareHref(baseHref, urlParams, queryParams) %}
+    {% set parts = [baseHref | trim] %}
+
     {% if urlParams %}
-        {% set href = addUrlParams(href, urlParams) %}
+        {% for key, value in urlParams %}
+            {% set value = value | trim %}
+            {% set parts = [parts[0] | replace(":" + key, value)] %}
+        {% endfor %}
     {% endif %}
+
     {% if queryParams %}
-        {% set href = addQueryParams(href, queryParams) %}
+        {% set queryArray = [] %}
+        {% for key, value in queryParams %}
+            {% set cleanKey = key | trim %}
+            {% set cleanValue = value | trim | replace(" ", "+") %}
+            {% set queryArray = queryArray.concat([cleanKey + "=" + cleanValue]) %}
+        {% endfor %}
+        {% set queryString = queryArray | join("&") %}
+        {% set parts = parts.concat(["?" + queryString]) %}
     {% endif %}
-    {{href}}
-{% endmacro %}
 
-{% macro addUrlParams(href, urlParams) %}
-    {% for key, value in urlParams %}
-        {% set href = href | replace(":" + key, value) %}
-    {% endfor %}
-    {{href}}
-{% endmacro %}
-
-{% macro addQueryParams(href, queryParams) %}
-    {% for key, value in queryParams %}
-        {% if loop.first %}
-            {% set href = href + "?" + key + "=" + value | replace(" ", "+") %}
-        {% endif %}
-
-        {% if not loop.first %}
-            {% set href = href + "&" + key + "=" + value | replace(" ", "+") %}
-        {% endif %}
-    {% endfor %}
-    {{href}}
+    {% set finalHref = parts | join("") %}
+    {{- finalHref -}}
 {% endmacro %}
