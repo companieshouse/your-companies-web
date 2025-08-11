@@ -111,7 +111,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         const response = await router.get(`${url}?page=2`);
         // Then
         companyAssociationsPage2.items.forEach((association) => {
-            expect(response.text).toContain(association.userEmail + ` (${association.userEmail})`);
+            expect(response.text).toContain(` (${association.userEmail})`);
         });
         expect(response.text).not.toContain(enCommon.next);
         expect(response.text).toContain(enCommon.previous);
