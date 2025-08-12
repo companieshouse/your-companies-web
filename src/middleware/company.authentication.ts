@@ -1,32 +1,34 @@
 import { NextFunction, Request, Response } from "express";
-import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 import * as constants from "../constants";
 import logger, { createLogMessage } from "../lib/Logger";
+import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 
-/**
- * Middleware to authenticate a user for a specific company based on the company number
- * provided in the request parameters.
- *
- * @param req - The Express request object
- * @param res - The Express response object
- * @param next - The next middleware function in the stack
- * @returns A call to the authentication middleware
- */
-export const companyAuthenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
-    const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
+interface AuthOptionsExtended extends AuthOptions {
+  disableSaveCompanyCheckbox: boolean;
+}
 
-    logger.debug(createLogMessage(req.session, companyAuthenticationMiddleware.name,
-        `starting web security node check: 
-    returnUrl: ${req.originalUrl},
-    chsWebUrl: ${constants.CHS_URL},
-    companyNumber: ${companyNumber}
-    `));
+export const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox: boolean) => {
+    return (req: Request, res: Response, next: NextFunction): unknown => {
+        const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
 
-    const authMiddlewareConfig: AuthOptions = {
-        chsWebUrl: constants.CHS_URL,
-        returnUrl: req.originalUrl,
-        companyNumber: companyNumber
+        logger.debug(createLogMessage(req.session, "companyAuthenticationMiddleware",
+            `starting web security node check: 
+        returnUrl: ${req.originalUrl},
+        chsWebUrl: ${constants.CHS_URL},
+        companyNumber: ${companyNumber},
+        disableSaveCompanyCheckbox: ${disableSaveCompanyCheckbox} 
+        `));
+
+        const authMiddlewareConfig: AuthOptionsExtended = {
+            chsWebUrl: constants.CHS_URL,
+            returnUrl: req.originalUrl,
+            companyNumber: companyNumber,
+            disableSaveCompanyCheckbox: disableSaveCompanyCheckbox
+        };
+
+        return authMiddleware(authMiddlewareConfig)(req, res, next);
     };
-
-    return authMiddleware(authMiddlewareConfig)(req, res, next);
 };
+
+export const CompanyAuthenticationMiddlewareCheckboxDisabled = createCompanyAuthenticationMiddleware(true);
+export const companyAuthenticationMiddleware = createCompanyAuthenticationMiddleware(false);
