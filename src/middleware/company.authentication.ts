@@ -3,10 +3,6 @@ import * as constants from "../constants";
 import logger, { createLogMessage } from "../lib/Logger";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 
-interface AuthOptionsExtended extends AuthOptions {
-  disableSaveCompanyCheckbox: boolean;
-}
-
 export const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox: boolean) => {
     return (req: Request, res: Response, next: NextFunction): unknown => {
         const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
@@ -19,7 +15,7 @@ export const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox
         disableSaveCompanyCheckbox: ${disableSaveCompanyCheckbox} 
         `));
 
-        const authMiddlewareConfig: AuthOptionsExtended = {
+        const authMiddlewareConfig: AuthOptions = {
             chsWebUrl: constants.CHS_URL,
             returnUrl: req.originalUrl,
             companyNumber: companyNumber,
@@ -30,5 +26,5 @@ export const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox
     };
 };
 
-export const CompanyAuthenticationMiddlewareCheckboxDisabled = createCompanyAuthenticationMiddleware(true);
-export const companyAuthenticationMiddleware = createCompanyAuthenticationMiddleware(false);
+export const companyAuthenticationMiddlewareCheckboxDisabled = createCompanyAuthenticationMiddleware(true);
+export const companyAuthenticationMiddlewareCheckboxEnabled = createCompanyAuthenticationMiddleware(false);

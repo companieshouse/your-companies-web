@@ -40,7 +40,7 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
         // Then
         expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
+        expect(mocks.mockCompanyAuthenticationMiddlewareCheckboxEnabled).toHaveBeenCalled();
         expect(mockCreateCompanyAssociation).toHaveBeenCalled();
     });
 
@@ -72,7 +72,7 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
     // Additional tests not particularly related to this route but to test if app.ts catches uncaught exceptions and unhandled rejections
     it("catches uncaught exceptions", async () => {
         // Given
-        mocks.mockCompanyAuthenticationMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+        mocks.mockCompanyAuthenticationMiddlewareCheckboxEnabled.mockImplementation((req: Request, res: Response, next: NextFunction) => {
             process.emit("uncaughtException", new Error("test error"));
             next();
         });
@@ -85,7 +85,7 @@ describe("GET /your-companies/company/:companyNumber/create-company-association"
 
     it("catches unhandled rejections", async () => {
         // Given
-        mocks.mockCompanyAuthenticationMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => {
+        mocks.mockCompanyAuthenticationMiddlewareCheckboxEnabled.mockImplementation((req: Request, res: Response, next: NextFunction) => {
             const promise = new Promise<string>((resolve, reject) => {
                 return reject;
             });
