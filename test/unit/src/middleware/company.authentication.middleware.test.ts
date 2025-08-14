@@ -6,6 +6,7 @@ jest.mock("@companieshouse/web-security-node");
 import { mockEnsureSessionCookiePresentMiddleware, mockSessionMiddleware } from "../../../mocks/session.middleware.mock";
 import mockCsrfProtectionMiddleware from "../../../mocks/csrf.protection.middleware.mock";
 import mockAuthenticationMiddleware from "../../../mocks/authentication.middleware.mock";
+import mockNavigationMiddleware from "../../../mocks/navigation.middleware.mock";
 import { authMiddleware } from "@companieshouse/web-security-node";
 import request from "supertest";
 import app from "../../../../src/app";
@@ -31,6 +32,8 @@ describe("company authentication middleware tests", () => {
         mockEnsureSessionCookiePresentMiddleware.mockClear();
         mockCsrfProtectionMiddleware.mockClear();
         mockAuthenticationMiddleware.mockClear();
+        mockNavigationMiddleware.mockClear();
+
     });
 
     it("should call CH company authentication library when removing an authorised person", async () => {
