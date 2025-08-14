@@ -84,7 +84,8 @@ export const isOrWasCompanyAssociatedWithUser = async (
         AssociationStatus.AWAITING_APPROVAL,
         AssociationStatus.CONFIRMED,
         AssociationStatus.REMOVED,
-        AssociationStatus.MIGRATED
+        AssociationStatus.MIGRATED,
+        AssociationStatus.UNAUTHORISED
     ];
     const userAssociations: AssociationList = await getUserAssociations(req, statuses, companyNumber);
 
@@ -94,7 +95,8 @@ export const isOrWasCompanyAssociatedWithUser = async (
             [AssociationStatus.CONFIRMED]: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
             [AssociationStatus.AWAITING_APPROVAL]: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER,
             [AssociationStatus.MIGRATED]: AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER,
-            [AssociationStatus.REMOVED]: AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER
+            [AssociationStatus.REMOVED]: AssociationState.COMPANY_WAS_ASSOCIATED_WITH_USER,
+            [AssociationStatus.UNAUTHORISED]: AssociationState.COMPANY_UNAUTHORISED_NOT_YET_ASSOCIATED_WITH_USER
         }[associationStatus];
 
         return { state: isOrWasAssociated, associationId: userAssociations.items[0].id };
@@ -390,7 +392,7 @@ export const getAssociationById = async (
  * @returns A promise that resolves to the found `Association` object, or `null` if not found.
  * @throws Will throw an error if an unexpected status code is returned from the API.
  */
-export const searchForCompanyAssociationByEmail = async (companyNumber: string, email:string): Promise<Association | null> => {
+export const searchForCompanyAssociationByEmail = async (companyNumber: string, email: string): Promise<Association | null> => {
     const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const statuses = [
         AssociationStatus.CONFIRMED,

@@ -74,7 +74,9 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
         const companyNumber = req.params[constants.COMPANY_NUMBER];
         const associationState = await isOrWasCompanyAssociatedWithUser(req, companyNumber);
 
-        if (associationState.state !== AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER) {
+        if (associationState.state !== AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER &&
+            associationState.state !== AssociationState.COMPANY_UNAUTHORISED_NOT_YET_ASSOCIATED_WITH_USER
+        ) {
             throw new Error(`Cannot remove company ${companyNumber} as it is not associated with the user`);
         }
 

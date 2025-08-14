@@ -2,7 +2,12 @@ import { Request, Response } from "express";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { GenericHandler } from "../genericHandler";
-import { deleteExtraData, getExtraData, getLoggedInUserId, setExtraData } from "../../../lib/utils/sessionUtils";
+import {
+    deleteExtraData,
+    getExtraData,
+    getLoggedInUserId,
+    setExtraData
+} from "../../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { Session } from "@companieshouse/node-session-handler";
 import {
@@ -86,7 +91,14 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             throw new Error("Company number in association does not match the company number in the url");
         }
 
-        if (![AssociationStatus.AWAITING_APPROVAL, AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED].includes(association.status)) {
+        const validAssociationStatuses = [
+            AssociationStatus.AWAITING_APPROVAL,
+            AssociationStatus.CONFIRMED,
+            AssociationStatus.MIGRATED,
+            AssociationStatus.UNAUTHORISED
+        ];
+
+        if (!validAssociationStatuses.includes(association.status)) {
             throw new Error("Invalid association status");
         }
 
@@ -202,6 +214,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         case AssociationStatus.AWAITING_APPROVAL:
             return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL);
         case AssociationStatus.MIGRATED:
+        case AssociationStatus.UNAUTHORISED:
             return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL);
         case AssociationStatus.CONFIRMED:
             return getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
@@ -225,6 +238,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     public getTemplateViewName (): string {
         switch (this.viewData.currentStatus) {
         case AssociationStatus.MIGRATED:
+        case AssociationStatus.UNAUTHORISED:
             return constants.REMOVE_DO_NOT_RESTORE_PAGE;
         case AssociationStatus.CONFIRMED:
             return constants.REMOVE_AUTHORISED_PERSON_PAGE;
