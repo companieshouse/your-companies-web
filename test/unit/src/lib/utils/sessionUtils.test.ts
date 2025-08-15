@@ -409,21 +409,18 @@ describe("Session Utils", () => {
             setExtraDataMock.mockRestore();
         });
 
-        it("should do nothing if company number not present", () => {
+        it("should delete collection if deleteEntireCollection is true", () => {
             // Given
             const session: Session = new Session();
-            const collection = { OTHER: "other@example.com" };
-            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
-            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const deleteExtraDataMock = jest.spyOn(sessionUtils, "deleteExtraData");
             // When
-            deleteSearchStringEmail(session, companyNumber);
+            deleteSearchStringEmail(session, companyNumber, true);
             // Then
-            expect(setExtraDataMock).toHaveBeenCalledWith(
+            expect(deleteExtraDataMock).toHaveBeenCalledWith(
                 session,
-                "searchStringEmail",
-                collection
+                "searchStringEmail"
             );
-            setExtraDataMock.mockRestore();
+            deleteExtraDataMock.mockRestore();
         });
     });
 });

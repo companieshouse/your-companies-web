@@ -297,7 +297,7 @@ describe("YourCompaniesHandler", () => {
 
             expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
             expect(getInvitationsSpy).toHaveBeenCalledWith(req);
-            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(12);
+            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(13);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
             expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_URL_EXTRA);
