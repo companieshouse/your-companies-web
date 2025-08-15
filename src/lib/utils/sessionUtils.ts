@@ -163,20 +163,34 @@ export const getSearchStringEmail = (session: Session, companyNumber: string): s
 };
 
 /**
- * Deletes the search string email associated with a specific company number from the session.
+ * Deletes the search string email entry from the session's extra data.
  *
- * Retrieves the email search collection from the session's extra data using the
- * `SEARCH_STRING_EMAIL` constant. If the collection exists, removes the entry for the
- * provided company number and updates the session's extra data accordingly.
+ * If `deleteEntireCollection` is true, removes the entire search string email collection from the session.
+ * Otherwise, deletes the entry associated with the specified `companyNumber`.
  *
- * @param session - The current user session object.
- * @param companyNumber - The company number whose associated search string email should be deleted.
+ * @param session - The session object containing extra data.
+ * @param companyNumber - The company number whose search string email entry should be deleted. Required if `deleteEntireCollection` is false.
+ * @param deleteEntireCollection - If true, deletes the entire search string email collection; otherwise, deletes only the entry for the specified company number. Defaults to false.
  */
-export const deleteSearchStringEmail = (session: Session, companyNumber:string): void => {
-    const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
-    if (!emailSearchCollection) {
+export const deleteSearchStringEmail = (
+    session: Session,
+    companyNumber?: string,
+    deleteEntireCollection = false
+): void => {
+    if (!session) return;
+
+    if (deleteEntireCollection) {
+        deleteExtraData(session, constants.SEARCH_STRING_EMAIL);
         return;
     }
-    delete emailSearchCollection[companyNumber];
-    setExtraData(session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
+
+    if (!companyNumber) return;
+
+    const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
+    if (!emailSearchCollection || typeof emailSearchCollection !== "object") return;
+
+    if (companyNumber in emailSearchCollection) {
+        delete emailSearchCollection[companyNumber];
+        setExtraData(session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
+    }
 };
