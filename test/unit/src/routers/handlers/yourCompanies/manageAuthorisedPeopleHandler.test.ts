@@ -240,4 +240,46 @@ describe("ManageAuthorisedPeopleHandler", () => {
         // Then
         await expect(manageAuthorisedPeopleHandler.execute(req)).rejects.toThrow(expectedError);
     });
+
+    test.each([
+        {
+            cause: "empty",
+            searchString: "",
+            expectedErrorKey: constants.ERRORS_EMAIL_NOT_PROVIDED
+        },
+        {
+            cause: "an invalid email address",
+            searchString: "test@@test..com",
+            expectedErrorKey: constants.ERRORS_EMAIL_INVALID
+        }
+    ])("should return view data with the expeted error message key if seach string is $cause",
+        async ({ searchString, expectedErrorKey }) => {
+            // Given
+            const lang = "en";
+            const companyNumber = companyAssociations.items[0].companyNumber;
+            const req: Request = mockParametrisedRequest({
+                session: new Session(),
+                lang,
+                params: { companyNumber }
+            });
+            const translations = { key: "value" };
+            getTranslationsForViewSpy.mockReturnValue(translations);
+            const addPresenterFullUrl = `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
+            getAddPresenterFullUrlSpy.mockReturnValue(addPresenterFullUrl);
+            getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+            getManageAuthorisedPeopleFullUrlSpy
+                .mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
+                .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
+            getSearchStringEmailSpy.mockReturnValue(searchString);
+            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(
+                {
+                    state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
+                    associationId: "1234567890"
+                }
+            );
+            // When
+            const response = await manageAuthorisedPeopleHandler.execute(req);
+            // Then
+            expect(response).toHaveProperty("errors", { searchEmail: { text: expectedErrorKey } });
+        });
 });
