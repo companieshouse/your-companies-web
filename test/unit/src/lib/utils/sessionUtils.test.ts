@@ -379,15 +379,13 @@ describe("Session Utils", () => {
     describe("deleteSearchStringEmail", () => {
         const companyNumber = "ABC123";
         const email = "rob@example.com";
+
         it("should delete email for company number if present", () => {
-            // Given
             const session: Session = new Session();
             const collection = { [companyNumber]: email, OTHER: "other@example.com" };
             jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
             const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
-            // When
             deleteSearchStringEmail(session, companyNumber);
-            // Then
             const expected = { OTHER: "other@example.com" };
             expect(setExtraDataMock).toHaveBeenCalledWith(
                 session,
@@ -398,29 +396,69 @@ describe("Session Utils", () => {
         });
 
         it("should do nothing if collection is undefined", () => {
-            // Given
             const session: Session = new Session();
             jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(undefined);
             const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
-            // When
             deleteSearchStringEmail(session, companyNumber);
-            // Then
             expect(setExtraDataMock).not.toHaveBeenCalled();
             setExtraDataMock.mockRestore();
         });
 
         it("should delete collection if deleteEntireCollection is true", () => {
-            // Given
             const session: Session = new Session();
             const deleteExtraDataMock = jest.spyOn(sessionUtils, "deleteExtraData");
-            // When
             deleteSearchStringEmail(session, companyNumber, true);
-            // Then
             expect(deleteExtraDataMock).toHaveBeenCalledWith(
                 session,
                 "searchStringEmail"
             );
             deleteExtraDataMock.mockRestore();
+        });
+
+        it("should do nothing if session is undefined", () => {
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const deleteExtraDataMock = jest.spyOn(sessionUtils, "deleteExtraData");
+            // @ts-expect-error purposely passing undefined
+            deleteSearchStringEmail(undefined, companyNumber);
+            expect(setExtraDataMock).not.toHaveBeenCalled();
+            expect(deleteExtraDataMock).not.toHaveBeenCalled();
+            setExtraDataMock.mockRestore();
+            deleteExtraDataMock.mockRestore();
+        });
+
+        it("should do nothing if companyNumber is not provided and deleteEntireCollection is false", () => {
+            const session: Session = new Session();
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const deleteExtraDataMock = jest.spyOn(sessionUtils, "deleteExtraData");
+
+            deleteSearchStringEmail(session);
+            expect(setExtraDataMock).not.toHaveBeenCalled();
+            expect(deleteExtraDataMock).not.toHaveBeenCalled();
+
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should do nothing if emailSearchCollection is not an object", () => {
+            const session: Session = new Session();
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce("not-an-object");
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const deleteExtraDataMock = jest.spyOn(sessionUtils, "deleteExtraData");
+
+            deleteSearchStringEmail(session, companyNumber);
+            expect(setExtraDataMock).not.toHaveBeenCalled();
+            expect(deleteExtraDataMock).not.toHaveBeenCalled();
+
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should do nothing if companyNumber is not in collection", () => {
+            const session: Session = new Session();
+            const collection = { OTHER: "other@example.com" };
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(collection);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            deleteSearchStringEmail(session, companyNumber);
+            expect(setExtraDataMock).not.toHaveBeenCalled();
+            setExtraDataMock.mockRestore();
         });
     });
 });
