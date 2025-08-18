@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { companyAuthenticationMiddleware } from "../../src/middleware/company.authentication";
+import { companyAuthenticationMiddlewareCheckboxEnabled, companyAuthenticationMiddlewareCheckboxDisabled } from "../../src/middleware/company.authentication";
 
 jest.mock("../../src/middleware/company.authentication");
 
-// get handle on mocked function
-const mockCompanyAuthenticationMiddleware = companyAuthenticationMiddleware as jest.Mock;
+const mockCompanyAuthenticationMiddlewareCheckboxEnabled = companyAuthenticationMiddlewareCheckboxEnabled as jest.Mock;
+const mockCompanyAuthenticationMiddlewareCheckboxDisabled = companyAuthenticationMiddlewareCheckboxDisabled as jest.Mock;
 
-// tell the mock what to return
-mockCompanyAuthenticationMiddleware.mockImplementation((req: Request, res: Response, next: NextFunction) => next());
+mockCompanyAuthenticationMiddlewareCheckboxEnabled.mockImplementation((req: Request, res: Response, next: NextFunction) => next());
+mockCompanyAuthenticationMiddlewareCheckboxDisabled.mockImplementation((req: Request, res: Response, next: NextFunction) => next());
 
-export default mockCompanyAuthenticationMiddleware;
+export { mockCompanyAuthenticationMiddlewareCheckboxEnabled, mockCompanyAuthenticationMiddlewareCheckboxDisabled };
