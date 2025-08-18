@@ -12,7 +12,7 @@ import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
  * @param disableSaveCompanyCheckbox - Flag to disable the "Save Company" checkbox in the authentication flow.
  * @returns Express middleware function that handles company authentication.
  */
-export const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox: boolean) => {
+const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox: boolean) => {
     return (req: Request, res: Response, next: NextFunction): unknown => {
         const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
 

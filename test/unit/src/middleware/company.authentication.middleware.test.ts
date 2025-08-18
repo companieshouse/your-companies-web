@@ -12,7 +12,7 @@ import request from "supertest";
 import app from "../../../../src/app";
 import * as constants from "../../../../src/constants";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
-import { createCompanyAuthenticationMiddleware, companyAuthenticationMiddlewareCheckboxDisabled, companyAuthenticationMiddlewareCheckboxEnabled } from "../../../../src/middleware/company.authentication";
+import { companyAuthenticationMiddlewareCheckboxDisabled, companyAuthenticationMiddlewareCheckboxEnabled } from "../../../../src/middleware/company.authentication";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
@@ -51,7 +51,6 @@ describe("company authentication middleware tests", () => {
         expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
     });
 });
-
 describe("Company Authentication Middleware", () => {
     let mockReq: Partial<Request>;
     let mockRes: Partial<Response>;
@@ -74,38 +73,15 @@ describe("Company Authentication Middleware", () => {
         jest.clearAllMocks();
     });
 
-    describe("createCompanyAuthenticationMiddleware", () => {
-        it("should configure auth middleware with correct options when disableSaveCompanyCheckbox is true", () => {
-            const middleware = createCompanyAuthenticationMiddleware(true);
-            middleware(mockReq as Request, mockRes as Response, mockNext);
-
-            expect(authMiddleware).toHaveBeenCalledWith({
-                chsWebUrl: constants.CHS_URL,
-                returnUrl: "/test-url",
-                companyNumber: "12345678",
-                disableSaveCompanyCheckbox: true
-            });
-        });
-
-        it("should configure auth middleware with correct options when disableSaveCompanyCheckbox is false", () => {
-            const middleware = createCompanyAuthenticationMiddleware(false);
-            middleware(mockReq as Request, mockRes as Response, mockNext);
-
-            expect(authMiddleware).toHaveBeenCalledWith({
-                chsWebUrl: constants.CHS_URL,
-                returnUrl: "/test-url",
-                companyNumber: "12345678",
-                disableSaveCompanyCheckbox: false
-            });
-        });
-    });
-
     describe("exported company auth middleware instances", () => {
         it("CompanyAuthenticationMiddlewareCheckboxDisabled should use disableSaveCompanyCheckbox=true", () => {
             companyAuthenticationMiddlewareCheckboxDisabled(mockReq as Request, mockRes as Response, mockNext);
 
             expect(authMiddleware).toHaveBeenCalledWith(expect.objectContaining({
-                disableSaveCompanyCheckbox: true
+                disableSaveCompanyCheckbox: true,
+                chsWebUrl: constants.CHS_URL,
+                returnUrl: "/test-url",
+                companyNumber: "12345678"
             }));
         });
 
@@ -113,7 +89,10 @@ describe("Company Authentication Middleware", () => {
             companyAuthenticationMiddlewareCheckboxEnabled(mockReq as Request, mockRes as Response, mockNext);
 
             expect(authMiddleware).toHaveBeenCalledWith(expect.objectContaining({
-                disableSaveCompanyCheckbox: false
+                disableSaveCompanyCheckbox: false,
+                chsWebUrl: constants.CHS_URL,
+                returnUrl: "/test-url",
+                companyNumber: "12345678"
             }));
         });
     });
