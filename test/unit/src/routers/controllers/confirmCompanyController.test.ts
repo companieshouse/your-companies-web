@@ -30,7 +30,7 @@ const redirectMock = jest.fn();
 res.redirect = redirectMock;
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
-const getCreateCompanyAssociationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getCreateCompanyAssociationFullUrl");
+const getCompanyAddedSuccessFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getCompanyAddedSuccessFullUrl");
 
 describe("confirmCompanyControllerGet", () => {
 
@@ -77,15 +77,15 @@ describe("confirmCompanyControllerPost", () => {
                 companyName: validActiveCompanyProfile.companyName
             };
             const expectedUrl = "/test/test-url";
-            getCreateCompanyAssociationFullUrlSpy.mockReturnValue(expectedUrl);
+            getCompanyAddedSuccessFullUrlSpy.mockReturnValue(expectedUrl);
             // When
             await confirmCompanyControllerPost(req as Request, res as Response);
             // Then
             expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
-            expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getCreateCompanyAssociationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
+            expect(getCompanyAddedSuccessFullUrlSpy).toHaveBeenCalledTimes(1);
+            expect(getCompanyAddedSuccessFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);
             expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
         });
