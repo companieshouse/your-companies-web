@@ -17,7 +17,7 @@ import { healthCheckController } from "./controllers/healthCheckController";
 import { presenterAlreadyAddedControllerGet } from "./controllers/presenterAlreadyAddedController";
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
-import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
+import { companyAuthenticationMiddlewareCheckboxEnabled } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
@@ -75,7 +75,7 @@ router.get(constants.CONFIRM_COMPANY_DETAILS_URL, navigationMiddleware, confirmC
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
 // Create Company Association
-router.get(constants.CREATE_COMPANY_ASSOCIATION_URL, companyAuthenticationMiddleware, navigationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
+router.get(constants.CREATE_COMPANY_ASSOCIATION_URL, companyAuthenticationMiddlewareCheckboxEnabled, navigationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
 
 // Company Added
 router.get(constants.COMPANY_ADDED_SUCCESS_URL, navigationMiddleware, companyAddedControllerGet as RequestHandler);
@@ -107,7 +107,7 @@ router.get(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORIS
 router.post(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost);
 
 // Try Restoring Your Digital Authorisation
-router.get(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, companyAuthenticationMiddleware, navigationMiddleware, tryRestoringYourDigitalAuthorisationControllerGet);
+router.get(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, companyAuthenticationMiddlewareCheckboxEnabled, navigationMiddleware, tryRestoringYourDigitalAuthorisationControllerGet);
 
 // Restore Your Digital Authorication Success
 router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, navigationMiddleware, confirmationYourDigitalAuthorisationRestoredControllerGet);

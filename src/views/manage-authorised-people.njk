@@ -119,11 +119,11 @@
                     {% set removeHref = prepareHref(removeUrl, {
                         associationId: association.id,
                         companyNumber: association.companyNumber
-                    }) %}
+                    }) | trim %}
 
                     {% if association.status === confirmed %}
                         {% set tag = govukTag({text: lang.authorised, classes: "govuk-tag--green"}) %}
-                        {% set removeLinkVisuallyHiddenText = " " + association.userEmail %}
+                        {% set removeLinkVisuallyHiddenText = " " %}
 
                         {{ govukSummaryList({
                     card: {
@@ -167,9 +167,9 @@
 
                     {% if association.status === "awaiting-approval" %}
 
-                        {% set resendEmailLinkVisuallyHiddenText = lang.to + " " + association.userEmail %}
+                        {% set resendEmailLinkVisuallyHiddenText = lang.to + " " %}
 
-                        {% set resendHref = prepareHref(resendEmailUrl, {userEmail: userEmail}) %}
+                        {% set resendHref = prepareHref(resendEmailUrl, {userEmail: userEmail}) | trim %}
 
                         {% set awaitingConfirmation %}
                         <div class="govuk-!-padding-bottom-2">
@@ -177,7 +177,7 @@
                         </div>
                         {% endset %}
 
-                        {% set cancelLinkVisuallyHiddenText = " " + association.userEmail %}
+                        {% set cancelLinkVisuallyHiddenText = " " %}
 
                         {{ govukSummaryList({
                         card: {
@@ -240,10 +240,10 @@
                         </div>
                         {% endset %}
 
-                        {% set visuallyHiddenRestoreText = lang.for + association.userEmail %}
+                        {% set visuallyHiddenRestoreText = lang.for %}
                         {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
 
-                        {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + association.userEmail %}
+                        {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for %}
 
                         {{ govukSummaryList({
                         card: {

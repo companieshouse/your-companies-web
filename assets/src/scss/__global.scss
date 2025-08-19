@@ -1,16 +1,33 @@
 $govuk-global-styles: true;
 
-@function custom-url-handler($filename) {
+@function custom-font-url-handler($filename) {
     @return url("/fonts/#{$filename}");
   }
 
-$govuk-font-url-function: 'custom-url-handler';
+$govuk-font-url-function: 'custom-font-url-handler';
+
+@function custom-image-url-handler($filename) {
+  @return url("/images/#{$filename}");
+}
+
+$govuk-image-url-function: 'custom-image-url-handler';
 
 @import "node_modules/govuk-frontend/dist/govuk/all";
 @import "./govuk-language-select";
 
 * {
   font-family: "GDS Transport", Arial, sans-serif;
+}
+
+.govuk-footer__copyright-logo::before {
+    background-image: url("/images/govuk-crest.png");
+    mask-image: url("/images/govuk-crest.png");
+    mask-position: center;
+    background-position: center;
+}
+
+.govuk-footer {
+    border-top: 0;
 }
 
 .border-box {
@@ -51,11 +68,7 @@ $govuk-font-url-function: 'custom-url-handler';
     margin-bottom: 10px;
 }
 
-.new-border-bottom{
-    border-bottom: 10px solid #005ea5;
-}
-
-.does-not-verify-link-spacing{
+.does-not-verify-link-spacing {
     padding: 12px 0 8px 0;
 }
 
