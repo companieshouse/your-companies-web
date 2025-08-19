@@ -2,12 +2,13 @@ import { Request } from "express";
 import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
-import { getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteSearchStringEmail, getExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { Association } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "../../../types/associations";
+import { Session } from "@companieshouse/node-session-handler";
 
 /**
  * Interface representing the view data required for the
@@ -61,6 +62,7 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
 
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
         this.viewData.companyNumber = companyNumber;
+        deleteSearchStringEmail(req.session as Session, companyNumber);
 
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         this.viewData.companyName = companyName;
