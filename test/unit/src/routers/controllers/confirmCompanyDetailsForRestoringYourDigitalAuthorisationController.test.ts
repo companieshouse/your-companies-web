@@ -37,7 +37,7 @@ const redirectMock = jest.fn();
 res.redirect = redirectMock;
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
-const getTryRestoringYourDigitalAuthorisationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getTryRestoringYourDigitalAuthorisationFullUrl");
+const getRestoreYourDigitalAuthorisationSuccessFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getRestoreYourDigitalAuthorisationSuccessFullUrl");
 
 describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet", () => {
 
@@ -81,7 +81,7 @@ describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPos
                 companyName: validActiveCompanyProfile.companyName
             };
             const expectedUrl = "/test/test-url";
-            getTryRestoringYourDigitalAuthorisationFullUrlSpy.mockReturnValue(expectedUrl);
+            getRestoreYourDigitalAuthorisationSuccessFullUrlSpy.mockReturnValue(expectedUrl);
             // When
             await confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost(req as Request, res as Response);
             // Then
@@ -90,8 +90,8 @@ describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPos
             expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
             expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS, true);
-            expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getTryRestoringYourDigitalAuthorisationFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
+            expect(getRestoreYourDigitalAuthorisationSuccessFullUrlSpy).toHaveBeenCalledTimes(1);
+            expect(getRestoreYourDigitalAuthorisationSuccessFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
             expect(redirectMock).toHaveBeenCalledTimes(1);
             expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
         });

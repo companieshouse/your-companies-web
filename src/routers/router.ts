@@ -24,7 +24,6 @@ import {
     confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet,
     confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost
 } from "./controllers/confirmCompanyDetailsForRestoringYourDigitalAuthorisationController";
-import { tryRestoringYourDigitalAuthorisationControllerGet } from "./controllers/tryRestoringYourDigitalAuthorisationController";
 import { confirmationYourDigitalAuthorisationRestoredControllerGet } from "./controllers/confirmationYourDigitalAuthorisationRestoredController";
 import {
     sendEmailToBeDigitallyAuthorisedControllerGet,
@@ -102,11 +101,8 @@ router.get(constants.SOMETHING_WENT_WRONG_URL, navigationMiddleware, somethingWe
 router.get(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, navigationMiddleware, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet);
 router.post(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost);
 
-// Try Restoring Your Digital Authorisation
-router.get(constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, companyAuthenticationMiddlewareCheckboxEnabled, navigationMiddleware, tryRestoringYourDigitalAuthorisationControllerGet);
-
 // Restore Your Digital Authorication Success
-router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, navigationMiddleware, confirmationYourDigitalAuthorisationRestoredControllerGet);
+router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, companyAuthenticationMiddlewareCheckboxDisabled, navigationMiddleware, confirmationYourDigitalAuthorisationRestoredControllerGet);
 
 // Send Email To Be Digitally Authorised
 router.get(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL, navigationMiddleware, sendEmailToBeDigitallyAuthorisedControllerGet);

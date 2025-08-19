@@ -122,5 +122,5 @@ export const getCompanyAddedSuccessFullUrl = (companyNumber: string): string =>
  * @param companyNumber - The unique identifier of the company.
  * @returns The full URL as a string for restoring digital authorisation.
  */
-export const getTryRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
-    getFullUrl(`/company/${companyNumber}${constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`);
+export const getRestoreYourDigitalAuthorisationSuccessFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/company/${companyNumber}${constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_PARTIAL_URL}`);

@@ -10,9 +10,10 @@ import enCommon from "../../../../locales/en/common.json";
 import cyCommon from "../../../../locales/cy/common.json";
 
 const router = supertest(app);
-const url = "/your-companies/confirmation-your-digital-authorisation-restored";
 const companyNumber = "1122334455";
 const companyName = "Acme Ltd";
+const url = `/your-companies/company/${companyNumber}/confirmation-your-digital-authorisation-restored`;
+
 const session: Session = new Session();
 session.data.extra_data.confirmedCompanyForAssociation = { companyNumber, companyName };
 
@@ -22,7 +23,7 @@ mocks.mockSessionMiddleware.mockImplementation((req: Request, res: Response, nex
 });
 jest.mock("../../../../src/lib/Logger");
 
-describe("GET /your-companies/confirmation-your-digital-authorisation-restored", () => {
+describe("GET /your-companies/company/1122334455/confirmation-your-digital-authorisation-restored", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
