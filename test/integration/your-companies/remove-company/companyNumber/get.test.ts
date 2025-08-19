@@ -13,7 +13,7 @@ import { getCompanyProfile } from "../../../../../src/services/companyProfileSer
 
 const router = supertest(app);
 const companyNumber = "123456";
-const companyName = "Test Company Ltd";
+const companyName = "TEST COMPANY LTD";
 const url = `/your-companies/remove-company/${companyNumber}`;
 const session = new Session();
 

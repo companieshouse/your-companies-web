@@ -12,7 +12,7 @@ import cyCommon from "../../../../locales/cy/common.json";
 const router = supertest(app);
 const url = "/your-companies/confirmation-your-digital-authorisation-restored";
 const companyNumber = "1122334455";
-const companyName = "Acme Ltd";
+const companyName = "ACME LTD";
 const session: Session = new Session();
 session.data.extra_data.confirmedCompanyForAssociation = { companyNumber, companyName };
 

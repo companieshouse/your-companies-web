@@ -8,10 +8,10 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            {% set bannetText = lang.digital_authorisation_restored_for + " " + companyName %}
+            {% set bannerText = lang.digital_authorisation_restored_for + " " + companyName + "." %}
 
             {{ govukNotificationBanner({
-                    text: bannetText,
+                    text: bannerText,
                     type: "success",
                     titleText: lang.success                
                 })  

@@ -27,7 +27,7 @@ describe("ConfirmationYourDigitalAuthorisationRestoredHandler", () => {
         const req: Request = mockParametrisedRequest({ session: new Session(), lang });
         const translations = { key: "value" };
         getTranslationsForViewSpy.mockReturnValue(translations);
-        const companyName = "Test Ltd.";
+        const companyName = "TEST LTD.";
         const companyNumber = "12345678";
         const confirmedCompanyForAssociation: CompanyNameAndNumber = {
             companyName,
