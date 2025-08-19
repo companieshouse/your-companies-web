@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { RemoveAuthorisedPersonHandler, RemoveAuthorisedPersonViewData } from "../handlers/yourCompanies/removeAuthorisedPersonHandler";
 import * as constants from "../../constants";
-import { deleteExtraData } from "../../lib/utils/sessionUtils";
+import { deleteExtraData, deleteSearchStringEmail } from "../../lib/utils/sessionUtils";
 import logger, { createLogMessage } from "../../lib/Logger";
+import { Session } from "@companieshouse/node-session-handler";
 
 /**
  * Handles GET requests for removing an authorised person.
@@ -40,6 +41,7 @@ export const removeAuthorisedPersonControllerPost = async (req: Request, res: Re
  * @param session - The session object from the request.
  */
 const cleanUpSessionData = (req: Request): void => {
+    deleteSearchStringEmail(req.session as Session, req.params[constants.COMPANY_NUMBER]);
     deleteExtraData(req.session, constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
     deleteExtraData(req.session, constants.USER_EMAILS_ARRAY);
 };

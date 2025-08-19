@@ -3,7 +3,7 @@ import { GenericHandler } from "../genericHandler";
 import logger, { createLogMessage } from "../../../lib/Logger";
 import * as constants from "../../../constants";
 import { getTranslationsForView } from "../../../lib/utils/translations";
-import { deleteExtraData, setExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteExtraData, deleteSearchStringEmail, setExtraData } from "../../../lib/utils/sessionUtils";
 import { BaseViewData, AnyRecord } from "../../../types/utilTypes";
 import { getInvitations, getUserAssociations } from "../../../services/associationsService";
 import { AssociationList, AssociationStatus, InvitationList } from "@companieshouse/api-sdk-node/dist/services/associations/types";
@@ -17,6 +17,7 @@ import { validateCompanyNumberSearchString, validatePageNumber } from "../../../
 import { i18nCh } from "@companieshouse/ch-node-utils";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
 import { Pagination } from "../../../types/pagination";
+import { Session } from "@companieshouse/node-session-handler";
 
 interface YourCompaniesViewData extends BaseViewData, Pagination {
     buttonHref: string;
@@ -98,6 +99,9 @@ export class YourCompaniesHandler extends GenericHandler {
 
         deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
         deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
+
+        // delete any previous search string email on the manage authorised people page
+        deleteSearchStringEmail(req.session as Session, undefined, true);
 
         const search = req.query.search as string;
         const page = req.query.page as string;

@@ -6,14 +6,11 @@ import * as constants from "../../../../../../src/constants";
 import { SendEmailToBeDigitallyAuthorisedHandler } from "../../../../../../src/routers/handlers/yourCompanies/sendEmailToBeDigitallyAuthorisedHandler";
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Session } from "@companieshouse/node-session-handler";
-import * as associationsService from "../../../../../../src/services/associationsService";
 import { companyAssociations } from "../../../../../mocks/associations.mock";
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-const setExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "setExtraData");
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
 const getManageAuthorisedPeopleFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getManageAuthorisedPeopleFullUrl");
-const postInvitationSpy: jest.SpyInstance = jest.spyOn(associationsService, "postInvitation");
 
 describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
     let sendEmailToBeDigitallyAuthorisedHandler: SendEmailToBeDigitallyAuthorisedHandler;
@@ -49,6 +46,7 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             const userEmail = association.userEmail;
             getExtraDataSpy
                 .mockReturnValueOnce(companyNumber)
+                .mockReturnValueOnce(undefined)
                 .mockReturnValueOnce(companyName)
                 .mockReturnValueOnce(association);
             const associationIdKey = `${constants.ASSOCIATIONS_ID}_${associationId}`;
@@ -56,6 +54,7 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(manageAuthorisedPeopleFullUrl);
             const getExtraDataKeys = [
                 constants.COMPANY_NAME,
+                constants.SEARCH_STRING_EMAIL,
                 constants.COMPANY_NUMBER,
                 associationIdKey
             ];

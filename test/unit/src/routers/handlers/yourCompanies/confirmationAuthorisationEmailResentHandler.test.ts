@@ -51,7 +51,7 @@ describe("ConfirmationAuthorisationEmailResentHandler", () => {
             // When
             const response = await confirmationAuthorisationEmailResentHandler.execute(req);
             // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(3);
+            expect(getExtraDataSpy).toHaveBeenCalledTimes(4);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME);
             expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.RESENT_SUCCESS_EMAIL);
