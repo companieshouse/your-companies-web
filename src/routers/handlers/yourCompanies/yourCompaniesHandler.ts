@@ -32,6 +32,7 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     associationData: {
         "company_name": string;
         "company_number": string;
+        "company_status": string;
         "status": string;
     }[],
     viewAndManageUrl: string;
@@ -197,6 +198,7 @@ export class YourCompaniesHandler extends GenericHandler {
                 return {
                     company_name: item.companyName,
                     company_number: item.companyNumber,
+                    company_status: item.companyStatus,
                     status: item.status
                 };
             });

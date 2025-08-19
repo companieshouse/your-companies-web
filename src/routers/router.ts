@@ -1,5 +1,4 @@
 import { RequestHandler, Router } from "express";
-import { createCompanyAssociationControllerGet } from "./controllers/createCompanyAssociationController";
 import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "./controllers/confirmCompanyController";
 import { companyAddedControllerGet } from "./controllers/companyAddedController";
 import * as constants from "../constants";
@@ -17,7 +16,7 @@ import { healthCheckController } from "./controllers/healthCheckController";
 import { presenterAlreadyAddedControllerGet } from "./controllers/presenterAlreadyAddedController";
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
-import { companyAuthenticationMiddleware } from "../middleware/company.authentication";
+import { companyAuthenticationMiddlewareCheckboxDisabled, companyAuthenticationMiddlewareCheckboxEnabled } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
@@ -73,11 +72,8 @@ router.get(constants.REMOVE_COMPANY_CONFIRMED_URL, navigationMiddleware, removeC
 router.get(constants.CONFIRM_COMPANY_DETAILS_URL, navigationMiddleware, confirmCompanyControllerGet as RequestHandler);
 router.post(constants.CONFIRM_COMPANY_DETAILS_URL, confirmCompanyControllerPost as RequestHandler);
 
-// Create Company Association
-router.get(constants.CREATE_COMPANY_ASSOCIATION_URL, companyAuthenticationMiddleware, navigationMiddleware, createCompanyAssociationControllerGet as RequestHandler);
-
 // Company Added
-router.get(constants.COMPANY_ADDED_SUCCESS_URL, navigationMiddleware, companyAddedControllerGet as RequestHandler);
+router.get(constants.COMPANY_ADDED_SUCCESS_URL, companyAuthenticationMiddlewareCheckboxDisabled, navigationMiddleware, companyAddedControllerGet as RequestHandler);
 
 // Add Presenter
 router.get(constants.ADD_PRESENTER_URL, navigationMiddleware, addPresenterControllerGet as RequestHandler);
@@ -106,7 +102,7 @@ router.get(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORIS
 router.post(constants.CONFIRM_COMPANY_DETAILS_FOR_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL, confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost);
 
 // Restore Your Digital Authorication Success
-router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, companyAuthenticationMiddleware, navigationMiddleware, confirmationYourDigitalAuthorisationRestoredControllerGet);
+router.get(constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL, companyAuthenticationMiddlewareCheckboxDisabled, navigationMiddleware, confirmationYourDigitalAuthorisationRestoredControllerGet);
 
 // Send Email To Be Digitally Authorised
 router.get(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_URL, navigationMiddleware, sendEmailToBeDigitallyAuthorisedControllerGet);
