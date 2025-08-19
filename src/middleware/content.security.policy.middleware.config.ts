@@ -24,7 +24,7 @@ export const prepareCSPConfig = (nonce: string): HelmetOptions => {
                 imgSrc: [CDN],
                 styleSrc: [NONCE, CDN],
                 connectSrc: [SELF, PIWIK_URL],
-                formAction: [SELF, PIWIK_CHS_DOMAIN, "*"],
+                formAction: [SELF, PIWIK_CHS_DOMAIN],
                 scriptSrc: [SELF, NONCE, CDN, PIWIK_URL],
                 objectSrc: [`'none'`]
             }

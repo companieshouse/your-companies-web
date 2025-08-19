@@ -6,7 +6,7 @@ import {
     getCheckPresenterUrl,
     getCompanyInvitationsAcceptFullUrl,
     getCompanyInvitationsDeclineFullUrl,
-    getCreateCompanyAssociationFullUrl,
+    getCompanyAddedSuccessFullUrl,
     getFullUrl,
     getManageAuthorisedPeopleFullUrl,
     getManageAuthorisedPeopleUrl,
@@ -72,7 +72,7 @@ describe("URL generation function", () => {
         ["getCompanyInvitationsDeclineFullUrl", `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/abc123`, "abc123", getCompanyInvitationsDeclineFullUrl],
         ["getCheckPresenterUrl", `/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterUrl],
         ["getCheckPresenterFullUrl", `${constants.LANDING_URL}/${constants.CHECK_PRESENTER_PAGE}/abc123`, "abc123", getCheckPresenterFullUrl],
-        ["getCreateCompanyAssociationFullUrl", `${constants.LANDING_URL}/company/abc123/create-company-association`, "abc123", getCreateCompanyAssociationFullUrl],
+        ["getCompanyAddedSuccessFullUrl", `${constants.LANDING_URL}/company/abc123/confirmation-company-added`, "abc123", getCompanyAddedSuccessFullUrl],
         [
             "getFullUrl",
             `${constants.LANDING_URL}/test/path`,
@@ -116,10 +116,10 @@ describe("URL generation function", () => {
             getCheckPresenterFullUrl
         ],
         [
-            "getCreateCompanyAssociationFullUrl",
-            `${constants.LANDING_URL}/company/abc123/create-company-association`,
+            "getCompanyAddedSuccessFullUrl",
+            `${constants.LANDING_URL}/company/abc123/confirmation-company-added`,
             "abc123",
-            getCreateCompanyAssociationFullUrl
+            getCompanyAddedSuccessFullUrl
         ],
         [
             "getManageAuthorisedPeopleUrl",
