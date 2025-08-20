@@ -202,37 +202,21 @@ describe("navigationMiddleware", () => {
             params: { companyNumber: "AB123456" }
         },
         {
-            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
+            referer: "https://chc.local/your-companies/company/AB123456/confirmation-your-digital-authorisation-restored",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/company/AB123456/confirmation-your-digital-authorisation-restored",
             params: { companyNumber: "AB123456" }
         },
         {
             referer: "https://accounturl.co",
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/company/AB123456/confirmation-your-digital-authorisation-restored",
             params: { companyNumber: "AB123456" }
         },
         {
             referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
-            params: { companyNumber: "AB123456" }
-        },
-        {
-            referer: "https://chc.local/your-companies/confirmation-your-digital-authorisation-restored",
             routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored"
-        },
-        {
-            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
-            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored"
-        },
-        {
-            referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
-            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored",
+            path: "/company/AB123456//confirmation-your-digital-authorisation-restored",
             params: { companyNumber: "AB123456" }
         },
         {
@@ -416,13 +400,8 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         },
         {
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
             routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored",
+            path: "/company/AB123456/confirmation-your-digital-authorisation-restored",
             defaultRedirect: constants.LANDING_URL
         },
         {
@@ -574,27 +553,15 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         },
         {
-            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
-            referer: "https://chc.local/your-companies/company/AB123456/try-restoring-your-digital-authorisation",
-            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored",
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
             referer: "https://chc.local/your-companies/restore-your-digital-authorisation/AB123456/confirm-company-details",
             routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored",
+            path: "/company/AB123456/confirmation-your-digital-authorisation-restored",
+            defaultRedirect: constants.LANDING_URL
+        },
+        {
+            referer: "https://chc.local/your-companies/company/AB123456/confirmation-your-digital-authorisation-restored",
+            routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
+            path: "/company/AB123456/confirmation-your-digital-authorisation-restored",
             defaultRedirect: constants.LANDING_URL
         },
         {
@@ -693,11 +660,6 @@ describe("navigationMiddleware", () => {
             sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS
         },
         {
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
-            sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS
-        },
-        {
             routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
             path: "/confirmation-your-digital-authorisation-restored",
             sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS
@@ -727,14 +689,8 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         },
         {
-            routePattern: constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_URL,
-            path: "/company/AB123456/try-restoring-your-digital-authorisation",
-            sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS,
-            defaultRedirect: constants.LANDING_URL
-        },
-        {
             routePattern: constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_URL,
-            path: "/confirmation-your-digital-authorisation-restored",
+            path: "/company/AB123456/confirmation-your-digital-authorisation-restored",
             sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS,
             defaultRedirect: constants.LANDING_URL
         },

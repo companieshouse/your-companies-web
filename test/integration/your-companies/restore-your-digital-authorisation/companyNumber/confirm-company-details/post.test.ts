@@ -21,7 +21,7 @@ jest.mock("../../../../../../src/lib/Logger");
 jest.mock("../../../../../../src/lib/utils/sessionUtils");
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
-const getTryRestoringYourDigitalAuthorisationFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getTryRestoringYourDigitalAuthorisationFullUrl");
+const getRestoreYourDigitalAuthorisationSuccessFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getRestoreYourDigitalAuthorisationSuccessFullUrl");
 
 describe("POST /your-companies/restore-your-digital-authorisation/:companyNumber/confirm-company-details", () => {
 
@@ -39,11 +39,11 @@ describe("POST /your-companies/restore-your-digital-authorisation/:companyNumber
         expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
     });
 
-    it("redirects to try restoring your digital authorisation controller with company number param in url", async () => {
+    it("redirects to restoring your digital authorisation success controller with company number param in url", async () => {
         // Given
         getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
-        const redirectUrl = "/your-companies/company/12345678/try-restoring-your-digital-authorisation";
-        getTryRestoringYourDigitalAuthorisationFullUrlSpy.mockReturnValue(redirectUrl);
+        const redirectUrl = "/your-companies/company/12345678/confirmation-your-digital-authorisation-restored";
+        getRestoreYourDigitalAuthorisationSuccessFullUrlSpy.mockReturnValue(redirectUrl);
         // When
         const resp = await router.post(url);
         // Then
