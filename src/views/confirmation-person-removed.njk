@@ -11,6 +11,7 @@
             {% set bannerText = userNameOrEmail + " " + lang.is_no_longer_digitally_authorised + " " + companyName + "." %}
             {{ govukNotificationBanner({
                 text: bannerText,
+                titleText: lang.success,
                 type: "success"
             }) }}
 

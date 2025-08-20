@@ -10,7 +10,7 @@ import {
     singleAwaitingApprovalAssociation,
     singleConfirmedAssociation,
     singleMigratedAssociation,
-    singleUnauthorisedAssociation
+    singleRemovedAssociation
 } from "../../../../../mocks/associations.mock";
 import { mockResponse } from "../../../../../mocks/response.mock";
 import { AssociationStatus } from "@companieshouse/api-sdk-node/dist/services/associations/types";
@@ -445,7 +445,7 @@ describe("RemoveAuthorisedPersonHandler", () => {
             });
             const res = mockResponse();
             getExtraDataSpy
-                .mockReturnValueOnce(singleUnauthorisedAssociation);
+                .mockReturnValueOnce(singleRemovedAssociation);
             // Then
             await expect(removeAuthorisedPersonHandler.handlePostRequest(req, res)).rejects.toThrow("Unexpected association status");
         });

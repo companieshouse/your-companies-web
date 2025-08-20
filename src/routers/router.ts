@@ -16,7 +16,7 @@ import { healthCheckController } from "./controllers/healthCheckController";
 import { presenterAlreadyAddedControllerGet } from "./controllers/presenterAlreadyAddedController";
 import { removedThemselvesConfirmationControllerGet } from "./controllers/removedThemselvesConfirmationController";
 import { removeAuthorisedPersonCompanyAuth } from "../middleware/companyAuthentication/remove.person.company.authentication";
-import { companyAuthenticationMiddlewareCheckboxDisabled, companyAuthenticationMiddlewareCheckboxEnabled } from "../middleware/company.authentication";
+import { companyAuthenticationMiddlewareCheckboxDisabled } from "../middleware/company.authentication";
 import { removeCompanyConfirmedControllerGet } from "./controllers/removeCompanyConfirmedController";
 import { removeCompanyControllerGet, removeCompanyControllerPost } from "./controllers/removeCompanyController";
 import { somethingWentWrongControllerGet } from "./controllers/somethingWentWrongController";
