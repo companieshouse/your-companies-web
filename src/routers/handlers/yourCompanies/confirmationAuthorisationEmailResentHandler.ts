@@ -3,8 +3,9 @@ import { GenericHandler } from "../genericHandler";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { ViewDataWithBackLink } from "../../../types/utilTypes";
-import { getExtraData } from "../../../lib/utils/sessionUtils";
+import { deleteSearchStringEmail, getExtraData } from "../../../lib/utils/sessionUtils";
 import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
+import { Session } from "@companieshouse/node-session-handler";
 
 /**
  * View data for the confirmation authorisation email resent page.
@@ -51,6 +52,8 @@ export class ConfirmationAuthorisationEmailResentHandler extends GenericHandler 
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const userEmail = getExtraData(req.session, constants.RESENT_SUCCESS_EMAIL);
+
+        deleteSearchStringEmail(req.session as Session, companyNumber);
 
         this.viewData = {
             ...this.viewData,
