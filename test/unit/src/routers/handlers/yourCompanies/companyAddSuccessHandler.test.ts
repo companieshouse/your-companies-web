@@ -23,12 +23,15 @@ describe("CompanyAddSuccessHandler", () => {
         const req: Request = mockParametrisedRequest({ session: new Session(), lang });
         const translations = { key: "value" };
         getTranslationsForViewSpy.mockReturnValue(translations);
-        const companyName = "Test Ltd.";
-        getExtraDataSpy.mockReturnValue({ companyName });
+        const companyName = "TEST LTD.";
+        const companyNumber = "12345678";
+        getExtraDataSpy.mockReturnValue({ companyName, companyNumber });
         const viewData = {
             templateName: constants.COMPANY_ADD_SUCCESS_PAGE,
             lang: translations,
-            companyName
+            companyName,
+            companyNumber,
+            buttonHref: constants.LANDING_URL
         };
         // When
         const response = await companyAddSuccessHandler.execute(req);

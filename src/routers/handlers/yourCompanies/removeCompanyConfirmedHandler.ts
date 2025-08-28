@@ -42,7 +42,8 @@ export class RemoveCompanyConfirmedHandler extends GenericHandler {
      */
     async execute (req: Request): Promise<RemoveCompanyConfirmedViewData> {
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_COMPANY_CONFIRMED);
-        this.viewData.companyName = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
+        const companyName = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NAME);
+        this.viewData.companyName = companyName.toUpperCase();
         this.viewData.companyNumber = getExtraData(req.session, constants.LAST_REMOVED_COMPANY_NUMBER);
 
         return Promise.resolve(this.viewData);

@@ -7,5 +7,6 @@
     "you_can_find_this_by_searching": "Gallwch ddod o hyd i hyn trwy chwilio am y cwmni ar <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">gofrestr Tŷ’r Cwmnïau (yn agor mewn tab newydd)</a>.",
     "how_do_i_find_the_company_number": "Sut ydw i’n dod o hyd i rif y cwmni?",
     "this_company_has_already_been_added_to_your_account": "Mae’r cwmni hwn eisoes wedi’i ychwanegu at eich cyfrif",
-    "title_add_company": "Beth yw rhif y cwmni?- Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
+    "title_add_company": "Beth yw rhif y cwmni?- Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "if_you_have_a_company_number": "[CY] If you have a company number that’s 7 characters or less, enter zeros at the start so that it’s 8 characters in total. For example, if it’s 12345, enter 00012345."
 }

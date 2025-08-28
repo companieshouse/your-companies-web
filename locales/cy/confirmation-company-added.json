@@ -1,11 +1,12 @@
 {
-    "title_finish":" at eich cyfrif - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "weve_added": "Rydym wedi ychwanegu ",
-    "to_your_account": "  i’ch cyfrif.",
-    "view_your_companies": "Gweld eich cwmnïau",
-    "you_can_now": "Gallwch nawr:",
     "bullet_1": "ffeilio’r rhan fwyaf o wybodaeth ar-lein ar gyfer y cwmni hwn heb y cod dilysu",
     "bullet_2": "gweld a rheoli pobl eraill sydd wedi’u hawdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn",
     "bullet_3": "awdurdodi pobl eraill yn ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn",
-    "last_paragraph": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi. Rydym wedi rhoi gwybod iddynt eich bod bellach wedi’ch awdurdodi yn ddigidol i ffeilio ar gyfer y cwmni hwn."
+    "keep_the_authentication_code": "[CY] Keep the authentication code in a safe place, as you may still need it in the future.",
+    "last_paragraph": "[CY] We’ve sent an email to any other people who are authorised. We’ve let them know you are now digitally authorised to file for this company.",
+    "title_finish": " at eich cyfrif - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "view_your_companies": "[CY] View your companies",
+    "what_happens_now": "[CY] What happens now you've added this company",
+    "you_can_now": "Gallwch nawr:",
+    "you_have_added": "[CY] You have added "
 }

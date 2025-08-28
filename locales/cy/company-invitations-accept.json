@@ -1,7 +1,7 @@
 {
-    "title": "Beth sy'n digwydd nawr eich bod wedi derbyn i gael eich awdurdodi'n ddigidol - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "title": "Beth sy’n digwydd nawr eich bod wedi derbyn i gael eich awdurdodi’n ddigidol - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "you_have_accepted": "Rydych wedi derbyn eich bod wedi’ch awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer ",
-    "view_your_companies": "Gweld eich cwmnïau",
+    "go_to_your_companies": "[CY] Go to your companies",
     "what_happens_now": "Beth sy’n digwydd nawr eich bod wedi derbyn i gael eich awdurdodi’n ddigidol",
     "you_can_now": "Gallwch nawr:",
     "bullet_list": [
@@ -9,5 +9,5 @@
         "gweld a rheoli pobl eraill sydd wedi’u hawdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn",
         "awdurdodi pobl eraill yn ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn"
     ],
-    "weve_sent_an_email_to_the_company": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi’n ddigidol. Rydym wedi rhoi gwybod iddynt eich bod bellach wedi’ch awdurdodi yn ddigidol i ffeilio ar gyfer y cwmni hwn."
+    "weve_sent_an_email": "[CY] We’ve sent an email to other people who are authorised to let them know you are now digitally authorised to file for this company."
 }

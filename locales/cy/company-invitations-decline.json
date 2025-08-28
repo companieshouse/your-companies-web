@@ -2,7 +2,7 @@
     "invitation_declined": "Gwahoddiad wedi ei wrthod",
     "you_have_declined_to_be_digitally_authorised": "Rydych wedi gwrthod i gael eich awdurdodi yn ddigidol i ffeilio ar-lein ar gyfer ",
     "what_happens_now_youve_declined": "Beth sy’n digwydd nawr eich bod wedi gwrthod cael eich awdurdodi yn ddigidol",
-    "weve_sent_an_email": "Rydym wedi anfon e-bost at gyfeiriad e-bost cofrestredig y cwmni ac at unrhyw bobl eraill sydd wedi’u hawdurdodi’n ddigidol. Rydym wedi rhoi gwybod iddynt eich bod wedi gwrthod cael eich awdurdodi yn ddigidol i ffeilio ar gyfer y cwmni hwn.",
-    "view_your_companies": "Gweld eich cwmnïau",
+    "weve_sent_an_email": "[CY] We’ve sent an email to other people who are authorised to let them know you’ve declined to be digitally authorised to file for this company.",
+    "go_to_your_companies": "[CY] Go to your companies",
     "what_happens_now_youve_declined_title": "Beth sy’n digwydd nawr eich bod wedi gwrthod i gael eich awdurdodi’n ddigidol"
 }
