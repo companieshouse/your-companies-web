@@ -109,12 +109,12 @@ export const getCheckPresenterFullUrl = (companyNumber: string): string =>
     getFullUrl(getCheckPresenterUrl(companyNumber));
 
 /**
- * Constructs the full URL for creating a company association.
+ * Constructs the full URL for company added success page.
  * @param companyNumber - The company number.
  * @returns The full URL.
  */
-export const getCreateCompanyAssociationFullUrl = (companyNumber: string): string =>
-    getFullUrl(`/company/${companyNumber}/create-company-association`);
+export const getCompanyAddedSuccessFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/company/${companyNumber}/confirmation-company-added`);
 
 /**
  * Constructs the full URL for attempting to restore digital authorisation for a given company.
@@ -122,5 +122,5 @@ export const getCreateCompanyAssociationFullUrl = (companyNumber: string): strin
  * @param companyNumber - The unique identifier of the company.
  * @returns The full URL as a string for restoring digital authorisation.
  */
-export const getTryRestoringYourDigitalAuthorisationFullUrl = (companyNumber: string): string =>
-    getFullUrl(`/company/${companyNumber}${constants.TRY_RESTORING_YOUR_DIGITAL_AUTHORISATION_PARTIAL_URL}`);
+export const getRestoreYourDigitalAuthorisationSuccessFullUrl = (companyNumber: string): string =>
+    getFullUrl(`/company/${companyNumber}${constants.RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS_PARTIAL_URL}`);

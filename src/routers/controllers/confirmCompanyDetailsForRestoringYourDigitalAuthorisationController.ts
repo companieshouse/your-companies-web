@@ -6,8 +6,7 @@ import * as constants from "../../constants";
 import { getExtraData, setExtraData } from "../../lib/utils/sessionUtils";
 import { CompanyNameAndNumber } from "../../types/utilTypes";
 import logger, { createLogMessage } from "../../lib/Logger";
-import { getTryRestoringYourDigitalAuthorisationFullUrl } from "../../lib/utils/urlUtils";
-
+import { getRestoreYourDigitalAuthorisationSuccessFullUrl } from "../../lib/utils/urlUtils";
 /**
  * Handles GET requests for confirming company details when restoring digital authorisation.
  * Sets a session indicator and renders the confirmation page with company details.
@@ -59,7 +58,7 @@ export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationController
     setExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
     setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS, true);
 
-    const nextPageUrl = getTryRestoringYourDigitalAuthorisationFullUrl(company.companyNumber);
+    const nextPageUrl = getRestoreYourDigitalAuthorisationSuccessFullUrl(companyNumber);
 
     logger.info(
         createLogMessage(
