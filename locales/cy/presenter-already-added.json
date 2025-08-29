@@ -1,6 +1,6 @@
 {
-    "title": "Mae'r person hwn eisoes wedi'i awdurdodi - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "this_person_is_already_authorised": "Mae’r person hwn eisoes wedi’i awdurdodi",
+    "has_already_been_digitally_authorised": " eisoes wedi’i awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn.",
     "the_person_with_the_email_address": "Mae’r person sydd â’r cyfeiriad e-bost ",
-    "has_already_been_digitally_authorised": " eisoes wedi’i awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn."
+    "this_person_is_already_authorised": "Mae’r person hwn eisoes wedi’i awdurdodi",
+    "title": "Mae'r person hwn eisoes wedi'i awdurdodi - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
 }

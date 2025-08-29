@@ -2,8 +2,8 @@
     "are_you_sure_you_want_to_cancel_start": "Are you sure you want to cancel digital authorisation for ",
     "authorisation_to_file_online": "’s authorisation to file online for this company",
     "confirm": "Confirm",
-    "confirm_you_do_not_want": "Confirm you do not want to restore digital authorisation",
     "confirm_that_you_have_read": "Confirm that you have read and understood this information",
+    "confirm_you_do_not_want": "Confirm you do not want to restore digital authorisation",
     "digital_authorisation": "’s digital authorisation.",
     "digital_authorisation_this_means_they": "’s digital authorisation, this means they will no longer be able to file online for ",
     "for": " for ",
@@ -29,5 +29,4 @@
     "without_a_current_auth_code": " without a current authentication code. We’ll email ",
     "you_may_wish_to_change_the_auth_code": "You may wish to change the authentication code for this company as soon as possible after you have removed ",
     "you_may_wish_to_change_the_auth_code_not_restore": "You may wish to change the authentication code for this company as soon as possible after you have confirmed you do not want to restore "
-    
 }

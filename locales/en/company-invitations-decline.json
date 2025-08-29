@@ -1,8 +1,8 @@
 {
+    "go_to_your_companies": "Go to your companies",
     "invitation_declined": "Invitation declined",
-    "you_have_declined_to_be_digitally_authorised": "You have declined to be digitally authorised to file online for ",
+    "weve_sent_an_email": "We’ve sent an email to other people who are authorised to let them know you’ve declined to be digitally authorised to file for this company.",
     "what_happens_now_youve_declined": "What happens now you’ve declined to be digitally authorised",
     "what_happens_now_youve_declined_title": "What happens now you’ve declined to be digitally authorised",
-    "weve_sent_an_email": "We’ve sent an email to other people who are authorised to let them know you’ve declined to be digitally authorised to file for this company.",
-    "go_to_your_companies": "Go to your companies"
+    "you_have_declined_to_be_digitally_authorised": "You have declined to be digitally authorised to file online for "
 }

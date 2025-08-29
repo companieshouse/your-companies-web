@@ -1,12 +1,12 @@
 {
-    "what_is_the_company_number": "Beth yw rhif y cwmni?",
     "a_company_number_is_8_characters_long": "Mae rhif cwmni yn 8 nod o hyd.",
     "enter_a_company_number": "Cofnodwch rif cwmni",
-    "enter_a_company_number_that_is_8_characters_long": "Cofnodwch rif cwmni sy’n 8 nod o hyd",
     "enter_a_company_number_for_a_company_that_is_active": "Cofnodwch rif cwmni ar gyfer cwmni sy’n weithredol",
-    "you_can_find_this_by_searching": "Gallwch ddod o hyd i hyn trwy chwilio am y cwmni ar <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">gofrestr Tŷ’r Cwmnïau (yn agor mewn tab newydd)</a>.",
+    "enter_a_company_number_that_is_8_characters_long": "Cofnodwch rif cwmni sy’n 8 nod o hyd",
     "how_do_i_find_the_company_number": "Sut ydw i’n dod o hyd i rif y cwmni?",
+    "if_you_have_a_company_number": "[CY] If you have a company number that’s 7 characters or less, enter zeros at the start so that it’s 8 characters in total. For example, if it’s 12345, enter 00012345.",
     "this_company_has_already_been_added_to_your_account": "Mae’r cwmni hwn eisoes wedi’i ychwanegu at eich cyfrif",
     "title_add_company": "Beth yw rhif y cwmni?- Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "if_you_have_a_company_number": "[CY] If you have a company number that’s 7 characters or less, enter zeros at the start so that it’s 8 characters in total. For example, if it’s 12345, enter 00012345."
+    "what_is_the_company_number": "Beth yw rhif y cwmni?",
+    "you_can_find_this_by_searching": "Gallwch ddod o hyd i hyn trwy chwilio am y cwmni ar <a href=\"https://find-and-update.company-information.service.gov.uk/\" target=\"_blank\">gofrestr Tŷ’r Cwmnïau (yn agor mewn tab newydd)</a>."
 }

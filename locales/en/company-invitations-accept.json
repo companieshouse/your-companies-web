@@ -1,13 +1,13 @@
 {
-    "title": "What happens now you’ve accepted to be digitally authorised - Find and update company information - GOV.UK",
-    "you_have_accepted": "You have accepted to be digitally authorised to file online for ",
-    "go_to_your_companies": "Go to your companies",
-    "what_happens_now": "What happens now you’ve accepted to be digitally authorised",
-    "you_can_now": "You can now:",
     "bullet_list": [
         "file most information online for this company without the authentication code",
         "view and manage other people who are digitally authorised to file online for this company",
         "digitally authorise other people to file online for this company"
     ],
-    "weve_sent_an_email": "We’ve sent an email to other people who are authorised to let them know you are now digitally authorised to file for this company."
+    "go_to_your_companies": "Go to your companies",
+    "title": "What happens now you’ve accepted to be digitally authorised - Find and update company information - GOV.UK",
+    "weve_sent_an_email": "We’ve sent an email to other people who are authorised to let them know you are now digitally authorised to file for this company.",
+    "what_happens_now": "What happens now you’ve accepted to be digitally authorised",
+    "you_can_now": "You can now:",
+    "you_have_accepted": "You have accepted to be digitally authorised to file online for "
 }
