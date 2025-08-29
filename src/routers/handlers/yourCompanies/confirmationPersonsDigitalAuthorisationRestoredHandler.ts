@@ -54,7 +54,7 @@ export class ConfirmationPersonsDigitalAuthorisationRestoredHandler extends Gene
         this.viewData = {
             ...this.viewData,
             lang: getTranslationsForView(req.lang, constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_RESTORED_PAGE),
-            companyName: authorisedPersonCompanyName,
+            companyName: authorisedPersonCompanyName.toUpperCase(),
             companyNumber,
             userEmail: authorisedPersonEmailAddress,
             managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)

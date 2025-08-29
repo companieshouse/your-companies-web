@@ -52,7 +52,7 @@ describe("GET /your-companies/confirmation-persons-digital-authorisation-removed
     ])("should return expected $langInfo content when lang is '$langVersion'",
         async ({ langVersion, lang }) => {
             // Given
-            const companyName = "Test Ltd.";
+            const companyName = "TEST LTD.";
             const companyNumber = "12345678";
             const userNameOrEmail = "test@example.com";
             const personRemovedConfirmationData: PersonRemovedConfirmation = {

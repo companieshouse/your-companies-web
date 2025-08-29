@@ -57,7 +57,7 @@ export class ConfirmationPersonRemovedHandler extends GenericHandler {
         this.viewData = {
             ...this.viewData,
             lang: getTranslationsForView(req.lang, constants.CONFIRMATION_PERSON_REMOVED_PAGE),
-            companyName,
+            companyName: companyName.toUpperCase(),
             companyNumber,
             userNameOrEmail,
             managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber),

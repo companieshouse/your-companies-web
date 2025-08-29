@@ -54,7 +54,7 @@ export class ConfirmationPersonAddedHandler extends GenericHandler {
         this.viewData = {
             ...this.viewData,
             lang: getTranslationsForView(req.lang, constants.CONFIRMATION_PERSON_ADDED_PAGE),
-            companyName: authorisedPersonCompanyName,
+            companyName: authorisedPersonCompanyName.toUpperCase(),
             companyNumber,
             userEmail: authorisedPersonEmailAddress,
             managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)

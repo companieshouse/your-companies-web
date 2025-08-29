@@ -44,7 +44,7 @@ export class RemoveThemselvesConfirmationHandler extends GenericHandler {
             constants.REMOVED_THEMSELVES_FROM_COMPANY
         );
 
-        this.viewData.companyName = companyNoLongerAssociated.companyName;
+        this.viewData.companyName = companyNoLongerAssociated.companyName.toUpperCase();
         this.viewData.companyNumber = companyNoLongerAssociated.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVED_THEMSELVES);
 
