@@ -1,5 +1,5 @@
 {
-    "are_you_sure_you_want_to_cancel_start": "Ydych chi’n siŵr eich bod am ganslo awdurdodiad ar gyfer ",
+    "are_you_sure_you_want_to_cancel_start": "[CY] Are you sure you want to cancel digital authorisation for ",
     "authorisation_to_file_online": " i ffeilio ar-lein ar gyfer y cwmni hwn",
     "confirm": "[CY] Confirm",
     "confirm_you_do_not_want": "[CY] Confirm you do not want to restore digital authorisation for ",
@@ -19,7 +19,7 @@
     "select_if_you_confirm_that_you_have_read": "Dewiswch os ydych yn cadarnhau eich bod wedi darllen a deall y wybodaeth hon",
     "select_yes_if_you_want_to_cancel_authorisation": "[CY] Select yes if you want to cancel digital authorisation for this person",
     "this_means_that": "[CY] This means that ",
-    "title_cancel_person": "Ydych chi'n siŵr eich bod am ganslo’r awdurdodiad? - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "title_cancel_person": "[CY] Are you sure you want to cancel digital authorisation? - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "title_remove_authorised_person": "Dileu awdurdodiad i ffeilio ar-lein ar gyfer y cwmni hwn - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "to_let_them_know": "[CY]  to let them know they are not digitally authorised. We'll also email any other people who are authorised to let them know.",
     "to_let_them_know_you_have_removed": " i roi gwybod iddynt eich bod wedi dileu ei awdurdodiad digidol.",

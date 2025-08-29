@@ -24,7 +24,7 @@
 {% block main_content %}
 
     {% set legendContent %}
-    <span class="govuk-caption-l">{{ companyName }}</span>
+    <span class="govuk-caption-l">{{ companyName }} ({{companyNumber}})</span>
     <h1 class="govuk-fieldset__heading">
         {{ lang.are_you_sure_you_want_to_cancel_start + userEmail  }}?
     </h1>
@@ -69,11 +69,7 @@
                     id: "continue-button",
                     "data-event-id": "continue-button"
                 } %}
-                <div class="govuk-button-group">
-                    {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
-
-                    <a id="cancel-link" data-event-id="cancel", class="govuk-link" href="{{backLinkHref}}" aria-label="{{lang.link_to_cancel_the_authorisation_cancellation_process}}">{{lang.cancel}}</a>
-                </div>
+                {{ govukButton({text: lang.continue, type: "submit", attributes: button_attributes }) }}
             </form>
         </div>
     </div>

@@ -211,7 +211,7 @@ describe("GET /your-companies", () => {
         const response = await router.get("/your-companies?search=NI03837");
         // Then
         expect(response.text).toContain(en.search);
-        expect(response.text).toContain("match found for 'NI03837'");
+        expect(response.text).toContain(en.result);
         expect(response.text).toContain("THE POLISH BREWERY");
         expect(response.text).toContain("NI038379");
         expect(response.text).not.toContain(enCommon.next);

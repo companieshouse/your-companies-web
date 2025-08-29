@@ -1,5 +1,5 @@
 {
-    "are_you_sure_you_want_to_cancel_start": "Are you sure you want to cancel authorisation for ",
+    "are_you_sure_you_want_to_cancel_start": "Are you sure you want to cancel digital authorisation for ",
     "authorisation_to_file_online": "’s authorisation to file online for this company",
     "confirm": "Confirm",
     "confirm_you_do_not_want": "Confirm you do not want to restore digital authorisation",
@@ -19,7 +19,7 @@
     "select_if_you_confirm_that_you_have_read": "Select if you confirm that you have read and understood this information",
     "select_yes_if_you_want_to_cancel_authorisation": "Select yes if you want to cancel digital authorisation for this person",
     "this_means_that": "This means that ",
-    "title_cancel_person": "Are you sure you want to cancel authorisation? - Find and update company information - GOV.UK",
+    "title_cancel_person": "Are you sure you want to cancel digital authorisation? - Find and update company information - GOV.UK",
     "title_remove_authorised_person": "Remove authorisation to file online for this company - Find and update company information - GOV.UK",
     "to_let_them_know": " to let them know they are not digitally authorised. We'll also email any other people who are authorised to let them know.",
     "to_let_them_know_you_have_removed": " to let them know you have removed their digital authorisation.",
