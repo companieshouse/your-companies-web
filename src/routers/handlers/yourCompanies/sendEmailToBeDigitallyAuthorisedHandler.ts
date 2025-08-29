@@ -65,7 +65,7 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
         deleteSearchStringEmail(req.session as Session, companyNumber);
 
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
-        this.viewData.companyName = companyName;
+        this.viewData.companyName = companyName.toUpperCase();
 
         const associationId = req.params.associationId;
         const association: Association = getExtraData(

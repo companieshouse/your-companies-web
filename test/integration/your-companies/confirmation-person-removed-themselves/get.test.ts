@@ -11,7 +11,7 @@ import * as constants from "../../../../src/constants";
 
 const router = supertest(app);
 const companyNumber = "NI038379";
-const companyName = "Acme Ltd";
+const companyName = "ACME LTD";
 
 const url = `/your-companies/confirmation-person-removed-themselves`;
 const session: Session = new Session();

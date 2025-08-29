@@ -7,7 +7,7 @@
 
 {% extends "layouts/default.njk" %}
 
-{% set title = lang.weve_added + companyName + lang.title_finish %}
+{% set title = lang.you_have_added + companyName + lang.title_finish %}
 
 {% block main_content %}
 
@@ -16,8 +16,7 @@
 
             {% set html %}
             <p class="govuk-notification-banner__heading">
-                {{lang.weve_added}}{{companyName}}{{lang.to_your_account}}
-                <a href="/your-companies" data-event-id="view-your-companies" class="govuk-link">{{lang.view_your_companies}}</a>.
+                {{lang.you_have_added}}{{companyName}}.
             </p>
             {% endset %}
 
@@ -29,6 +28,11 @@
                 })
             }}
 
+            <h1 class="govuk-heading-l">
+                <span class="govuk-caption-l">{{companyName}} ({{companyNumber}})</span>
+                {{lang.what_happens_now}}
+            </h1>
+
             <p class="govuk-body">{{ lang.you_can_now }}</p>
             <ul class="govuk-list govuk-list--bullet">
                 <li>{{ lang.bullet_1 }}</li>
@@ -36,7 +40,14 @@
                 <li>{{ lang.bullet_3 }}</li>
             </ul>
 
+            <p class="govuk-body">{{ lang.keep_the_authentication_code }}</p>
+
             {{ govukInsetText({ text: lang.last_paragraph }) }}
+
+            {{ govukButton({
+            text: lang.go_to_your_companies,
+            href: buttonHref
+            }) }}
 
         </div>
     </div>

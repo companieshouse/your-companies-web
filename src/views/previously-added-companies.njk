@@ -51,7 +51,7 @@
                         <input class="{{inputClasses}}" id="search" name="search" type="text" aria-describedby="event-name-hint" value="{{search}}">
                         <button type="submit" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
                         </button>
-                        <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="your-companies-cancel-search-link" data-event-id="your-companies-cancel-search-link">{{lang.cancel_search}}</a>
+                        <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="your-companies-cancel-search-link" data-event-id="your-companies-cancel-search-link">{{lang.clear_search}}</a>
                     </div>
                 </div>
             </form>
@@ -59,15 +59,16 @@
 
         {% if showNumOfMatches %}
             {% if numOfMatches == 0 %}
-                <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{search}}'</h2>
+                <h2 class="govuk-heading-s">{{lang.no_results_found}}</h2>
                 <p class="govuk-body">{{lang.no_results_that_match}}</p>
             {% elif numOfMatches == 1 %}
                 <h2 class="govuk-heading-s">{{numOfMatches}}
-                    {{lang.match_found_for}} '{{search}}'</h2>
+                    {{lang.result}}</h2>
             {% else %}
                 <h2 class="govuk-heading-s">{{numOfMatches}}
-                    {{lang.matches_found_for}} '{{search}}'</h2>
+                    {{lang.results}}</h2>
             {% endif %}
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         {% endif %}
 
         {% for elem in associationData %}

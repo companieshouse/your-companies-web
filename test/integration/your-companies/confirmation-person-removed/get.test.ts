@@ -58,7 +58,7 @@ describe("GET /your-companies/confirmation-person-removed", () => {
     ])("should return expected $langInfo content when lang is '$langVersion'",
         async ({ langVersion, lang, changeAuthenticationCodeHref, userNameOrEmail }) => {
             // Given
-            const companyName = "Test Ltd.";
+            const companyName = "TEST LTD.";
             const companyNumber = "12345678";
             const personRemovedConfirmationData: PersonRemovedConfirmation = {
                 userNameOrEmail,

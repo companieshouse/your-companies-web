@@ -75,7 +75,7 @@ export class CheckPresenterHandler extends GenericHandler {
         const url = getAddPresenterFullUrl(companyNumber);
         this.viewData.backLinkHref = url;
         this.viewData.backLinkWithClearForm = url + constants.CLEAR_FORM_TRUE;
-        this.viewData.companyName = companyName;
+        this.viewData.companyName = companyName.toUpperCase();
         this.viewData.companyNumber = companyNumber;
         this.viewData.emailAddress = emailAddress;
     }

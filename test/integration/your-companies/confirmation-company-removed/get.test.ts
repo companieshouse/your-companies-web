@@ -37,9 +37,9 @@ describe("GET /your-companies/confirmation-company-removed", () => {
     });
 
     describe.each([
-        { language: "en", companyName: "Acme Ltd", companyNumber: "NI038379", successMessage: enCommon.success, removedMessage: en.you_have_removed },
-        { language: undefined, companyName: "Acme Ltd", companyNumber: "NI038379", successMessage: enCommon.success, removedMessage: en.you_have_removed },
-        { language: "cy", companyName: "Cwmni Cymraeg", companyNumber: "WA123456", successMessage: cyCommon.success, removedMessage: cy.you_have_removed }
+        { language: "en", companyName: "ACME LTD", companyNumber: "NI038379", successMessage: enCommon.success, removedMessage: en.you_have_removed },
+        { language: undefined, companyName: "ACME LTD", companyNumber: "NI038379", successMessage: enCommon.success, removedMessage: en.you_have_removed },
+        { language: "cy", companyName: "CWMNI CYMRAEG", companyNumber: "WA123456", successMessage: cyCommon.success, removedMessage: cy.you_have_removed }
     ])("with $language language", ({ language, companyName, companyNumber, successMessage, removedMessage }) => {
         it(`should return expected ${language} content`, async () => {
             // Given
@@ -58,7 +58,7 @@ describe("GET /your-companies/confirmation-company-removed", () => {
 
     describe.each([
         { scenario: "empty string company name", name: "", number: "12345678" },
-        { scenario: "empty string company number", name: "Empty Number Ltd", number: "" }
+        { scenario: "empty string company number", name: "EMPTY NUMBER LTD", number: "" }
     ])("Edge case: $scenario", ({ name, number }) => {
         it("should handle the request without error", async () => {
             // Given
@@ -76,8 +76,8 @@ describe("GET /your-companies/confirmation-company-removed", () => {
 
     describe.each([
         { scenario: "extremely long company name", name: "A".repeat(1000), number: "12345678" },
-        { scenario: "special characters in company name", name: "Special & Co. (£€$) Ltd.", number: "12345678" },
-        { scenario: "non-standard company number format", name: "Non-Standard Ltd", number: "AB-123/456" }
+        { scenario: "special characters in company name", name: "SPECIAL & CO. (£€$) LTD.", number: "12345678" },
+        { scenario: "non-standard company number format", name: "NON-STANDARD LTD", number: "AB-123/456" }
     ])("Edge case: $scenario", ({ name, number }) => {
         it("should handle the request correctly", async () => {
             // Given

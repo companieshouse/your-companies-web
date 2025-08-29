@@ -15,7 +15,7 @@ const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData
 
 const router = supertest(app);
 const associationId = "123456";
-const companyName = "Morrisons";
+const companyName = "MORRISONS";
 const url = `/your-companies/company-invitations-decline/${associationId}?companyName=${companyName}`;
 
 describe("GET /your-companies/companies-invitations-decline/:associationId", () => {
@@ -52,7 +52,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
             expect(response.text).toContain(`${lang.you_have_declined_to_be_digitally_authorised}${companyName}`);
             expect(response.text).toContain(lang.what_happens_now_youve_declined);
             expect(response.text).toContain(lang.weve_sent_an_email);
-            expect(response.text).toContain(lang.view_your_companies);
+            expect(response.text).toContain(lang.go_to_your_companies);
         });
 
     test.each([
@@ -73,7 +73,7 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
             expect(result.statusCode).toBe(200);
             expect(result.text).toContain(companyName);
             expect(result.text).toContain(lang.invitation_declined);
-            expect(result.text).toContain(lang.view_your_companies);
+            expect(result.text).toContain(lang.go_to_your_companies);
             expect(result.text).toContain(constants.LANDING_URL);
         });
 

@@ -1,7 +1,7 @@
 {
-    "check_authorised_persons_email_address": "Gwiriwch fod y cyfeiriad e-bost yn gywir cyn i ni anfon yr e-bost",
-    "email_address": "Cyfeiriad e-bost",
     "change": "Newid",
+    "check_authorised_persons_email_address": "Gwiriwch fod y cyfeiriad e-bost yn gywir cyn i ni anfon yr e-bost",
     "confirm_and_send_email": "Cadarnhau ac anfon e-bost",
+    "email_address": "Cyfeiriad e-bost",
     "title": "Gwiriwch fod y cyfeiriad e-bost yn gywir cyn i ni anfon yr e-bost - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
 }
