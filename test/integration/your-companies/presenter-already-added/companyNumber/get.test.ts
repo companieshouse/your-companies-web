@@ -60,7 +60,7 @@ describe("GET /your-companies/presenter-already-added/:companyNumber", () => {
             expect(response.text).toContain(lang.the_person_with_the_email_address);
             expect(response.text).toContain(userEmail);
             expect(response.text).toContain(lang.has_already_been_digitally_authorised);
-            expect(response.text).toContain(langCommon.go_back_to_your_companies2);
+            expect(response.text).toContain(langCommon.go_back_to_your_companies);
         });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {

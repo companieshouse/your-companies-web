@@ -42,7 +42,7 @@ export class ConfirmationAuthorisationRemovedHandler extends GenericHandler {
         const companyNumber = getExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
 
         this.viewData.lang = getTranslationsForView(req.lang, constants.CONFIRMATION_AUTHORISATION_REMOVED_PAGE);
-        this.viewData.companyName = companyName;
+        this.viewData.companyName = companyName.toUpperCase();
         this.viewData.companyNumber = companyNumber;
         this.viewData.yourCompaniesHref = constants.LANDING_URL;
         return Promise.resolve(this.viewData);
