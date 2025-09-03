@@ -6,8 +6,7 @@ import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 /**
  * Creates a middleware function for company authentication.
  *
- * Use companyAuthenticationMiddlewareCheckboxDisabled or
- * companyAuthenticationMiddlewareCheckboxEnabled below rather than this function directly.
+ * Use companyAuthenticationMiddlewareCheckboxDisabled below rather than this function directly.
  *
  * @param disableSaveCompanyCheckbox - Flag to disable the "Save Company" checkbox in the authentication flow.
  * @returns Express middleware function that handles company authentication.
@@ -36,4 +35,3 @@ const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox: boole
 };
 
 export const companyAuthenticationMiddlewareCheckboxDisabled = createCompanyAuthenticationMiddleware(true);
-export const companyAuthenticationMiddlewareCheckboxEnabled = createCompanyAuthenticationMiddleware(false);

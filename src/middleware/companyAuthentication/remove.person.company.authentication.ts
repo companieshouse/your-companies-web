@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as constants from "../../constants";
 import logger, { createLogMessage } from "../../lib/Logger";
 import { isRemovingThemselvesById } from "../../lib/utils/removeThemselves";
-import { companyAuthenticationMiddlewareCheckboxEnabled } from "../company.authentication";
+import { companyAuthenticationMiddlewareCheckboxDisabled } from "../company.authentication";
 import { Session } from "@companieshouse/node-session-handler";
 
 /**
@@ -26,5 +26,5 @@ export const removeAuthorisedPersonCompanyAuth = (req: Request, res: Response, n
     }
 
     logger.debug(createLogMessage(req.session, removeAuthorisedPersonCompanyAuth.name, `Redirecting to company authentication, removing a user with id ${idParam}.`));
-    return companyAuthenticationMiddlewareCheckboxEnabled(req, res, next);
+    return companyAuthenticationMiddlewareCheckboxDisabled(req, res, next);
 };
