@@ -11,7 +11,7 @@ export const prepareCSPConfig = (nonce: string): HelmetOptions => {
     const PIWIK_URL = process.env.PIWIK_URL as string;
     const PIWIK_CHS_DOMAIN = process.env.PIWIK_CHS_DOMAIN as string;
     const CHS_URL = process.env.CHS_URL as string;
-    const HTTP_CHS_URL: string = CHS_URL.replace(/^https:\/\//, "http://") as string;
+    const HTTP_CHS_URL: string = CHS_URL.replace(/^https:\/\//, "http://");
     const SELF = `'self'`;
     const NONCE = `'nonce-${nonce}'`;
     const ONE_YEAR_SECONDS = 31536000;
