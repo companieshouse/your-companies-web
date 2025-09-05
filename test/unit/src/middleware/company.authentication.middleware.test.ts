@@ -12,7 +12,7 @@ import request from "supertest";
 import app from "../../../../src/app";
 import * as constants from "../../../../src/constants";
 import { getFullUrl } from "../../../../src/lib/utils/urlUtils";
-import { companyAuthenticationMiddlewareCheckboxDisabled, companyAuthenticationMiddlewareCheckboxEnabled } from "../../../../src/middleware/company.authentication";
+import { companyAuthenticationMiddlewareCheckboxDisabled } from "../../../../src/middleware/company.authentication";
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
@@ -45,7 +45,7 @@ describe("company authentication middleware tests", () => {
             chsWebUrl: "http://chsurl.co",
             returnUrl: URL,
             companyNumber: "12345678",
-            disableSaveCompanyCheckbox: false
+            disableSaveCompanyCheckbox: true
         });
         expect(mockAuthReturnedFunction).toHaveBeenCalled();
         expect(mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
@@ -79,17 +79,6 @@ describe("Company Authentication Middleware", () => {
 
             expect(authMiddleware).toHaveBeenCalledWith(expect.objectContaining({
                 disableSaveCompanyCheckbox: true,
-                chsWebUrl: constants.CHS_URL,
-                returnUrl: "/test-url",
-                companyNumber: "12345678"
-            }));
-        });
-
-        it("companyAuthenticationMiddlewareCheckboxEnabled should use disableSaveCompanyCheckbox=false", () => {
-            companyAuthenticationMiddlewareCheckboxEnabled(mockReq as Request, mockRes as Response, mockNext);
-
-            expect(authMiddleware).toHaveBeenCalledWith(expect.objectContaining({
-                disableSaveCompanyCheckbox: false,
                 chsWebUrl: constants.CHS_URL,
                 returnUrl: "/test-url",
                 companyNumber: "12345678"
