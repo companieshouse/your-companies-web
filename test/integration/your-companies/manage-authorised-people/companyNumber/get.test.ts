@@ -82,7 +82,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
             expect(response.text).toContain(lang.name);
             expect(response.text).toContain(lang.digital_authorisation_status);
             expect(response.text).toContain(lang.remove);
-            expect(response.text).toContain(langCommon.back_to_your_companies);
+            expect(response.text).toContain(langCommon.go_back_to_your_companies);
             expect(response.text).not.toContain(langCommon.success);
             expect(response.text).not.toContain(lang.digital_authorisation_cancelled);
             expect(response.text).toContain(companyAssociations.items[0].userEmail);

@@ -88,7 +88,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
                 const companyNameQueryParam = `?${constants.COMPANY_NAME}=${invite.companyName.replace(/ /g, "+")}`;
 
                 rows.push([
-                    { text: invite.companyName },
+                    { text: invite.companyName.toUpperCase() },
                     { text: invite.companyNumber },
                     { text: invite.invitedBy },
                     {

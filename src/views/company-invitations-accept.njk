@@ -27,13 +27,13 @@
                 {% endfor %}
             </ul>
 
-            <p>{{ lang.weve_sent_an_email_to_the_company}}</p>
+            <p>{{ lang.weve_sent_an_email}}</p>
 
             {{ govukButton({
-                text: lang.view_your_companies,
+                text: lang.go_to_your_companies,
                 href: yourCompaniesUrl, attributes: {
-                id: "view-your-companies-button",
-                "data-event-id": "view-your-companies"
+                id: "go-to-your-companies-button",
+                "data-event-id": "go-to-your-companies"
                     }
             }) }}
         </div>

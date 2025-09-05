@@ -58,7 +58,7 @@ export class ConfirmationAuthorisationEmailResentHandler extends GenericHandler 
         this.viewData = {
             ...this.viewData,
             lang: getTranslationsForView(req.lang, constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_PAGE),
-            companyName,
+            companyName: companyName.toUpperCase(),
             companyNumber,
             userEmail,
             managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)

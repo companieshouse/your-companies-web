@@ -36,7 +36,7 @@ describe("CheckPresenterHandler", () => {
             viewData: {},
             authorisedPerson: {
                 authorisedPersonEmailAddress: "test@test.com",
-                authorisedPersonCompanyName: "Test Ltd."
+                authorisedPersonCompanyName: "TEST LTD."
             },
             return: "view data with associationAlreadyExist set to false",
             condition: "and it successfully calls association service"
@@ -54,7 +54,7 @@ describe("CheckPresenterHandler", () => {
             const req: Request = mockParametrisedRequest({ session: new Session(), lang });
             const translations = { key: "value" };
             getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = "Test Ltd.";
+            const companyName = "TEST LTD.";
             const companyNumber = "12345";
             const authorisedPersonEmail = "test@test.com";
             getExtraDataSpy

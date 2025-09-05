@@ -54,7 +54,7 @@ describe("CompanyInvitationsAcceptHandler", () => {
             // Given
             const lang = "en";
             const associationId = "1234567890";
-            const companyName = "Test Ltd";
+            const companyName = "TEST LTD";
             const req: Request = mockParametrisedRequest({
                 session: new Session(),
                 lang,

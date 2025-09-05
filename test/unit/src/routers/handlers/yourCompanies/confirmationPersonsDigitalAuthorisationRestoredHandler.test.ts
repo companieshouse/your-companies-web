@@ -31,7 +31,7 @@ describe("ConfirmationPersonsDigitalAuthorisationRestoredHandler", () => {
             const req: Request = mockParametrisedRequest({ session: new Session(), lang });
             const translations = { key: "value" };
             getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = "Test Ltd.";
+            const companyName = "TEST LTD.";
             const companyNumber = "12345678";
             const userEmail = "test@example.com";
             const authorisedPerson: AuthorisedPerson = {

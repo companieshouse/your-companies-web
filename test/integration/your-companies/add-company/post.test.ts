@@ -234,7 +234,7 @@ describe("POST /your-companies/add-company", () => {
 
     it("should return company already added error message if user has come from the current page (switched languages)", async () => {
         // Given
-        const url = "/your-companies/add-company";
+        const url = "/your-companies/add-company?lang=en";
         mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
             req.headers = { referrer: url };
             req.session = session;

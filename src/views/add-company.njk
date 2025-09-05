@@ -2,6 +2,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% extends "layouts/default.njk" %}
 
@@ -43,6 +44,10 @@
                         value: proposedCompanyNumber
                     })
                 }}
+
+                {{ govukInsetText({
+                    text: lang.if_you_have_a_company_number
+                }) }}
 
                 {{ govukDetails({
                         summaryText: lang.how_do_i_find_the_company_number,

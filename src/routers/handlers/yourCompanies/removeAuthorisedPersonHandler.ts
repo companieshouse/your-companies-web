@@ -110,7 +110,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         this.viewData.lang = getTranslationsForView(req.lang, constants.REMOVE_AUTHORISED_PERSON_PAGE);
         this.viewData.cancelLinkHref = getManageAuthorisedPeopleFullUrl(this.viewData.companyNumber);
         this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(this.viewData.companyNumber);
-        this.viewData.companyName = association.companyName;
+        this.viewData.companyName = association.companyName.toUpperCase();
         this.viewData.userName = this.getNameOrEmail(association.displayName, association.userEmail);
         this.viewData.userEmail = association.userEmail;
         this.viewData.templateName = this.getTemplateViewName();

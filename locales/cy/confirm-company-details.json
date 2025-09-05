@@ -1,12 +1,12 @@
 {
-    "title":"Cadarnhau mai hwn yw'r cwmni cywir - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
-    "confirm_this_is_the_correct_company": "Cadarnhau mai hwn yw’r cwmni cywir",
+    "choose_a_different_company": "Dewis cwmni gwahanol",
     "company_name": "Enw’r cwmni",
     "company_number": "Rhif y cwmni",
-    "status": "Statws",
-    "incorporation_date": "Dyddiad corffori",
     "company_type": "Math o gwmni",
-    "registered_office_address": "Cyfeiriad swyddfa gofrestredig",
     "confirm_and_continue": "Cadarnhau a pharhau",
-    "choose_a_different_company": "Dewis cwmni gwahanol"
+    "confirm_this_is_the_correct_company": "Cadarnhau mai hwn yw’r cwmni cywir",
+    "incorporation_date": "Dyddiad corffori",
+    "registered_office_address": "Cyfeiriad swyddfa gofrestredig",
+    "status": "Statws",
+    "title": "Cadarnhau mai hwn yw'r cwmni cywir - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK"
 }

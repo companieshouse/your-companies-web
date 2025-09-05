@@ -7,6 +7,8 @@ import { BaseViewData } from "../../../types/utilTypes";
 
 interface CompanyAddSuccessViewData extends BaseViewData {
     companyName: string;
+    companyNumber: string;
+    buttonHref: string;
 }
 
 /**
@@ -23,7 +25,9 @@ export class CompanyAddSuccessHandler extends GenericHandler {
         this.viewData = {
             templateName: constants.COMPANY_ADD_SUCCESS_PAGE,
             lang: {},
-            companyName: ""
+            companyName: "",
+            companyNumber: "",
+            buttonHref: ""
         };
     }
 
@@ -36,7 +40,9 @@ export class CompanyAddSuccessHandler extends GenericHandler {
     async execute (req: Request): Promise<CompanyAddSuccessViewData> {
         const companyNowAssociated = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
         this.viewData.companyName = companyNowAssociated.companyName;
+        this.viewData.companyNumber = companyNowAssociated.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.COMPANY_ADD_SUCCESS_PAGE);
+        this.viewData.buttonHref = constants.LANDING_URL;
         return Promise.resolve(this.viewData);
     }
 }

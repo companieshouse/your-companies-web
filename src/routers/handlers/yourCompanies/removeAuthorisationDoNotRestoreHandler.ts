@@ -66,7 +66,7 @@ export class RemoveAuthorisationDoNotRestoreHandler extends GenericHandler {
     private async handleGetRequest (req: Request): Promise<RemoveAuthorisationDoNotRestoreViewData> {
         const companyProfile = await getCompanyProfile(this.viewData.companyNumber);
         setExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME, companyProfile.companyName);
-        this.viewData.companyName = companyProfile.companyName;
+        this.viewData.companyName = companyProfile.companyName.toUpperCase();
         return this.viewData;
     }
 

@@ -52,7 +52,7 @@ describe("GET /your-companies/confirmation-person-added", () => {
     ])("should return expected $langInfo content when lang is '$langVersion'",
         async ({ langVersion, lang }) => {
             // Given
-            const companyName = "Test Ltd.";
+            const companyName = "TEST LTD.";
             const companyNumber = "12345678";
             const userEmail = "test@example.com";
             const authorisedPerson: AuthorisedPerson = {

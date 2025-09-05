@@ -136,7 +136,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
 
             companyAssociations = await this.getValidCompanyAssociations(req, companyNumber, pageNumber);
             if (companyAssociations?.items?.[0]?.companyName) {
-                this.viewData.companyName = companyAssociations.items[0].companyName;
+                this.viewData.companyName = companyAssociations.items[0].companyName.toUpperCase();
                 setCompanyNameInCollection(req.session as Session, companyAssociations.items[0].companyName, companyNumber);
             }
         } else {
