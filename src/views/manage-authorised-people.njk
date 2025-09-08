@@ -95,13 +95,22 @@
 
     {% if validSearch %}
         {% if not resultsFound %}
-            <h2 class="govuk-heading-s">{{lang.no_results_found}}</h2>
-            <p class="govuk-body">{{lang.no_results_that_match}}</p>
+            <div class = "govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <h2 class="govuk-heading-s">{{lang.no_results_found}}</h2>
+                    <p class="govuk-body">{{lang.no_results_that_match}}</p>
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                </div>
+            </div>
         {% else %}
-            <h2 class="govuk-heading-s">
-                {{lang.result}}</h2>
+            <div class = "govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <h2 class="govuk-heading-s">
+                        {{lang.result}}</h2>
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                </div>
+            </div>
         {% endif %}
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
     {% endif %}
 
     {% if validSearch == false or resultsFound == true %}
