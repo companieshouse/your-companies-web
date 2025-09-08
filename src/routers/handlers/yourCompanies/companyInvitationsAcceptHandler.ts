@@ -50,7 +50,7 @@ export class CompanyInvitationsAcceptHandler extends GenericHandler {
         const companyName = req.query[constants.COMPANY_NAME] as string;
         const expectedReferrer = getCompanyInvitationsAcceptFullUrl(associationId);
 
-        this.viewData.companyName = companyName;
+        this.viewData.companyName = companyName.toUpperCase();
 
         if (!associationStateChanged) {
             await this.confirmAssociation(req, associationId);

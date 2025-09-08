@@ -68,7 +68,7 @@ export class AddPresenterHandler extends GenericHandler {
 
         this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
         this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(companyNumber);
-        this.viewData.companyName = companyName;
+        this.viewData.companyName = companyName.toUpperCase();
         this.viewData.companyNumber = companyNumber;
     }
 

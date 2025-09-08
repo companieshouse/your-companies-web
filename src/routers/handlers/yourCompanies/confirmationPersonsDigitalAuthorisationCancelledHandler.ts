@@ -53,7 +53,7 @@ export class ConfirmationPersonsDigitalAuthorisationCancelledHandler extends Gen
         this.viewData = {
             ...this.viewData,
             lang: getTranslationsForView(req.lang, constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_PAGE),
-            companyName,
+            companyName: companyName.toUpperCase(),
             companyNumber,
             userEmail: userNameOrEmail,
             managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)

@@ -33,8 +33,8 @@
 
 {% block back_link %}
 
-    <div role="navigation" aria-label="{{lang.back_to_your_companies}}">
-        {{ govukBackLink({text: lang.back_to_your_companies, href: backLinkHref, attributes: {
+    <div role="navigation" aria-label="{{lang.go_back_to_your_companies}}">
+        {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref, attributes: {
                 id: "back-link-to-your-companies-page",
                 "data-event-id": "back-link-to-previous-page"
             } }) }}
@@ -73,10 +73,10 @@
         {% include "partials/csrf_token.njk" %}
         <div class="{{formClasses}}">
             <label class="govuk-label govuk-label--m" for="search">
-                {{lang.search_for_an_authorised_person}}
+                {{lang.search_authorised_people}}
             </label>
             <div id="event-name-hint" class="govuk-hint">
-                {{lang.enter_an_email_address}}
+                {{lang.enter_their_full_email_address}}
             </div>
             {% if message %}
                 {{ govukErrorMessage({
@@ -88,20 +88,28 @@
                 <input class="{{inputClasses}}" id="search" name="searchEmail" type="email" aria-describedby="event-name-hint" value="{{searchEmail}}">
                 <button type="submit" name="action" value="trySearch" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
                 </button>
-                {% if searchEmail != null %}
-                    <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.cancel_search}}</a>
-                {% endif %}
+                <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.clear_search}}</a>
             </div>
         </div>
     </form>
 
     {% if validSearch %}
         {% if not resultsFound %}
-            <h2 class="govuk-heading-s">{{lang.no_results_found}} '{{searchEmail}}'</h2>
-            <p class="govuk-body">{{lang.no_results_that_match}}</p>
+            <div class = "govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <h2 class="govuk-heading-s">{{lang.no_results_found}}</h2>
+                    <p class="govuk-body">{{lang.no_results_that_match}}</p>
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                </div>
+            </div>
         {% else %}
-            <h2 class="govuk-heading-s">
-                {{lang.match_found_for}} '{{searchEmail}}'</h2>
+            <div class = "govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <h2 class="govuk-heading-s">
+                        {{lang.result}}</h2>
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                </div>
+            </div>
         {% endif %}
     {% endif %}
 

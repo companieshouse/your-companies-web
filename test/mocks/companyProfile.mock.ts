@@ -15,7 +15,7 @@ export const badFormatCompanyProfile: CompanyProfile = {
         nextDue: "2020-05-31",
         overdue: false
     },
-    companyName: "Test Company",
+    companyName: "TEST COMPANY",
     companyNumber: "12345678",
     companyStatus: "active",
     companyStatusDetail: "company status detail",
@@ -56,7 +56,7 @@ export const validActiveCompanyProfile: CompanyProfile = {
         nextDue: "2020-05-31",
         overdue: false
     },
-    companyName: "Test Company",
+    companyName: "TEST COMPANY",
     companyNumber: "12345678",
     companyStatus: "active",
     companyStatusDetail: "company status detail",
@@ -90,7 +90,7 @@ export const validActiveCompanyProfile: CompanyProfile = {
 
 export const formatterValidActiveCompanyProfile: FormattedCompanyProfile = {
     companyNumber: "12345678",
-    companyName: "Test Company",
+    companyName: "TEST COMPANY",
     type: "ltd",
     companyStatus: "active",
     dateOfCreation: "22 June 1972",
@@ -115,7 +115,7 @@ export const validDisolvedCompanyProfile: CompanyProfile = {
         nextDue: "2020-05-31",
         overdue: false
     },
-    companyName: "Test Company",
+    companyName: "TEST COMPANY",
     companyNumber: "23456789",
     companyStatus: "dissolved",
     companyStatusDetail: "company status detail",

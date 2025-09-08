@@ -16,7 +16,7 @@ jest.mock("../../../../../src/services/associationsService");
 
 const router = supertest(app);
 const associationId = "0123456789";
-const companyName = "Morrisons";
+const companyName = "MORRISONS";
 const url = `/your-companies/company-invitations-accept/${associationId}?companyName=${companyName}`;
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
@@ -54,8 +54,8 @@ describe("GET /your-companies/company-invitations-accept/:associationId", () => 
             expect(result.text).toContain(lang.bullet_list[0]);
             expect(result.text).toContain(lang.bullet_list[1]);
             expect(result.text).toContain(lang.bullet_list[2]);
-            expect(result.text).toContain(lang.weve_sent_an_email_to_the_company);
-            expect(result.text).toContain(lang.view_your_companies);
+            expect(result.text).toContain(lang.weve_sent_an_email);
+            expect(result.text).toContain(lang.go_to_your_companies);
         });
 
     it("should redirect back to people digitally authorised page if association already accepted", async () => {

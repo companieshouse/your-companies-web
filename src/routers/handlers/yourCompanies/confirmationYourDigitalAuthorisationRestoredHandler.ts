@@ -47,7 +47,7 @@ export class ConfirmationYourDigitalAuthorisationRestoredHandler extends Generic
             req.session,
             constants.CONFIRMED_COMPANY_FOR_ASSOCIATION
         );
-        this.viewData.companyName = confirmedCompanyForAssociation.companyName;
+        this.viewData.companyName = confirmedCompanyForAssociation.companyName.toUpperCase();
         this.viewData.companyNumber = confirmedCompanyForAssociation.companyNumber;
 
         return this.viewData;

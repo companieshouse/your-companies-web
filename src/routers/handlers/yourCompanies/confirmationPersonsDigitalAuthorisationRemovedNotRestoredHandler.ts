@@ -56,7 +56,7 @@ export class ConfirmationPersonsDigitalAuthorisationRemovedNotRestoredHandler ex
         this.viewData = {
             ...this.viewData,
             lang: getTranslationsForView(req.lang, constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_PAGE),
-            companyName,
+            companyName: companyName.toUpperCase(),
             companyNumber,
             userNameOrEmail,
             managePeopleHref: getManageAuthorisedPeopleFullUrl(companyNumber)

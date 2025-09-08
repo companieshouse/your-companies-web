@@ -13,6 +13,8 @@
             {{ lang.confirm_this_is_the_correct_company }}
         </h1>
 
+        {% set companyNameUpper = companyProfile.companyName | upper %}
+
         {{ govukSummaryList({
                 rows: [
                     {
@@ -20,7 +22,7 @@
                             text: lang.company_name
                         },
                         value: {
-                            text: companyProfile.companyName
+                            text: companyNameUpper
                         }
                     },
                     {

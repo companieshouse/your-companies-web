@@ -47,7 +47,7 @@ export class CompanyInvitationsDeclineHandler extends GenericHandler {
         const associationId = req.params[constants.ASSOCIATIONS_ID];
         const associationStateChanged = this.isAssociationStateChanged(req, associationId);
         const referrer = req.get("Referrer");
-        const companyName = this.getCompanyName(req);
+        const companyName = this.getCompanyName(req).toUpperCase();
         const expectedReferrer = getCompanyInvitationsDeclineFullUrl(associationId);
 
         this.viewData.companyName = companyName;

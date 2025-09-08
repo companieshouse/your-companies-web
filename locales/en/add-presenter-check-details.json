@@ -1,7 +1,7 @@
 {
-  "check_authorised_persons_email_address": "Check the email address is correct before we send the email",
-  "email_address": "Email address",
-  "change": "Change",
-  "confirm_and_send_email": "Confirm and send email",
-  "title": "Check the email address is correct before we send the email - Find and update company information - GOV.UK"
+    "change": "Change",
+    "check_authorised_persons_email_address": "Check the email address is correct before we send the email",
+    "confirm_and_send_email": "Confirm and send email",
+    "email_address": "Email address",
+    "title": "Check the email address is correct before we send the email - Find and update company information - GOV.UK"
 }
