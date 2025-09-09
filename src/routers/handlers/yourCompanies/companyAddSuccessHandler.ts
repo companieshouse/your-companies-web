@@ -39,7 +39,7 @@ export class CompanyAddSuccessHandler extends GenericHandler {
      */
     async execute (req: Request): Promise<CompanyAddSuccessViewData> {
         const companyNowAssociated = getExtraData(req.session, constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
-        this.viewData.companyName = companyNowAssociated.companyName;
+        this.viewData.companyName = companyNowAssociated.companyName.toUpperCase();
         this.viewData.companyNumber = companyNowAssociated.companyNumber;
         this.viewData.lang = getTranslationsForView(req.lang, constants.COMPANY_ADD_SUCCESS_PAGE);
         this.viewData.buttonHref = constants.LANDING_URL;
