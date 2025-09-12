@@ -1,8 +1,8 @@
 {
-    "company_removed": "[CY] Company removed",
-    "go_to_your_companies": "[CY] Go to your companies",
-    "weve_sent_an_email": "[CY] We’ve sent an email to any other people who are authorised to let them know.",
-    "what_happens_now": "[CY] What happens now you’ve removed this company",
-    "you_are_no_longer_able_to_file": "[CY] You are no longer able to file online for this company without a current authentication code. The company has been removed from your account.",
-    "you_have_confirmed": "[CY] You have confirmed you do not want to restore your digital authorisation to file online for "
+    "company_removed": "Cwmni wedi’i ddileu",
+    "go_to_your_companies": "Ewch i ’eich cwmnïau’",
+    "weve_sent_an_email": "Rydym wedi anfon e-bost at unrhyw bobl eraill sydd wedi’u hawdurdodi i roi gwybod iddynt.",
+    "what_happens_now": "Beth sy’n digwydd nawr rydych wedi dileu’r cwmni hwn",
+    "you_are_no_longer_able_to_file": "Ni allwch ffeilio ar-lein ar gyfer y cwmni hwn bellach heb god dilysu cyfredol. Mae’r cwmni wedi cael ei dileu o’ch cyfrif.",
+    "you_have_confirmed": "Rydych wedi cadarnhau nad ydych am adfer eich awdurdodiad digidol i ffeilio ar-lein ar gyfer "
 }

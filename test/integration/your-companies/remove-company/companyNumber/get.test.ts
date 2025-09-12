@@ -88,7 +88,7 @@ describe("GET /your-companies/remove-company/:companyNumber", () => {
         setExtraData(session, constants.YOU_MUST_SELECT_AN_OPTION, en.you_must_select_an_option);
         (getCompanyProfile as jest.Mock).mockRejectedValue({ error: "Error" });
         // When
-        const response = await router.get(url);
+        const response = await router.get(`${url}?lang=en`);
         // Then
         expect(response.text).toContain(en.you_must_select_an_option);
     });
