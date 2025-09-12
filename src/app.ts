@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import { sessionMiddleware, ensureSessionCookiePresentMiddleware } from "./middleware/session.middleware";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import * as constants from "./constants";
-import { getLoggedInUserEmail } from "./lib/utils/sessionUtils";
+import { getLoggedInUserEmail, getLoggedInUserId } from "./lib/utils/sessionUtils";
 import { addLangToUrl } from "./lib/utils/urlUtils";
 import * as errorHandler from "./routers/controllers/errorController";
 import { getTranslationsForView } from "./lib/utils/translations";
@@ -91,7 +91,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     njk.addGlobal("WELSH", "cy");
     njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
     res.locals.nonce = nonce;
+    res.locals.userId = getLoggedInUserId(req.session);
     next();
+});
+
+Object.entries(constants.MATOMO_GOALS).forEach(([key, value]) => {
+    njk.addGlobal(key, value);
 });
 
 // Channel all requests through router dispatch

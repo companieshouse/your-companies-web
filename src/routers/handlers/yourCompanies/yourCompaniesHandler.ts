@@ -29,7 +29,6 @@ interface YourCompaniesViewData extends BaseViewData, Pagination {
     numberOfInvitations: number;
     viewInvitationsPageUrl: string;
     cancelSearchHref: string;
-    matomoAddCompanyGoalId: string;
     associationData: {
         "company_name": string;
         "company_number": string;
@@ -67,7 +66,6 @@ export class YourCompaniesHandler extends GenericHandler {
             lang: {},
             viewInvitationsPageUrl: getFullUrl(constants.COMPANY_INVITATIONS_URL),
             cancelSearchHref: constants.LANDING_URL,
-            matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
             search: "",
             displaySearchForm: false,
             showNumOfMatches: false,

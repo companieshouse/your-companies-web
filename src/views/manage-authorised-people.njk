@@ -59,8 +59,8 @@
             text: lang.add_new_authorised_person, 
             href: buttonHref, 
             attributes: {
-                id: "add-new-authorised-person-button",
-                "data-event-id": "add-new-authorised-person-button"
+                id: "add-new-authorised-person",
+                "data-event-id": "add-new-authorised-person"
                 } 
             }) }}
         </div>
@@ -133,6 +133,12 @@
                         {% set tag = govukTag({text: lang.authorised, classes: "govuk-tag--green"}) %}
                         {% set removeLinkVisuallyHiddenText = " " %}
 
+                        {% if userId == association.userId %}
+                           {% set dataEventIdForRemoval = "remove-yourself" %}
+                        {% else %}
+                           {% set dataEventIdForRemoval = "remove-confirmed-person" %}
+                        {% endif %}
+
                         {{ govukSummaryList({
                     card: {
                         title: {
@@ -146,7 +152,7 @@
                                     visuallyHiddenText: removeLinkVisuallyHiddenText,
                                     attributes:
                                     {
-                                        "data-event-id": "remove-authorised-person"
+                                        "data-event-id": dataEventIdForRemoval
                                     }
                                 }
                             ]
@@ -200,7 +206,7 @@
                                     visuallyHiddenText: cancelLinkVisuallyHiddenText,
                                     attributes:
                                         {
-                                            "data-event-id": "cancel-authorised-person"
+                                            "data-event-id": "remove-awaiting-approval-person"
                                         }
                                 }
                                 ]
@@ -266,7 +272,7 @@
                                     visuallyHiddenText: visuallyHiddenRemoveNotRestoreText,
                                     attributes:
                                         {
-                                            "data-event-id": "remove-do-not-restore-digital-authorisation"
+                                            "data-event-id": "remove-migrated-or-unauthorised-person"
                                         }
                                 }
                                 ]
@@ -293,7 +299,10 @@
                                     {
                                         href: restoreDigitalAuthUrl,
                                         text: lang.restore_authorisation,
-                                        visuallyHiddenText: visuallyHiddenRestoreText
+                                        visuallyHiddenText: visuallyHiddenRestoreText,
+                                        attributes: {
+                                            "data-event-id": "restore-migrated-or-unauthorised-person"
+                                            }
                                     }
                                     ]
                                 }
@@ -316,7 +325,5 @@
 
     {% endif %}
 
-    <script nonce={{ nonce | dump | safe }}>
-        trackGoal("add-new-authorised-person-button", {{matomoAddNewAuthorisedPersonGoalId}});
-    </script>
+    {% include "partials/track-goals-manage-auth.njk" %}
 {% endblock %}

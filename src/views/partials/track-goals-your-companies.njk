@@ -1,0 +1,20 @@
+<script nonce={{ nonce | dump | safe }}>
+
+    initGoalTracking([
+        {
+            selector: 'a[data-event-id="add-a-company"]',
+            goalId: {{ MATOMO_ADD_COMPANY_GOAL_ID }}
+        }, {
+            selector: 'a[data-event-id="remove-confirmed-company"]',
+            goalId: {{MATOMO_REMOVE_CONFIRMED_COMPANY_GOAL_ID}}
+        }, {
+            selector: 'a[data-event-id="restore-migrated-or-unauthorised-company"]',
+            goalId: {{MATOMO_RESTORE_MIGRATED_OR_UNAUTHORISED_COMPANY_GOAL_ID}}
+        }, {
+            selector: 'a[data-event-id="remove-migrated-or-unauthorised-company"]',
+            goalId: {{MATOMO_REMOVE_MIGRATED_OR_UNAUTHORISED_COMPANY_GOAL_ID}}
+        }
+    ]);
+</script>
+
+
