@@ -21,8 +21,8 @@
     "not_provided": "Heb ei ddarparu",
     "people_digitally_authorised_to_file_online": "Pobl sydd wedi’u hawdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn",
     "remove": "Dileu",
-    "resend_email": "Ail-anfon e-bost",
-    "restore_authorisation": "[CY] Restore authorisation",
+    "resend_email": "Ail-anfon gwahoddiad",
+    "restore_authorisation": "Adfer awdurdodiad",
     "result": "1 canlyniad",
     "search": "Chwilio",
     "search_authorised_people": "Chwilio am bobl awdurdodedig",
@@ -32,5 +32,5 @@
     "title_manage_authorised_people_start": "Pobl sydd wedi’u hawdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn",
     "title_of": " o ",
     "title_page": " (tudalen ",
-    "to": "[CY] invitation to "
+    "to": "e-bost at "
 }
