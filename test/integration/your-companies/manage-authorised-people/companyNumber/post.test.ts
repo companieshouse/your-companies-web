@@ -98,7 +98,7 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
 
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
         // When
-        const response = await router.post(`${url}`);
+        const response = await router.post(`${url}?lang=en`);
         // Then
         expect(response.text).toContain(en.no_results_found);
 
@@ -123,7 +123,7 @@ describe("POST /your-companies/manage-authorised-people/:companyNumber", () => {
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
 
         // When
-        const response = await router.post(`${url}`).send({ searchEmail: "invalid-email", action: "trySearch" });
+        const response = await router.post(`${url}?lang=en`).send({ searchEmail: "invalid-email", action: "trySearch" });
         // Then
         expect(response.text).toContain(en.errors_email_invalid);
 

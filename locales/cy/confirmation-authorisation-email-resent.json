@@ -1,8 +1,8 @@
 {
-    "email_sent": "[CY] Email sent",
-    "go_to_digitally_authorised_people": "[CY] Go to digitally authorised people",
-    "inviting_them_to_be_digitally_authorised_for": "[CY] inviting them to be digitally authorised for",
-    "page_header": "[CY] What happens now we’ve sent another email invitation",
-    "they_will_need_to_either_accept_or_decline": "[CY] They will need to either accept or decline the invitation to be digitally authorised.",
-    "weve_sent_another_email_to": "[CY] We’ve sent another email to"
+    "email_sent": "E-bost wedi’i anfon",
+    "go_to_digitally_authorised_people": "Ewch i pobl sydd wedi’u hawdurdodi’n ddigidol",
+    "inviting_them_to_be_digitally_authorised_for": "yn eu gwahodd i gael eu hawdurdodi’n ddigidol ar gyfer",
+    "page_header": "Beth sy’n digwydd nawr rydym wedi anfon gwahoddiad e-bost arall",
+    "they_will_need_to_either_accept_or_decline": "Bydd angen iddynt naill ai dderbyn neu wrthod y gwahoddiad i gael eu hawdurdodi’n ddigidol",
+    "weve_sent_another_email_to": "Rydym wedi anfon e-bost arall at"
 }

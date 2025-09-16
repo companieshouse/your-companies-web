@@ -99,7 +99,7 @@ describe("POST /your-companies/remove-company/:companyNumber", () => {
         (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
             state: "COMPANY_NOT_ASSOCIATED_WITH_USER"
         });
-        const request = router.post(url).send({ confirmRemoval: "yes" });
+        const request = router.post(`${url}?lang=en`).send({ confirmRemoval: "yes" });
         // When
         const response = await request;
         // Then
@@ -114,7 +114,7 @@ describe("POST /your-companies/remove-company/:companyNumber", () => {
             associationId: "test-association-id"
         });
         (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue("UNEXPECTED_RESULT");
-        const request = router.post(url).send({ confirmRemoval: "yes" });
+        const request = router.post(`${url}?lang=en`).send({ confirmRemoval: "yes" });
         // When
         const response = await request;
         // Then

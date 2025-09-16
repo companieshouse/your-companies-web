@@ -1,8 +1,9 @@
 {
-    "digital_authorisation_cancelled": "[CY] Digital authorisation cancelled",
-    "go_to_digitally_authorised_people": "[CY] Go to digitally authorised people",
-    "page_header": "[CY] What happens now you’ve cancelled this person’s digital authorisation",
-    "to_file_online_for": "[CY] to file online for",
-    "weve_sent_an_email_to_any_people": "[CY] We’ve sent an email to any people who are digitally authorised to let them know.",
-    "youve_successfully_cancelled_digital_authorisation_for": "[CY] You’ve successfully cancelled digital authorisation for"
+    "digital_authorisation_cancelled": "Awdurdodiad digidol wedi’i ganslo",
+    "go_to_digitally_authorised_people": "Ewch i pobl sydd wedi’u hawdurdodi’n ddigidol",
+    "page_header": "Beth sy’n digwydd nawr rydych wedi canslo awdurdodiad digidol y person hwn",
+    "to_file_online_for": "i gyflwyno ar-lein ar gyfer",
+    "to_file_online_for_welsh_ending": " yn llwyddiannus",
+    "weve_sent_an_email_to_any_people": "Rydym wedi anfon e-bost at unrhyw bobl sydd wedi’u hawdurdodi’n ddigidol i roi gwybod iddynt.",
+    "youve_successfully_cancelled_digital_authorisation_for": "Rydych wedi canslo awdurdodiad digidol ar gyfer"
 }

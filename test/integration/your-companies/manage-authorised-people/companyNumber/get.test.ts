@@ -95,7 +95,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // Given
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
         // When
-        const response = await router.get(`${url}`);
+        const response = await router.get(`${url}?lang=en`);
         // Then
         companyAssociationsPage1.items.forEach((association) => {
             expect(response.text).toContain(association.userEmail);
@@ -108,7 +108,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // Given
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage2));
         // When
-        const response = await router.get(`${url}?page=2`);
+        const response = await router.get(`${url}?page=2&lang=en`);
         // Then
         companyAssociationsPage2.items.forEach((association) => {
             expect(response.text).toContain(` (${association.userEmail})`);

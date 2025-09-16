@@ -131,7 +131,7 @@ describe("GET /your-companies/company-invitations", () => {
         userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
         invitationsSpy.mockReturnValue(getPaginatedMockInvitationList(fifteenMockInvitations));
         // When
-        const response = await router.get(`${url}?page=12345`);
+        const response = await router.get(`${url}?page=12345&lang=en`);
 
         // Then
         expect(response.text).toContain(commonEn.next);
