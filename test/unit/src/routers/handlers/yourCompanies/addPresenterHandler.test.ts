@@ -114,6 +114,7 @@ describe("AddPresenterHandler", () => {
             const allGetExtraDataKeys = [
                 constants.COMPANY_NAME,
                 constants.COMPANY_NUMBER,
+                constants.SEARCH_STRING_EMAIL,
                 ...getExtraDataKeys
             ];
             const translations = { key: "value" };
@@ -123,6 +124,7 @@ describe("AddPresenterHandler", () => {
             getExtraDataSpy
                 .mockReturnValueOnce(companyName)
                 .mockReturnValueOnce(companyNumber)
+                .mockReturnValueOnce(undefined)
                 .mockReturnValueOnce(proposedEmail)
                 .mockReturnValueOnce(authorisedPersonEmail);
             const backLinkHref = "/manage-authorised-people/12345";
