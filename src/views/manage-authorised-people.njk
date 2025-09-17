@@ -13,9 +13,12 @@
 
 {% set message = null %}
 
+{% set errorTitlePrefix = "" %}
+
 {% for key, value in errors %}
     {% if key == "searchEmail" %}
         {% set message = lang[value.text] %}
+        {% set errorTitlePrefix = lang.title_error %}
     {% endif %}
 {% endfor %}
 
@@ -26,9 +29,9 @@
 {% endif %}
 
 {% if pagination and pagination.items | length %}
-    {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
+    {% set title = errorTitlePrefix + lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
 {% else %}
-    {% set title = lang.title_manage_authorised_people %}
+    {% set title = errorTitlePrefix + lang.title_manage_authorised_people %}
 {% endif %}
 
 {% block back_link %}
