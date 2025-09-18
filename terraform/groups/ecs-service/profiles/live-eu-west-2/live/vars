@@ -7,6 +7,8 @@ log_level = "debug"
 
 # auto scaling
 
-desired_task_count=2
-min_task_count=2
-max_task_count=3
+service_autoscale_target_value_cpu = 60
+
+desired_task_count=3
+max_task_count=6
+min_task_count=3
