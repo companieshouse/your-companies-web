@@ -4,8 +4,9 @@ import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilT
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import * as constants from "../../../constants";
 import { validateClearForm, validateEmailString } from "../../../lib/validation/generic";
-import { getExtraData, setExtraData, deleteExtraData } from "../../../lib/utils/sessionUtils";
+import { getExtraData, setExtraData, deleteExtraData, deleteSearchStringEmail } from "../../../lib/utils/sessionUtils";
 import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
+import { Session } from "@companieshouse/node-session-handler";
 
 interface AddPresenterViewData extends ViewDataWithBackLink, CompanyNameAndNumber {
     authPersonEmail: string | undefined;
@@ -65,6 +66,7 @@ export class AddPresenterHandler extends GenericHandler {
     private initializeViewData (req: Request): void {
         const companyName = getExtraData(req.session, constants.COMPANY_NAME);
         const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
+        deleteSearchStringEmail(req.session as Session, companyNumber);
 
         this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_PRESENTER_PAGE);
         this.viewData.backLinkHref = getManageAuthorisedPeopleFullUrl(companyNumber);
