@@ -66,6 +66,10 @@ To login to the application enter the email: ``` demo@ch.gov.uk ```, and passwor
 
 Alternatively, you can enter the email of a user from the test data in the database.
 
+### Checking logs
+
+Use `docker_chs logs -f your-companies-web`, Docker Desktop or another tool such as Dockermon to view logs. Alternatively, run `chs-dev logs your-companies-web`.
+
 ### Running the tests
 
 To run the tests, type the following command:
