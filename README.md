@@ -4,6 +4,8 @@ This is a web frontend for the Your Companies journey. It was created based on [
 
 The documentation of the project is available on [Confluence](https://companieshouse.atlassian.net/wiki/spaces/IDV/pages/4370104473/Delivery+Documentation+Team+Inugami).
 
+Environment variables used to configure this service in docker are located in the file `services/modules/your-companies/your-companies-web.docker-compose.yaml`
+
 ## Frontend technologies and utils
 
 - [NodeJS](https://nodejs.org/)
@@ -28,6 +30,8 @@ Having cloned the project into your project root, run the following commands:
 
 ```npm install```
 
+```npm run build```
+
 ### SSL set-up
 
 If you wish to work with ssl-enabled endpoints locally, ensure you turn the `NODE_SSL_ENABLED` property to `ON` in the config and also provide paths to your private key and certificate.
@@ -43,26 +47,28 @@ To activate required modules and services:
 1. Locate to the ``` docker-chs-development ``` directory in your console.
 2. Run the following commands:
 
-``` .bin/chs-dev modules enable platform ```
+``` chs-dev services enable your-companies-web ```
 
-``` .bin.chs-dev development enable cdn-ch-gov-uk ```
-
-``` .bin.chs-dev development enable your-companies-web ```
-
-``` .bin.chs-dev services enable your-companies-web ```
+``` chs-dev development enable your-companies-web ```
 
 To check required modules and services have been activated, run:
 
-``` .bin/chs-dev status ```
+``` chs-dev status ```
 
-If required, checkout the ``` accounts-association-api ``` branch, as this hasn't been merged with main yet, and contains the ``` docker-compose.yaml ``` file required for the application to run in Docker.
+To start the application, run ``` chs-dev up ``` in your terminal.
 
-To start the application, run ``` tilt up ```, and press 'space' to open tilt in your browser.
-Wait for all the resources to finish updating successfully, making sure to re-run any with errors once others have finished.
+Wait until all the resources have started up successfully, when you will see the message ``` Service: your-companies-web ready! ```. 
+You may need to run ``` chs-dev up ``` again if certain services are 'unhealthy'.
 
 To open open the application, in your browser, enter http://chs.local/your-companies.
 
 To login to the application enter the email: ``` demo@ch.gov.uk ```, and password: ``` password ```
+
+Alternatively, you can enter the email of a user from the test data in the database.
+
+### Checking logs
+
+Use `docker_chs logs -f your-companies-web`, Docker Desktop or another tool such as Dockermon to view logs. Alternatively, run `chs-dev logs your-companies-web`.
 
 ### Running the tests
 
@@ -73,3 +79,7 @@ To run the tests, type the following command:
 To get a test coverage report, run:
 
 ```npm run test:coverage```
+
+#### Seeding Test data for ad hoc testing
+
+Use the [Mongo Test Data Generator Script](./tools/seed-mongodb/README.md)
