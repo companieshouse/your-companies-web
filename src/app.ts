@@ -60,6 +60,8 @@ njk.addGlobal("piwikChsDomain", process.env.PIWIK_CHS_DOMAIN);
 njk.addGlobal("serviceName", constants.SERVICE_NAME);
 njk.addGlobal("displayYourCompanies", "yes");
 njk.addGlobal("accountUrl", process.env.ACCOUNT_URL);
+njk.addGlobal("ENGLISH", "en");
+njk.addGlobal("WELSH", "cy");
 
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
@@ -84,12 +86,10 @@ LocalesService.getInstance("locales", true);
 app.use(LocalesMiddleware());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-    njk.addGlobal("locale", req.lang);
-    njk.addGlobal("userEmailAddress", getLoggedInUserEmail(req.session));
-    njk.addGlobal("feedbackSource", req.originalUrl);
-    njk.addGlobal("ENGLISH", "en");
-    njk.addGlobal("WELSH", "cy");
-    njk.addGlobal("addLangToUrl", (lang: string) => addLangToUrl(req.originalUrl, lang));
+    res.locals.locale = req.lang;
+    res.locals.userEmailAddress = getLoggedInUserEmail(req.session);
+    res.locals.feedbackSource = req.originalUrl;
+    res.locals.addLangToUrl = (lang: string) => addLangToUrl(req.originalUrl, lang);
     res.locals.nonce = nonce;
     next();
 });
