@@ -1,4 +1,28 @@
 <div id="chs-customer-insights" role="navigation" aria-label="{{lang.customer_insights}}">
-    <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/companieshouseaccountfeedback/" target="_blank" onclick="_paq.push(['trackEvent', 'Beta', 'Feedback']);">{{lang.tell_us_what_you_think_of_this_service}}<span class="govuk-visually-hidden">{{lang.opens_in_a_new_tab}}</span></a>
-    <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank" href="/help/feedback?sourceurl={{ chsUrl }}{{ feedbackSource }}">{{lang.is_there_anything_wrong_with_this_page}}<span class="govuk-visually-hidden">{{lang.opens_in_a_new_tab}}</span></a>
+    <a class="govuk-link" id="tell-us-what-you-think" href="https://www.smartsurvey.co.uk/s/getcompanyinformation/" target="_blank">{{lang.tell_us_what_you_think_of_this_service}}
+        <span class="govuk-visually-hidden">{{lang.opens_in_a_new_tab}}</span></a>
+    <a id="feedback-link" class="govuk-link secondary-customer-insights" target="_blank" href="/help/feedback?sourceurl={{ chsUrl }}{{ feedbackSource }}">{{lang.is_there_anything_wrong_with_this_page}}
+        <span class="govuk-visually-hidden">{{lang.opens_in_a_new_tab}}</span></a>
 </div>
+
+<script nonce={{ nonce | dump | safe }}>
+
+(function trackFeedbackLink() {
+  const feedbackId = "tell-us-what-you-think";
+  const trackEvent = () => _paq.push(['trackEvent', 'Beta', 'Feedback']);
+
+  const addFeedbackListener = () => {
+    const feedbackEl = document.getElementById(feedbackId);
+    if (feedbackEl) {
+      feedbackEl.addEventListener("click", trackEvent);
+    } 
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", addFeedbackListener);
+  } else {
+    addFeedbackListener();
+  }
+})();
+
+</script>
