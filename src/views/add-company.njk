@@ -12,7 +12,8 @@
 {% for key, value in errors %}
     {% if key == "companyNumber" %}
         {% set message = {
-            text: lang[value.text]
+            text: lang[value.text],
+            visuallyHiddenText: lang.visually_hidden_error
         } %}
         {% set title = lang.title_error + lang.title_add_company %}
     {% endif %}

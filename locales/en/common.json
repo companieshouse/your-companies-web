@@ -48,6 +48,7 @@
     "there_is_a_problem": "There is a problem",
     "title_end": " - Find and update company information - GOV.UK",
     "title_error": "Error: ",
+    "visually_hidden_error": "Error",
     "view_cookies": "View cookies",
     "warning": "Warning",
     "we_use_analytics_cookies": "We’d also like to use analytics cookies so we can understand how you use our services and to make improvements.",
@@ -55,5 +56,7 @@
     "yes": "Yes",
     "you_can": "You can",
     "your_companies_header": "Your companies",
-    "your_filings_header": "Your filings"
+    "your_filings_header": "Your filings",
+    "page": "Page",
+    "support_links": "Support links"
 }

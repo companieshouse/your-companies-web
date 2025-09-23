@@ -48,6 +48,7 @@
     "there_is_a_problem": "Mae yna broblem",
     "title_end": " - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "title_error": "Gwall: ",
+    "visually_hidden_error": "Gwall",
     "view_cookies": "Gweld cwcis",
     "warning": "Rhybudd",
     "we_use_analytics_cookies": "Hoffem hefyd ddefnyddio cwcis dadansoddeg fel y gallwn ddeall sut rydych chi’n defnyddio ein gwasanaethau ac i wneud gwelliannau.",
@@ -55,5 +56,7 @@
     "yes": "Ydw",
     "you_can": "Gallwch",
     "your_companies_header": "Eich cwmnïau",
-    "your_filings_header": "Eich ffeilio"
+    "your_filings_header": "Eich ffeilio",
+    "page": "Tudalen",
+    "support_links": "Dolenni cymorth"
 }
