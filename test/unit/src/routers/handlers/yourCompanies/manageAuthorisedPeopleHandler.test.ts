@@ -52,32 +52,32 @@ describe("ManageAuthorisedPeopleHandler", () => {
     });
 
     test.each([
-        // {
-        //     page: "1",
-        //     pageNumber: 1,
-        //     companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
-        //     isValidPageNumber: true,
-        //     originalUrl: manageAuthorisedPeopleFullUrl,
-        //     pagination: undefined,
-        //     viewData: {
-        //         pageNumber: 0,
-        //         numberOfPages: 0
-        //     },
-        //     returnInfo: "basic view data without pagination",
-        //     condition: "there is no cancellation, removal or email resent triggered and not enough associations for pagination"
-        // },
-        // {
-        //     page: "12345",
-        //     pageNumber: 12345,
-        //     companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
-        //     isValidPageNumber: false,
-        //     viewData: {
-        //         pageNumber: 0,
-        //         numberOfPages: 0
-        //     },
-        //     returnInfo: "basic view data without pagination",
-        //     condition: "there is no removal or email resent triggered and not enough associations for pagination but the page number is invalid"
-        // },
+        {
+            page: "1",
+            pageNumber: 1,
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
+            isValidPageNumber: true,
+            originalUrl: manageAuthorisedPeopleFullUrl,
+            pagination: undefined,
+            viewData: {
+                pageNumber: 0,
+                numberOfPages: 0
+            },
+            returnInfo: "basic view data without pagination",
+            condition: "there is no cancellation, removal or email resent triggered and not enough associations for pagination"
+        },
+        {
+            page: "12345",
+            pageNumber: 12345,
+            companyAssociations: getAssociationList(companyAssociations.items, constants.ITEMS_PER_PAGE, 0, companyAssociations.items.length, 1),
+            isValidPageNumber: false,
+            viewData: {
+                pageNumber: 0,
+                numberOfPages: 0
+            },
+            returnInfo: "basic view data without pagination",
+            condition: "there is no removal or email resent triggered and not enough associations for pagination but the page number is invalid"
+        },
         {
             page: "2",
             pageNumber: 2,
