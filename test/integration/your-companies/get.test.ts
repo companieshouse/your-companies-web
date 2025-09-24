@@ -147,7 +147,7 @@ describe("GET /your-companies", () => {
         userAssociationsSpy.mockResolvedValue(migratedAssociation);
         getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
         // When
-        const response = await router.get("/your-companies");
+        const response = await router.get("/your-companies?lang=en");
         // Then
         expect(response.text).toContain(en.restore_authorisation);
         expect(response.text).not.toContain(en.authorised);

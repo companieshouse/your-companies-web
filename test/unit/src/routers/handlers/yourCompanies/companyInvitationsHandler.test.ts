@@ -247,7 +247,7 @@ describe("CompanyInvitationsHandler", () => {
                 expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
                 expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
                 expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, userInvites.totalPages, urlPrefix, "");
+                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, userInvites.totalPages, urlPrefix, "", translations);
                 expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
                 expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, translations);
             }

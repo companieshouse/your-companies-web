@@ -319,7 +319,7 @@ describe("YourCompaniesHandler", () => {
                 expect(getSearchQuerySpy).toHaveBeenCalledTimes(1);
                 expect(getSearchQuerySpy).toHaveBeenCalledWith(query.search);
                 expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery);
+                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery, lang);
                 expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
                 expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, lang);
             }

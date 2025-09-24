@@ -78,7 +78,8 @@
             </div>
             {% if message %}
                 {{ govukErrorMessage({
-                            text: message
+                            text: message,
+                            visuallyHiddenText: lang.visually_hidden_error
                         })
                     }}
             {% endif %}

@@ -13,9 +13,13 @@ export const buildPaginationElement = (
     currentPageNumber: number,
     numOfPages: number,
     urlPrefix: string,
-    searchQuery: string
+    searchQuery: string,
+    lang: AnyRecord
 ): PaginationData => {
-    const pagination: PaginationData = { items: [] };
+    const pagination: PaginationData = {
+        items: [],
+        landmarkLabel: lang.page as string
+    };
 
     // Return empty pagination if there's only one page or the current page is invalid
     if (numOfPages <= 1 || currentPageNumber < 1) return pagination;
@@ -34,7 +38,7 @@ export const buildPaginationElement = (
         };
     }
 
-    pagination.items = getPageItems(currentPageNumber, numOfPages, urlPrefix, searchQuery);
+    pagination.items = getPageItems(currentPageNumber, numOfPages, urlPrefix, searchQuery, lang);
     return pagination;
 };
 
@@ -46,6 +50,7 @@ export const buildPaginationElement = (
  * @param numOfPages - The total number of pages available.
  * @param urlPrefix - The URL prefix to be used for each page item.
  * @param searchQuery - The search query string to be appended to the URL.
+ * @param lang - An object containing language-specific strings.
  * @returns An array of `PageItem` objects representing the pagination structure.
  *
  * The function ensures the following:
@@ -57,42 +62,43 @@ const getPageItems = (
     currentPageNumber: number,
     numOfPages: number,
     urlPrefix: string,
-    searchQuery: string
+    searchQuery: string,
+    lang: AnyRecord
 ): PageItem[] => {
     const pageItems: PageItem[] = [];
     // Add the first page item
-    pageItems.push(createRegularPageItem(1, currentPageNumber, urlPrefix, searchQuery));
+    pageItems.push(createRegularPageItem(1, currentPageNumber, urlPrefix, searchQuery, lang));
 
     // Add the second page item, possibly with an ellipsis
     if (numOfPages >= 3) {
         const isEllipsis = numOfPages >= 5 && currentPageNumber >= 5;
-        pageItems.push(isEllipsis ? createEllipsisItem() : createRegularPageItem(2, currentPageNumber, urlPrefix, searchQuery));
+        pageItems.push(isEllipsis ? createEllipsisItem() : createRegularPageItem(2, currentPageNumber, urlPrefix, searchQuery, lang));
     }
 
     // Add middle-left page item if applicable
     if (numOfPages >= 5 && currentPageNumber >= 4 && numOfPages - currentPageNumber >= 1) {
-        pageItems.push(createRegularPageItem(currentPageNumber - 1, currentPageNumber, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(currentPageNumber - 1, currentPageNumber, urlPrefix, searchQuery, lang));
     }
 
     // Add middle page item if applicable
     if (numOfPages >= 5 && currentPageNumber >= 3 && numOfPages - currentPageNumber >= 2) {
-        pageItems.push(createRegularPageItem(currentPageNumber, currentPageNumber, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(currentPageNumber, currentPageNumber, urlPrefix, searchQuery, lang));
     }
 
     // Add middle-right page item if applicable
     if (numOfPages >= 5 && currentPageNumber >= 2 && numOfPages - currentPageNumber >= 3) {
-        pageItems.push(createRegularPageItem(currentPageNumber + 1, currentPageNumber, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(currentPageNumber + 1, currentPageNumber, urlPrefix, searchQuery, lang));
     }
 
     // Add second-to-last page item, possibly with an ellipsis
     if (numOfPages >= 4) {
         const isEllipsis = numOfPages >= 5 && numOfPages - currentPageNumber >= 4;
-        pageItems.push(isEllipsis ? createEllipsisItem() : createRegularPageItem(numOfPages - 1, currentPageNumber, urlPrefix, searchQuery));
+        pageItems.push(isEllipsis ? createEllipsisItem() : createRegularPageItem(numOfPages - 1, currentPageNumber, urlPrefix, searchQuery, lang));
     }
 
     // Add the last page item
     if (numOfPages > 1) {
-        pageItems.push(createRegularPageItem(numOfPages, currentPageNumber, urlPrefix, searchQuery));
+        pageItems.push(createRegularPageItem(numOfPages, currentPageNumber, urlPrefix, searchQuery, lang));
     }
     return pageItems;
 };
@@ -107,12 +113,14 @@ const createRegularPageItem = (
     pageNumber: number,
     currentPageNumber: number,
     prefix: string,
-    searchQuery: string
+    searchQuery: string,
+    lang: AnyRecord
 ): PageItem => {
     return {
         current: currentPageNumber === pageNumber,
         number: pageNumber,
-        href: `${prefix}?page=${pageNumber}${searchQuery}`
+        href: `${prefix}?page=${pageNumber}${searchQuery}`,
+        visuallyHiddenText: `${lang.page} ${pageNumber}`
     };
 };
 

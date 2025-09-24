@@ -15,9 +15,10 @@
 
 {% for key, value in errors %}
     {% if["confirmRemoval", "generic"].includes(key) %}
-    {% set message = {
-        text: lang[value.text]
-    } %}
+        {% set message = {
+            text: lang[value.text],
+            visuallyHiddenText: lang.visually_hidden_error
+        } %}
     {% set title = lang.title_error + lang.title_remove_company %}
 {% endif %}
 {% endfor %}
