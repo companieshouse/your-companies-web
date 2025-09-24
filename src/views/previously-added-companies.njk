@@ -179,6 +179,12 @@
                                 </dt>
                                 <dd class="govuk-summary-list__value">
                            
+                                    {% if (elem.status == "unauthorised") %}
+                                    <strong class="govuk-tag govuk-tag--red">
+                                        {{lang.not_authorised}}
+                                    </strong>
+                                     {% endif %}
+
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     {{restore_link}}
