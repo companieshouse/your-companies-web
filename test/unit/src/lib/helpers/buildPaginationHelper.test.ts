@@ -1,5 +1,6 @@
 import { buildPaginationElement, stringToPositiveInteger, setLangForPagination } from "../../../../../src/lib/helpers/buildPaginationHelper";
 import { PaginationData } from "../../../../../src/types/pagination";
+import { AnyRecord } from "../../../../../src/types/utilTypes";
 
 const prefix = "prefix";
 const ellipsis = "...";
@@ -17,8 +18,8 @@ const ellipsis = "...";
  * @param prefix URL Prefix to prepend to links
  * @param currentPageNumber The current page number rendered on screen
  */
-function validatePaginationElement (expectedData: { previous: boolean; items: string[]; next: boolean; }, numOfPages: number, prefix: string, currentPageNumber: number) {
-    const paginationElement = buildPaginationElement(currentPageNumber, numOfPages, prefix, "");
+function validatePaginationElement (expectedData: { previous: boolean; items: string[]; next: boolean; }, numOfPages: number, prefix: string, currentPageNumber: number, lang: AnyRecord) {
+    const paginationElement = buildPaginationElement(currentPageNumber, numOfPages, prefix, "", lang);
 
     // Validate previous link
     if (expectedData.previous) {
@@ -63,11 +64,13 @@ function validatePaginationElement (expectedData: { previous: boolean; items: st
 
 describe("Pagination element test suite", () => {
 
+    const lang = {};
+
     it.each([
         [1, { previous: false, items: [], next: false }]
     ])("1 page, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 1;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -75,7 +78,7 @@ describe("Pagination element test suite", () => {
         [2, { previous: true, items: ["1", "2"], next: false }]
     ])("2 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 2;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -84,7 +87,7 @@ describe("Pagination element test suite", () => {
         [3, { previous: true, items: ["1", "2", "3"], next: false }]
     ])("3 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 3;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -94,7 +97,7 @@ describe("Pagination element test suite", () => {
         [4, { previous: true, items: ["1", "2", "3", "4"], next: false }]
     ])("4 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 4;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -105,7 +108,7 @@ describe("Pagination element test suite", () => {
         [5, { previous: true, items: ["1", "...", "4", "5"], next: false }]
     ])("5 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 5;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -117,7 +120,7 @@ describe("Pagination element test suite", () => {
         [6, { previous: true, items: ["1", "...", "5", "6"], next: false }]
     ])("6 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 6;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -130,7 +133,7 @@ describe("Pagination element test suite", () => {
         [7, { previous: true, items: ["1", "...", "6", "7"], next: false }]
     ])("7 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 7;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -144,7 +147,7 @@ describe("Pagination element test suite", () => {
         [8, { previous: true, items: ["1", "...", "7", "8"], next: false }]
     ])("8 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 8;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -159,7 +162,7 @@ describe("Pagination element test suite", () => {
         [9, { previous: true, items: ["1", "...", "8", "9"], next: false }]
     ])("9 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 9;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -175,7 +178,7 @@ describe("Pagination element test suite", () => {
         [10, { previous: true, items: ["1", "...", "9", "10"], next: false }]
     ])("10 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 10;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 
     it.each([
@@ -186,7 +189,7 @@ describe("Pagination element test suite", () => {
         [20, { previous: true, items: ["1", "...", "19", "20", "21", "22"], next: false }]
     ])("22 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 22;
-        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber);
+        validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
     });
 });
 
@@ -200,7 +203,8 @@ describe("setLangForPagination", () => {
             next: {
                 href: "/"
             },
-            items: []
+            items: [],
+            landmarkLabel: "Page"
         } as PaginationData;
         const translations = {
             next: "Next",

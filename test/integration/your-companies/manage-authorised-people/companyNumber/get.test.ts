@@ -80,7 +80,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
             expect(response.text).toContain(lang.add_new_authorised_person);
             expect(response.text).toContain(lang.details_of_authorised_people);
             expect(response.text).toContain(lang.name);
-            expect(response.text).toContain(lang.digital_authorisation_status);
+            expect(response.text).toContain(lang.digital_authorisation);
             expect(response.text).toContain(lang.remove);
             expect(response.text).toContain(langCommon.go_back_to_your_companies);
             expect(response.text).not.toContain(langCommon.success);
@@ -95,7 +95,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // Given
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage1));
         // When
-        const response = await router.get(`${url}`);
+        const response = await router.get(`${url}?lang=en`);
         // Then
         companyAssociationsPage1.items.forEach((association) => {
             expect(response.text).toContain(association.userEmail);
@@ -108,7 +108,7 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         // Given
         getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociationsPage2));
         // When
-        const response = await router.get(`${url}?page=2`);
+        const response = await router.get(`${url}?page=2&lang=en`);
         // Then
         companyAssociationsPage2.items.forEach((association) => {
             expect(response.text).toContain(` (${association.userEmail})`);

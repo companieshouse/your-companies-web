@@ -1,10 +1,10 @@
 {
-    "digital_authorisation_not_restored": "[CY] Digital authorisation not restored",
-    "digital_authorisation_to_file_online_for": "[CY]’s digital authorisation to file online for",
-    "go_to_digitally_authorised_people": "[CY] Go to digitally authorised people",
-    "has_been_removed_from_the_list": "[CY] has been removed from the list of digitally authorised people for this company.",
-    "page_header": "[CY] What happens now you’ve not restored this person’s digital authorisation",
-    "to_let_them_know": "[CY] to let them know. We’ve also sent an email to any other people who are digitally authorised.",
-    "weve_emailed": "[CY] We’ve emailed",
-    "you_have_confirmed_you_do_not_want_to_restore": "[CY] You have confirmed you do not want to restore"
+    "digital_authorisation_not_restored": "Awdurdodiad digidol heb ei adfer",
+    "digital_authorisation_to_file_online_for": "i ffeilio ar-lein ar gyfer ",
+    "go_to_digitally_authorised_people": "Ewch i pobl sydd wedi’u hawdurdodi’n ddigidol",
+    "has_been_removed_from_the_list": "wedi’i dileu o’r rhestr o bobl sydd wedi’u hawdurdodi’n ddigidol ar gyfer y cwmni hwn.",
+    "page_header": "Beth sy’n digwydd nawr nad ydych wedi adfer awdurdodiad digidol y person hwn",
+    "to_let_them_know": "i roi gwybod iddynt. Rydym hefyd wedi anfon e-bost at unrhyw bobl eraill sydd wedi’u hawdurdodi’n ddigidol.",
+    "weve_emailed": "Rydym wedi e-bostio",
+    "you_have_confirmed_you_do_not_want_to_restore": "Rydych wedi cadarnhau nad ydych am adfer awdurdodiad digidol"
 }

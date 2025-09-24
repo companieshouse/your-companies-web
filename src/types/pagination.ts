@@ -5,6 +5,7 @@ export interface PageItem {
     href?: string;
     current?: boolean;
     ellipsis?: boolean;
+    visuallyHiddenText?: string;
 }
 
 export interface PaginationPreviousNext {
@@ -18,6 +19,7 @@ export interface PaginationData {
     previous?: PaginationPreviousNext;
     next?: PaginationPreviousNext;
     items: PageItem[];
+    landmarkLabel: string;
 }
 
 export interface Pagination {

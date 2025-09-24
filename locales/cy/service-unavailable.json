@@ -1,16 +1,16 @@
 {
     "contact_companies_house": "Cysylltu â Dŷ’r Cwmnïau",
-    "contact_us_link": "[CY] contact us",
-    "for_help": "[CY] for help.",
-    "if_the_problem_continues": "[CY] If the problem continues,",
+    "contact_us_link": "cysylltwch â ni",
+    "for_help": "am help.",
+    "if_the_problem_continues": "Os yw’r broblem yn parhau,",
     "if_you_have_questions": " os oes gennych unrhyw gwestiynau.",
     "page_header": "Mae’n ddrwg gennym, mae problem gyda’r gwasanaeth",
-    "sign_out_of_the_service": "[CY] sign out of the service, and then sign back in",
-    "sorry_something_went_wrong": "[CY] Sorry, something went wrong",
-    "title_csrf": "[CY] Sorry, something went wrong - Find and update company information - GOV.UK",
+    "sign_out_of_the_service": "allgofnodi o’r gwasanaeth, ac yna mewngofnodi eto",
+    "sorry_something_went_wrong": "Mae’n ddrwg gennym, aeth rhywbeth o’i le",
+    "title_csrf": "Mae’n ddrwg gennym, aeth rhywbeth o’i le - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "title_other": "Mae’n ddrwg gennym, mae problem gyda’r gwasanaeth - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
     "try_again_later": "Ceisiwch eto yn nes ymlaen.",
-    "try_the_following": "[CY] Try the following:",
-    "use_the_back_link": "[CY] use the back link to return to the previous screen and resubmit the information",
-    "we_have_not_been_able_to_save": "[CY] We have not been able to save the information you submitted on the previous screen. This may be because the page was inactive for too long, or because of a technical issue."
+    "try_the_following": "Rhowch gynnig ar y canlynol:",
+    "use_the_back_link": "defnyddio’r ddolen ’nôl’ i ddychwelyd i’r sgrin flaenorol ac ailgyflwyno’r wybodaeth",
+    "we_have_not_been_able_to_save": "Nid ydym wedi gallu cadw’r wybodaeth rydych wedi cyflwyno ar y sgrin flaenorol. Gall hyn fod oherwydd bod y dudalen yn anweithredol am rhy hir, neu oherwydd problem dechnegol."
 }

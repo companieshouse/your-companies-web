@@ -81,7 +81,8 @@
             </div>
             {% if message %}
                 {{ govukErrorMessage({
-                            text: message
+                            text: message,
+                            visuallyHiddenText: lang.visually_hidden_error
                         })
                     }}
             {% endif %}
@@ -164,7 +165,7 @@
                         },
                         {
                         key: {
-                            text: lang.digital_authorisation_status
+                            text: lang.digital_authorisation
                         },
                         value: {
                             html: tag
@@ -218,7 +219,7 @@
                             },
                             {
                             key: {
-                                text: lang.digital_authorisation_status
+                                text: lang.digital_authorisation
                             },
                             value: {
                                 html: awaitingConfirmation
@@ -243,12 +244,7 @@
 
                     {% if (association.status === "migrated" or association.status === "unauthorised") %}
 
-                        {% set notAuthorisedText %}
-                        <div class="govuk-!-padding-bottom-2">
-                            <strong class="govuk-tag govuk-tag--red">{{lang.not_authorised }}</strong>
-                        </div>
-                        {% endset %}
-
+                      
                         {% set visuallyHiddenRestoreText = lang.for %}
                         {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
 
@@ -284,10 +280,10 @@
                             },
                             {
                             key: {
-                                text: lang.digital_authorisation_status
+                                text: lang.digital_authorisation
                             },
                             value: {
-                                html: notAuthorisedText
+                                text: ""
                             },
                             actions: {
                                 items: [
