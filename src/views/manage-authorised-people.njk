@@ -244,6 +244,17 @@
 
                     {% if (association.status === "migrated" or association.status === "unauthorised") %}
 
+                        {% if association.status === "unauthorised" %}
+                            {% set notAuthorisedText %}
+                                <div class="govuk-!-padding-bottom-2">
+                                    <strong class="govuk-tag govuk-tag--red">{{ lang.not_authorised }}</strong>
+                                </div>
+                            {% endset %}
+                        {% else %}
+                            {% set notAuthorisedText %}
+                            {% endset %}
+                        {% endif %}
+
                       
                         {% set visuallyHiddenRestoreText = lang.for %}
                         {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
@@ -283,7 +294,7 @@
                                 text: lang.digital_authorisation
                             },
                             value: {
-                                text: ""
+                                html: notAuthorisedText
                             },
                             actions: {
                                 items: [
