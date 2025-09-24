@@ -16,6 +16,7 @@ import {
     searchForCompanyAssociationByEmail
 } from "../../../services/associationsService";
 import {
+    addToAssociationIdArr,
     deleteExtraData,
     getCompanyNameFromCollection,
     getSearchStringEmail,
@@ -259,6 +260,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             };
             return;
         }
+        addToAssociationIdArr(req?.session as Session, result.id);
 
         this.viewData.resultsFound = true;
         this.viewData.companyName = result.companyName;

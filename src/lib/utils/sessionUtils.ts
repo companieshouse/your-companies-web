@@ -194,3 +194,17 @@ export const deleteSearchStringEmail = (
         setExtraData(session, constants.SEARCH_STRING_EMAIL, emailSearchCollection);
     }
 };
+
+/**
+ *
+ * Retrieves the current association id array from the session, adds a new association id
+ *  and saves the updated array back to the session. This array is used in navigation checks.
+ *
+ * @param session - The current user session object.
+ * @param associationId - The email address to associate with the company number.
+ */
+export const addToAssociationIdArr = (session: Session, associationId: string): void => {
+    const associationIds: string[] = getExtraData(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID) || [];
+    associationIds.push(associationId);
+    setExtraData(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
+};
