@@ -142,14 +142,14 @@ describe("GET /your-companies", () => {
             expect(data).toBeTruthy();
             expect(resultData).toBeUndefined();
         });
-    it("should display 'Not digitally authorised' when association has status of migrated", async () => {
+    it("should display 'Restore authorisation' when association has status of migrated", async () => {
         // Give
         userAssociationsSpy.mockResolvedValue(migratedAssociation);
         getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
         // When
         const response = await router.get("/your-companies?lang=en");
         // Then
-        expect(response.text).toContain(en.not_authorised);
+        expect(response.text).toContain(en.restore_authorisation);
         expect(response.text).not.toContain(en.authorised);
     });
     it("should display 'Digitally authorised' when association has status of confirmed", async () => {
@@ -160,7 +160,6 @@ describe("GET /your-companies", () => {
         const response = await router.get("/your-companies");
         // Then
         expect(response.text).toContain(en.authorised);
-        expect(response.text).not.toContain(en.not_authorised);
     });
     test.each([
         { langVersion: "en", lang: en, langCommon: enCommon },
