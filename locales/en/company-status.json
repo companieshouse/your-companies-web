@@ -4,6 +4,7 @@
     "company-status-closed": "Closed",
     "company-status-converted-closed": "Converted / Closed",
     "company-status-dissolved": "Dissolved",
+    "company-status-inactive": "Inactive",
     "company-status-insolvency-proceedings": "Insolvency Proceedings",
     "company-status-liquidation": "Liquidation",
     "company-status-open": "Open",
