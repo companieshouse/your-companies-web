@@ -15,7 +15,8 @@
 {% for key, value in errors %}
     {% if key == "cancelPerson" %}
         {% set message = {
-            text: lang[value.text]
+            text: lang[value.text],
+            visuallyHiddenText: lang.visually_hidden_error
         } %}
         {% set title = lang.title_error + title %}
     {% endif %}

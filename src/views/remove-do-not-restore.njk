@@ -7,7 +7,7 @@
 
 {% set user_details = userName if userName else 
     userEmail %}
-{% set title = lang.confirm_you_do_not_want %}
+{% set title = lang.confirm_you_do_not_want + lang.title_end %}
 
 {% block back_link %}
     {% include "partials/back_link.njk" %}
@@ -18,9 +18,10 @@
 {% for key, value in errors %}
     {% if key == "confirmRemoval" %}
         {% set message = {
-            text: lang[value.text]
+            text: lang[value.text],
+            visuallyHiddenText: lang.visually_hidden_error
         } %}
-        {% set title = lang.title_error + lang.confirm_you_do_not_want %}
+        {% set title = lang.title_error + lang.confirm_you_do_not_want + lang.title_end %}
     {% endif %}
 {% endfor %}
 

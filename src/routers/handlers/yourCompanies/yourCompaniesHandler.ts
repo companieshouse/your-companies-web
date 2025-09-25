@@ -247,7 +247,8 @@ export class YourCompaniesHandler extends GenericHandler {
                 pageNumber,
                 confirmedUserAssociations.totalPages,
                 constants.LANDING_URL,
-                searchQuery
+                searchQuery,
+                lang
             );
 
             setLangForPagination(pagination, lang);

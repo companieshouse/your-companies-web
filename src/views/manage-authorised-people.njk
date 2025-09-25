@@ -13,9 +13,12 @@
 
 {% set message = null %}
 
+{% set errorTitlePrefix = "" %}
+
 {% for key, value in errors %}
     {% if key == "searchEmail" %}
         {% set message = lang[value.text] %}
+        {% set errorTitlePrefix = lang.title_error %}
     {% endif %}
 {% endfor %}
 
@@ -26,9 +29,9 @@
 {% endif %}
 
 {% if pagination and pagination.items | length %}
-    {% set title = lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
+    {% set title = errorTitlePrefix + lang.title_manage_authorised_people_start + " " + lang.title_page + pageNumber + lang.title_of + numberOfPages + ")" + lang.title_manage_authorised_people_finish %}
 {% else %}
-    {% set title = lang.title_manage_authorised_people %}
+    {% set title = errorTitlePrefix + lang.title_manage_authorised_people %}
 {% endif %}
 
 {% block back_link %}
@@ -78,7 +81,8 @@
             </div>
             {% if message %}
                 {{ govukErrorMessage({
-                            text: message
+                            text: message,
+                            visuallyHiddenText: lang.visually_hidden_error
                         })
                     }}
             {% endif %}
@@ -167,7 +171,7 @@
                         },
                         {
                         key: {
-                            text: lang.digital_authorisation_status
+                            text: lang.digital_authorisation
                         },
                         value: {
                             html: tag
@@ -221,7 +225,7 @@
                             },
                             {
                             key: {
-                                text: lang.digital_authorisation_status
+                                text: lang.digital_authorisation
                             },
                             value: {
                                 html: awaitingConfirmation
@@ -246,12 +250,18 @@
 
                     {% if (association.status === "migrated" or association.status === "unauthorised") %}
 
-                        {% set notAuthorisedText %}
-                        <div class="govuk-!-padding-bottom-2">
-                            <strong class="govuk-tag govuk-tag--red">{{lang.not_authorised }}</strong>
-                        </div>
-                        {% endset %}
+                        {% if association.status === "unauthorised" %}
+                            {% set notAuthorisedText %}
+                                <div class="govuk-!-padding-bottom-2">
+                                    <strong class="govuk-tag govuk-tag--red">{{ lang.not_authorised }}</strong>
+                                </div>
+                            {% endset %}
+                        {% else %}
+                            {% set notAuthorisedText %}
+                            {% endset %}
+                        {% endif %}
 
+                      
                         {% set visuallyHiddenRestoreText = lang.for %}
                         {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
 
@@ -287,7 +297,7 @@
                             },
                             {
                             key: {
-                                text: lang.digital_authorisation_status
+                                text: lang.digital_authorisation
                             },
                             value: {
                                 html: notAuthorisedText

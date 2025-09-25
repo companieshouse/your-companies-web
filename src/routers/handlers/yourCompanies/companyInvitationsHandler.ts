@@ -57,7 +57,7 @@ export class CompanyInvitationsHandler extends GenericHandler {
 
         if (userInvites.totalPages > 1) {
             const urlPrefix = getFullUrl(constants.COMPANY_INVITATIONS_URL);
-            const pagination = buildPaginationElement(pageNumber, userInvites.totalPages, urlPrefix, "");
+            const pagination = buildPaginationElement(pageNumber, userInvites.totalPages, urlPrefix, "", translations);
             setLangForPagination(pagination, translations);
             this.viewData.pagination = pagination;
             this.viewData.pageNumber = pageNumber;

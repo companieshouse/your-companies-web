@@ -1,10 +1,10 @@
 {
-    "asking_if_they_want_to_be_digitally_authorised": "[CY] asking if they want to be digitally authorised for this company.",
-    "email_address": "[CY] Email address",
-    "name": "[CY] Name",
-    "not_provided": "[CY] Not provided",
-    "page_header": "[CY] Send email invitation to be digitally authorised",
-    "send_email": "[CY] Send email",
-    "title": "[CY] Send email invitation to be digitally authorised - Find and update company information - GOV.UK",
-    "well_send_an_email_to": "[CY] We’ll send an email to"
+    "asking_if_they_want_to_be_digitally_authorised": "yn gofyn a ydyn nhw am gael eu hawdurdodi’n ddigidol ar gyfer y cwmni hwn.",
+    "email_address": "Cyfeiriad e-bost",
+    "name": "Enw",
+    "not_provided": "Heb ei ddarparu",
+    "page_header": "Anfonwch wahoddiad e-bost i gael ei awdurdodi’n ddigidol",
+    "send_email": "Anfon e-bost",
+    "title": "Anfonwch wahoddiad e-bost i gael ei awdurdodi’n ddigidol - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
+    "well_send_an_email_to": "Byddwn yn anfon e-bost at"
 }

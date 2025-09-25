@@ -188,7 +188,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
             if (companyAssociations.totalPages > 1) {
                 expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-                expect(buildPaginationElementSpy).toHaveBeenCalledWith(isValidPageNumber ? pageNumber : 1, companyAssociations.totalPages, modifiedOriginalUrl, "");
+                expect(buildPaginationElementSpy).toHaveBeenCalledWith(isValidPageNumber ? pageNumber : 1, companyAssociations.totalPages, modifiedOriginalUrl, "", translations);
                 expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
                 expect(setLangForPaginationSpy).toHaveBeenCalledWith(pagination, translations);
             }

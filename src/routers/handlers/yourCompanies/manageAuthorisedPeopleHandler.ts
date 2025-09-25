@@ -201,7 +201,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
         const href = getManageAuthorisedPeopleFullUrl(companyNumber);
 
         if (companyAssociations.totalPages > 1) {
-            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, href, "");
+            const pagination = buildPaginationElement(pageNumber, companyAssociations.totalPages, href, "", lang);
 
             setLangForPagination(pagination, lang);
             this.viewData.pagination = pagination;

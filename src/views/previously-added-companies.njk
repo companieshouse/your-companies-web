@@ -43,7 +43,8 @@
                     </div>
                     {% if message %}
                         {{ govukErrorMessage({
-                            text: message
+                            text: message,
+                            visuallyHiddenText: lang.visually_hidden_error
                         })
                     }}
                     {% endif %}
@@ -78,7 +79,7 @@
 
             {% set companyNameUpper = elem.company_name | upper %}
             {% set visuallyHiddenText = elem.company_name %}
-            {% set companyStatusUpper = elem.company_status | capitalize %}
+            {% set companyStatusUpper = lang["company-status-" + elem.company_status] %}
             {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
             {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-confirmed-company", params) %}
             {% set companyInfoLink = link(companyNameUpper, visuallyHiddenText, companyInformationUrl, "company-information", params) %}
@@ -115,7 +116,7 @@
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">
-                                    {{lang.digital_authorisation_status}}
+                                    {{lang.digital_authorisation}}
                                 </dt>
                                 <dd class="govuk-summary-list__value">
                                     <strong class="govuk-tag govuk-tag--green">
@@ -174,12 +175,16 @@
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">
-                                    {{lang.digital_authorisation_status}}
+                                    {{lang.digital_authorisation}}
                                 </dt>
                                 <dd class="govuk-summary-list__value">
+                           
+                                    {% if (elem.status == "unauthorised") %}
                                     <strong class="govuk-tag govuk-tag--red">
                                         {{lang.not_authorised}}
                                     </strong>
+                                     {% endif %}
+
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
                                     {{restore_link}}

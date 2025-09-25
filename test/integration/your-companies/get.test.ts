@@ -10,7 +10,8 @@ import {
     oneConfirmedAssociation,
     twentyConfirmedAssociations,
     userAssociations,
-    userAssociationsWithNumberOfInvitations
+    userAssociationsWithNumberOfInvitations,
+    unauthorisedAssociation
 } from "../../mocks/associations.mock";
 import en from "../../../locales/en/your-companies.json";
 import cy from "../../../locales/cy/your-companies.json";
@@ -142,16 +143,29 @@ describe("GET /your-companies", () => {
             expect(data).toBeTruthy();
             expect(resultData).toBeUndefined();
         });
-    it("should display 'Not digitally authorised' when association has status of migrated", async () => {
+    it("should display 'Restore authorisation' when association has status of migrated", async () => {
         // Give
         userAssociationsSpy.mockResolvedValue(migratedAssociation);
         getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
         // When
-        const response = await router.get("/your-companies");
+        const response = await router.get("/your-companies?lang=en");
         // Then
-        expect(response.text).toContain(en.not_authorised);
+        expect(response.text).toContain(en.restore_authorisation);
         expect(response.text).not.toContain(en.authorised);
+        expect(response.text).not.toContain(en.not_authorised);
     });
+
+    it("should display 'not authorised' when association has status of unauthorised", async () => {
+        // Give
+        userAssociationsSpy.mockResolvedValue(unauthorisedAssociation);
+        getInvitationsSpy.mockResolvedValue(oneConfirmedAssociation);
+        // When
+        const response = await router.get("/your-companies?lang=en");
+        // Then
+        expect(response.text).toContain(en.restore_authorisation);
+        expect(response.text).toContain(en.not_authorised);
+    });
+
     it("should display 'Digitally authorised' when association has status of confirmed", async () => {
         // Give
         userAssociationsSpy.mockResolvedValue(oneConfirmedAssociation);
@@ -160,7 +174,6 @@ describe("GET /your-companies", () => {
         const response = await router.get("/your-companies");
         // Then
         expect(response.text).toContain(en.authorised);
-        expect(response.text).not.toContain(en.not_authorised);
     });
     test.each([
         { langVersion: "en", lang: en, langCommon: enCommon },
