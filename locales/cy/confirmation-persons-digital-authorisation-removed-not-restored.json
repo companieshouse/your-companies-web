@@ -1,10 +1,11 @@
 {
     "digital_authorisation_not_restored": "Awdurdodiad digidol heb ei adfer",
-    "digital_authorisation_to_file_online_for": "i ffeilio ar-lein ar gyfer ",
-    "go_to_digitally_authorised_people": "Ewch i pobl sydd wedi’u hawdurdodi’n ddigidol",
+    "digital_authorisation_to_file_online_for": " i ffeilio ar-lein ar gyfer ",
+    "go_to_digitally_authorised_people": "Ewch i ‘pobl sydd wedi’u hawdurdodi’n ddigidol’",
     "has_been_removed_from_the_list": "wedi’i dileu o’r rhestr o bobl sydd wedi’u hawdurdodi’n ddigidol ar gyfer y cwmni hwn.",
     "page_header": "Beth sy’n digwydd nawr nad ydych wedi adfer awdurdodiad digidol y person hwn",
     "to_let_them_know": "i roi gwybod iddynt. Rydym hefyd wedi anfon e-bost at unrhyw bobl eraill sydd wedi’u hawdurdodi’n ddigidol.",
     "weve_emailed": "Rydym wedi e-bostio",
-    "you_have_confirmed_you_do_not_want_to_restore": "Rydych wedi cadarnhau nad ydych am adfer awdurdodiad digidol"
+    "you_have_confirmed_you_do_not_want_to_restore": "Rydych wedi cadarnhau nad ydych am adfer awdurdodiad digidol",
+    "final_paragraph_welsh_start": "Mae "
 }
