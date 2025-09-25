@@ -7,22 +7,25 @@
 
 <script nonce={{ nonce | dump | safe }}>
 
-(function trackFeedbackLink() {
-  const feedbackId = "tell-us-what-you-think";
-  const trackEvent = () => _paq.push(['trackEvent', 'Beta', 'Feedback']);
+    (function trackFeedbackLink() {
+        const feedbackId = "tell-us-what-you-think";
+        const trackEvent = () => {
+            if (typeof _paq !== 'undefined') {
+                _paq.push(['trackEvent', 'Beta', 'Feedback'])
+            }
+        };
 
-  const addFeedbackListener = () => {
-    const feedbackEl = document.getElementById(feedbackId);
-    if (feedbackEl) {
-      feedbackEl.addEventListener("click", trackEvent);
-    } 
-  };
+        const addFeedbackListener = () => {
+            const feedbackEl = document.getElementById(feedbackId);
+            if (feedbackEl) {
+                feedbackEl.addEventListener("click", trackEvent);
+            }
+        };
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", addFeedbackListener);
-  } else {
-    addFeedbackListener();
-  }
-})();
-
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", addFeedbackListener);
+        } else {
+            addFeedbackListener();
+        }
+    })();
 </script>
