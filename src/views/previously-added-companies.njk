@@ -22,8 +22,8 @@
                 text: lang.add_a_company,
                 href: buttonHref,
                 attributes: {
-                    id: "add-a-company-button",
-                    "data-event-id": "add-a-company-button"
+                    id: "add-a-company",
+                    "data-event-id": "add-a-company"
                 }
             })
         }}
@@ -81,7 +81,7 @@
             {% set visuallyHiddenText = elem.company_name %}
             {% set companyStatusUpper = lang["company-status-" + elem.company_status] %}
             {% set view_and_manage_link = link(lang.view_and_manage, visuallyHiddenText, viewAndManageUrl, "view-and-manage", params) %}
-            {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-company", params) %}
+            {% set remove_link = link(lang.remove, visuallyHiddenText, removeCompanyUrl, "remove-confirmed-company", params) %}
             {% set companyInfoLink = link(companyNameUpper, visuallyHiddenText, companyInformationUrl, "company-information", params) %}
 
             {% if elem.status == "confirmed" %}
@@ -141,8 +141,8 @@
                 {% set visuallyHiddenRemoveNotRestoreText = lang.digital_authorisation_for + elem.company_name %}
                 {% set visuallyHiddenRestoreText = lang.for + elem.company_name %}
 
-                {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeAuthorisationUrl, "remove-company", params) %}
-                {% set restore_link = link(lang.restore_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-digital-authorisation", params) %}
+                {% set remove_not_restore = link(lang.remove, visuallyHiddenRemoveNotRestoreText, removeAuthorisationUrl, "remove-migrated-or-unauthorised-company", params) %}
+                {% set restore_link = link(lang.restore_authorisation, visuallyHiddenRestoreText, restoreDigitalAuthUrl, "restore-migrated-or-unauthorised-company", params) %}
 
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
