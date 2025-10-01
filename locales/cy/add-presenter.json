@@ -1,7 +1,7 @@
 {
     "authorised_persons_email_address": "Beth yw cyfeiriad e-bost y person rydych am ei awdurdodi?",
     "email_address": "Cyfeiriad e-bost",
-    "errors_email_invalid": "Cofnodwch gyfeiriad e-bost yn y fformat cywir, fel enw@enghraifft.com",
+    "errors_email_invalid": "Cofnodwch gyfeiriad e-bost yn y fformat cywir, fel name@example.com",
     "errors_email_required": "Cofnodwch gyfeiriad e-bost y person awdurdodedig",
     "tell_us_the_email": "Dywedwch wrthym gyfeiriad e-bost y person rydych am ei awdurdodi’n ddigidol i ffeilio ar-lein ar gyfer y cwmni hwn.",
     "title_add_presenter": "Beth yw cyfeiriad e-bost y person rydych chi am ei awdurdodi? - Dod o hyd i a diweddaru gwybodaeth cwmni - GOV.UK",
