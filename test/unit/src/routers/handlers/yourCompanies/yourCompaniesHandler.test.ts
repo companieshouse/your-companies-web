@@ -251,7 +251,6 @@ describe("YourCompaniesHandler", () => {
                 lang,
                 viewInvitationsPageUrl,
                 cancelSearchHref: constants.LANDING_URL,
-                matomoAddCompanyGoalId: constants.MATOMO_ADD_COMPANY_GOAL_ID,
                 search: query.search,
                 errors: errors,
                 pageNumber,

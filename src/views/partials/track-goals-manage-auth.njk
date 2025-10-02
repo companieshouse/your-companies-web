@@ -1,0 +1,23 @@
+<script nonce={{ nonce | dump | safe }}>
+    initGoalTracking([
+        {
+            selector: 'a[data-event-id="add-new-authorised-person"]',
+            goalId: {{ MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID }}
+        }, {
+            selector: 'a[data-event-id="remove-yourself"]',
+            goalId: {{ MATOMO_REMOVE_YOURSELF_GOAL_ID }}
+        }, {
+            selector: 'a[data-event-id="remove-confirmed-person"]',
+            goalId: {{ MATOMO_REMOVE_CONFIRMED_PERSON_GOAL_ID }}
+        }, {
+            selector: 'a[data-event-id="remove-awaiting-approval-person"]',
+            goalId: {{ MATOMO_REMOVE_AWAITING_APPROVAL_PERSON_GOAL_ID }}
+        }, {
+            selector: 'a[data-event-id="remove-migrated-or-unauthorised-person"]',
+            goalId: {{ MATOMO_REMOVE_MIGRATED_OR_UNAUTHORISED_PERSON_GOAL_ID }}
+        }, {
+            selector: 'a[data-event-id="restore-migrated-or-unauthorised-person"]',
+            goalId: {{ MATOMO_RESTORE_MIGRATED_OR_UNAUTHORISED_PERSON_GOAL_ID }}
+        }
+    ]);
+</script>
