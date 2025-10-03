@@ -9,9 +9,7 @@ export function createUser () {
 
     const forename = faker.person.firstName();
     const surname = faker.person.lastName();
-    const displayNameOptions = [null, `${forename} ${surname}`];
     user.email = faker.internet.email({ firstName: `inugami_test_data_${forename}`, lastName: surname, provider: EMAIL_DOMAIN }).toLowerCase();
-    user.display_name = displayNameOptions[Math.floor(Math.random() * 2)];
 
     return user;
 }

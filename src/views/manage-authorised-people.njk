@@ -124,8 +124,6 @@
 
                 {% for association in companyAssociations.items %}
                     {% set userEmail = association.userEmail %}
-                    {% set defaultDisplayName = lang.not_provided %}
-                    {% set displayNameText =  providedTextOrDefault(association.displayName, defaultDisplayName, notProvided)%}
                     {% set removeHref = prepareHref(removeUrl, {
                         associationId: association.id,
                         companyNumber: association.companyNumber
@@ -156,20 +154,12 @@
                     },
                     rows: [
                         {
-                        key: {
-                            text: lang.name
-                        },
-                        value: {
-                            html: displayNameText
-                        }
-                        },
-                        {
-                        key: {
-                            text: lang.digital_authorisation
-                        },
-                        value: {
-                            html: tag
-                        }
+                            key: {
+                                text: lang.digital_authorisation
+                            },
+                            value: {
+                                html: tag
+                            }
                         }
                     ]
                     }) }}
@@ -211,14 +201,6 @@
                         rows: [
                             {
                             key: {
-                                text: lang.name
-                            },
-                            value: {
-                                html: displayNameText
-                            }
-                            },
-                            {
-                            key: {
                                 text: lang.digital_authorisation
                             },
                             value: {
@@ -246,16 +228,15 @@
 
                         {% if association.status === "unauthorised" %}
                             {% set notAuthorisedText %}
-                                <div class="govuk-!-padding-bottom-2">
-                                    <strong class="govuk-tag govuk-tag--red">{{ lang.not_authorised }}</strong>
-                                </div>
+                            <div class="govuk-!-padding-bottom-2">
+                                <strong class="govuk-tag govuk-tag--red">{{ lang.not_authorised }}</strong>
+                            </div>
                             {% endset %}
                         {% else %}
                             {% set notAuthorisedText %}
                             {% endset %}
                         {% endif %}
 
-                      
                         {% set visuallyHiddenRestoreText = lang.for %}
                         {% set restoreDigitalAuthUrl = restoreDigitalAuthBaseUrl + "/" + association.id %}
 
@@ -281,14 +262,6 @@
                             }
                         },
                         rows: [
-                            {
-                            key: {
-                                text: lang.name
-                            },
-                            value: {
-                                html: displayNameText
-                            }
-                            },
                             {
                             key: {
                                 text: lang.digital_authorisation
