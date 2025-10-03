@@ -5,6 +5,7 @@ import {
     userMail
 } from "../../../../mocks/session.mock";
 import {
+    addToAssociationIdArr,
     deleteExtraData,
     getAccessToken,
     getExtraData,
@@ -458,6 +459,46 @@ describe("Session Utils", () => {
             const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
             deleteSearchStringEmail(session, companyNumber);
             expect(setExtraDataMock).not.toHaveBeenCalled();
+            setExtraDataMock.mockRestore();
+        });
+    });
+
+    describe("addToAssociationIdArr", () => {
+        it("should add to the existing array if one exists in session", () => {
+            // Given
+            const session: Session = new Session();
+            const existingAssociatioIds = ["abc123"];
+            jest
+                .spyOn(sessionUtils, "getExtraData")
+                .mockReturnValueOnce(existingAssociatioIds);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const idToAdd = "xyz123";
+            // When
+            addToAssociationIdArr(session, idToAdd);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "navigationMiddlewareCheckAssociationId",
+                ["abc123", "xyz123"]
+            );
+            setExtraDataMock.mockRestore();
+        });
+
+        it("should create new array if none exists", () => {
+            // Given
+            const session: Session = new Session();
+            jest.spyOn(sessionUtils, "getExtraData").mockReturnValueOnce(undefined);
+            const setExtraDataMock = jest.spyOn(sessionUtils, "setExtraData");
+            const idToAdd = "xyz123";
+
+            // When
+            addToAssociationIdArr(session, idToAdd);
+            // Then
+            expect(setExtraDataMock).toHaveBeenCalledWith(
+                session,
+                "navigationMiddlewareCheckAssociationId",
+                ["xyz123"]
+            );
             setExtraDataMock.mockRestore();
         });
     });
