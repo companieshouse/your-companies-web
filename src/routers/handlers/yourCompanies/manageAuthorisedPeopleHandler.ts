@@ -41,7 +41,6 @@ interface ManageAuthorisedPeopleViewData extends ViewDataWithBackLink, Paginatio
     resendEmailUrl: string;
     removeUrl: string;
     restoreDigitalAuthBaseUrl: string;
-    matomoAddNewAuthorisedPersonGoalId: string;
     companyAssociations: AssociationList | undefined;
     changeCompanyAuthCodeUrl: string | undefined;
     resentSuccessEmail: string;
@@ -79,7 +78,6 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             resendEmailUrl: getFullUrl(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL),
             removeUrl: getFullUrl(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL),
             restoreDigitalAuthBaseUrl: getFullUrl(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL),
-            matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID,
             companyAssociations: undefined,
             pagination: undefined,
             pageNumber: 0,

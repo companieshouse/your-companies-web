@@ -43,9 +43,15 @@
 
             {{ govukInsetText({ text: lang.last_paragraph }) }}
 
+            {% set button_attributes = {
+                    role: "button",
+                    id: "go-to-your-companies-button",
+                    "data-event-id": "go-to-your-companies"
+            } %}
             {{ govukButton({
             text: lang.go_to_your_companies,
-            href: buttonHref
+            href: buttonHref,
+            attributes: button_attributes
             }) }}
 
         </div>

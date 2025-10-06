@@ -143,7 +143,6 @@ describe("ManageAuthorisedPeopleHandler", () => {
                 buttonHref: addPresenterFullUrl + constants.CLEAR_FORM_TRUE,
                 resendEmailUrl: manageAuthorisedPeopleEmailResentFullUrl,
                 removeUrl: companyAuthProtectedAuthenticationCodeRemoveFullUrl,
-                matomoAddNewAuthorisedPersonGoalId: constants.MATOMO_ADD_NEW_AUTHORISED_PERSON_GOAL_ID,
                 companyAssociations,
                 pagination,
                 changeCompanyAuthCodeUrl: undefined,

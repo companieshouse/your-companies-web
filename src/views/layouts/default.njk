@@ -13,13 +13,34 @@
                 ? ' govuk-frontend-supported'
                 : '');
 
-    function trackGoal(elementId, goalId) {
-        document
-            .getElementById(elementId)
-            .addEventListener("click", () => {
-                _paq.push(["trackGoal", goalId]);
-            });
-    }
+     function trackClickGoalBySelector(selector, goalId) {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((el) => {
+          el.addEventListener("click", () => {
+            if (typeof _paq !== "undefined") {
+              _paq.push(["trackGoal", goalId]);
+            }
+          });
+        });
+      }
+
+      function addGoalEventListeners(selectorGoals) {
+        (selectorGoals || []).forEach(({ selector, goalId }) => {
+          trackClickGoalBySelector(selector, goalId);
+        });
+      }
+
+      function initGoalTracking(selectorGoals) {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", () =>
+            addGoalEventListeners(selectorGoals)
+          );
+        } else {
+          addGoalEventListeners(selectorGoals);
+        }
+      }
+      
+
         </script>
         {% include "partials/cookie_consent_banner.njk" %}
         <a href="#main-page-content" class="govuk-skip-link">{{lang.skip_to_main_content}}</a>

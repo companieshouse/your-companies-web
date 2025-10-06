@@ -50,9 +50,15 @@
                     text: lang.if_you_have_a_company_number
                 }) }}
 
+                {% set details_attributes = {
+                    role: "link",
+                    id: "how-to-find-company-number-link",
+                    "data-event-id": "how-to-find-company-number"
+                } %}
                 {{ govukDetails({
                         summaryText: lang.how_do_i_find_the_company_number,
-                        html: lang.you_can_find_this_by_searching
+                        html: lang.you_can_find_this_by_searching,
+                        attributes: details_attributes
                     })
                 }}
 

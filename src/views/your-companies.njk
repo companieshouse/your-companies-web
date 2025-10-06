@@ -23,8 +23,7 @@
             {% include "no-companies-added.njk" %}
         {% endif %}
     </div>
-<script nonce={{ nonce | dump | safe }}>
-        trackGoal("add-a-company-button", {{matomoAddCompanyGoalId}});
-</script>
+    {% include "partials/track-goals-your-companies.njk" %}
+
 {% endblock %}
 
