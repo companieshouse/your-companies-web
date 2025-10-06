@@ -51,10 +51,18 @@
                                 text: lang.invited_by
                             },
                             {
-                                html: acceptHeader
+                                html: acceptHeader,
+                                attributes: {
+                                    id: "accept-invitation-link",
+                                    "data-event-id": "accept-invitation-link"
+                                }
                             },
                             {
-                                html: declineHeader
+                                html: declineHeader,
+                                attributes: {
+                                    id: "decline-invitation-link",
+                                    "data-event-id": "decline-invitation-link"
+                                }
                             }
                         ],
                         rows: rowsData
