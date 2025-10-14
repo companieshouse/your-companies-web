@@ -16,7 +16,14 @@ import logger, { createLogMessage } from "../../lib/Logger";
  */
 export const confirmCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const companyProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
-
+    if (!companyProfile) {
+        logger.error(createLogMessage(req.session, confirmCompanyControllerGet.name, `error: company profile was not found in session`));
+        throw new Error("company profile not found in session");
+    }
+    if (!companyProfile.registeredOfficeAddress) {
+        // log this issue but allow the user to continue
+        logger.error(createLogMessage(req.session, confirmCompanyControllerGet.name, `error: company ${companyProfile.companyNumber} does not have a registered office address`));
+    }
     setExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR, true);
 
     const viewData = await new ConfirmCorrectCompanyHandler().execute(req.lang, companyProfile);
@@ -33,7 +40,10 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response): 
  */
 export const confirmCompanyControllerPost = async (req: Request, res: Response): Promise<void> => {
     const company = getExtraData(req.session, constants.COMPANY_PROFILE);
-
+    if (!company) {
+        logger.error(createLogMessage(req.session, confirmCompanyControllerPost.name, `error: company profile was not found in session`));
+        throw new Error("company profile not found in session");
+    }
     const confirmedCompanyForAssociation: CompanyNameAndNumber = {
         companyNumber: company.companyNumber,
         companyName: company.companyName
