@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import * as url from "node:url";
-import { deleteExtraData, getExtraData } from "../lib/utils/sessionUtils";
+import { getExtraData } from "../lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import routeConfigs, { ParamGuard, RouteConfig } from "./navigation.middleware.config";
 import logger, { createLogMessage } from "../lib/Logger";
@@ -146,7 +146,6 @@ const handleSessionFlag = (
     if (config.sessionFlag) {
         const sessionFlag = getExtraData(req.session, config.sessionFlag);
         if (sessionFlag) {
-            deleteExtraData(req.session, config.sessionFlag);
             return true; // allow navigation
         }
         logger.error(createLogMessage(

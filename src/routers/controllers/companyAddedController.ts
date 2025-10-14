@@ -18,6 +18,7 @@ import logger, { createLogMessage } from "../../lib/Logger";
  */
 export const companyAddedControllerGet = async (req: Request, res: Response): Promise<void> => {
     deleteExtraData(req.session, constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+    deleteExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS);
     const viewData = await new CompanyAddSuccessHandler().execute(req);
     logger.info(createLogMessage(req.session, companyAddedControllerGet.name, "Rendering company added success page"));
     res.render(constants.COMPANY_ADD_SUCCESS_PAGE, viewData);

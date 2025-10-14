@@ -4,6 +4,7 @@ import {
 } from "../handlers/yourCompanies/confirmationYourDigitalAuthorisationRestoredHandler";
 import * as constants from "../../constants";
 import logger, { createLogMessage } from "../../lib/Logger";
+import { deleteExtraData } from "../../lib/utils/sessionUtils";
 
 /**
  * Controller to handle GET requests for the "Restore Your Digital Authorisation Success" page.
@@ -19,6 +20,7 @@ export const confirmationYourDigitalAuthorisationRestoredControllerGet = async (
 ): Promise<void> => {
     const handler = new ConfirmationYourDigitalAuthorisationRestoredHandler();
     const viewData = await handler.execute(req);
+    deleteExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS);
 
     logger.info(
         createLogMessage(
