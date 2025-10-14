@@ -113,7 +113,7 @@ export class AddCompanyHandler extends GenericHandler {
             };
         } else {
             const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
-            if (companyProfile.companyStatus.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE) {
+            if (companyProfile?.companyStatus?.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE) {
                 this.viewData.errors = {
                     companyNumber: {
                         text: constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
