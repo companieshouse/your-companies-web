@@ -28,10 +28,9 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             method: constants.GET,
             viewData: {},
             association: companyAssociations.items[0],
-            return: "view data",
-            condition: ""
+            return: "view data"
         }
-    ])("should return $return when method is $method $condition",
+    ])("should return $return when method is $method",
         async ({ association, method, viewData }) => {
             // Given
             const lang = "en";
@@ -47,17 +46,12 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             const companyNumber = association.companyNumber;
             const userEmail = association.userEmail;
             getExtraDataSpy
-                .mockReturnValueOnce(companyNumber)
-                .mockReturnValueOnce(undefined)
-                .mockReturnValueOnce(companyName)
                 .mockReturnValueOnce(association);
             const associationIdKey = `${constants.ASSOCIATIONS_ID}_${associationId}`;
             const manageAuthorisedPeopleFullUrl = `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
             getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(manageAuthorisedPeopleFullUrl);
             const getExtraDataKeys = [
-                constants.COMPANY_NAME,
                 constants.SEARCH_STRING_EMAIL,
-                constants.COMPANY_NUMBER,
                 associationIdKey
             ];
             const expectedViewData = {
@@ -83,7 +77,7 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             expect(response).toEqual(expectedViewData);
         });
 
-    it("should return fetch association when its not found in session", async () => {
+    it("should fetch the association when its not found in session", async () => {
         // Given
         const associationId = "123456789";
         const req: Request = mockParametrisedRequest({
@@ -94,10 +88,7 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
         getTranslationsForViewSpy.mockReturnValue(translations);
 
         getExtraDataSpy
-            .mockReturnValueOnce("companyNumber")
-            .mockReturnValueOnce(undefined)
-            .mockReturnValueOnce("companyName")
-            .mockReturnValueOnce(undefined);
+            .mockReturnValueOnce(undefined); // association not found
 
         getAssociationByIdSpy.mockResolvedValueOnce(companyAssociations.items[0]);
 
@@ -107,8 +98,8 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
         expect(response).toEqual({
             backLinkHref: undefined,
             cancelLinkHref: undefined,
-            companyName: "COMPANYNAME",
-            companyNumber: "companyNumber",
+            companyName: "THE POLISH BREWERY",
+            companyNumber: "NI038379",
             lang: {
                 key: "value",
                 not_provided: "Not provided"

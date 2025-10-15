@@ -61,13 +61,6 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
         );
         this.viewData.lang = translations;
 
-        const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
-        this.viewData.companyNumber = companyNumber;
-        deleteSearchStringEmail(req.session as Session, companyNumber);
-
-        const companyName = getExtraData(req.session, constants.COMPANY_NAME);
-        this.viewData.companyName = companyName.toUpperCase();
-
         const associationId = req.params.associationId;
         let association: Association | undefined = getExtraData(
             req.session,
@@ -92,7 +85,13 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
                 ? String(translations.not_provided)
                 : association.displayName;
 
+        const companyNumber = association.companyNumber;
+        this.viewData.companyNumber = companyNumber;
+        this.viewData.companyName = association.companyName.toUpperCase();
+
         const managePeopleUrl = getManageAuthorisedPeopleFullUrl(companyNumber);
+        deleteSearchStringEmail(req.session as Session, companyNumber);
+
         this.viewData.backLinkHref = this.viewData.cancelLinkHref = managePeopleUrl;
 
         if (method === constants.POST) {
@@ -100,7 +99,7 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
 
             const authorisedPerson: AuthorisedPerson = {
                 authorisedPersonEmailAddress: association.userEmail,
-                authorisedPersonCompanyName: companyName
+                authorisedPersonCompanyName: association.companyName
             };
 
             setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
