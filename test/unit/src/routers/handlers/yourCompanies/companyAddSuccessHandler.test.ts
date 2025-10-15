@@ -42,4 +42,18 @@ describe("CompanyAddSuccessHandler", () => {
         expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.COMPANY_ADD_SUCCESS_PAGE);
         expect(response).toEqual(viewData);
     });
+
+    it("should throw an error if referer contains /confirm-company-details", async () => {
+        // Given
+        const lang = "en";
+        const headers = { referer: `${constants.LANDING_URL}${constants.CONFIRM_COMPANY_DETAILS_URL}` };
+        const req: Request = mockParametrisedRequest({ session: new Session(), lang, headers });
+        const companyName = "TEST LTD.";
+        const companyNumber = "12345678";
+        getExtraDataSpy.mockReturnValue({ companyName, companyNumber });
+        const expectedErrorMessage = `Failed to add company with companyNumber '${companyNumber}': authentication code already present in session.`;
+
+        // Then
+        await expect(companyAddSuccessHandler.execute(req)).rejects.toThrow(expectedErrorMessage);
+    });
 });
