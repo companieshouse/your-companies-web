@@ -103,7 +103,7 @@ describe("confirmCompanyControllerPost", () => {
 
         getExtraDataSpy.mockReturnValue(undefined);
 
-        await expect(confirmCompanyControllerGet(req as Request, res as Response))
+        await expect(confirmCompanyControllerPost(req as Request, res as Response))
             .rejects.toThrow("company profile not found in session");
     });
 });
