@@ -20,7 +20,7 @@ export const confirmCompanyControllerGet = async (req: Request, res: Response): 
         logger.error(createLogMessage(req.session, confirmCompanyControllerGet.name, `error: company profile was not found in session`));
         throw new Error("company profile not found in session");
     }
-    if (!companyProfile.registeredOfficeAddress) {
+    if (!companyProfile.registeredOfficeAddress || Object.keys(companyProfile.registeredOfficeAddress).length === 0) {
         // log this issue but allow the user to continue
         logger.error(createLogMessage(req.session, confirmCompanyControllerGet.name, `error: company ${companyProfile.companyNumber} does not have a registered office address`));
     }

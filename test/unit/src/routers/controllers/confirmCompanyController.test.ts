@@ -56,6 +56,15 @@ describe("confirmCompanyControllerGet", () => {
         expect(renderMock).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledWith(constants.CONFIRM_COMPANY_PAGE, expectedViewData);
     });
+
+    it("should throw an error if a profile is not found in session", async () => {
+
+        getExtraDataSpy.mockReturnValue(undefined);
+
+        await expect(confirmCompanyControllerGet(req as Request, res as Response))
+            .rejects.toThrow("company profile not found in session");
+    });
+
 });
 
 describe("confirmCompanyControllerPost", () => {
@@ -89,4 +98,12 @@ describe("confirmCompanyControllerPost", () => {
             expect(redirectMock).toHaveBeenCalledTimes(1);
             expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
         });
+
+    it("should throw an error if a profile is not found in session", async () => {
+
+        getExtraDataSpy.mockReturnValue(undefined);
+
+        await expect(confirmCompanyControllerGet(req as Request, res as Response))
+            .rejects.toThrow("company profile not found in session");
+    });
 });
