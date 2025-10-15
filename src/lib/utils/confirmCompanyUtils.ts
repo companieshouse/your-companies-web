@@ -21,9 +21,9 @@ const formatRegisteredOfficeAddress = (address: CompanyProfile["registeredOffice
     locality: formatTitleCase(address?.locality),
     region: formatTitleCase(address?.region),
     country: formatTitleCase(address?.country),
-    postalCode: address?.postalCode?.toUpperCase() || "",
-    poBox: address?.poBox?.toUpperCase() || "",
-    premises: address?.premises || ""
+    postalCode: address?.postalCode?.toUpperCase() ?? "",
+    poBox: address?.poBox?.toUpperCase() ?? "",
+    premises: address?.premises ?? ""
 });
 
 export const formatTitleCase = (str: string | undefined): string =>
