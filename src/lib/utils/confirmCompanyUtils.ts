@@ -3,7 +3,7 @@ import { toReadableFormat } from "./date";
 import { FormattedCompanyProfile, OfficeAddress } from "../../types/utilTypes";
 
 export const formatForDisplay = (companyProfile: CompanyProfile, lang: string): FormattedCompanyProfile => {
-    const registeredOfficeAddress = formatRegisteredOfficeAddress(companyProfile.registeredOfficeAddress);
+    const registeredOfficeAddress = formatRegisteredOfficeAddress(companyProfile?.registeredOfficeAddress);
 
     return {
         companyNumber: companyProfile.companyNumber,
@@ -15,15 +15,15 @@ export const formatForDisplay = (companyProfile: CompanyProfile, lang: string): 
     };
 };
 
-const formatRegisteredOfficeAddress = (address: CompanyProfile["registeredOfficeAddress"]): OfficeAddress => ({
-    addressLineOne: formatTitleCase(address.addressLineOne),
-    addressLineTwo: formatTitleCase(address.addressLineTwo),
-    locality: formatTitleCase(address.locality),
-    region: formatTitleCase(address.region),
-    country: formatTitleCase(address.country),
-    postalCode: address.postalCode?.toUpperCase() || "",
-    poBox: address.poBox?.toUpperCase() || "",
-    premises: address.premises
+const formatRegisteredOfficeAddress = (address: CompanyProfile["registeredOfficeAddress"] | undefined): OfficeAddress => ({
+    addressLineOne: formatTitleCase(address?.addressLineOne),
+    addressLineTwo: formatTitleCase(address?.addressLineTwo),
+    locality: formatTitleCase(address?.locality),
+    region: formatTitleCase(address?.region),
+    country: formatTitleCase(address?.country),
+    postalCode: address?.postalCode?.toUpperCase() ?? "",
+    poBox: address?.poBox?.toUpperCase() ?? "",
+    premises: address?.premises ?? ""
 });
 
 export const formatTitleCase = (str: string | undefined): string =>
