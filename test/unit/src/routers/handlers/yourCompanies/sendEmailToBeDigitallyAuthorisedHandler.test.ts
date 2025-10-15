@@ -7,10 +7,12 @@ import { SendEmailToBeDigitallyAuthorisedHandler } from "../../../../../../src/r
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Session } from "@companieshouse/node-session-handler";
 import { companyAssociations } from "../../../../../mocks/associations.mock";
+import * as associationsService from "../../../../../../src/services/associationsService";
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
 const getManageAuthorisedPeopleFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getManageAuthorisedPeopleFullUrl");
+const getAssociationByIdSpy: jest.SpyInstance = jest.spyOn(associationsService, "getAssociationById");
 
 describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
     let sendEmailToBeDigitallyAuthorisedHandler: SendEmailToBeDigitallyAuthorisedHandler;
@@ -80,4 +82,40 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE);
             expect(response).toEqual(expectedViewData);
         });
+
+    it("should return fetch association when its not found in session", async () => {
+        // Given
+        const associationId = "123456789";
+        const req: Request = mockParametrisedRequest({
+            session: new Session(),
+            params: { associationId }
+        });
+        const translations = { key: "value", not_provided: "Not provided" };
+        getTranslationsForViewSpy.mockReturnValue(translations);
+
+        getExtraDataSpy
+            .mockReturnValueOnce("companyNumber")
+            .mockReturnValueOnce(undefined)
+            .mockReturnValueOnce("companyName")
+            .mockReturnValueOnce(undefined);
+
+        getAssociationByIdSpy.mockResolvedValueOnce(companyAssociations.items[0]);
+
+        // When
+        const response = await sendEmailToBeDigitallyAuthorisedHandler.execute(req, constants.GET);
+        // Then
+        expect(response).toEqual({
+            backLinkHref: undefined,
+            cancelLinkHref: undefined,
+            companyName: "COMPANYNAME",
+            companyNumber: "companyNumber",
+            lang: {
+                key: "value",
+                not_provided: "Not provided"
+            },
+            templateName: "send-email-invitation-to-be-digitally-authorised",
+            userDisplayName: "Not provided",
+            userEmail: "demo@ch.gov.uk"
+        });
+    });
 });

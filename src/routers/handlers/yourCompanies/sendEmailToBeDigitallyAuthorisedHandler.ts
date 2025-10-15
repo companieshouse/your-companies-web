@@ -6,9 +6,10 @@ import { deleteSearchStringEmail, getExtraData, setExtraData } from "../../../li
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { Association } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
-import { postInvitation } from "../../../services/associationsService";
+import { getAssociationById, postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "../../../types/associations";
 import { Session } from "@companieshouse/node-session-handler";
+import logger, { createLogMessage } from "../../../lib/Logger";
 
 /**
  * Interface representing the view data required for the
@@ -68,10 +69,22 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
         this.viewData.companyName = companyName.toUpperCase();
 
         const associationId = req.params.associationId;
-        const association: Association = getExtraData(
+        let association: Association | undefined = getExtraData(
             req.session,
             `${constants.ASSOCIATIONS_ID}_${associationId}`
         );
+
+        if (!association) {
+            logger.info(
+                createLogMessage(
+                    req.session,
+                    SendEmailToBeDigitallyAuthorisedHandler.name,
+                    `Association not found in session, fetching ${associationId} from api`
+                )
+            );
+            association = await getAssociationById(req, associationId);
+            setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+        }
 
         this.viewData.userEmail = association.userEmail;
         this.viewData.userDisplayName =
