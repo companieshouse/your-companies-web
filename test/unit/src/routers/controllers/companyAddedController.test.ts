@@ -41,8 +41,9 @@ describe("companyAddedControllerGet", () => {
         await companyAddedControllerGet(req as Request, res as Response);
         // Then
         expect(CompanyAddSuccessHandler).toHaveBeenCalledTimes(1);
-        expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
+        expect(deleteExtraDataSpy).toHaveBeenCalledTimes(2);
         expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+        expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS);
         expect(renderMock).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledWith(constants.COMPANY_ADD_SUCCESS_PAGE, expectedViewData);
     });

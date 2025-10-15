@@ -46,9 +46,10 @@ describe("removeAuthorisedPersonControllerGet", () => {
         await removeAuthorisedPersonControllerGet(req as Request, res as Response);
         // Then
         expect(RemoveAuthorisedPersonHandler).toHaveBeenCalledTimes(1);
-        expect(deleteExtraDataSpy).toHaveBeenCalledTimes(2);
+        expect(deleteExtraDataSpy).toHaveBeenCalledTimes(3);
         expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
         expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.USER_EMAILS_ARRAY);
+        expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE);
         expect(renderMock).toHaveBeenCalledTimes(1);
         expect(renderMock).toHaveBeenCalledWith(constants.REMOVE_AUTHORISED_PERSON_PAGE, expectedViewData);
     });
