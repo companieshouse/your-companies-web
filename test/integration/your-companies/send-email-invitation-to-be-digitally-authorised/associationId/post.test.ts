@@ -32,8 +32,6 @@ describe("POST /your-companies/send-email-invitation-to-be-digitally-authorised/
         async () => {
             // Given
             getExtraDataSpy
-                .mockReturnValueOnce("12345678")
-                .mockReturnValueOnce("Test Ltd.")
                 .mockReturnValueOnce(migratedAssociation.items[0]);
             // When
             await router.post(url);
@@ -45,11 +43,7 @@ describe("POST /your-companies/send-email-invitation-to-be-digitally-authorised/
 
     it("redirects to create company association controller with company number param in url", async () => {
         // Given
-        const companyNumber = migratedAssociation.items[0].companyNumber;
-        const companyName = migratedAssociation.items[0].companyName;
         const associationId = migratedAssociation.items[0].id;
-        when(getExtraDataSpy).calledWith(expect.any(Session), constants.COMPANY_NUMBER).mockReturnValue(companyNumber);
-        when(getExtraDataSpy).calledWith(expect.any(Session), constants.COMPANY_NAME).mockReturnValue(companyName);
         when(getExtraDataSpy).calledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${associationId}`).mockReturnValue(migratedAssociation.items[0]);
         // When
         const response = await router.post(url);

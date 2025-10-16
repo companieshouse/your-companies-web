@@ -34,8 +34,6 @@ describe("GET /your-companies/send-email-invitation-to-be-digitally-authorised/1
     it("should check session and auth before returning the send email to be digitally authorised page", async () => {
         // Given
         getExtraDataSpy
-            .mockReturnValueOnce("12345678")
-            .mockReturnValueOnce("Test Ltd.")
             .mockReturnValueOnce(migratedAssociation.items[0]);
         // When
         await router.get(url);
@@ -55,8 +53,7 @@ describe("GET /your-companies/send-email-invitation-to-be-digitally-authorised/1
             const companyNumber = migratedAssociation.items[0].companyNumber;
             const companyName = migratedAssociation.items[0].companyName;
             const associationId = migratedAssociation.items[0].id;
-            when(getExtraDataSpy).calledWith(expect.any(Session), constants.COMPANY_NUMBER).mockReturnValue(companyNumber);
-            when(getExtraDataSpy).calledWith(expect.any(Session), constants.COMPANY_NAME).mockReturnValue(companyName);
+
             when(getExtraDataSpy).calledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${associationId}`).mockReturnValue(migratedAssociation.items[0]);
             // When
             const response = await router.get(langVersion ? `${url}?lang=${langVersion}` : url);

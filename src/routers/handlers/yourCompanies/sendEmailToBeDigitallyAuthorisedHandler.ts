@@ -6,9 +6,10 @@ import { deleteSearchStringEmail, getExtraData, setExtraData } from "../../../li
 import { CompanyNameAndNumber, ViewDataWithBackLink } from "../../../types/utilTypes";
 import { Association } from "@companieshouse/api-sdk-node/dist/services/associations/types";
 import { getManageAuthorisedPeopleFullUrl } from "../../../lib/utils/urlUtils";
-import { postInvitation } from "../../../services/associationsService";
+import { getAssociationById, postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "../../../types/associations";
 import { Session } from "@companieshouse/node-session-handler";
+import logger, { createLogMessage } from "../../../lib/Logger";
 
 /**
  * Interface representing the view data required for the
@@ -60,18 +61,23 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
         );
         this.viewData.lang = translations;
 
-        const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
-        this.viewData.companyNumber = companyNumber;
-        deleteSearchStringEmail(req.session as Session, companyNumber);
-
-        const companyName = getExtraData(req.session, constants.COMPANY_NAME);
-        this.viewData.companyName = companyName.toUpperCase();
-
         const associationId = req.params.associationId;
-        const association: Association = getExtraData(
+        let association: Association | undefined = getExtraData(
             req.session,
             `${constants.ASSOCIATIONS_ID}_${associationId}`
         );
+
+        if (!association) {
+            logger.info(
+                createLogMessage(
+                    req.session,
+                    SendEmailToBeDigitallyAuthorisedHandler.name,
+                    `Association not found in session, fetching ${associationId} from api`
+                )
+            );
+            association = await getAssociationById(req, associationId);
+            setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+        }
 
         this.viewData.userEmail = association.userEmail;
         this.viewData.userDisplayName =
@@ -79,7 +85,13 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
                 ? String(translations.not_provided)
                 : association.displayName;
 
+        const companyNumber = association.companyNumber;
+        this.viewData.companyNumber = companyNumber;
+        this.viewData.companyName = association.companyName.toUpperCase();
+
         const managePeopleUrl = getManageAuthorisedPeopleFullUrl(companyNumber);
+        deleteSearchStringEmail(req.session as Session, companyNumber);
+
         this.viewData.backLinkHref = this.viewData.cancelLinkHref = managePeopleUrl;
 
         if (method === constants.POST) {
@@ -87,7 +99,7 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
 
             const authorisedPerson: AuthorisedPerson = {
                 authorisedPersonEmailAddress: association.userEmail,
-                authorisedPersonCompanyName: companyName
+                authorisedPersonCompanyName: association.companyName
             };
 
             setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);

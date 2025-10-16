@@ -7,10 +7,12 @@ import { SendEmailToBeDigitallyAuthorisedHandler } from "../../../../../../src/r
 import { mockParametrisedRequest } from "../../../../../mocks/request.mock";
 import { Session } from "@companieshouse/node-session-handler";
 import { companyAssociations } from "../../../../../mocks/associations.mock";
+import * as associationsService from "../../../../../../src/services/associationsService";
 
 const getExtraDataSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getExtraData");
 const getTranslationsForViewSpy: jest.SpyInstance = jest.spyOn(translations, "getTranslationsForView");
 const getManageAuthorisedPeopleFullUrlSpy: jest.SpyInstance = jest.spyOn(urlUtils, "getManageAuthorisedPeopleFullUrl");
+const getAssociationByIdSpy: jest.SpyInstance = jest.spyOn(associationsService, "getAssociationById");
 
 describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
     let sendEmailToBeDigitallyAuthorisedHandler: SendEmailToBeDigitallyAuthorisedHandler;
@@ -26,10 +28,9 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             method: constants.GET,
             viewData: {},
             association: companyAssociations.items[0],
-            return: "view data",
-            condition: ""
+            return: "view data"
         }
-    ])("should return $return when method is $method $condition",
+    ])("should return $return when method is $method",
         async ({ association, method, viewData }) => {
             // Given
             const lang = "en";
@@ -45,17 +46,12 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             const companyNumber = association.companyNumber;
             const userEmail = association.userEmail;
             getExtraDataSpy
-                .mockReturnValueOnce(companyNumber)
-                .mockReturnValueOnce(undefined)
-                .mockReturnValueOnce(companyName)
                 .mockReturnValueOnce(association);
             const associationIdKey = `${constants.ASSOCIATIONS_ID}_${associationId}`;
             const manageAuthorisedPeopleFullUrl = `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
             getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(manageAuthorisedPeopleFullUrl);
             const getExtraDataKeys = [
-                constants.COMPANY_NAME,
                 constants.SEARCH_STRING_EMAIL,
-                constants.COMPANY_NUMBER,
                 associationIdKey
             ];
             const expectedViewData = {
@@ -80,4 +76,37 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE);
             expect(response).toEqual(expectedViewData);
         });
+
+    it("should fetch the association when its not found in session", async () => {
+        // Given
+        const associationId = "123456789";
+        const req: Request = mockParametrisedRequest({
+            session: new Session(),
+            params: { associationId }
+        });
+        const translations = { key: "value", not_provided: "Not provided" };
+        getTranslationsForViewSpy.mockReturnValue(translations);
+
+        getExtraDataSpy
+            .mockReturnValueOnce(undefined); // association not found
+
+        getAssociationByIdSpy.mockResolvedValueOnce(companyAssociations.items[0]);
+
+        // When
+        const response = await sendEmailToBeDigitallyAuthorisedHandler.execute(req, constants.GET);
+        // Then
+        expect(response).toEqual({
+            backLinkHref: undefined,
+            cancelLinkHref: undefined,
+            companyName: "THE POLISH BREWERY",
+            companyNumber: "NI038379",
+            lang: {
+                key: "value",
+                not_provided: "Not provided"
+            },
+            templateName: "send-email-invitation-to-be-digitally-authorised",
+            userDisplayName: "Not provided",
+            userEmail: "demo@ch.gov.uk"
+        });
+    });
 });
