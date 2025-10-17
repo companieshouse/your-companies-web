@@ -35,74 +35,113 @@ export class AddCompanyHandler extends GenericHandler {
     }
 
     /**
-     * Executes the handler logic for GET and POST requests.
-     * @param req - The HTTP request object.
-     * @param res - The HTTP response object.
-     * @param method - The HTTP method (GET or POST).
-     * @returns A promise resolving to the view data.
-     */
+ * Executes the handler logic for GET and POST requests.
+ * @param req - The HTTP request object.
+ * @param res - The HTTP response object.
+ * @param method - The HTTP method (GET or POST).
+ * @returns A promise resolving to the view data.
+ */
     async execute (req: Request, res: Response, method: string): Promise<AddCompanyViewData> {
-        const referrer: string | undefined = req.get("Referrer");
+        const referrer = req.get("Referrer");
         const hrefB = getFullUrl(constants.ADD_COMPANY_URL);
-
         logger.info(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `${method} request to add company to user account`));
 
         try {
             this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_COMPANY_PAGE);
+            this.clearFormIfRequested(req);
 
-            const clearForm = req.query[constants.CLEAR_FORM] as string;
-            if (validateClearForm(clearForm)) {
-                deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
-                deleteExtraData(req.session, constants.COMPANY_PROFILE);
-            }
-
-            const getPostCandidate = (): string | undefined => {
-                const { companyNumber } = req.body;
-                setExtraData(req.session, constants.CURRENT_COMPANY_NUM, companyNumber);
-
-                if (typeof companyNumber === "string") {
-                    setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, companyNumber);
-                    deleteExtraData(req.session, constants.COMPANY_PROFILE);
-                }
-
-                return companyNumber;
-            };
-
-            const getGetCandidate = (): string | undefined => {
-                const invalidCompanyNumber = getExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
-                const savedProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
-                const currentCompanyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM);
-
-                if (typeof invalidCompanyNumber === "string") return invalidCompanyNumber;
-                if (typeof savedProfile?.companyNumber === "string") return savedProfile.companyNumber;
-                if (referrer && referrer.includes(hrefB) && currentCompanyNumber) return currentCompanyNumber;
-
-                return undefined;
-            };
-
-            const candidateCompanyNumber = method === constants.POST ? getPostCandidate() : getGetCandidate();
-
-            if (candidateCompanyNumber !== undefined) {
-                this.viewData.proposedCompanyNumber = candidateCompanyNumber;
-                await this.validateCompanyNumber(req, candidateCompanyNumber);
+            if (method === constants.POST) {
+                await this.handlePost(req);
+            } else {
+                await this.handleGet(req, referrer, hrefB);
             }
         } catch (err: any) {
-            const companyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM) as string | undefined;
-            if (err instanceof HttpError && [StatusCodes.NOT_FOUND, StatusCodes.BAD_REQUEST, StatusCodes.FORBIDDEN].includes(err.statusCode)) {
-                this.viewData.errors = {
-                    companyNumber: {
-                        text: companyNumber && companyNumber.length === 8
-                            ? constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
-                            : constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
-                    }
-                };
-            } else {
-                logger.error(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `Error adding a company to user account: ${err}`));
-                this.viewData.errors = this.processHandlerException(err);
-            }
+            this.handleError(req, err);
         }
 
-        return this.viewData;
+        return Promise.resolve(this.viewData);
+    }
+
+    /**
+ * Clears session data if the clear form flag is set in the request query.
+ * @param req - The HTTP request object.
+ */
+    private clearFormIfRequested (req: Request): void {
+        const clearForm = req.query[constants.CLEAR_FORM] as string;
+        if (validateClearForm(clearForm)) {
+            deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
+            deleteExtraData(req.session, constants.COMPANY_PROFILE);
+        }
+    }
+
+    /**
+ * Handles logic specific to POST requests, including setting and validating the company number.
+ * @param req - The HTTP request object.
+ */
+    private async handlePost (req: Request): Promise<void> {
+        const { companyNumber } = req.body;
+        setExtraData(req.session, constants.CURRENT_COMPANY_NUM, companyNumber);
+
+        if (typeof companyNumber === "string") {
+            setExtraData(req.session, constants.PROPOSED_COMPANY_NUM, companyNumber);
+            deleteExtraData(req.session, constants.COMPANY_PROFILE);
+        }
+
+        this.viewData.proposedCompanyNumber = companyNumber;
+        await this.validateCompanyNumber(req, companyNumber);
+    }
+
+    /**
+ * Handles logic specific to GET requests, including restoring and validating a previously entered company number.
+ * @param req - The HTTP request object.
+ * @param referrer - The HTTP referrer header value.
+ * @param hrefB - The full URL of the add company page.
+ */
+    private async handleGet (req: Request, referrer?: string, hrefB?: string): Promise<void> {
+        const invalidCompanyNumber = getExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
+        const savedProfile = getExtraData(req.session, constants.COMPANY_PROFILE);
+        const currentCompanyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM);
+
+        if (typeof invalidCompanyNumber === "string") {
+            await this.setAndValidateCompanyNumber(req, invalidCompanyNumber);
+        } else if (typeof savedProfile?.companyNumber === "string") {
+            await this.setAndValidateCompanyNumber(req, savedProfile.companyNumber);
+        } else if (referrer?.includes(hrefB!) && currentCompanyNumber) {
+            await this.setAndValidateCompanyNumber(req, currentCompanyNumber);
+        }
+    }
+
+    /**
+ * Sets the proposed company number in the view data and validates it.
+ * @param req - The HTTP request object.
+ * @param companyNumber - The company number to validate.
+ */
+    private async setAndValidateCompanyNumber (req: Request, companyNumber: string): Promise<void> {
+        this.viewData.proposedCompanyNumber = companyNumber;
+        await this.validateCompanyNumber(req, companyNumber);
+    }
+
+    /**
+ * Handles errors thrown during execution, including setting appropriate error messages in the view data.
+ * @param req - The HTTP request object.
+ * @param err - The error object caught during execution.
+ */
+    private handleError (req: Request, err: any): void {
+        const companyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM);
+
+        if (err instanceof HttpError &&
+            [StatusCodes.NOT_FOUND, StatusCodes.BAD_REQUEST, StatusCodes.FORBIDDEN].includes(err.statusCode)) {
+            this.viewData.errors = {
+                companyNumber: {
+                    text: companyNumber.length === 8
+                        ? constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
+                        : constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
+                }
+            };
+        } else {
+            logger.error(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `Error adding a company to user account: ${err}`));
+            this.viewData.errors = this.processHandlerException(err);
+        }
     }
 
     /**
