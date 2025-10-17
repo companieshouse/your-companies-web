@@ -3,6 +3,7 @@
     "enter_a_company_number": "Cofnodwch rif cwmni",
     "enter_a_company_number_for_a_company_that_is_active": "Cofnodwch rif cwmni ar gyfer cwmni sy’n weithredol",
     "enter_a_company_number_that_is_8_characters_long": "Cofnodwch rif cwmni sy’n 8 nod o hyd",
+    "enter_a_company_number_in_correct_format": "Cofnodwch rif y cwmni yn y fformat cywir, gyda llythrennau mawr neu rifau, fel 12345678 neu SC123456. Peidiwch â defnyddio bylchau neu nodau arbennig.",
     "how_do_i_find_the_company_number": "Sut ydw i’n dod o hyd i rif y cwmni?",
     "if_you_have_a_company_number": "Os oes gennych rif cwmni sy’n 7 nod neu lai, cofnodwch sero ar y dechrau fel ei fod yn 8 nod y cyfan. Er enghraifft, os yw’n 12345, cofnodwch 00012345.",
     "this_company_has_already_been_added_to_your_account": "Mae’r cwmni hwn eisoes wedi’i ychwanegu at eich cyfrif",

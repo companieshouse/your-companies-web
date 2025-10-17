@@ -3,6 +3,7 @@
     "enter_a_company_number": "Enter a company number",
     "enter_a_company_number_for_a_company_that_is_active": "Enter a company number for a company that is active",
     "enter_a_company_number_that_is_8_characters_long": "Enter a company number that is 8 characters long",
+    "enter_a_company_number_in_correct_format": "Enter a company number in the correct format, with upper case letters or numbers, like 12345678 or SC123456. Do not use spaces or special characters.",
     "how_do_i_find_the_company_number": "How do I find the company number?",
     "if_you_have_a_company_number": "If you have a company number that’s 7 characters or less, enter zeros at the start so that it’s 8 characters in total. For example, if it’s 12345, enter 00012345.",
     "this_company_has_already_been_added_to_your_account": "This company has already been added to your account",

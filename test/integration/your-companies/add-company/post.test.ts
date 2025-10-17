@@ -141,8 +141,7 @@ describe("POST /your-companies/add-company", () => {
             lang: en,
             langCommon: enCommon,
             condition: "company number is incorrect",
-            httpError: createError(StatusCodes.BAD_REQUEST),
-            message: en.enter_a_company_number_that_is_8_characters_long,
+            message: en.enter_a_company_number_in_correct_format,
             companyNumber: "%£$£$£5343"
         },
         {
@@ -151,8 +150,7 @@ describe("POST /your-companies/add-company", () => {
             lang: cy,
             langCommon: cyCommon,
             condition: "company number is incorrect",
-            httpError: createError(StatusCodes.BAD_REQUEST),
-            message: cy.enter_a_company_number_that_is_8_characters_long,
+            message: cy.enter_a_company_number_in_correct_format,
             companyNumber: "%£$£$£5343"
         },
         {

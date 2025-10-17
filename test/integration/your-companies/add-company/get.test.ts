@@ -79,12 +79,11 @@ describe("GET /your-companies/add-company", () => {
         // Given
         const expectedInput = "bad num";
         session.setExtraData(PROPOSED_COMPANY_NUM, expectedInput);
-        companyProfileSpy.mockRejectedValue(createError(StatusCodes.BAD_REQUEST));
         // When
         const response = await router.get("/your-companies/add-company?lang=en");
         // Then
         expect(response.text).toContain(expectedInput);
-        expect(response.text).toContain("Enter a company number that is 8 characters long");
+        expect(response.text).toContain("Enter a company number in the correct format, with upper case letters or numbers, like 12345678 or SC123456. Do not use spaces or special characters.");
     });
 
     it("should not display input when cf=true is passed in url", async () => {

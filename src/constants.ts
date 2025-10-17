@@ -140,6 +140,7 @@ export const ERRORS_EMAIL_NOT_PROVIDED = "errors_email_not_provided";
 export const SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION = "select_yes_if_you_want_to_cancel_authorisation";
 export const SELECT_IF_YOU_CONFIRM_THAT_YOU_HAVE_READ = "select_if_you_confirm_that_you_have_read";
 export const COMPANY_NUMBER_MUST_ONLY_INCLUDE = "company_number_must_only_include";
+export const COMPANY_NUMBER_IN_CORRECT_FORMAT = "enter_a_company_number_in_correct_format";
 export const ENTER_A_COMPANY_NUMBER_OR_PART = "enter_a_company_number_or_part";
 export const YOU_MUST_SELECT_AN_OPTION = "you_must_select_an_option";
 export const CONFIRM_YOU_HAVE_READ = "confirm_that_you_have_read";
