@@ -267,6 +267,25 @@ describe("AddCompanyHandler", () => {
                 backLinkHref: constants.LANDING_URL,
                 lang: { test: "Test" },
                 proposedCompanyNumber: validActiveCompanyProfile.companyNumber,
+                errors: { companyNumber: { text: constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE } }
+            }
+        },
+        {
+            condition: "company profile not 8 characters in length",
+            referer: "/your-companies",
+            method: constants.POST,
+            body: { companyNumber: "1234567" },
+            query: { [constants.CLEAR_FORM]: "true" },
+            httpError: createError(StatusCodes.NOT_FOUND),
+            isAssociated: {
+                state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
+                associationId: "12345678"
+            },
+            viewData: {
+                templateName: constants.ADD_COMPANY_PAGE,
+                backLinkHref: constants.LANDING_URL,
+                lang: { test: "Test" },
+                proposedCompanyNumber: "1234567",
                 errors: { companyNumber: { text: constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG } }
             }
         },
@@ -286,7 +305,7 @@ describe("AddCompanyHandler", () => {
                 backLinkHref: constants.LANDING_URL,
                 lang: { test: "Test" },
                 proposedCompanyNumber: validActiveCompanyProfile.companyNumber,
-                errors: { companyNumber: { text: constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG } }
+                errors: { companyNumber: { text: constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE } }
             }
         },
         {
@@ -305,7 +324,7 @@ describe("AddCompanyHandler", () => {
                 backLinkHref: constants.LANDING_URL,
                 lang: { test: "Test" },
                 proposedCompanyNumber: validActiveCompanyProfile.companyNumber,
-                errors: { companyNumber: { text: constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG } }
+                errors: { companyNumber: { text: constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE } }
             }
         },
         {
@@ -347,10 +366,15 @@ describe("AddCompanyHandler", () => {
             );
             getTranslationsForViewSpy.mockReturnValue({ test: "Test" });
             validateClearFormSpy.mockReturnValue(true);
-            getExtraDataSpy
-                .mockReturnValueOnce(proposedCompanyNumber)
-                .mockReturnValueOnce(companyProfile)
-                .mockReturnValueOnce(currentCompanyNumber);
+
+            if (httpError) {
+                getExtraDataSpy.mockReturnValueOnce(body.companyNumber);
+            } else {
+                getExtraDataSpy
+                    .mockReturnValueOnce(proposedCompanyNumber)
+                    .mockReturnValueOnce(companyProfile)
+                    .mockReturnValueOnce(currentCompanyNumber);
+            }
             isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
             if (!httpError) {
                 getCompanyProfileSpy.mockReturnValue(companyProfile);
