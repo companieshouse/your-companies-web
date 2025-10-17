@@ -9,7 +9,7 @@ import { setExtraData, getExtraData, deleteExtraData } from "../../../lib/utils/
 import { isOrWasCompanyAssociatedWithUser } from "../../../services/associationsService";
 import { getTranslationsForView } from "../../../lib/utils/translations";
 import { ViewDataWithBackLink } from "../../../types/utilTypes";
-import { validateClearForm } from "../../../lib/validation/generic";
+import { validateClearForm, validateCompanyNumberSearchString } from "../../../lib/validation/generic";
 import { AssociationState, AssociationStateResponse } from "../../../types/associations";
 import { getFullUrl } from "../../../lib/utils/urlUtils";
 import { HttpError } from "http-errors";
@@ -109,6 +109,14 @@ export class AddCompanyHandler extends GenericHandler {
             this.viewData.errors = {
                 companyNumber: {
                     text: constants.ENTER_A_COMPANY_NUMBER
+                }
+            };
+        } else if (!validateCompanyNumberSearchString(companyNumber)) {
+            logger.info(createLogMessage(req.session, `${AddCompanyHandler.name}`, `Company number regex validation failed for ${companyNumber}`));
+
+            this.viewData.errors = {
+                companyNumber: {
+                    text: constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE
                 }
             };
         } else {
