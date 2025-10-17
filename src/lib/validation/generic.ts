@@ -52,6 +52,7 @@ export function validateCompanyNumberSearchString (str: string): boolean {
 
 /**
  * Validates if the given string matches the company number search format.
+ * This uses the full 6-10 char regex.
  * @param str - The string to validate.
  * @returns True if the string matches the regex, otherwise false.
  */

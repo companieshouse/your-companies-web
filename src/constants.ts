@@ -212,9 +212,9 @@ export const ITEMS_PER_PAGE = 10;
  * The company number contains 6 to 10 characters, consisting only of uppercase letters and numbers.
  * At least one character must be entered for the search. The regex is /^[0-9A-Z]{1,10}$/
  */
-
 export const COMPANY_NUMBER_SEARCH_VALIDATION_REGEX = /^[0-9A-Z]{1,10}$/;
-// 6 to 10 char company number validation regex
+
+// Full company number validation regex
 export const COMPANY_NUMBER_FULL_SEARCH_VALIDATION_REGEX = /^[0-9A-Z]{6,10}$/;
 
 export const NUMBER_OF_DAYS_INVITATION_IS_VALID = 7;
