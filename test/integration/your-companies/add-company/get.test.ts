@@ -84,7 +84,7 @@ describe("GET /your-companies/add-company", () => {
         const response = await router.get("/your-companies/add-company?lang=en");
         // Then
         expect(response.text).toContain(expectedInput);
-        expect(response.text).toContain("Enter a company number that is 8 characters long");
+        expect(response.text).toContain("Enter a company number for a company that is active");
     });
 
     it("should not display input when cf=true is passed in url", async () => {
