@@ -84,10 +84,11 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             }
         } catch (err: any) {
+            const companyNumber = getExtraData(req.session, constants.CURRENT_COMPANY_NUM);
             if (err instanceof HttpError && [StatusCodes.NOT_FOUND, StatusCodes.BAD_REQUEST, StatusCodes.FORBIDDEN].includes(err.statusCode)) {
                 this.viewData.errors = {
                     companyNumber: {
-                        text: constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
+                        text: companyNumber.length === 8 ? constants.ENTER_A_COMPANY_NUMBER_FOR_A_COMPANY_THAT_IS_ACTIVE : constants.ENTER_A_COMPANY_NUMBER_THAT_IS_8_CHARACTERS_LONG
                     }
                 };
             } else {
