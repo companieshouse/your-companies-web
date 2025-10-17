@@ -259,6 +259,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
             return;
         }
         addToAssociationIdArr(req?.session as Session, result.id);
+        setExtraData(req.session, `${constants.ASSOCIATIONS_ID}_${result.id}`, result);
 
         this.viewData.resultsFound = true;
         this.viewData.companyName = result.companyName;
