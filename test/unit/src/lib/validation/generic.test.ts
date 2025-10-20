@@ -1,5 +1,6 @@
 import {
     validateCompanyNumberSearchString,
+    validateFullCompanyNumberSearchString,
     validateEmailString,
     validatePageNumber,
     validateClearForm
@@ -26,6 +27,22 @@ describe("Should validate emails", () => {
         { email: "anystring", expected: false }
     ])("should return $expected for $email", ({ email, expected }) => {
         expect(validateEmailString(email)).toEqual(expected);
+    });
+});
+
+describe("validateFullCompanyNumberSearchString", () => {
+    test.each([
+        // Given
+        { returnValue: true, condition: "the search string is correct", searchString: "ABC1234" },
+        { returnValue: false, condition: "the search string has invalid chars", searchString: "nald$%" },
+        { returnValue: false, condition: "the search string is empty", searchString: "" },
+        { returnValue: false, condition: "the search string is only 5 char", searchString: "A1234" },
+        { returnValue: false, condition: "the search string is greater than 10 char", searchString: "AB123456789" }
+    ])("should return $returnValue if $condition", ({ returnValue, searchString }) => {
+        // When
+        const result = validateFullCompanyNumberSearchString(searchString);
+        // Then
+        expect(result).toEqual(returnValue);
     });
 });
 
