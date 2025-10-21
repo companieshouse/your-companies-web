@@ -51,6 +51,24 @@ export function validateCompanyNumberSearchString (str: string): boolean {
 }
 
 /**
+ * Validates if the given string matches the company number search format.
+ * This uses the full 6-10 char regex.
+ * @param str - The string to validate.
+ * @returns True if the string matches the regex, otherwise false.
+ */
+export function validateFullCompanyNumberSearchString (str: string): boolean {
+    const searchSchema = z.string()
+        .trim()
+        .regex(constants.COMPANY_NUMBER_FULL_SEARCH_VALIDATION_REGEX);
+    try {
+        searchSchema.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+/**
  * Validates if the given page number is within the valid range.
  * @param pageNum - The page number to validate.
  * @param maxNumOfPages - The maximum allowed page number.
