@@ -7,17 +7,11 @@
 {% set title = lang.page_header + lang.title_end %}
 
 {% block back_link %}
-    <div role="navigation" aria-label="{{lang.go_back_to_your_companies}}">
-        {{ govukBackLink({
-                text: lang.go_back_to_your_companies,
-                href: backLinkHref,
-                attributes: {
-                    id: "back-link-to-your-companies-page",
-                    "data-event-id": "back-link-to-your-companies-page"
-                }
-            })
-        }}
-    </div>
+    {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref, attributes: {
+            id: "back-link-to-your-companies-page",
+            "data-event-id": "back-link-to-your-companies-page",
+            "aria-label": lang.go_back_to_your_companies
+        } }) }}
 {% endblock %}
 
 {% block main_content %}
