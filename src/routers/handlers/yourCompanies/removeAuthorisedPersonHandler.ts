@@ -138,7 +138,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     private async handleUnconfirmedRemoval (req: Request, res: Response): Promise<void> {
         await this.populateViewData(req);
         if (this.viewData.currentStatus === AssociationStatus.AWAITING_APPROVAL) {
-            this.viewData.errors = { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } };
+            this.viewData.errors = { confirmRemoval: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } };
             setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
         } else if (this.viewData.currentStatus === AssociationStatus.MIGRATED) {
             this.viewData.errors = { confirmRemoval: { text: constants.CONFIRM_YOU_HAVE_READ } };

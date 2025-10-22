@@ -78,7 +78,9 @@ describe("GET /your-companies/add-company", () => {
     it("should validate and display invalid input and error if input stored in session", async () => {
         // Given
         const expectedInput = "bad num";
+        const shortCompanyNum = "1234567";
         session.setExtraData(PROPOSED_COMPANY_NUM, expectedInput);
+        session.setExtraData(constants.CURRENT_COMPANY_NUM, shortCompanyNum);
         companyProfileSpy.mockRejectedValue(createError(StatusCodes.BAD_REQUEST));
         // When
         const response = await router.get("/your-companies/add-company?lang=en");

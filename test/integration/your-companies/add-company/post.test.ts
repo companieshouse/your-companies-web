@@ -160,7 +160,7 @@ describe("POST /your-companies/add-company", () => {
             langCommon: enCommon,
             condition: "there is no company with provided number",
             httpError: createError(StatusCodes.NOT_FOUND),
-            message: en.enter_a_company_number_that_is_8_characters_long,
+            message: en.enter_a_company_number_for_a_company_that_is_active,
             companyNumber: "11111111"
         },
         {
@@ -170,7 +170,7 @@ describe("POST /your-companies/add-company", () => {
             langCommon: cyCommon,
             condition: "there is no company with provided number",
             httpError: createError(StatusCodes.NOT_FOUND),
-            message: cy.enter_a_company_number_that_is_8_characters_long,
+            message: cy.enter_a_company_number_for_a_company_that_is_active,
             companyNumber: "11111111"
         },
         {

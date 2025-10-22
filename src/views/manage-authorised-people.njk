@@ -36,12 +36,11 @@
 
 {% block back_link %}
 
-    <div role="navigation" aria-label="{{lang.go_back_to_your_companies}}">
-        {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref, attributes: {
-                id: "back-link-to-your-companies-page",
-                "data-event-id": "back-link-to-previous-page"
-            } }) }}
-    </div>
+    {{ govukBackLink({text: lang.go_back_to_your_companies, href: backLinkHref, attributes: {
+            id: "back-link-to-your-companies-page",
+            "data-event-id": "back-link-to-previous-page",
+            "aria-label": lang.go_back_to_your_companies
+        } }) }}
 
 {% endblock %}
 
@@ -73,7 +72,7 @@
     <form method="post" action="{{manageAuthorisedPeopleUrl}}" novalidate>
         {% include "partials/csrf_token.njk" %}
         <div class="{{formClasses}}">
-            <label class="govuk-label govuk-label--m" for="search">
+            <label class="govuk-label govuk-label--m" for="searchEmail">
                 {{lang.search_authorised_people}}
             </label>
             <div id="event-name-hint" class="govuk-hint">
@@ -87,7 +86,7 @@
                     }}
             {% endif %}
             <div id="search-input-group">
-                <input class="{{inputClasses}}" id="search" name="searchEmail" type="email" aria-describedby="event-name-hint" value="{{searchEmail}}">
+                <input class="{{inputClasses}}" id="searchEmail" name="searchEmail" type="email" aria-describedby="event-name-hint" value="{{searchEmail}}">
                 <button type="submit" name="action" value="trySearch" class="govuk-button govuk-button--secondary" role="button" data-module="govuk-button" aria-label="{{lang.search}}" data-event-id="your-companies-search-for-company-button" id="your-companies-search-for-company-button">{{lang.search}}
                 </button>
                 <a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-19  govuk-!-margin-left-2" href="{{cancelSearchHref}}" id="manage-users-cancel-search-link" data-event-id="manage-users-cancel-search-link">{{lang.clear_search}}</a>

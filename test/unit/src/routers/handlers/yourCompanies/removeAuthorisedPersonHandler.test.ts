@@ -163,7 +163,7 @@ describe("RemoveAuthorisedPersonHandler", () => {
 
             getExtraDataSpy
                 .mockReturnValueOnce(singleAwaitingApprovalAssociation)
-                .mockReturnValueOnce({ cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } });
+                .mockReturnValueOnce({ confirmRemoval: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } });
 
             const translations = { key: "value" };
             getTranslationsForViewSpy.mockReturnValueOnce(translations);
@@ -177,7 +177,7 @@ describe("RemoveAuthorisedPersonHandler", () => {
                 cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
                 currentStatus: singleAwaitingApprovalAssociation.status,
                 userName: singleAwaitingApprovalAssociation.userEmail,
-                errors: { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
+                errors: { confirmRemoval: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
             };
             const viewData = await removeAuthorisedPersonHandler.execute(req);
             expect(viewData).toEqual(expectedViewData);
@@ -280,7 +280,7 @@ describe("RemoveAuthorisedPersonHandler", () => {
                 reason: "cancellation unconfirmed",
                 templateName: constants.CANCEL_PERSON_PAGE,
                 association: singleAwaitingApprovalAssociation,
-                errors: { cancelPerson: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
+                errors: { confirmRemoval: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
             }
         ])("should re-render page by calling res.render with correct template and viewData with errors populated if $reason",
             async ({ templateName, association, errors }) => {
