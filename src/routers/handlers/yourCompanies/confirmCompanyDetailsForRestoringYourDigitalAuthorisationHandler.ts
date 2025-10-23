@@ -53,7 +53,7 @@ export class ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler ex
         companyNumber: string
     ): Promise<ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationViewData> {
         const localesServicei18nCh = i18nCh.getInstance();
-        const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
+        const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber, req.requestId);
 
         setExtraData(req.session, `${constants.COMPANY_PROFILE}_${companyNumber}`, companyProfile);
 

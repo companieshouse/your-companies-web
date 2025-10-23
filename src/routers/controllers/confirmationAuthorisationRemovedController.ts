@@ -11,7 +11,7 @@ export const confirmationAuthorisationRemovedControllerGet = async (
     const viewData = await handler.execute(req);
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationAuthorisationRemovedControllerGet.name,
             "Rendering confirmation authorisation removed page"
         )

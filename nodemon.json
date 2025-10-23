@@ -1,5 +1,5 @@
 {
-    "exec": "ts-node ./src/bin/nodemon-entry.ts",
+    "exec": "ts-node --files ./src/bin/nodemon-entry.ts",
     "ext": "ts,html,njk,json,js",
     "watch": ["./src", "./locales", "package.json"],
     "events": {

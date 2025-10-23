@@ -149,7 +149,7 @@ const handleSessionFlag = (
             return true; // allow navigation
         }
         logger.error(createLogMessage(
-            req.session,
+            req,
             navigationMiddleware.name,
             `${req.path} requires a session flag ${JSON.stringify(config.sessionFlag)} with value 'true' but got ${JSON.stringify(sessionFlag)} instead - redirecting to the default page`
         ));
@@ -179,7 +179,7 @@ export const navigationMiddleware = async (
     const config = findConfigForPath(req.path);
     if (!config) {
         logger.info(createLogMessage(
-            req.session,
+            req,
             navigationMiddleware.name,
             `${req.path} has no navigation middleware config - calling next()`
         ));
@@ -197,14 +197,14 @@ export const navigationMiddleware = async (
     if (refererPath === currentPath) {
         if (!areParamsValid(currentParams, refererParamGuards, req.session)) {
             logger.error(createLogMessage(
-                req.session,
+                req,
                 navigationMiddleware.name,
                 `${req.path} has invalid parameters: ${JSON.stringify(currentParams)} - redirecting to the default page`
             ));
             return res.redirect(config.defaultRedirect);
         }
         logger.info(createLogMessage(
-            req.session,
+            req,
             navigationMiddleware.name,
             `${req.path} has valid parameters - calling next()`
         ));
@@ -216,7 +216,7 @@ export const navigationMiddleware = async (
     if (sessionFlagResult !== undefined) {
         if (sessionFlagResult) {
             logger.info(createLogMessage(
-                req.session,
+                req,
                 navigationMiddleware.name,
                 `${req.path} has required session flag - calling next()`
             ));
@@ -228,7 +228,7 @@ export const navigationMiddleware = async (
     // Check referer against allowed external URLs
     if (isAllowedExternalReferer(referer, config.allowedExternalUrls)) {
         logger.info(createLogMessage(
-            req.session,
+            req,
             navigationMiddleware.name,
             `${req.path} has allowed external referer - calling next()`
         ));
@@ -243,14 +243,14 @@ export const navigationMiddleware = async (
     ) {
         if (!areParamsValid(refererParams, refererParamGuards, req.session)) {
             logger.error(createLogMessage(
-                req.session,
+                req,
                 navigationMiddleware.name,
                 `${req.path} has invalid referer parameters: ${JSON.stringify(refererParams)} - redirecting to the default page`
             ));
             return res.redirect(config.defaultRedirect);
         }
         logger.info(createLogMessage(
-            req.session,
+            req,
             navigationMiddleware.name,
             `${req.path} has valid referer parameters - calling next()`
         ));
@@ -258,7 +258,7 @@ export const navigationMiddleware = async (
     }
 
     logger.error(createLogMessage(
-        req.session,
+        req,
         navigationMiddleware.name,
         `${req.path} did not fit any of the checks - redirecting to the default page`
     ));

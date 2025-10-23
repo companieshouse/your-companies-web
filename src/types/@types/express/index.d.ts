@@ -1,5 +1,6 @@
 declare namespace Express {
     interface Request {
-        lang: string
+        lang: string;
+        requestId: string;
     }
 }

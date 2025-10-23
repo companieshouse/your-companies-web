@@ -24,7 +24,7 @@ export const makeApiCallWithRetry = async (
     ...otherParams: any[]
 ): Promise<unknown> => {
 
-    logger.info(createLogMessage(session, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`));
+    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`));
 
     let client = createOAuthApiClient(req.session, constants.ACCOUNTS_API_URL);
 
@@ -33,17 +33,17 @@ export const makeApiCallWithRetry = async (
     if (response?.httpStatusCode === 401) {
 
         const responseMsg = `Retrying ${fnName} call on ${serviceName} service after unauthorised response`;
-        logger.info(createLogMessage(session, makeApiCallWithRetry.name, `${responseMsg} - ${JSON.stringify(response)}`));
+        logger.info(createLogMessage(req, makeApiCallWithRetry.name, `${responseMsg} - ${JSON.stringify(response)}`));
 
         const accessToken = await refreshToken(req, session);
-        logger.info(createLogMessage(session, makeApiCallWithRetry.name, `New access token: ${accessToken}`));
+        logger.info(createLogMessage(req, makeApiCallWithRetry.name, `New access token: ${accessToken}`));
 
         client = createOAuthApiClient(req.session, constants.ACCOUNTS_API_URL);
         response = await client[serviceName][fnName](...otherParams);
 
     }
 
-    logger.info(createLogMessage(session, makeApiCallWithRetry.name, `Call successful.`));
+    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Call successful.`));
 
     return response;
 

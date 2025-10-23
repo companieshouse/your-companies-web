@@ -4,6 +4,7 @@ import logger from "../lib/Logger";
 import { StatusCodes } from "http-status-codes";
 import { createKeyApiClient } from "./apiClientService";
 import createError from "http-errors";
+import { extractRequestIdHeader } from "../lib/utils/headerUtils";
 
 /**
  * Retrieves the company profile for a given company number.
@@ -26,33 +27,36 @@ import createError from "http-errors";
  * }
  * ```
  */
-export const getCompanyProfile = async (companyNumber: string): Promise<CompanyProfile> => {
+export const getCompanyProfile = async (companyNumber: string, requestId:string): Promise<CompanyProfile> => {
     const apiClient = createKeyApiClient();
 
-    logger.info(`${getCompanyProfile.name}: Looking for company profile with company number ${companyNumber}`);
-    const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber);
+    logger.info(`${getCompanyProfile.name}:${requestId} Looking for company profile with company number ${companyNumber}`);
+
+    const headers = extractRequestIdHeader(requestId);
+
+    const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber, headers);
 
     if (!sdkResponse) {
-        const errorMessage = `Company profile API for company number ${companyNumber}`;
+        const errorMessage = `${requestId} Company profile API for company number ${companyNumber}`;
         logger.error(`${getCompanyProfile.name}: ${errorMessage}`);
         return Promise.reject(new Error(errorMessage));
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-        const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`;
+        const errorMessage = `${requestId} Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`;
         logger.error(`${getCompanyProfile.name}: ${errorMessage}`);
         const error = createError(sdkResponse.httpStatusCode, errorMessage);
         return Promise.reject(error);
     }
 
     if (!sdkResponse.resource) {
-        const errorMessage = `Company profile API returned no resource for company number ${companyNumber}`;
+        const errorMessage = `${requestId} Company profile API returned no resource for company number ${companyNumber}`;
         logger.error(`${getCompanyProfile.name}: ${errorMessage}`);
         return Promise.reject(new Error(errorMessage));
     }
 
-    logger.debug(`${getCompanyProfile.name}: Received company profile ${JSON.stringify(sdkResponse)}`);
-    logger.info(`${getCompanyProfile.name}: Successfully retrieved company profile for company number ${companyNumber}`);
+    logger.debug(`${requestId}  ${getCompanyProfile.name}: Received company profile ${JSON.stringify(sdkResponse)}`);
+    logger.info(`${requestId} ${getCompanyProfile.name}: Successfully retrieved company profile for company number ${companyNumber}`);
 
     return Promise.resolve(sdkResponse.resource);
 };

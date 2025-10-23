@@ -19,7 +19,7 @@ export const confirmationAuthorisationEmailResentControllerGet = async (
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationAuthorisationEmailResentControllerGet.name,
             "Rendering confirmation authorisation email resent page"
         )

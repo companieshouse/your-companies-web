@@ -14,6 +14,6 @@ import logger, { createLogMessage } from "../../lib/Logger";
 export const presenterAlreadyAddedControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new PresenterAlreadyAddedHandler();
     const viewData = await handler.execute(req);
-    logger.info(createLogMessage(req.session, presenterAlreadyAddedControllerGet.name, "Rendering presenter already added page"));
+    logger.info(createLogMessage(req, presenterAlreadyAddedControllerGet.name, "Rendering presenter already added page"));
     res.render(constants.PRESENTER_ALREADY_ADDED_PAGE, viewData);
 };

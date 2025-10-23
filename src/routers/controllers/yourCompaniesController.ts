@@ -14,7 +14,7 @@ import logger, { createLogMessage } from "../../lib/Logger";
 export const yourCompaniesControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new YourCompaniesHandler();
     const viewData = await handler.execute(req);
-    logger.info(createLogMessage(req.session, yourCompaniesControllerGet.name, "Rendering your companies page"));
+    logger.info(createLogMessage(req, yourCompaniesControllerGet.name, "Rendering your companies page"));
     res.render(constants.YOUR_COMPANIES_PAGE, { ...viewData });
 };
 
@@ -29,6 +29,6 @@ export const yourCompaniesControllerPost = async (req: Request, res: Response): 
     const searchQuery = req.body.search.replace(/ /g, "");
     const redirectUrl = `${constants.LANDING_URL}?search=${searchQuery}`;
     const sanitizedUrl = sanitizeUrl(redirectUrl);
-    logger.info(createLogMessage(req.session, yourCompaniesControllerPost.name, `Redirecting to sanitized URL: ${sanitizedUrl}`));
+    logger.info(createLogMessage(req, yourCompaniesControllerPost.name, `Redirecting to sanitized URL: ${sanitizedUrl}`));
     res.redirect(sanitizedUrl);
 };

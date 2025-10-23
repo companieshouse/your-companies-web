@@ -128,7 +128,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             await this.processAssociationRemoval(req, res, associationToBeRemoved);
         } else if (req.body.confirmRemoval === constants.NO) {
             deleteExtraData(req.session, this.getSessionKey(req));
-            logger.info(createLogMessage(req.session, this.handlePostRequest.name, "User chose not to confirm removal"));
+            logger.info(createLogMessage(req, this.handlePostRequest.name, "User chose not to confirm removal"));
             return res.redirect(getManageAuthorisedPeopleFullUrl(req.params[constants.COMPANY_NUMBER]));
         } else {
             return await this.handleUnconfirmedRemoval(req, res);
@@ -148,7 +148,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
             setExtraData(req.session, constants.REMOVE_PAGE_ERRORS, this.viewData.errors);
         }
 
-        logger.info(createLogMessage(req.session, this.handleUnconfirmedRemoval.name, "Rendering with validation errors"));
+        logger.info(createLogMessage(req, this.handleUnconfirmedRemoval.name, "Rendering with validation errors"));
 
         return res.render(this.getTemplateViewName(), this.viewData);
     }
@@ -168,7 +168,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         deleteExtraData(req.session, constants.REMOVE_PAGE_ERRORS);
         deleteExtraData(req.session, this.getSessionKey(req));
 
-        logger.info(createLogMessage(req.session, this.processAssociationRemoval.name,
+        logger.info(createLogMessage(req, this.processAssociationRemoval.name,
             `Removing association id: ${association.id}, company number: ${association.companyNumber}`));
 
         await removeUserFromCompanyAssociations(req, association.id);
@@ -181,7 +181,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
     }
 
     private async handleSelfRemoval (req: Request, res: Response, association: Association): Promise<void> {
-        logger.info(createLogMessage(req.session, this.handleSelfRemoval.name,
+        logger.info(createLogMessage(req, this.handleSelfRemoval.name,
             `Self-removal from ${association.companyNumber}`));
 
         setExtraData(req.session, constants.REMOVED_THEMSELVES_FROM_COMPANY, {
@@ -202,7 +202,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         };
 
         setExtraData(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, personRemovedConfirmationData);
-        logger.info(createLogMessage(req.session, this.handleOtherUserRemoval.name,
+        logger.info(createLogMessage(req, this.handleOtherUserRemoval.name,
             `Association ${association.id} removed`));
 
         const redirectUrl = this.getRedirectUrl(association.status);

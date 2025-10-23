@@ -19,7 +19,7 @@ export const removeCompanyConfirmedControllerGet = async (
     const viewData = await handler.execute(req);
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             removeCompanyConfirmedControllerGet.name,
             "Rendering remove company confirmed page"
         )

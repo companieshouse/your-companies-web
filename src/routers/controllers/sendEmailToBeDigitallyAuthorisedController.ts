@@ -20,7 +20,7 @@ export const sendEmailToBeDigitallyAuthorisedControllerGet = async (
 ): Promise<void> => {
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             sendEmailToBeDigitallyAuthorisedControllerGet.name,
             "Rendering Send Email to be Digitally Authorised page"
         )
@@ -45,7 +45,7 @@ export const sendEmailToBeDigitallyAuthorisedControllerPost = async (
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             sendEmailToBeDigitallyAuthorisedControllerPost.name,
             `Redirecting to ${redirectUrl}`
         )

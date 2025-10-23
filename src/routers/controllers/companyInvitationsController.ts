@@ -15,6 +15,6 @@ import logger, { createLogMessage } from "../../lib/Logger";
 export const companyInvitationsControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new CompanyInvitationsHandler();
     const viewData = await handler.execute(req);
-    logger.info(createLogMessage(req.session, companyInvitationsControllerGet.name, "Rendering company invitations page"));
+    logger.info(createLogMessage(req, companyInvitationsControllerGet.name, "Rendering company invitations page"));
     res.render(constants.COMPANY_INVITATIONS_PAGE, { ...viewData });
 };

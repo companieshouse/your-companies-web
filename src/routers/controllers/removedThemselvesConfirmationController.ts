@@ -19,7 +19,7 @@ export const removedThemselvesConfirmationControllerGet = async (
     const viewData = await handler.execute(req);
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             removedThemselvesConfirmationControllerGet.name,
             "Rendering removed themselves confirmation page"
         )

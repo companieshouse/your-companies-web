@@ -14,7 +14,7 @@ export const removeAuthorisationDoNotRestoreControllerGet = async (
     const viewData = await handler.execute(req, res, constants.GET) as RemoveAuthorisationDoNotRestoreViewData;
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             RemoveAuthorisationDoNotRestoreHandler.name,
             "Rendering remove authorisation and do not restore page"
         )

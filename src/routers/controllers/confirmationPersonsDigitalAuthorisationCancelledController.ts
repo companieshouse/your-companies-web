@@ -19,7 +19,7 @@ export const confirmationPersonsDigitalAuthorisationCancelledControllerGet = asy
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationPersonsDigitalAuthorisationCancelledControllerGet.name,
             "Rendering confirmation person's digital authorisation cancelled page"
         )
