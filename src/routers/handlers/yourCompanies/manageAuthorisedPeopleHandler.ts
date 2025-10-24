@@ -243,7 +243,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
    * @returns A promise that resolves when the search and view data update are complete.
    */
     private async handleSearch (req: Request, companyNumber: string, searchStringEmail: string): Promise<void> {
-        const result = await searchForCompanyAssociationByEmail(companyNumber, searchStringEmail.toLowerCase());
+        const result = await searchForCompanyAssociationByEmail(companyNumber, searchStringEmail.toLowerCase(), req.requestId);
 
         if (result === null) {
             this.viewData.resultsFound = false;

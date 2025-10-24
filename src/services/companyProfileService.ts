@@ -27,7 +27,7 @@ import { extractRequestIdHeader } from "../lib/utils/headerUtils";
  * }
  * ```
  */
-export const getCompanyProfile = async (companyNumber: string, requestId:string): Promise<CompanyProfile> => {
+export const getCompanyProfile = async (companyNumber: string, requestId: string): Promise<CompanyProfile> => {
     const apiClient = createKeyApiClient();
 
     logger.info(`${getCompanyProfile.name}:${requestId} Looking for company profile with company number ${companyNumber}`);

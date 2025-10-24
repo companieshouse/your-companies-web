@@ -48,7 +48,8 @@ export const getUserAssociations = async (
         status,
         pageIndex,
         itemsPerPage,
-        companyNumber
+        companyNumber,
+        req.requestId
     ) as Resource<AssociationList | Errors>;
 
     if (!sdkResponse) {
@@ -125,7 +126,8 @@ export const getCompanyAssociations = async (
         includeRemoved,
         pageIndex,
         itemsPerPage,
-        userEmail
+        // userEmail
+        req.requestId
     ) as Resource<AssociationList | Errors>;
 
     if (!sdkResponse) {
@@ -160,7 +162,7 @@ export const createAssociation = async (
 ): Promise<string> => {
     const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const userIdForApiCall = userId ?? getLoggedInUserId(req.session);
-    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall);
+    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall, req.requestId);
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
@@ -200,7 +202,8 @@ export const inviteUser = async (
         req,
         req.session as Session,
         companyNumber,
-        inviteeEmailAddress
+        inviteeEmailAddress,
+        req.requestId
     ) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
@@ -241,7 +244,8 @@ export const updateAssociationStatus = async (
         req,
         req.session as Session,
         associationId,
-        status
+        status,
+        req.requestId
     ) as Resource<undefined | Errors>;
 
     if (!sdkResponse) {
@@ -274,7 +278,8 @@ export const getInvitations = async (
         req,
         req.session as Session,
         pageIndex,
-        itemsPerPage
+        itemsPerPage,
+        req.requestId
     ) as Resource<InvitationList | Errors>;
 
     if (!sdkResponse) {
@@ -315,7 +320,8 @@ export const postInvitation = async (
         req,
         req.session as Session,
         companyNumber,
-        inviteeEmailAddress
+        inviteeEmailAddress,
+        req.requestId
     ) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
@@ -369,7 +375,8 @@ export const getAssociationById = async (
         "getAssociation",
         req,
         req.session as Session,
-        associationId
+        associationId,
+        req.requestId
     ) as Resource<Association | Errors>;
 
     if (sdkResponse?.httpStatusCode !== 200 || !sdkResponse.resource) {
@@ -392,7 +399,7 @@ export const getAssociationById = async (
  * @returns A promise that resolves to the found `Association` object, or `null` if not found.
  * @throws Will throw an error if an unexpected status code is returned from the API.
  */
-export const searchForCompanyAssociationByEmail = async (companyNumber: string, email: string): Promise<Association | null> => {
+export const searchForCompanyAssociationByEmail = async (companyNumber: string, email: string, requestId: string): Promise<Association | null> => {
     const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const statuses = [
         AssociationStatus.CONFIRMED,
@@ -400,7 +407,7 @@ export const searchForCompanyAssociationByEmail = async (companyNumber: string, 
         AssociationStatus.MIGRATED,
         AssociationStatus.UNAUTHORISED
     ];
-    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses);
+    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses, requestId);
 
     if (sdkResponse?.httpStatusCode === StatusCodes.OK) {
         return sdkResponse.resource as Association;
