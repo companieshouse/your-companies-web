@@ -70,7 +70,7 @@ export class SendEmailToBeDigitallyAuthorisedHandler extends GenericHandler {
         if (!association) {
             logger.info(
                 createLogMessage(
-                    req.session,
+                    req,
                     SendEmailToBeDigitallyAuthorisedHandler.name,
                     `Association not found in session, fetching ${associationId} from api`
                 )

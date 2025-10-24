@@ -62,11 +62,11 @@ export class RemoveCompanyHandler extends GenericHandler {
         const error = getExtraData(req.session, constants.YOU_MUST_SELECT_AN_OPTION);
 
         try {
-            const companyProfile = await getCompanyProfile(this.viewData.companyNumber);
+            const companyProfile = await getCompanyProfile(this.viewData.companyNumber, req.requestId);
             setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
             this.viewData.companyName = (companyProfile.companyName).toUpperCase();
         } catch (err) {
-            logger.error(createLogMessage(req.session, `${RemoveCompanyHandler.name}.${this.handleGetRequest.name}`, `Error fetching company profile for ${this.viewData.companyNumber}: ${err}`));
+            logger.error(createLogMessage(req, `${RemoveCompanyHandler.name}.${this.handleGetRequest.name}`, `Error fetching company profile for ${this.viewData.companyNumber}: ${err}`));
         }
 
         if (error) {

@@ -23,7 +23,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err instanceof HttpError) {
         logger.errorRequest(
             req,
-            createLogMessage(req.session, httpErrorHandler.name, `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request was made to ${req.originalUrl}. Re-routing to the error template page. Error name: ${err.name}, Error status: ${err.status}, Error message: ${err.message}, Stack: ${err.stack}`)
+            createLogMessage(req, httpErrorHandler.name, `A ${err.statusCode} ${err.name} error occurred when a ${req.method} request was made to ${req.originalUrl}. Re-routing to the error template page. Error name: ${err.name}, Error status: ${err.status}, Error message: ${err.message}, Stack: ${err.stack}`)
         );
         const statusCode: number = err.statusCode || 500;
         if (err.redirctToYourCompanies) {
@@ -42,7 +42,7 @@ export const httpErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 export const csrfErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err instanceof CsrfError) {
         logger.error(
-            createLogMessage(req.session, csrfErrorHandler.name, `CSRF Error occurred ${err.message}, Stack: ${err.stack}`)
+            createLogMessage(req, csrfErrorHandler.name, `CSRF Error occurred ${err.message}, Stack: ${err.stack}`)
         );
         res.status(403).redirect(`${getFullUrl(constants.SOMETHING_WENT_WRONG_URL)}?${constants.CSRF_ERRORS}`);
     } else {

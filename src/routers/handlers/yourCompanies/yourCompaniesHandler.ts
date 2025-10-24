@@ -93,7 +93,7 @@ export class YourCompaniesHandler extends GenericHandler {
      * @returns {Promise<YourCompaniesViewData>} The prepared view data for rendering.
      */
     async execute (req: Request): Promise<YourCompaniesViewData> {
-        logger.info(createLogMessage(req.session, `${YourCompaniesHandler.name}.${this.execute.name}`, `GET request to serve Your Companies landing page`));
+        logger.info(createLogMessage(req, `${YourCompaniesHandler.name}.${this.execute.name}`, `GET request to serve Your Companies landing page`));
 
         deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NAME);
         deleteExtraData(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);

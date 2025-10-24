@@ -19,7 +19,7 @@ export const confirmationPersonsDigitalAuthorisationRestoredControllerGet = asyn
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationPersonsDigitalAuthorisationRestoredControllerGet.name,
             "Rendering confirmation person's digital authorisation restored page"
         )

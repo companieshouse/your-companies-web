@@ -19,7 +19,7 @@ export const confirmationPersonRemovedControllerGet = async (
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationPersonRemovedControllerGet.name,
             "Rendering confirmation person removed page"
         )

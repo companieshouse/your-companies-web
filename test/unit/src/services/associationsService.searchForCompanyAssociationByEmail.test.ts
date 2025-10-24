@@ -20,6 +20,7 @@ mockCreateKeyApiClient.mockReturnValue({
 
 const companyNumber = "AB123456";
 const searchEmailAddress = "eva.brown@test.com";
+const requestId = "123456";
 
 describe("associationsService", () => {
     describe("searchForCompanyAssociationByEmail", () => {
@@ -36,7 +37,7 @@ describe("associationsService", () => {
             };
             mockSearchForCompanyAssociation.mockResolvedValueOnce(sdkResource);
             //      When
-            const result = await searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress);
+            const result = await searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress, requestId);
             //     Then
             expect(result).toEqual(sdkResource.resource);
         });
@@ -44,7 +45,7 @@ describe("associationsService", () => {
         it("should throw a HttpError if no response returned from SDK", async () => {
             mockSearchForCompanyAssociation.mockResolvedValueOnce(undefined);
 
-            await expect(searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress))
+            await expect(searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress, requestId))
                 .rejects.toThrow(HttpError);
         });
 
@@ -53,7 +54,7 @@ describe("associationsService", () => {
                 httpStatusCode: StatusCodes.BAD_REQUEST
             } as Resource<Errors>);
 
-            await expect(searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress))
+            await expect(searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress, requestId))
                 .rejects.toThrow(BadRequest);
         });
 
@@ -65,7 +66,7 @@ describe("associationsService", () => {
             };
             mockSearchForCompanyAssociation.mockResolvedValueOnce(sdkResource);
             //      When
-            const result = await searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress);
+            const result = await searchForCompanyAssociationByEmail(companyNumber, searchEmailAddress, requestId);
             //     Then
             expect(result).toEqual(null);
         });

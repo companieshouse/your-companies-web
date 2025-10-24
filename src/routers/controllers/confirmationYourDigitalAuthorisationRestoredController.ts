@@ -24,7 +24,7 @@ export const confirmationYourDigitalAuthorisationRestoredControllerGet = async (
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationYourDigitalAuthorisationRestoredControllerGet.name,
             "Rendering restore your digital authorisation success page"
         )

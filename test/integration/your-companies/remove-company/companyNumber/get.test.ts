@@ -80,7 +80,7 @@ describe("GET /your-companies/remove-company/:companyNumber", () => {
             expect(response.text).toContain(langCommon.yes);
             expect(response.text).toContain(langCommon.no);
             expect(response.text).toContain(langCommon.continue);
-            expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber);
+            expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber, expect.any(String));
         });
 
     it("should return error in page content if error exists in session data", async () => {

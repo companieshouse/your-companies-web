@@ -17,7 +17,7 @@ export const somethingWentWrongControllerGet = async (req: Request, res: Respons
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             somethingWentWrongControllerGet.name,
             "Rendering something went wrong page"
         )

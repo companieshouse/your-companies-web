@@ -18,11 +18,11 @@ export const companyInvitationsAcceptControllerGet = async (req: Request, res: R
 
     if (viewData.associationStateChanged) {
         deleteExtraData(req.session, viewData.associationStateChanged);
-        logger.info(createLogMessage(req.session, companyInvitationsAcceptControllerGet.name, "Redirecting to company invitations page"));
+        logger.info(createLogMessage(req, companyInvitationsAcceptControllerGet.name, "Redirecting to company invitations page"));
         return res.redirect(getFullUrl(constants.COMPANY_INVITATIONS_URL));
 
     }
 
-    logger.info(createLogMessage(req.session, companyInvitationsAcceptControllerGet.name, "Rendering company invitations accept page"));
+    logger.info(createLogMessage(req, companyInvitationsAcceptControllerGet.name, "Rendering company invitations accept page"));
     res.render(constants.COMPANY_INVITATIONS_ACCEPT_PAGE, { ...viewData });
 };

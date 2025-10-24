@@ -19,7 +19,7 @@ export const confirmationPersonsDigitalAuthorisationRemovedNotRestoredController
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmationPersonsDigitalAuthorisationRemovedNotRestoredControllerGet.name,
             "Rendering confirmation person's digital authorisation removed not restored page"
         )

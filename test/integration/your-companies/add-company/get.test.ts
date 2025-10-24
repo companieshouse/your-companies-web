@@ -124,7 +124,7 @@ describe("GET /your-companies/add-company", () => {
         // Then
         expect(response.status).toBe(200);
         expect(response.text).toContain(savedProfile.companyNumber); // Check if saved profile company number is displayed
-        expect(companyProfileSpy).toHaveBeenCalledWith(savedProfile.companyNumber);
+        expect(companyProfileSpy).toHaveBeenCalledWith(savedProfile.companyNumber, expect.any(String));
     });
 
     it("should handle matching referrer URL scenario", async () => {
@@ -142,6 +142,6 @@ describe("GET /your-companies/add-company", () => {
         // Then
         expect(response.status).toBe(200);
         expect(response.text).toContain("87654321"); // Check if current company number is displayed
-        expect(companyProfileSpy).toHaveBeenCalledWith("87654321");
+        expect(companyProfileSpy).toHaveBeenCalledWith("87654321", expect.any(String));
     });
 });

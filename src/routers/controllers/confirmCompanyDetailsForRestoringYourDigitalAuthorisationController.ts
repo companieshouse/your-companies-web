@@ -27,7 +27,7 @@ export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationController
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerGet.name,
             "Rendering confirm company details for restoring your digital authorisation page"
         )
@@ -62,7 +62,7 @@ export const confirmCompanyDetailsForRestoringYourDigitalAuthorisationController
 
     logger.info(
         createLogMessage(
-            req.session,
+            req,
             confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost.name,
             `Redirecting to ${nextPageUrl}`
         )

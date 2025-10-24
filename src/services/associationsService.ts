@@ -38,7 +38,7 @@ export const getUserAssociations = async (
     pageIndex?: number,
     itemsPerPage?: number
 ): Promise<AssociationList> => {
-    logger.info(createLogMessage(req.session, getUserAssociations.name, `Looking for associations with status ${JSON.stringify(status)}`));
+    logger.info(createLogMessage(req, getUserAssociations.name, `Looking for associations with status ${JSON.stringify(status)}`));
 
     const sdkResponse = await makeApiCallWithRetry(
         ASSOCIATIONS_SERVICE,
@@ -48,28 +48,29 @@ export const getUserAssociations = async (
         status,
         pageIndex,
         itemsPerPage,
-        companyNumber
+        companyNumber,
+        req.requestId
     ) as Resource<AssociationList | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `No SDK Response returned from an associations API call for status ${JSON.stringify(status)}`;
-        logger.error(createLogMessage(req.session, getUserAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, getUserAssociations.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to get associations with status ${JSON.stringify(status)}`;
-        logger.error(createLogMessage(req.session, getUserAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, getUserAssociations.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
     if (!sdkResponse.resource) {
         const errorMessage = `Associations API returned no resource for associations with status ${JSON.stringify(status)}`;
-        logger.error(createLogMessage(req.session, getUserAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, getUserAssociations.name, errorMessage));
         throw new Error(errorMessage);
     }
 
-    logger.info(createLogMessage(req.session, getUserAssociations.name, `Received associations for company number ${companyNumber}`));
+    logger.info(createLogMessage(req, getUserAssociations.name, `Received associations for company number ${companyNumber}`));
     return sdkResponse.resource as AssociationList;
 };
 
@@ -125,28 +126,29 @@ export const getCompanyAssociations = async (
         includeRemoved,
         pageIndex,
         itemsPerPage,
-        userEmail
+        // userEmail
+        req.requestId
     ) as Resource<AssociationList | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}`;
-        logger.error(createLogMessage(req.session, getCompanyAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, getCompanyAssociations.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to get company associations, company number: ${companyNumber}`;
-        logger.error(createLogMessage(req.session, getCompanyAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, getCompanyAssociations.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
     if (!sdkResponse.resource) {
         const errorMessage = `Associations API returned no resource for associations for a company with company number ${companyNumber}`;
-        logger.error(createLogMessage(req.session, getCompanyAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, getCompanyAssociations.name, errorMessage));
         throw new Error(errorMessage);
     }
 
-    logger.info(createLogMessage(req.session, getCompanyAssociations.name, `Received associations for a company with company number ${companyNumber}`));
+    logger.info(createLogMessage(req, getCompanyAssociations.name, `Received associations for a company with company number ${companyNumber}`));
     return sdkResponse.resource as AssociationList;
 };
 
@@ -160,27 +162,27 @@ export const createAssociation = async (
 ): Promise<string> => {
     const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const userIdForApiCall = userId ?? getLoggedInUserId(req.session);
-    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall);
+    const sdkResponse = await apiClient.associationsService.createAssociation(companyNumber, userIdForApiCall, req.requestId);
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
-        logger.error(createLogMessage(req.session, createAssociation.name, errorMessage));
+        logger.error(createLogMessage(req, createAssociation.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
-        logger.error(createLogMessage(req.session, createAssociation.name, errorMessage));
+        logger.error(createLogMessage(req, createAssociation.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
     if (!sdkResponse.resource) {
         const errorMessage = `Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`;
-        logger.error(createLogMessage(req.session, createAssociation.name, errorMessage));
+        logger.error(createLogMessage(req, createAssociation.name, errorMessage));
         throw new Error(errorMessage);
     }
 
-    logger.info(createLogMessage(req.session, createAssociation.name, `Received the new association link for a company with company number ${companyNumber}`));
+    logger.info(createLogMessage(req, createAssociation.name, `Received the new association link for a company with company number ${companyNumber}`));
     const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
 
     return Promise.resolve(associationLink);
@@ -200,28 +202,29 @@ export const inviteUser = async (
         req,
         req.session as Session,
         companyNumber,
-        inviteeEmailAddress
+        inviteeEmailAddress,
+        req.requestId
     ) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for a company with company number ${companyNumber}, the associations API response was null, undefined or falsy.`;
-        logger.error(createLogMessage(req.session, inviteUser.name, errorMessage));
+        logger.error(createLogMessage(req, inviteUser.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to create association for a company with company number ${companyNumber}`;
-        logger.error(createLogMessage(req.session, inviteUser.name, errorMessage));
+        logger.error(createLogMessage(req, inviteUser.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
     if (!sdkResponse.resource) {
         const errorMessage = `Associations API returned no resource for creation of an association for a company with company number ${companyNumber}`;
-        logger.error(createLogMessage(req.session, inviteUser.name, errorMessage));
+        logger.error(createLogMessage(req, inviteUser.name, errorMessage));
         throw new Error(errorMessage);
     }
 
-    logger.info(createLogMessage(req.session, inviteUser.name, `Received the new association link for a company with company number ${companyNumber}`));
+    logger.info(createLogMessage(req, inviteUser.name, `Received the new association link for a company with company number ${companyNumber}`));
     const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
 
     return Promise.resolve(associationLink);
@@ -241,22 +244,23 @@ export const updateAssociationStatus = async (
         req,
         req.session as Session,
         associationId,
-        status
+        status,
+        req.requestId
     ) as Resource<undefined | Errors>;
 
     if (!sdkResponse) {
         const errorMessage = `Associations API for an association with id ${associationId}, the associations API response was null, undefined or falsy.`;
-        logger.error(createLogMessage(req.session, updateAssociationStatus.name, errorMessage));
+        logger.error(createLogMessage(req, updateAssociationStatus.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `Http status code ${sdkResponse.httpStatusCode} - Failed to change status for an association with id ${associationId}`;
-        logger.error(createLogMessage(req.session, updateAssociationStatus.name, errorMessage));
+        logger.error(createLogMessage(req, updateAssociationStatus.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
-    logger.info(createLogMessage(req.session, updateAssociationStatus.name, `The status of an association with id ${associationId} changed`));
+    logger.info(createLogMessage(req, updateAssociationStatus.name, `The status of an association with id ${associationId} changed`));
     return associationId;
 };
 
@@ -274,30 +278,31 @@ export const getInvitations = async (
         req,
         req.session as Session,
         pageIndex,
-        itemsPerPage
+        itemsPerPage,
+        req.requestId
     ) as Resource<InvitationList | Errors>;
 
     if (!sdkResponse) {
         const errMsg = `No response from GET /associations/invitations`;
-        logger.error(createLogMessage(req.session, getInvitations.name, errMsg));
+        logger.error(createLogMessage(req, getInvitations.name, errMsg));
         throw new Error(errMsg);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
         const errorMessage = `GET /associations/invitations: ${sdkResponse.httpStatusCode}`;
-        logger.debug(createLogMessage(req.session, getInvitations.name, errorMessage + stringifyApiErrors(sdkResponse)));
-        logger.error(createLogMessage(req.session, getInvitations.name, errorMessage));
+        logger.debug(createLogMessage(req, getInvitations.name, errorMessage + stringifyApiErrors(sdkResponse)));
+        logger.error(createLogMessage(req, getInvitations.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
     if (!sdkResponse.resource) {
         const errMsg = `Invitations API returned sdkResponse but no resource`;
-        logger.error(createLogMessage(req.session, getInvitations.name, errMsg));
+        logger.error(createLogMessage(req, getInvitations.name, errMsg));
         throw new Error(errMsg);
     }
 
-    logger.info(createLogMessage(req.session, getInvitations.name, `GET /associations/invitations: 200 OK`));
-    logger.debug(createLogMessage(req.session, getInvitations.name, `Received invitations ${JSON.stringify(sdkResponse)}`));
+    logger.info(createLogMessage(req, getInvitations.name, `GET /associations/invitations: 200 OK`));
+    logger.debug(createLogMessage(req, getInvitations.name, `Received invitations ${JSON.stringify(sdkResponse)}`));
     return sdkResponse.resource as InvitationList;
 };
 
@@ -315,18 +320,19 @@ export const postInvitation = async (
         req,
         req.session as Session,
         companyNumber,
-        inviteeEmailAddress
+        inviteeEmailAddress,
+        req.requestId
     ) as Resource<NewAssociationResponse | Errors>;
 
     if (!sdkResponse) {
         const errMsg = `No response from POST /associations/invitations`;
-        logger.error(createLogMessage(req.session, postInvitation.name, errMsg));
+        logger.error(createLogMessage(req, postInvitation.name, errMsg));
         throw new Error(errMsg);
     }
 
     if (sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
         const errorMessage = `${sdkResponse.httpStatusCode} - POST /associations/invitations - `;
-        logger.debug(createLogMessage(req.session, postInvitation.name, errorMessage + stringifyApiErrors(sdkResponse)));
+        logger.debug(createLogMessage(req, postInvitation.name, errorMessage + stringifyApiErrors(sdkResponse)));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)} ${errorMessage}`);
     }
 
@@ -335,8 +341,8 @@ export const postInvitation = async (
         throw new Error(errMsg);
     }
 
-    logger.info(createLogMessage(req.session, postInvitation.name, `POST /associations/invitations success - company number ${companyNumber}`));
-    logger.debug(createLogMessage(req.session, postInvitation.name, `Received link for posted invite ${JSON.stringify(sdkResponse)}`));
+    logger.info(createLogMessage(req, postInvitation.name, `POST /associations/invitations success - company number ${companyNumber}`));
+    logger.debug(createLogMessage(req, postInvitation.name, `Received link for posted invite ${JSON.stringify(sdkResponse)}`));
 
     const associationLink: string = (sdkResponse.resource as NewAssociationResponse).associationLink;
 
@@ -355,7 +361,7 @@ export const removeUserFromCompanyAssociations = async (
         return constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS;
     } else {
         const errorMessage = "Error on removal/cancellation: associationId not provided";
-        logger.error(createLogMessage(req.session, removeUserFromCompanyAssociations.name, errorMessage));
+        logger.error(createLogMessage(req, removeUserFromCompanyAssociations.name, errorMessage));
         throw createError(400, errorMessage);
     }
 };
@@ -369,12 +375,13 @@ export const getAssociationById = async (
         "getAssociation",
         req,
         req.session as Session,
-        associationId
+        associationId,
+        req.requestId
     ) as Resource<Association | Errors>;
 
     if (sdkResponse?.httpStatusCode !== 200 || !sdkResponse.resource) {
         const errorMessage = `Error: getAssociationById: ${associationId} status: ${sdkResponse.httpStatusCode} `;
-        logger.error(createLogMessage(req.session, getAssociationById.name, errorMessage));
+        logger.error(createLogMessage(req, getAssociationById.name, errorMessage));
         throw createError(sdkResponse.httpStatusCode, `${stringifyApiErrors(sdkResponse)}`);
     }
     return sdkResponse.resource as Association;
@@ -392,7 +399,7 @@ export const getAssociationById = async (
  * @returns A promise that resolves to the found `Association` object, or `null` if not found.
  * @throws Will throw an error if an unexpected status code is returned from the API.
  */
-export const searchForCompanyAssociationByEmail = async (companyNumber: string, email: string): Promise<Association | null> => {
+export const searchForCompanyAssociationByEmail = async (companyNumber: string, email: string, requestId: string): Promise<Association | null> => {
     const apiClient = createKeyApiClient(constants.CHS_INTERNAL_API_KEY, constants.ACCOUNTS_API_URL);
     const statuses = [
         AssociationStatus.CONFIRMED,
@@ -400,7 +407,7 @@ export const searchForCompanyAssociationByEmail = async (companyNumber: string, 
         AssociationStatus.MIGRATED,
         AssociationStatus.UNAUTHORISED
     ];
-    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses);
+    const sdkResponse = await apiClient.associationsService.searchForCompanyAssociation(companyNumber, email, undefined, statuses, requestId);
 
     if (sdkResponse?.httpStatusCode === StatusCodes.OK) {
         return sdkResponse.resource as Association;

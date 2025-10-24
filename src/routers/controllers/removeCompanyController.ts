@@ -14,7 +14,7 @@ import logger, { createLogMessage } from "../../lib/Logger";
 export const removeCompanyControllerGet = async (req: Request, res: Response): Promise<void> => {
     const handler = new RemoveCompanyHandler();
     const viewData = await handler.execute(req, res, constants.GET);
-    logger.info(createLogMessage(req.session, removeCompanyControllerGet.name, "Rendering remove company page"));
+    logger.info(createLogMessage(req, removeCompanyControllerGet.name, "Rendering remove company page"));
     res.render(constants.REMOVE_COMPANY_PAGE, viewData as BaseViewData);
 };
 
@@ -30,7 +30,7 @@ export const removeCompanyControllerPost = async (req: Request, res: Response): 
     const viewData = await handler.execute(req, res, constants.POST);
 
     if (viewData?.errors && Object.keys(viewData.errors).length > 0) {
-        logger.info(createLogMessage(req.session, removeCompanyControllerPost.name, "Rendering remove company page with errors"));
+        logger.info(createLogMessage(req, removeCompanyControllerPost.name, "Rendering remove company page with errors"));
         return res.render(constants.REMOVE_COMPANY_PAGE, viewData);
     }
 };

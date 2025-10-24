@@ -21,6 +21,7 @@ const clone = (objectToClone: unknown): unknown => {
 };
 
 const COMPANY_NUMBER = "12345678";
+const requestId = "abc12345";
 
 describe("Company profile service test", () => {
 
@@ -32,7 +33,7 @@ describe("Company profile service test", () => {
         it("Should return a company profile", async () => {
             mockGetCompanyProfile.mockResolvedValueOnce(clone(validSDKResource));
 
-            await getCompanyProfile(COMPANY_NUMBER).then((returnedProfile) => {
+            await getCompanyProfile(COMPANY_NUMBER, requestId).then((returnedProfile) => {
                 Object.getOwnPropertyNames(validSDKResource.resource).forEach(property => {
                     expect(returnedProfile).toHaveProperty(property);
                 });
@@ -42,7 +43,7 @@ describe("Company profile service test", () => {
         it("Should return an error if no response returned from SDK", async () => {
             mockGetCompanyProfile.mockResolvedValueOnce(undefined);
 
-            await expect(getCompanyProfile(COMPANY_NUMBER))
+            await expect(getCompanyProfile(COMPANY_NUMBER, requestId))
                 .rejects.toThrow(`Company profile API for company number ${COMPANY_NUMBER}`);
         });
 
@@ -52,7 +53,7 @@ describe("Company profile service test", () => {
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<CompanyProfile>);
 
-            await expect(getCompanyProfile(COMPANY_NUMBER))
+            await expect(getCompanyProfile(COMPANY_NUMBER, requestId))
                 .rejects.toThrow(`Http status code ${StatusCodes.SERVICE_UNAVAILABLE} - Failed to get company profile for company number ${COMPANY_NUMBER}`);
         });
 
@@ -62,7 +63,7 @@ describe("Company profile service test", () => {
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<CompanyProfile>);
 
-            await expect(getCompanyProfile(COMPANY_NUMBER))
+            await expect(getCompanyProfile(COMPANY_NUMBER, requestId))
                 .rejects.toThrow(`Http status code ${StatusCodes.BAD_REQUEST} - Failed to get company profile for company number ${COMPANY_NUMBER}`);
         });
 
@@ -72,7 +73,7 @@ describe("Company profile service test", () => {
                 httpStatusCode: HTTP_STATUS_CODE
             } as Resource<CompanyProfile>);
 
-            await expect(getCompanyProfile(COMPANY_NUMBER))
+            await expect(getCompanyProfile(COMPANY_NUMBER, requestId))
                 .rejects.toThrow(`Company profile API returned no resource for company number ${COMPANY_NUMBER}`);
         });
     });

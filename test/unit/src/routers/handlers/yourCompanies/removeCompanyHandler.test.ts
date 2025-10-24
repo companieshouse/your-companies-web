@@ -128,7 +128,8 @@ describe("RemoveCompanyHandler", () => {
                 session: new Session(),
                 lang,
                 params: { companyNumber },
-                body
+                body,
+                requestId: "requestId"
             });
             const res: Response = mockResponse();
             const translations = { key: "value" };
@@ -160,7 +161,7 @@ describe("RemoveCompanyHandler", () => {
                 expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
                 getExtraDataCounter = ++getExtraDataCounter;
                 expect(getCompanyProfileSpy).toHaveBeenCalledTimes(1);
-                expect(getCompanyProfileSpy).toHaveBeenCalledWith(companyNumber);
+                expect(getCompanyProfileSpy).toHaveBeenCalledWith(companyNumber, "requestId");
                 expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyName);
                 setExtraDataCounter = ++setExtraDataCounter;
             } else {
