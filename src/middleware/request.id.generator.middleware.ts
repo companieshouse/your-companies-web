@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 
 export const requestIdGenerator = (req: Request, res: Response, next: NextFunction): void => {
 
-    req.requestId = uuidv4().replace(/-/g, "");
+    req.requestId = randomUUID().replace(/-/g, "");
     res.setHeader("X-Request-Id", req.requestId);
     next();
 

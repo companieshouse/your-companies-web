@@ -1,8 +1,14 @@
 import { Session } from "@companieshouse/node-session-handler";
 import logger, { createAndLogError, createLogMessage } from "../../../../src/lib/Logger";
 import * as sessionUtils from "../../../../src/lib/utils/sessionUtils";
+import { Request } from "express";
 
 logger.error = jest.fn();
+
+const mockReq = {
+    requestId: "123",
+    session: new Session()
+} as any as Request;
 
 describe("logger tests", () => {
     beforeEach(() => {
@@ -53,26 +59,28 @@ describe("logger tests", () => {
         it("should return a log message with user ID", () => {
             // Given
             const userId = "12345";
-            const session = {} as unknown as Session;
+            //   const session = {} as unknown as Session;
             const functionName = "testFunction";
             const message = "test message";
             const getLoggedInUserIdSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getLoggedInUserId");
             getLoggedInUserIdSpy.mockReturnValueOnce(userId);
             // When
-            const result = createLogMessage(session, functionName, message);
+            const result = createLogMessage(mockReq, functionName, message);
+            console.log(result);
             // Then
             expect(result).toContain("Function: testFunction");
             expect(result).toContain("User ID: 12345");
             expect(result).toContain("Message: test message");
+            expect(result).toContain("Request ID: 123");
         });
 
         it("should return a log message with unknown user ID", () => {
             // Given
-            const session = undefined;
+            //  const session = undefined;
             const functionName = "testFunction";
             const message = "test message";
             // When
-            const result = createLogMessage(session, functionName, message);
+            const result = createLogMessage(mockReq, functionName, message);
             // Then
             expect(result).toContain("Function: testFunction");
             expect(result).toContain("User ID: unknown");
