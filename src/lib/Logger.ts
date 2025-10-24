@@ -1,4 +1,3 @@
-import { Session } from "@companieshouse/node-session-handler";
 import { createLogger } from "@companieshouse/structured-logging-node";
 import ApplicationLogger from "@companieshouse/structured-logging-node/lib/ApplicationLogger";
 import { getLoggedInUserId } from "./utils/sessionUtils";

@@ -15,12 +15,10 @@ import logger from "../lib/Logger";
  * @param next - The next middleware function in the chain.
  */
 export const requestLogger = (req: Request, res: Response, next: NextFunction): void => {
-    // Ignore the healthcheck route
     if (req.url.endsWith("/healthcheck")) {
         return next();
     }
 
-    // Extract the request ID from the headers; log error & use UNKNOWN if not present
     let requestId = req.requestId;
 
     if (!requestId) {
@@ -28,13 +26,10 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
         requestId = "UNKNOWN";
     }
 
-    // Track request start time
     const startTime = process.hrtime();
 
-    // Pre-process log
     logger.debugRequest(req, `${requestLogger.name} - OPEN request with requestId="${requestId}": ${req.method} ${req.originalUrl}`);
 
-    // Post-process log
     res.once("finish", () => {
         const [seconds, nanoseconds] = process.hrtime(startTime);
         const durationInMs = (seconds * 1000 + nanoseconds / 1e6).toFixed(2);

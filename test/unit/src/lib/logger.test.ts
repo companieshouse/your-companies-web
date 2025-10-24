@@ -59,14 +59,12 @@ describe("logger tests", () => {
         it("should return a log message with user ID", () => {
             // Given
             const userId = "12345";
-            //   const session = {} as unknown as Session;
             const functionName = "testFunction";
             const message = "test message";
             const getLoggedInUserIdSpy: jest.SpyInstance = jest.spyOn(sessionUtils, "getLoggedInUserId");
             getLoggedInUserIdSpy.mockReturnValueOnce(userId);
             // When
             const result = createLogMessage(mockReq, functionName, message);
-            console.log(result);
             // Then
             expect(result).toContain("Function: testFunction");
             expect(result).toContain("User ID: 12345");
