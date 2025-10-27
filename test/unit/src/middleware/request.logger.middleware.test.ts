@@ -51,13 +51,13 @@ describe("requestLogger middleware", () => {
 
         expect(debugRequestSpy).toHaveBeenCalledWith(
             req,
-            expect.stringContaining(`OPEN request with requestId="abc-123": GET /api/test?foo=bar`)
+            expect.stringContaining(`OPEN [abc-123]: GET /api/test?foo=bar`)
         );
 
         resEmitter.emit("finish");
 
         expect(debugSpy).toHaveBeenCalledWith(
-            expect.stringMatching(/CLOSED request with requestId="abc-123" after .*ms with status 200/)
+            expect.stringMatching(/CLOSED \[abc-123\] after .*ms with status 200/)
         );
         expect(errorSpy).not.toHaveBeenCalled();
     });
@@ -84,18 +84,18 @@ describe("requestLogger middleware", () => {
         expect(next).toHaveBeenCalledTimes(1);
 
         expect(errorSpy).toHaveBeenCalledWith(
-            expect.stringContaining("Request ID is missing")
+            expect.stringContaining("Missing requestId.")
         );
 
         expect(debugRequestSpy).toHaveBeenCalledWith(
             req,
-            expect.stringContaining(`OPEN request with requestId="UNKNOWN": POST /api/test`)
+            expect.stringContaining(`OPEN [UNKNOWN]: POST /api/test`)
         );
 
         resEmitter.emit("finish");
 
         expect(debugSpy).toHaveBeenCalledWith(
-            expect.stringMatching(/CLOSED request with requestId="UNKNOWN" after .*ms with status 500/)
+            expect.stringMatching(/CLOSED \[UNKNOWN\] after .*ms with status 500/)
         );
     });
 });
