@@ -3,6 +3,7 @@ import { mockSessionMiddleware, mockEnsureSessionCookiePresentMiddleware } from 
 import { mockCompanyAuthenticationMiddlewareCheckboxDisabled } from "./company.authentication.middleware.mock";
 import mockCsrfProtectionMiddleware from "./csrf.protection.middleware.mock";
 import mockNavigationMiddleware from "./navigation.middleware.mock";
+import mockRequestLoger from "./request.logger.middleware.mock";
 
 export default {
     mockAuthenticationMiddleware,
@@ -10,5 +11,6 @@ export default {
     mockSessionMiddleware,
     mockEnsureSessionCookiePresentMiddleware,
     mockCsrfProtectionMiddleware,
-    mockNavigationMiddleware
+    mockNavigationMiddleware,
+    mockRequestLoger
 };
