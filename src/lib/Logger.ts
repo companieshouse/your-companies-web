@@ -18,7 +18,7 @@ export const createAndLogError = (description: string): Error => {
 
 /**
  * Creates a log message for the specified function.
- * @param req -
+ * @param req - Express request object
  * @param functionName - The name of the function being logged.
  * @param message - The log message.
  * @returns The formatted log message.
