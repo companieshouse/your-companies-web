@@ -14,7 +14,7 @@ import { Session } from "@companieshouse/node-session-handler";
  */
 export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Response): Promise<void> => {
     if (isCancelSearch(req)) {
-        logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerGet.name, "User cancelled search"));
+        logger.info(createLogMessage(req, manageAuthorisedPeopleControllerGet.name, "User cancelled search"));
         deleteSearchStringEmail(req.session as Session, req.params.companyNumber);
     }
     const handler = new ManageAuthorisedPeopleHandler();
@@ -23,7 +23,7 @@ export const manageAuthorisedPeopleControllerGet = async (req: Request, res: Res
     const companyNumber = getExtraData(req.session, constants.COMPANY_NUMBER);
     setSessionData(req, companyNumber);
 
-    logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerGet.name, "Rendering manage authorised people page"));
+    logger.info(createLogMessage(req, manageAuthorisedPeopleControllerGet.name, "Rendering manage authorised people page"));
     res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, {
         ...viewData
     });
@@ -60,7 +60,7 @@ export const manageAuthorisedPeopleControllerPost = async (req: Request, res: Re
     const handler = new ManageAuthorisedPeopleHandler();
     const viewData = await handler.execute(req);
 
-    logger.info(createLogMessage(req.session, manageAuthorisedPeopleControllerPost.name, "Rendering (Post request) manage authorised people search results page"));
+    logger.info(createLogMessage(req, manageAuthorisedPeopleControllerPost.name, "Rendering (Post request) manage authorised people search results page"));
     res.render(constants.MANAGE_AUTHORISED_PEOPLE_PAGE, viewData);
 };
 

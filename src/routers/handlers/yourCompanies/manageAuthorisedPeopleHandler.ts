@@ -99,7 +99,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
      * @param req - The HTTP request object.
      */
     async execute (req: Request): Promise<ManageAuthorisedPeopleViewData> {
-        logger.info(createLogMessage(req.session, `${ManageAuthorisedPeopleHandler.name}.${this.execute.name}`,
+        logger.info(createLogMessage(req, `${ManageAuthorisedPeopleHandler.name}.${this.execute.name}`,
             `GET request to serve People Digitally Authorised To File Online For This Company page`)
         );
         setExtraData(req.session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
@@ -243,7 +243,7 @@ export class ManageAuthorisedPeopleHandler extends GenericHandler {
    * @returns A promise that resolves when the search and view data update are complete.
    */
     private async handleSearch (req: Request, companyNumber: string, searchStringEmail: string): Promise<void> {
-        const result = await searchForCompanyAssociationByEmail(companyNumber, searchStringEmail.toLowerCase());
+        const result = await searchForCompanyAssociationByEmail(companyNumber, searchStringEmail.toLowerCase(), req.requestId);
 
         if (result === null) {
             this.viewData.resultsFound = false;

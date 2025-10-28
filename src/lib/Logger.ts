@@ -1,7 +1,7 @@
-import { Session } from "@companieshouse/node-session-handler";
 import { createLogger } from "@companieshouse/structured-logging-node";
 import ApplicationLogger from "@companieshouse/structured-logging-node/lib/ApplicationLogger";
 import { getLoggedInUserId } from "./utils/sessionUtils";
+import { Request } from "express";
 
 const logger: ApplicationLogger = createLogger(process.env.APP_NAME ?? "");
 
@@ -18,14 +18,14 @@ export const createAndLogError = (description: string): Error => {
 
 /**
  * Creates a log message for the specified function.
- * @param session - The session object.
+ * @param req - Express request object
  * @param functionName - The name of the function being logged.
  * @param message - The log message.
  * @returns The formatted log message.
  */
-export const createLogMessage = (session: Session | undefined, functionName: string, message: string): string => {
-    const loggedInUserId = getLoggedInUserId(session);
-    return `Function: ${functionName}, User ID: ${loggedInUserId ?? "unknown"}, Message: ${message}`;
+export const createLogMessage = (req: Request, functionName: string, message: string): string => {
+    const loggedInUserId = getLoggedInUserId(req?.session);
+    return `Request ID: ${req?.requestId ?? "unknown"} Function: ${functionName}, User ID: ${loggedInUserId ?? "unknown"}, Message: ${message}`;
 };
 
 // tslint:disable-next-line:no-console

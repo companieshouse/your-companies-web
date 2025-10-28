@@ -44,7 +44,7 @@ export class AddCompanyHandler extends GenericHandler {
     async execute (req: Request, res: Response, method: string): Promise<AddCompanyViewData> {
         const referrer = req.get("Referrer");
         const hrefB = getFullUrl(constants.ADD_COMPANY_URL);
-        logger.info(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `${method} request to add company to user account`));
+        logger.info(createLogMessage(req, `${AddCompanyHandler.name}.${this.execute.name}`, `${method} request to add company to user account`));
 
         try {
             this.viewData.lang = getTranslationsForView(req.lang, constants.ADD_COMPANY_PAGE);
@@ -139,7 +139,7 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             };
         } else {
-            logger.error(createLogMessage(req.session, `${AddCompanyHandler.name}.${this.execute.name}`, `Error adding a company to user account: ${err}`));
+            logger.error(createLogMessage(req, `${AddCompanyHandler.name}.${this.execute.name}`, `Error adding a company to user account: ${err}`));
             this.viewData.errors = this.processHandlerException(err);
         }
     }
@@ -157,7 +157,7 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             };
         } else if (!validateFullCompanyNumberSearchString(companyNumber)) {
-            logger.info(createLogMessage(req.session, `${AddCompanyHandler.name}`, `Company number regex validation failed for ${companyNumber}`));
+            logger.info(createLogMessage(req, `${AddCompanyHandler.name}`, `Company number regex validation failed for ${companyNumber}`));
 
             this.viewData.errors = {
                 companyNumber: {
@@ -165,7 +165,7 @@ export class AddCompanyHandler extends GenericHandler {
                 }
             };
         } else {
-            const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
+            const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber, req.requestId);
             if (companyProfile?.companyStatus?.toLocaleLowerCase() !== constants.COMPANY_STATUS_ACTIVE) {
                 this.viewData.errors = {
                     companyNumber: {

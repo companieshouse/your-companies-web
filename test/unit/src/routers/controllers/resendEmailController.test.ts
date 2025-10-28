@@ -53,7 +53,7 @@ describe("resendEmailController", () => {
             await resendEmailController(req as Request, res as Response);
             // Then
             expect(validateEmailStringSpy).toHaveBeenCalledWith(email);
-            expect(logger.info).toHaveBeenCalledWith(expectedMessage);
+            expect(logger.info).toHaveBeenCalledWith(expect.stringContaining(expectedMessage));
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.redirect).toHaveBeenCalledWith(expectedUrl);
         });

@@ -16,7 +16,7 @@ import logger, { createLogMessage } from "../lib/Logger";
 export const refreshToken = async (req: Request, session: Session): Promise<string> => {
     const apiClient: ApiClient = createOAuthApiClient(session);
 
-    logger.info(createLogMessage(session, refreshToken.name, `Making a POST request for refreshing access token ${getAccessToken(session)}`));
+    logger.info(createLogMessage(req, refreshToken.name, `Making a POST request for refreshing access token ${getAccessToken(session)}`));
 
     const refreshTokenData = await apiClient.refreshToken.refresh(
         getRefreshToken(session),
@@ -28,11 +28,11 @@ export const refreshToken = async (req: Request, session: Session): Promise<stri
 
     if (!accessToken) {
         const errorMessage = `Error on refresh token ${JSON.stringify(refreshTokenData)}`;
-        logger.error(createLogMessage(session, refreshToken.name, errorMessage));
+        logger.error(createLogMessage(req, refreshToken.name, errorMessage));
         throw new Error(errorMessage);
     }
 
     setAccessToken(session, accessToken);
-    logger.info(createLogMessage(session, refreshToken.name, "Successfully refreshed access token"));
+    logger.info(createLogMessage(req, refreshToken.name, "Successfully refreshed access token"));
     return accessToken;
 };

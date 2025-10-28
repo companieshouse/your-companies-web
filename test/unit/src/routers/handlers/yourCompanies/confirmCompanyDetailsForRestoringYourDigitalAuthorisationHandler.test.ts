@@ -34,7 +34,8 @@ describe("ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler", () 
         const lang = "en";
         const req = mockParametrisedRequest({
             lang,
-            session: new Session()
+            session: new Session(),
+            requestId: "requestId"
         });
         const i18nChInstance = {
             getResourceBundle: getResourceBundleMock
@@ -71,7 +72,7 @@ describe("ConfirmCompanyDetailsForRestoringYourDigitalAuthorisationHandler", () 
         expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
         expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_TYPE);
         expect(getCompanyProfileSpy).toHaveBeenCalledTimes(1);
-        expect(getCompanyProfileSpy).toHaveBeenCalledWith(companyNumber);
+        expect(getCompanyProfileSpy).toHaveBeenCalledWith(companyNumber, "requestId");
         expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
         expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.COMPANY_PROFILE}_${companyNumber}`, validActiveCompanyProfile);
         expect(formatForDisplaySpy).toHaveBeenCalledTimes(1);

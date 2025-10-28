@@ -18,6 +18,8 @@ import { v4 as uuidv4 } from "uuid";
 import { prepareCSPConfig } from "./middleware/content.security.policy.middleware.config";
 import nocache from "nocache";
 import { csrfProtectionMiddleware } from "./middleware/csrf.protection.middleware";
+import { requestIdGenerator } from "./middleware/request.id.generator.middleware";
+import { requestLogger } from "./middleware/request.logger.middleware";
 
 const app = express();
 
@@ -70,6 +72,9 @@ app.enable("trust proxy");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// set x-request-id header for all requests
+app.use(requestIdGenerator);
+
 app.use(cookieParser());
 const nonce: string = uuidv4();
 
@@ -77,6 +82,9 @@ app.use(nocache());
 app.use(helmet(prepareCSPConfig(nonce)));
 
 app.use(`${constants.LANDING_URL}*`, sessionMiddleware);
+
+app.use(requestLogger);
+
 app.use(`${constants.LANDING_URL}*`, ensureSessionCookiePresentMiddleware);
 
 app.use(`${constants.LANDING_URL}*`, csrfProtectionMiddleware);
