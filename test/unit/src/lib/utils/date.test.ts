@@ -1,4 +1,4 @@
-/* eslint-disable import/first */
+
 jest.mock("../../../../../src/lib/Logger");
 
 import {

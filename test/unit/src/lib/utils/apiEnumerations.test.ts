@@ -1,6 +1,4 @@
 
-/* eslint-disable import/first */
-
 const READABLE_COMPANY_STATUS = "Receiver Action";
 const READABLE_COMPANY_TYPE = "Private limited company";
 const KEY_RECEIVERSHIP = "receivership";
