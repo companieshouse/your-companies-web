@@ -4,7 +4,7 @@ import * as associationsService from "../../../../src/services/associationsServi
 import createError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 
-const reqest = {} as Request;
+const request = {} as Request;
 const updateAssociationStatusSpy = jest.spyOn(associationsService, "updateAssociationStatus");
 updateAssociationStatusSpy.mockImplementation(jest.fn());
 
@@ -21,7 +21,7 @@ describe("associationsService", () => {
             // Given
             const associationId = "0123456789";
             // When
-            const result = await associationsService.removeUserFromCompanyAssociations(reqest, associationId);
+            const result = await associationsService.removeUserFromCompanyAssociations(request, associationId);
             // Then
             expect(updateAssociationStatusSpy).toHaveBeenCalled();
             expect(result).toEqual(constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS);
@@ -33,7 +33,7 @@ describe("associationsService", () => {
             const expectedError = createError(StatusCodes.BAD_REQUEST, "Error on removal/cancellation: associationId not provided");
             // When / Then
 
-            await expect(associationsService.removeUserFromCompanyAssociations(reqest, associationId!))
+            await expect(associationsService.removeUserFromCompanyAssociations(request, associationId!))
                 .rejects.toEqual(expectedError);
         });
     });
