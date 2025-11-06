@@ -55,38 +55,38 @@ describe("addPresenterControllerPost", () => {
     });
 
     it("should render add company page if an error present in view data",
-        async () => {
-            // Given
-            const expectedViewData = {
-                errors: [
-                    { key: "value" }
-                ]
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            // When
-            await addPresenterControllerPost(req as Request, res as Response);
-            // Then
-            expect(AddPresenterHandler).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledWith(constants.ADD_PRESENTER_PAGE, expectedViewData);
-        });
+       async () => {
+           // Given
+           const expectedViewData = {
+               errors: [
+                   { key: "value" }
+               ]
+           };
+           mockExecute.mockReturnValue(expectedViewData);
+           // When
+           await addPresenterControllerPost(req as Request, res as Response);
+           // Then
+           expect(AddPresenterHandler).toHaveBeenCalledTimes(1);
+           expect(renderMock).toHaveBeenCalledTimes(1);
+           expect(renderMock).toHaveBeenCalledWith(constants.ADD_PRESENTER_PAGE, expectedViewData);
+       });
 
     it("should redirect to confirm company details page if an error does not present in view data",
-        async () => {
-            // Given
-            const expectedViewData = {
-                companyNumber: "12345"
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            const expectedUrl = "/test/test-url";
-            getCheckPresenterFullUrlSpy.mockReturnValue(expectedUrl);
-            // When
-            await addPresenterControllerPost(req as Request, res as Response);
-            // Then
-            expect(AddPresenterHandler).toHaveBeenCalledTimes(1);
-            expect(getCheckPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getCheckPresenterFullUrlSpy).toHaveBeenCalledWith(expectedViewData.companyNumber);
-            expect(redirectMock).toHaveBeenCalledTimes(1);
-            expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
-        });
+       async () => {
+           // Given
+           const expectedViewData = {
+               companyNumber: "12345"
+           };
+           mockExecute.mockReturnValue(expectedViewData);
+           const expectedUrl = "/test/test-url";
+           getCheckPresenterFullUrlSpy.mockReturnValue(expectedUrl);
+           // When
+           await addPresenterControllerPost(req as Request, res as Response);
+           // Then
+           expect(AddPresenterHandler).toHaveBeenCalledTimes(1);
+           expect(getCheckPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getCheckPresenterFullUrlSpy).toHaveBeenCalledWith(expectedViewData.companyNumber);
+           expect(redirectMock).toHaveBeenCalledTimes(1);
+           expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
+       });
 });

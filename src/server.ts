@@ -4,7 +4,7 @@ import https from "https";
 import logger from "./lib/Logger";
 import dotenv from "dotenv";
 dotenv.config();
-import app from "./app"; // eslint-disable-line
+import app from "./app";
 
 // start the HTTP server
 const server = http.createServer(app);

@@ -53,10 +53,10 @@ describe("removeCompanyControllerPost", () => {
     });
 
     it("should render remove company page if an error present in view data",
-        async () => {
-            // When
-            await removeAuthorisationDoNotRestoreControllerPost(req as Request, res as Response);
-            // Then
-            expect(RemoveAuthorisationDoNotRestoreHandler).toHaveBeenCalledTimes(1);
-        });
+       async () => {
+           // When
+           await removeAuthorisationDoNotRestoreControllerPost(req as Request, res as Response);
+           // Then
+           expect(RemoveAuthorisationDoNotRestoreHandler).toHaveBeenCalledTimes(1);
+       });
 });

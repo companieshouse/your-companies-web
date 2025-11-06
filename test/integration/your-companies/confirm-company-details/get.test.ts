@@ -38,23 +38,23 @@ describe("GET /your-companies/confirm-company-details", () => {
         { langInfo: "English", langVersion: undefined, lang: en },
         { langInfo: "Welsh", langVersion: "cy", lang: cy }
     ])("should return status 200 and expected $langInfo content if lang set to $langVersion",
-        async ({ langVersion, lang }) => {
-            // Given
-            session.data.extra_data.companyProfile = validActiveCompanyProfile;
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(lang.confirm_this_is_the_correct_company);
-            expect(response.text).toContain(lang.company_name);
-            expect(response.text).toContain(lang.company_number);
-            expect(response.text).toContain(lang.status);
-            expect(response.text).toContain(lang.incorporation_date);
-            expect(response.text).toContain(lang.company_type);
-            expect(response.text).toContain(lang.registered_office_address);
-            expect(response.text).toContain(lang.confirm_and_continue);
-            expect(response.text).toContain(lang.choose_a_different_company);
-        });
+       async ({ langVersion, lang }) => {
+           // Given
+           session.data.extra_data.companyProfile = validActiveCompanyProfile;
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(lang.confirm_this_is_the_correct_company);
+           expect(response.text).toContain(lang.company_name);
+           expect(response.text).toContain(lang.company_number);
+           expect(response.text).toContain(lang.status);
+           expect(response.text).toContain(lang.incorporation_date);
+           expect(response.text).toContain(lang.company_type);
+           expect(response.text).toContain(lang.registered_office_address);
+           expect(response.text).toContain(lang.confirm_and_continue);
+           expect(response.text).toContain(lang.choose_a_different_company);
+       });
 
     test.each([
         {
@@ -72,16 +72,16 @@ describe("GET /your-companies/confirm-company-details", () => {
             expectedDateOfCreation: "22 Mehefin 1972"
         }
     ])("should return formatted $langInfo company information from get profile request if lang set to '$langVersion'",
-        async ({ langVersion, expectedCompanyStatus, expectedCompanyType, expectedDateOfCreation }) => {
-            // Given
-            session.data.extra_data.companyProfile = badFormatCompanyProfile;
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.text).toContain(expectedCompanyStatus);
-            expect(response.text).toContain(expectedCompanyType);
-            expect(response.text).toContain(expectedDateOfCreation);
-        });
+       async ({ langVersion, expectedCompanyStatus, expectedCompanyType, expectedDateOfCreation }) => {
+           // Given
+           session.data.extra_data.companyProfile = badFormatCompanyProfile;
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.text).toContain(expectedCompanyStatus);
+           expect(response.text).toContain(expectedCompanyType);
+           expect(response.text).toContain(expectedDateOfCreation);
+       });
 
     const companyTypeTestData = [
         {

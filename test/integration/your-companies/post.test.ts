@@ -41,13 +41,13 @@ describe("POST /your-companies", () => {
             redirectMessage: "Found. Redirecting to /your-companies"
         }
     ])("should redirect $condition ",
-        async ({ search, redirectMessage }) => {
-            // Given
-            userAssociationsSpy.mockResolvedValue(twentyConfirmedAssociations);
-            // When
-            const response = await router.post("/your-companies").send({ search });
-            // Then
-            expect(response.status).toBe(302);
-            expect(response.text).toContain(redirectMessage);
-        });
+       async ({ search, redirectMessage }) => {
+           // Given
+           userAssociationsSpy.mockResolvedValue(twentyConfirmedAssociations);
+           // When
+           const response = await router.post("/your-companies").send({ search });
+           // Then
+           expect(response.status).toBe(302);
+           expect(response.text).toContain(redirectMessage);
+       });
 });

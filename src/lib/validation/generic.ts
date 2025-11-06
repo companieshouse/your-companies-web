@@ -1,5 +1,6 @@
 import { z } from "zod";
 import * as constants from "../../constants";
+import { createAndLogError } from "../Logger";
 
 /**
  * Validates if the given string is a valid email address.
@@ -14,6 +15,7 @@ export function validateEmailString (emailString: string): boolean {
         emailSchema.parse(emailString);
         return true;
     } catch (e) {
+        createAndLogError(`Invalid email address: ${emailString} - ${e}`);
         return false;
     }
 }
@@ -29,6 +31,7 @@ export function validateClearForm (clearForm: string): boolean {
         clearFormSchema.parse(clearForm);
         return true;
     } catch (e) {
+        createAndLogError(`Invalid clear form value: ${clearForm} - ${e}`);
         return false;
     }
 }
@@ -46,6 +49,7 @@ export function validateCompanyNumberSearchString (str: string): boolean {
         searchSchema.parse(str);
         return true;
     } catch (e) {
+        createAndLogError(`Invalid company number search string: ${str} - ${e}`);
         return false;
     }
 }
@@ -64,6 +68,7 @@ export function validateFullCompanyNumberSearchString (str: string): boolean {
         searchSchema.parse(str);
         return true;
     } catch (e) {
+        createAndLogError(`Invalid full company number search string: ${str} - ${e}`);
         return false;
     }
 }
@@ -82,6 +87,7 @@ export function validatePageNumber (pageNum: number, maxNumOfPages: number): boo
         pageNoSchema.parse(pageNum);
         return true;
     } catch (e) {
+        createAndLogError(`Invalid page number: ${pageNum} - ${e}`);
         return false;
     }
 }

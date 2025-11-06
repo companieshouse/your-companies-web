@@ -96,123 +96,123 @@ describe("ManageAuthorisedPeopleHandler", () => {
             condition: "there is no removal or email resent triggered but there is enough associations for pagination"
         }
     ])("should return $returnInfo if $condition",
-        async ({
-            page,
-            pageNumber,
-            companyAssociations,
-            isValidPageNumber,
-            originalUrl,
-            pagination,
-            viewData
-        }) => {
-            // Given
-            const lang = "en";
-            const companyNumber = companyAssociations.items[0].companyNumber;
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                query: { page },
-                params: { companyNumber },
-                originalUrl
-            });
-            stringToPositiveIntegerSpy.mockReturnValue(pageNumber);
-            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(
-                {
-                    state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
-                    associationId: "1234567890"
-                }
-            );
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const addPresenterFullUrl = `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
-            getAddPresenterFullUrlSpy.mockReturnValue(addPresenterFullUrl);
-            getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
-            validatePageNumberSpy.mockReturnValue(isValidPageNumber);
-            const manageAuthorisedPeopleFullUrl = `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
-            const modifiedOriginalUrl = originalUrl?.replace(":companyNumber", companyNumber);
-            if (companyAssociations.totalPages > 1) {
-                getManageAuthorisedPeopleFullUrlSpy.mockReturnValueOnce(modifiedOriginalUrl);
-            }
-            getManageAuthorisedPeopleFullUrlSpy.mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
-                .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
-            buildPaginationElementSpy.mockReturnValue(pagination);
-            const finalViewData = {
-                templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
-                backLinkHref: constants.LANDING_URL,
-                lang: translations,
-                buttonHref: addPresenterFullUrl + constants.CLEAR_FORM_TRUE,
-                resendEmailUrl: manageAuthorisedPeopleEmailResentFullUrl,
-                removeUrl: companyAuthProtectedAuthenticationCodeRemoveFullUrl,
-                companyAssociations,
-                pagination,
-                changeCompanyAuthCodeUrl: undefined,
-                resentSuccessEmail: "",
-                authorisedPersonEmailAddress: undefined,
-                authorisedPersonCompanyName: undefined,
-                restoreDigitalAuthBaseUrl: `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`,
-                cancelSearchHref: "/your-companies/manage-authorised-people/NI038379?cancelSearch",
-                companyName: "THE POLISH BREWERY",
-                companyNumber: "NI038379",
-                searchEmail: null,
-                validSearch: false,
-                manageAuthorisedPeopleUrl: manageAuthorisedPeopleFullUrl,
-                ...viewData
-            };
-            const emails = companyAssociations.items.map(item => item.userEmail);
-            const associationIds = companyAssociations.items.map(item => item.id);
-            // When
-            const response = await manageAuthorisedPeopleHandler.execute(req);
-            // Then
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(4);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL);
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
-            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
-            expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
-            expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
-            expect(getAddPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getAddPresenterFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            let getCompanyAssociationsCounter = 1;
-            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
-            if (!isValidPageNumber) {
-                expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, 0, constants.ITEMS_PER_PAGE);
-                getCompanyAssociationsCounter = ++getCompanyAssociationsCounter;
-            }
-            expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
-            expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            if (companyAssociations.totalPages > 1) {
-                expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-                expect(buildPaginationElementSpy).toHaveBeenCalledWith(isValidPageNumber ? pageNumber : 1, companyAssociations.totalPages, modifiedOriginalUrl, "", translations);
-                expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
-                expect(setLangForPaginationSpy).toHaveBeenCalledWith(pagination, translations);
-            }
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(8 + companyAssociations.items.length);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REFERER_URL, manageAuthorisedPeopleFullUrl);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER, companyNumber);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, emails);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emails);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
-            for (const association of companyAssociations.items) {
-                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
-            }
-            expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(getCompanyAssociationsCounter);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(2);
-            expect(getSearchStringEmailSpy).toHaveBeenCalledTimes(1);
-            expect(getSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Session), companyNumber);
-            expect(getCompanyNameFromCollectionSpy).toHaveBeenCalledTimes(0);
-            expect(setCompanyNameInCollectionSpy).toHaveBeenCalledTimes(1);
-            expect(setCompanyNameInCollectionSpy).toHaveBeenCalledWith(expect.any(Session), companyAssociations?.items[0]?.companyName, companyNumber);
-            expect(response).toEqual(finalViewData);
-        });
+       async ({
+           page,
+           pageNumber,
+           companyAssociations,
+           isValidPageNumber,
+           originalUrl,
+           pagination,
+           viewData
+       }) => {
+           // Given
+           const lang = "en";
+           const companyNumber = companyAssociations.items[0].companyNumber;
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               lang,
+               query: { page },
+               params: { companyNumber },
+               originalUrl
+           });
+           stringToPositiveIntegerSpy.mockReturnValue(pageNumber);
+           isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(
+               {
+                   state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
+                   associationId: "1234567890"
+               }
+           );
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const addPresenterFullUrl = `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
+           getAddPresenterFullUrlSpy.mockReturnValue(addPresenterFullUrl);
+           getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+           validatePageNumberSpy.mockReturnValue(isValidPageNumber);
+           const manageAuthorisedPeopleFullUrl = `${constants.LANDING_URL}/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
+           const modifiedOriginalUrl = originalUrl?.replace(":companyNumber", companyNumber);
+           if (companyAssociations.totalPages > 1) {
+               getManageAuthorisedPeopleFullUrlSpy.mockReturnValueOnce(modifiedOriginalUrl);
+           }
+           getManageAuthorisedPeopleFullUrlSpy.mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
+               .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
+           buildPaginationElementSpy.mockReturnValue(pagination);
+           const finalViewData = {
+               templateName: constants.MANAGE_AUTHORISED_PEOPLE_PAGE,
+               backLinkHref: constants.LANDING_URL,
+               lang: translations,
+               buttonHref: addPresenterFullUrl + constants.CLEAR_FORM_TRUE,
+               resendEmailUrl: manageAuthorisedPeopleEmailResentFullUrl,
+               removeUrl: companyAuthProtectedAuthenticationCodeRemoveFullUrl,
+               companyAssociations,
+               pagination,
+               changeCompanyAuthCodeUrl: undefined,
+               resentSuccessEmail: "",
+               authorisedPersonEmailAddress: undefined,
+               authorisedPersonCompanyName: undefined,
+               restoreDigitalAuthBaseUrl: `${constants.LANDING_URL}${constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL}`,
+               cancelSearchHref: "/your-companies/manage-authorised-people/NI038379?cancelSearch",
+               companyName: "THE POLISH BREWERY",
+               companyNumber: "NI038379",
+               searchEmail: null,
+               validSearch: false,
+               manageAuthorisedPeopleUrl: manageAuthorisedPeopleFullUrl,
+               ...viewData
+           };
+           const emails = companyAssociations.items.map(item => item.userEmail);
+           const associationIds = companyAssociations.items.map(item => item.id);
+           // When
+           const response = await manageAuthorisedPeopleHandler.execute(req);
+           // Then
+           expect(getFullUrlSpy).toHaveBeenCalledTimes(4);
+           expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_EMAIL_RESENT_URL);
+           expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL);
+           expect(getFullUrlSpy).toHaveBeenCalledWith(constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_BASE_URL);
+           expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
+           expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
+           expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_PAGE_ERRORS);
+           expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
+           expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.MANAGE_AUTHORISED_PEOPLE_PAGE);
+           expect(getAddPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getAddPresenterFullUrlSpy).toHaveBeenCalledWith(companyNumber);
+           let getCompanyAssociationsCounter = 1;
+           expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
+           if (!isValidPageNumber) {
+               expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, 0, constants.ITEMS_PER_PAGE);
+               getCompanyAssociationsCounter = ++getCompanyAssociationsCounter;
+           }
+           expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
+           expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
+           if (companyAssociations.totalPages > 1) {
+               expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
+               expect(buildPaginationElementSpy).toHaveBeenCalledWith(isValidPageNumber ? pageNumber : 1, companyAssociations.totalPages, modifiedOriginalUrl, "", translations);
+               expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
+               expect(setLangForPaginationSpy).toHaveBeenCalledWith(pagination, translations);
+           }
+           expect(setExtraDataSpy).toHaveBeenCalledTimes(8 + companyAssociations.items.length);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REFERER_URL, manageAuthorisedPeopleFullUrl);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyAssociations?.items[0]?.companyName);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER, companyNumber);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER, companyNumber);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY, emails);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL, emails);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE, true);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID, associationIds);
+           for (const association of companyAssociations.items) {
+               expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.ASSOCIATIONS_ID}_${association.id}`, association);
+           }
+           expect(getCompanyAssociationsSpy).toHaveBeenCalledTimes(getCompanyAssociationsCounter);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(2);
+           expect(getSearchStringEmailSpy).toHaveBeenCalledTimes(1);
+           expect(getSearchStringEmailSpy).toHaveBeenCalledWith(expect.any(Session), companyNumber);
+           expect(getCompanyNameFromCollectionSpy).toHaveBeenCalledTimes(0);
+           expect(setCompanyNameInCollectionSpy).toHaveBeenCalledTimes(1);
+           expect(setCompanyNameInCollectionSpy).toHaveBeenCalledWith(expect.any(Session), companyAssociations?.items[0]?.companyName, companyNumber);
+           expect(response).toEqual(finalViewData);
+       });
 
     test.each([
         { state: AssociationState.COMPANY_AWAITING_ASSOCIATION_WITH_USER },
@@ -252,33 +252,33 @@ describe("ManageAuthorisedPeopleHandler", () => {
             expectedErrorKey: constants.ERRORS_EMAIL_INVALID
         }
     ])("should return view data with the expeted error message key if seach string is $cause",
-        async ({ searchString, expectedErrorKey }) => {
-            // Given
-            const lang = "en";
-            const companyNumber = companyAssociations.items[0].companyNumber;
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: { companyNumber }
-            });
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const addPresenterFullUrl = `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
-            getAddPresenterFullUrlSpy.mockReturnValue(addPresenterFullUrl);
-            getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
-            getManageAuthorisedPeopleFullUrlSpy
-                .mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
-                .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
-            getSearchStringEmailSpy.mockReturnValue(searchString);
-            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(
-                {
-                    state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
-                    associationId: "1234567890"
-                }
-            );
-            // When
-            const response = await manageAuthorisedPeopleHandler.execute(req);
-            // Then
-            expect(response).toHaveProperty("errors", { searchEmail: { text: expectedErrorKey } });
-        });
+       async ({ searchString, expectedErrorKey }) => {
+           // Given
+           const lang = "en";
+           const companyNumber = companyAssociations.items[0].companyNumber;
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               lang,
+               params: { companyNumber }
+           });
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const addPresenterFullUrl = `${constants.LANDING_URL}/${constants.ADD_PRESENTER_PAGE}/${companyNumber}`;
+           getAddPresenterFullUrlSpy.mockReturnValue(addPresenterFullUrl);
+           getCompanyAssociationsSpy.mockReturnValue(companyAssociations);
+           getManageAuthorisedPeopleFullUrlSpy
+               .mockReturnValueOnce(manageAuthorisedPeopleFullUrl)
+               .mockReturnValueOnce(manageAuthorisedPeopleFullUrl);
+           getSearchStringEmailSpy.mockReturnValue(searchString);
+           isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(
+               {
+                   state: AssociationState.COMPANY_ASSOCIATED_WITH_USER,
+                   associationId: "1234567890"
+               }
+           );
+           // When
+           const response = await manageAuthorisedPeopleHandler.execute(req);
+           // Then
+           expect(response).toHaveProperty("errors", { searchEmail: { text: expectedErrorKey } });
+       });
 });

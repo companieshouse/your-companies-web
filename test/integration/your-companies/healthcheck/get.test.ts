@@ -21,12 +21,12 @@ describe("GET /your-companies/healthcheck", () => {
     });
 
     it("should check user auth before returning the response and return status 200",
-        async () => {
-            // When
-            const response = await router.get(url);
-            // Then
-            expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain("OK");
-        });
+       async () => {
+           // When
+           const response = await router.get(url);
+           // Then
+           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain("OK");
+       });
 });

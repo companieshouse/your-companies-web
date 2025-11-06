@@ -50,12 +50,12 @@ describe("formatTitleCase", () => {
             expectedText: ""
         }
     ])("should return $returnInfo if $condition",
-        ({ text, expectedText }) => {
-            // When
-            const result = formatTitleCase(text);
-            // Then
-            expect(result).toEqual(expectedText);
-        });
+       ({ text, expectedText }) => {
+           // When
+           const result = formatTitleCase(text);
+           // Then
+           expect(result).toEqual(expectedText);
+       });
 });
 
 describe("buildAddress", () => {

@@ -107,12 +107,12 @@ describe("validatePageNumber", () => {
             maxNumOfPages: 8
         }
     ])("should return $returnValue if $condition",
-        ({ returnValue, pageNumber, maxNumOfPages }) => {
-            // When
-            const result = validatePageNumber(pageNumber, maxNumOfPages);
-            // Then
-            expect(result).toEqual(returnValue);
-        });
+       ({ returnValue, pageNumber, maxNumOfPages }) => {
+           // When
+           const result = validatePageNumber(pageNumber, maxNumOfPages);
+           // Then
+           expect(result).toEqual(returnValue);
+       });
 });
 
 describe("Should validate clear form query param", () => {

@@ -60,10 +60,10 @@ describe("api enumeration tests", () => {
             expectedResult: KEY
         }
     ])("should return $returnInfo when $condition",
-        ({ lookupFuntion, argument, expectedResult }) => {
-            // When
-            const result: string = lookupFuntion(argument);
-            // Then
-            expect(result).toEqual(expectedResult);
-        });
+       ({ lookupFuntion, argument, expectedResult }) => {
+           // When
+           const result: string = lookupFuntion(argument);
+           // Then
+           expect(result).toEqual(expectedResult);
+       });
 });

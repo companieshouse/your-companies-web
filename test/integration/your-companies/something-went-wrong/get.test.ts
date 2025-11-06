@@ -32,37 +32,37 @@ describe("GET /your-companies/something-went-wrong", () => {
         { status: 500, langInfo: "English", langVersion: undefined, condition: "it is not a CSRF error", lang: en, csrfError: false },
         { status: 500, langInfo: "Welsh", langVersion: "cy", condition: "it is not a CSRF error", lang: cy, csrfError: false }
     ])("should return status %s and %s content if language set to %s",
-        async ({ status, langVersion, lang, csrfError }) => {
+       async ({ status, langVersion, lang, csrfError }) => {
 
-            // Given
-            const csrfErrorString = csrfError ? `${constants.CSRF_ERRORS}` : "";
-            const langString = langVersion ? `lang=${langVersion}` : "";
-            let queryString = "";
-            if (langVersion && csrfError) {
-                queryString = `?${langString}&${csrfErrorString}`;
-            } else if (langVersion || csrfError) {
-                queryString = langVersion ? `?${langString}` : `?${csrfErrorString}`;
-            }
-            // When
-            const result = await router.get(`${url}${queryString}`);
-            // Then
-            expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-            expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
-            expect(result.status).toEqual(status);
-            if (status === 403) {
-                expect(result.text).toContain(lang.sorry_something_went_wrong);
-                expect(result.text).toContain(lang.we_have_not_been_able_to_save);
-                expect(result.text).toContain(lang.try_the_following);
-                expect(result.text).toContain(lang.use_the_back_link);
-                expect(result.text).toContain(lang.sign_out_of_the_service);
-                expect(result.text).toContain(lang.if_the_problem_continues);
-                expect(result.text).toContain(lang.contact_us_link);
-                expect(result.text).toContain(lang.for_help);
-            } else {
-                expect(result.text).toContain(lang.page_header);
-                expect(result.text).toContain(lang.try_again_later);
-                expect(result.text).toContain(lang.contact_companies_house);
-                expect(result.text).toContain(lang.if_you_have_questions);
-            }
-        });
+           // Given
+           const csrfErrorString = csrfError ? `${constants.CSRF_ERRORS}` : "";
+           const langString = langVersion ? `lang=${langVersion}` : "";
+           let queryString = "";
+           if (langVersion && csrfError) {
+               queryString = `?${langString}&${csrfErrorString}`;
+           } else if (langVersion || csrfError) {
+               queryString = langVersion ? `?${langString}` : `?${csrfErrorString}`;
+           }
+           // When
+           const result = await router.get(`${url}${queryString}`);
+           // Then
+           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+           expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+           expect(result.status).toEqual(status);
+           if (status === 403) {
+               expect(result.text).toContain(lang.sorry_something_went_wrong);
+               expect(result.text).toContain(lang.we_have_not_been_able_to_save);
+               expect(result.text).toContain(lang.try_the_following);
+               expect(result.text).toContain(lang.use_the_back_link);
+               expect(result.text).toContain(lang.sign_out_of_the_service);
+               expect(result.text).toContain(lang.if_the_problem_continues);
+               expect(result.text).toContain(lang.contact_us_link);
+               expect(result.text).toContain(lang.for_help);
+           } else {
+               expect(result.text).toContain(lang.page_header);
+               expect(result.text).toContain(lang.try_again_later);
+               expect(result.text).toContain(lang.contact_companies_house);
+               expect(result.text).toContain(lang.if_you_have_questions);
+           }
+       });
 });

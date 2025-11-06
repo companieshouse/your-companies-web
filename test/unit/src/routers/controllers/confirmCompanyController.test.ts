@@ -74,30 +74,30 @@ describe("confirmCompanyControllerPost", () => {
     });
 
     it("should redirect to create company association page",
-        async () => {
-            // Given
-            const expectedViewData = {
-                backLinkHref: "/test"
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
-            const confirmedCompanyForAssociation: CompanyNameAndNumber = {
-                companyNumber: validActiveCompanyProfile.companyNumber,
-                companyName: validActiveCompanyProfile.companyName
-            };
-            const expectedUrl = "/test/test-url";
-            getCompanyAddedSuccessFullUrlSpy.mockReturnValue(expectedUrl);
-            // When
-            await confirmCompanyControllerPost(req as Request, res as Response);
-            // Then
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
-            expect(getCompanyAddedSuccessFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getCompanyAddedSuccessFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
-            expect(redirectMock).toHaveBeenCalledTimes(1);
-            expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
-        });
+       async () => {
+           // Given
+           const expectedViewData = {
+               backLinkHref: "/test"
+           };
+           mockExecute.mockReturnValue(expectedViewData);
+           getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
+           const confirmedCompanyForAssociation: CompanyNameAndNumber = {
+               companyNumber: validActiveCompanyProfile.companyNumber,
+               companyName: validActiveCompanyProfile.companyName
+           };
+           const expectedUrl = "/test/test-url";
+           getCompanyAddedSuccessFullUrlSpy.mockReturnValue(expectedUrl);
+           // When
+           await confirmCompanyControllerPost(req as Request, res as Response);
+           // Then
+           expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS, true);
+           expect(getCompanyAddedSuccessFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getCompanyAddedSuccessFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
+           expect(redirectMock).toHaveBeenCalledTimes(1);
+           expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
+       });
 
     it("should throw an error if a profile is not found in session", async () => {
 

@@ -169,7 +169,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
         deleteExtraData(req.session, this.getSessionKey(req));
 
         logger.info(createLogMessage(req, this.processAssociationRemoval.name,
-            `Removing association id: ${association.id}, company number: ${association.companyNumber}`));
+                                     `Removing association id: ${association.id}, company number: ${association.companyNumber}`));
 
         await removeUserFromCompanyAssociations(req, association.id);
 
@@ -182,7 +182,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     private async handleSelfRemoval (req: Request, res: Response, association: Association): Promise<void> {
         logger.info(createLogMessage(req, this.handleSelfRemoval.name,
-            `Self-removal from ${association.companyNumber}`));
+                                     `Self-removal from ${association.companyNumber}`));
 
         setExtraData(req.session, constants.REMOVED_THEMSELVES_FROM_COMPANY, {
             companyName: association.companyName,
@@ -203,7 +203,7 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
         setExtraData(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, personRemovedConfirmationData);
         logger.info(createLogMessage(req, this.handleOtherUserRemoval.name,
-            `Association ${association.id} removed`));
+                                     `Association ${association.id} removed`));
 
         const redirectUrl = this.getRedirectUrl(association.status);
         res.redirect(redirectUrl);
@@ -211,15 +211,15 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     private getRedirectUrl (status: AssociationStatus): string {
         switch (status) {
-        case AssociationStatus.AWAITING_APPROVAL:
-            return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL);
-        case AssociationStatus.MIGRATED:
-        case AssociationStatus.UNAUTHORISED:
-            return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL);
-        case AssociationStatus.CONFIRMED:
-            return getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
-        default:
-            throw new Error("Unexpected association status");
+                case AssociationStatus.AWAITING_APPROVAL:
+                    return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL);
+                case AssociationStatus.MIGRATED:
+                case AssociationStatus.UNAUTHORISED:
+                    return getFullUrl(constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_URL);
+                case AssociationStatus.CONFIRMED:
+                    return getFullUrl(constants.CONFIRMATION_PERSON_REMOVED_URL);
+                default:
+                    throw new Error("Unexpected association status");
         }
     }
 
@@ -237,15 +237,15 @@ export class RemoveAuthorisedPersonHandler extends GenericHandler {
 
     public getTemplateViewName (): string {
         switch (this.viewData.currentStatus) {
-        case AssociationStatus.MIGRATED:
-        case AssociationStatus.UNAUTHORISED:
-            return constants.REMOVE_DO_NOT_RESTORE_PAGE;
-        case AssociationStatus.CONFIRMED:
-            return constants.REMOVE_AUTHORISED_PERSON_PAGE;
-        case AssociationStatus.AWAITING_APPROVAL:
-            return constants.CANCEL_PERSON_PAGE;
-        default:
-            throw new Error("Unexpected association status");
+                case AssociationStatus.MIGRATED:
+                case AssociationStatus.UNAUTHORISED:
+                    return constants.REMOVE_DO_NOT_RESTORE_PAGE;
+                case AssociationStatus.CONFIRMED:
+                    return constants.REMOVE_AUTHORISED_PERSON_PAGE;
+                case AssociationStatus.AWAITING_APPROVAL:
+                    return constants.CANCEL_PERSON_PAGE;
+                default:
+                    throw new Error("Unexpected association status");
         }
     }
 }

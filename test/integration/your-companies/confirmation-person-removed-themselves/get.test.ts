@@ -47,16 +47,16 @@ describe("GET /your-companies/confirmation-person-removed-themselves", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return expected $langInfo content if lang set to '$langVersion'",
-        async ({ langVersion, lang, langCommon }) => {
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.text).toContain(langCommon.success);
-            expect(response.text).toContain(lang.go_to_your_companies);
-            expect(response.text).toContain(lang.weve_sent_an_email);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.text).toContain(langCommon.success);
+           expect(response.text).toContain(lang.go_to_your_companies);
+           expect(response.text).toContain(lang.weve_sent_an_email);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

@@ -283,47 +283,47 @@ describe("RemoveAuthorisedPersonHandler", () => {
                 errors: { confirmRemoval: { text: constants.SELECT_YES_IF_YOU_WANT_TO_CANCEL_AUTHORISATION } }
             }
         ])("should re-render page by calling res.render with correct template and viewData with errors populated if $reason",
-            async ({ templateName, association, errors }) => {
-                // Given
-                const lang = "en";
-                const companyNumber = "NI038379";
+           async ({ templateName, association, errors }) => {
+               // Given
+               const lang = "en";
+               const companyNumber = "NI038379";
 
-                const associationId = "1234567890";
-                const req: Request = mockParametrisedRequest({
-                    session: new Session(),
-                    lang,
-                    params: {
-                        companyNumber,
-                        associationId
-                    }
-                });
+               const associationId = "1234567890";
+               const req: Request = mockParametrisedRequest({
+                   session: new Session(),
+                   lang,
+                   params: {
+                       companyNumber,
+                       associationId
+                   }
+               });
 
-                const res = mockResponse();
+               const res = mockResponse();
 
-                getExtraDataSpy
-                    .mockReturnValueOnce(undefined);
+               getExtraDataSpy
+                   .mockReturnValueOnce(undefined);
 
-                const translations = { key: "value" };
-                getTranslationsForViewSpy.mockReturnValueOnce(translations);
-                const expectedViewData = {
-                    templateName,
-                    backLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                    lang: translations,
-                    companyName: association.companyName,
-                    companyNumber: association.companyNumber,
-                    userEmail: association.userEmail,
-                    cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
-                    currentStatus: association.status,
-                    userName: association.userEmail,
-                    errors
+               const translations = { key: "value" };
+               getTranslationsForViewSpy.mockReturnValueOnce(translations);
+               const expectedViewData = {
+                   templateName,
+                   backLinkHref: "/your-companies/manage-authorised-people/NI038379",
+                   lang: translations,
+                   companyName: association.companyName,
+                   companyNumber: association.companyNumber,
+                   userEmail: association.userEmail,
+                   cancelLinkHref: "/your-companies/manage-authorised-people/NI038379",
+                   currentStatus: association.status,
+                   userName: association.userEmail,
+                   errors
 
-                };
-                getAssociationByIdSpy.mockResolvedValueOnce(association);
-                // When
-                await removeAuthorisedPersonHandler.handlePostRequest(req, res);
-                // Then
-                expect(res.render).toHaveBeenCalledWith(templateName, expectedViewData);
-            });
+               };
+               getAssociationByIdSpy.mockResolvedValueOnce(association);
+               // When
+               await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+               // Then
+               expect(res.render).toHaveBeenCalledWith(templateName, expectedViewData);
+           });
 
         it("should error when association company number does not match company no in url", async () => {
             // Given
@@ -393,38 +393,38 @@ describe("RemoveAuthorisedPersonHandler", () => {
                 redirectionUrl: `${constants.LANDING_URL}${constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_CANCELLED_URL}`
             }
         ])("should process $info, save details to session and redirect to confirmation when user has selected to confirm",
-            async ({ association, redirectionUrl }) => {
-                // Given
-                const lang = "en";
-                const companyNumber = "NI038379";
-                const associationId = "1234567890";
-                const session = new Session();
-                const req: Request = mockParametrisedRequest({
-                    session,
-                    lang,
-                    params: {
-                        companyNumber,
-                        associationId
-                    },
-                    body: {
-                        confirmRemoval: "confirm"
-                    }
-                });
-                const expectedSavedRemovalForConfirmationPage = {
-                    userNameOrEmail: association.userEmail,
-                    companyNumber: association.companyNumber,
-                    companyName: association.companyName
-                };
-                const res = mockResponse();
-                getExtraDataSpy
-                    .mockReturnValueOnce(association);
-                // When
-                await removeAuthorisedPersonHandler.handlePostRequest(req, res);
-                // Then
-                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
-                expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, expectedSavedRemovalForConfirmationPage);
-                expect(res.redirect).toHaveBeenCalledWith(redirectionUrl);
-            });
+           async ({ association, redirectionUrl }) => {
+               // Given
+               const lang = "en";
+               const companyNumber = "NI038379";
+               const associationId = "1234567890";
+               const session = new Session();
+               const req: Request = mockParametrisedRequest({
+                   session,
+                   lang,
+                   params: {
+                       companyNumber,
+                       associationId
+                   },
+                   body: {
+                       confirmRemoval: "confirm"
+                   }
+               });
+               const expectedSavedRemovalForConfirmationPage = {
+                   userNameOrEmail: association.userEmail,
+                   companyNumber: association.companyNumber,
+                   companyName: association.companyName
+               };
+               const res = mockResponse();
+               getExtraDataSpy
+                   .mockReturnValueOnce(association);
+               // When
+               await removeAuthorisedPersonHandler.handlePostRequest(req, res);
+               // Then
+               expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationId);
+               expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.PERSON_REMOVED_CONFIRMATION_DATA, expectedSavedRemovalForConfirmationPage);
+               expect(res.redirect).toHaveBeenCalledWith(redirectionUrl);
+           });
 
         it("should throw an exception if association has unexpected status", async () => {
             // Given

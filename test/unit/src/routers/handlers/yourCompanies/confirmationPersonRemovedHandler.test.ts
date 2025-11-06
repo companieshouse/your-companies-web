@@ -33,41 +33,41 @@ describe("ConfirmationPersonRemovedHandler", () => {
             changeAuthenticationCodeHref: constants.CHANGE_COMPANY_AUTH_CODE_URL_WELSH
         }
     ])("should return expected view data when language set to '$lang'",
-        async ({ lang, changeAuthenticationCodeHref }) => {
-            // Given
-            const req: Request = mockParametrisedRequest({ session: new Session(), lang });
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = "TEST LTD.";
-            const companyNumber = "12345678";
-            const userNameOrEmail = "test@example.com";
-            const personRemovedConfirmationData: PersonRemovedConfirmation = {
-                userNameOrEmail,
-                companyNumber,
-                companyName
-            };
-            getExtraDataSpy.mockReturnValue(personRemovedConfirmationData);
-            const managePeopleHref = `/your-companies/manage-authorised-people/${companyNumber}`;
-            getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(managePeopleHref);
-            const viewData = {
-                templateName: constants.CONFIRMATION_PERSON_REMOVED_PAGE,
-                lang: translations,
-                companyName,
-                companyNumber,
-                userNameOrEmail,
-                managePeopleHref,
-                changeAuthenticationCodeHref
-            };
-            // When
-            const response = await confirmationPersonRemovedHandler.execute(req);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.PERSON_REMOVED_CONFIRMATION_DATA);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSON_REMOVED_PAGE);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            expect(response).toEqual(viewData);
+       async ({ lang, changeAuthenticationCodeHref }) => {
+           // Given
+           const req: Request = mockParametrisedRequest({ session: new Session(), lang });
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const companyName = "TEST LTD.";
+           const companyNumber = "12345678";
+           const userNameOrEmail = "test@example.com";
+           const personRemovedConfirmationData: PersonRemovedConfirmation = {
+               userNameOrEmail,
+               companyNumber,
+               companyName
+           };
+           getExtraDataSpy.mockReturnValue(personRemovedConfirmationData);
+           const managePeopleHref = `/your-companies/manage-authorised-people/${companyNumber}`;
+           getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(managePeopleHref);
+           const viewData = {
+               templateName: constants.CONFIRMATION_PERSON_REMOVED_PAGE,
+               lang: translations,
+               companyName,
+               companyNumber,
+               userNameOrEmail,
+               managePeopleHref,
+               changeAuthenticationCodeHref
+           };
+           // When
+           const response = await confirmationPersonRemovedHandler.execute(req);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.PERSON_REMOVED_CONFIRMATION_DATA);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSON_REMOVED_PAGE);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
+           expect(response).toEqual(viewData);
 
-        });
+       });
 });

@@ -48,63 +48,63 @@ describe("CheckPresenterHandler", () => {
             condition: "and it unsuccessfully calls association service"
         }
     ])("should return $return when method is $method $condition",
-        async ({ method, viewData, authorisedPerson }) => {
-            // Given
-            const lang = "en";
-            const req: Request = mockParametrisedRequest({ session: new Session(), lang });
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = "TEST LTD.";
-            const companyNumber = "12345";
-            const authorisedPersonEmail = "test@test.com";
-            getExtraDataSpy
-                .mockReturnValueOnce(companyName)
-                .mockReturnValueOnce(companyNumber)
-                .mockReturnValueOnce(authorisedPersonEmail);
-            const url = "/your-companies/add-presenter/12345";
-            getAddPresenterFullUrlSpy.mockReturnValue(url);
-            const getExtraDataKeys = [
-                constants.COMPANY_NAME,
-                constants.COMPANY_NUMBER,
-                constants.AUTHORISED_PERSON_EMAIL
-            ];
-            if (viewData.associationAlreadyExist) {
-                postInvitationSpy.mockRejectedValue(new Error());
-            } else {
-                postInvitationSpy.mockReturnValue(authorisedPerson);
-            }
-            const expectedViewData = {
-                templateName: constants.CHECK_PRESENTER_PAGE,
-                lang: translations,
-                backLinkHref: url,
-                companyName,
-                companyNumber,
-                emailAddress: authorisedPersonEmail,
-                associationAlreadyExist: false,
-                backLinkWithClearForm: `${url}${constants.CLEAR_FORM_TRUE}`,
-                ...viewData
-            };
-            // When
-            const response = await checkPresenterHandler.execute(req, method);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataKeys.length);
-            for (const key of getExtraDataKeys) {
-                expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), key);
-            }
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CHECK_PRESENTER_PAGE);
-            expect(getAddPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getAddPresenterFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            if (method === constants.POST) {
-                expect(postInvitationSpy).toHaveBeenCalledTimes(1);
-                expect(postInvitationSpy).toHaveBeenCalledWith(expect.anything(), companyNumber, authorisedPersonEmail);
-                if (!viewData.associationAlreadyExist) {
-                    expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-                    expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.AUTHORISED_PERSON, authorisedPerson);
-                    expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
-                    expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.AUTHORISED_PERSON_EMAIL);
-                }
-            }
-            expect(response).toEqual(expectedViewData);
-        });
+       async ({ method, viewData, authorisedPerson }) => {
+           // Given
+           const lang = "en";
+           const req: Request = mockParametrisedRequest({ session: new Session(), lang });
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const companyName = "TEST LTD.";
+           const companyNumber = "12345";
+           const authorisedPersonEmail = "test@test.com";
+           getExtraDataSpy
+               .mockReturnValueOnce(companyName)
+               .mockReturnValueOnce(companyNumber)
+               .mockReturnValueOnce(authorisedPersonEmail);
+           const url = "/your-companies/add-presenter/12345";
+           getAddPresenterFullUrlSpy.mockReturnValue(url);
+           const getExtraDataKeys = [
+               constants.COMPANY_NAME,
+               constants.COMPANY_NUMBER,
+               constants.AUTHORISED_PERSON_EMAIL
+           ];
+           if (viewData.associationAlreadyExist) {
+               postInvitationSpy.mockRejectedValue(new Error());
+           } else {
+               postInvitationSpy.mockReturnValue(authorisedPerson);
+           }
+           const expectedViewData = {
+               templateName: constants.CHECK_PRESENTER_PAGE,
+               lang: translations,
+               backLinkHref: url,
+               companyName,
+               companyNumber,
+               emailAddress: authorisedPersonEmail,
+               associationAlreadyExist: false,
+               backLinkWithClearForm: `${url}${constants.CLEAR_FORM_TRUE}`,
+               ...viewData
+           };
+           // When
+           const response = await checkPresenterHandler.execute(req, method);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataKeys.length);
+           for (const key of getExtraDataKeys) {
+               expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), key);
+           }
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CHECK_PRESENTER_PAGE);
+           expect(getAddPresenterFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getAddPresenterFullUrlSpy).toHaveBeenCalledWith(companyNumber);
+           if (method === constants.POST) {
+               expect(postInvitationSpy).toHaveBeenCalledTimes(1);
+               expect(postInvitationSpy).toHaveBeenCalledWith(expect.anything(), companyNumber, authorisedPersonEmail);
+               if (!viewData.associationAlreadyExist) {
+                   expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
+                   expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.AUTHORISED_PERSON, authorisedPerson);
+                   expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
+                   expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.AUTHORISED_PERSON_EMAIL);
+               }
+           }
+           expect(response).toEqual(expectedViewData);
+       });
 });

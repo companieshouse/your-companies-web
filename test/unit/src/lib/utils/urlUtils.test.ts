@@ -134,10 +134,10 @@ describe("URL generation function", () => {
             getManageAuthorisedPeopleFullUrl
         ]
     ])("%s should generate URL: '%s'",
-        (_functionName, expectedFullUrl, argument, testedFunction) => {
-            // When
-            const result = testedFunction(argument);
-            // Then
-            expect(result).toEqual(expectedFullUrl);
-        });
+       (_functionName, expectedFullUrl, argument, testedFunction) => {
+           // When
+           const result = testedFunction(argument);
+           // Then
+           expect(result).toEqual(expectedFullUrl);
+       });
 });

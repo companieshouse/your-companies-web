@@ -50,30 +50,30 @@ describe("GET /your-companies/confirmation-person-added", () => {
             lang: cy
         }
     ])("should return expected $langInfo content when lang is '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // Given
-            const companyName = "TEST LTD.";
-            const companyNumber = "12345678";
-            const userEmail = "test@example.com";
-            const authorisedPerson: AuthorisedPerson = {
-                authorisedPersonEmailAddress: userEmail,
-                authorisedPersonCompanyName: companyName
-            };
-            setExtraData(session, constants.AUTHORISED_PERSON, authorisedPerson);
-            setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
-            // When
-            const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
-            // Then
-            expect(response.status).toBe(200);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-            expect(response.text).toContain(userEmail);
-            expect(response.text).toContain(lang.email_sent);
-            expect(response.text).toContain(lang.go_to_digitally_authorised_people);
-            expect(response.text).toContain(lang.page_header);
-            expect(response.text).toContain(lang.inviting_them_to_be_digitally_authorised);
-            expect(response.text).toContain(lang.they_will_need_to_either_accept_or_decline);
-            expect(response.text).toContain(lang.weve_also_sent_an_email);
-            expect(response.text).toContain(lang.weve_sent_an_email_to);
-        });
+       async ({ langVersion, lang }) => {
+           // Given
+           const companyName = "TEST LTD.";
+           const companyNumber = "12345678";
+           const userEmail = "test@example.com";
+           const authorisedPerson: AuthorisedPerson = {
+               authorisedPersonEmailAddress: userEmail,
+               authorisedPersonCompanyName: companyName
+           };
+           setExtraData(session, constants.AUTHORISED_PERSON, authorisedPerson);
+           setExtraData(session, constants.COMPANY_NUMBER, companyNumber);
+           // When
+           const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
+           // Then
+           expect(response.status).toBe(200);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+           expect(response.text).toContain(userEmail);
+           expect(response.text).toContain(lang.email_sent);
+           expect(response.text).toContain(lang.go_to_digitally_authorised_people);
+           expect(response.text).toContain(lang.page_header);
+           expect(response.text).toContain(lang.inviting_them_to_be_digitally_authorised);
+           expect(response.text).toContain(lang.they_will_need_to_either_accept_or_decline);
+           expect(response.text).toContain(lang.weve_also_sent_an_email);
+           expect(response.text).toContain(lang.weve_sent_an_email_to);
+       });
 });

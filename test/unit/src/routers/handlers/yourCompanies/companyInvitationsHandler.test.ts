@@ -193,65 +193,65 @@ describe("CompanyInvitationsHandler", () => {
             condition: "there is more than one page of invitations"
         }
     ])("should return view data $contentInfo if $condition",
-        async ({ page, pageNumber, userInvites, isPageNumberValid, associations, viewData }) => {
-            // Given
-            const lang = "en";
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                query: { page }
-            });
-            const translations = {
-                accept: "accept",
-                decline: "decline"
-            };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            stringToPositiveIntegerSpy.mockReturnValue(pageNumber);
-            getInvitationsSpy.mockReturnValue(userInvites);
-            validatePageNumberSpy.mockReturnValue(isPageNumberValid);
-            getUserAssociationsSpy.mockReturnValue(associations);
-            for (const invite of userInvites.items) {
-                getCompanyInvitationsAcceptFullUrlSpy.mockReturnValueOnce(`${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/${invite.associationId}`);
-                getCompanyInvitationsDeclineFullUrlSpy.mockReturnValueOnce(`${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${invite.associationId}`);
-            }
-            const urlPrefix = `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`;
-            getFullUrlSpy.mockReturnValue(urlPrefix);
-            if (viewData.numberOfPages > 1) {
-                buildPaginationElementSpy.mockReturnValue(viewData.pagination);
-            }
-            // When
-            const response = await companyInvitationsHandler.execute(req);
-            // Then
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.COMPANY_INVITATIONS_PAGE);
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
-            let getInvitationsCallCount = 1;
-            expect(getInvitationsSpy).toHaveBeenCalledWith(req, pageNumber - 1);
-            if (!isPageNumberValid) {
-                getInvitationsCallCount = ++getInvitationsCallCount;
-                expect(getInvitationsSpy).toHaveBeenCalledWith(req, 0);
-            }
-            expect(getInvitationsSpy).toHaveBeenCalledTimes(getInvitationsCallCount);
-            expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
-            expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, userInvites.totalPages);
-            expect(getUserAssociationsSpy).toHaveBeenCalledTimes(1);
-            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
-            expect(getCompanyInvitationsAcceptFullUrlSpy).toHaveBeenCalledTimes(userInvites.items.length);
-            expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledTimes(userInvites.items.length);
-            for (const invite of userInvites.items) {
-                expect(getCompanyInvitationsAcceptFullUrlSpy).toHaveBeenCalledWith(invite.associationId);
-                expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledWith(invite.associationId);
-            }
-            if (viewData.numberOfPages > 1) {
-                expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
-                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
-                expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, userInvites.totalPages, urlPrefix, "", translations);
-                expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
-                expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, translations);
-            }
+       async ({ page, pageNumber, userInvites, isPageNumberValid, associations, viewData }) => {
+           // Given
+           const lang = "en";
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               lang,
+               query: { page }
+           });
+           const translations = {
+               accept: "accept",
+               decline: "decline"
+           };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           stringToPositiveIntegerSpy.mockReturnValue(pageNumber);
+           getInvitationsSpy.mockReturnValue(userInvites);
+           validatePageNumberSpy.mockReturnValue(isPageNumberValid);
+           getUserAssociationsSpy.mockReturnValue(associations);
+           for (const invite of userInvites.items) {
+               getCompanyInvitationsAcceptFullUrlSpy.mockReturnValueOnce(`${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_ACCEPT_PAGE}/${invite.associationId}`);
+               getCompanyInvitationsDeclineFullUrlSpy.mockReturnValueOnce(`${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${invite.associationId}`);
+           }
+           const urlPrefix = `${constants.LANDING_URL}${constants.COMPANY_INVITATIONS_URL}`;
+           getFullUrlSpy.mockReturnValue(urlPrefix);
+           if (viewData.numberOfPages > 1) {
+               buildPaginationElementSpy.mockReturnValue(viewData.pagination);
+           }
+           // When
+           const response = await companyInvitationsHandler.execute(req);
+           // Then
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.COMPANY_INVITATIONS_PAGE);
+           expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
+           expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(page);
+           let getInvitationsCallCount = 1;
+           expect(getInvitationsSpy).toHaveBeenCalledWith(req, pageNumber - 1);
+           if (!isPageNumberValid) {
+               getInvitationsCallCount = ++getInvitationsCallCount;
+               expect(getInvitationsSpy).toHaveBeenCalledWith(req, 0);
+           }
+           expect(getInvitationsSpy).toHaveBeenCalledTimes(getInvitationsCallCount);
+           expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
+           expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, userInvites.totalPages);
+           expect(getUserAssociationsSpy).toHaveBeenCalledTimes(1);
+           expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.AWAITING_APPROVAL], undefined, undefined, constants.INVITATIONS_PER_PAGE);
+           expect(getCompanyInvitationsAcceptFullUrlSpy).toHaveBeenCalledTimes(userInvites.items.length);
+           expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledTimes(userInvites.items.length);
+           for (const invite of userInvites.items) {
+               expect(getCompanyInvitationsAcceptFullUrlSpy).toHaveBeenCalledWith(invite.associationId);
+               expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledWith(invite.associationId);
+           }
+           if (viewData.numberOfPages > 1) {
+               expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
+               expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
+               expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
+               expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, userInvites.totalPages, urlPrefix, "", translations);
+               expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
+               expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, translations);
+           }
 
-            expect(response).toEqual(viewData);
-        });
+           expect(response).toEqual(viewData);
+       });
 });

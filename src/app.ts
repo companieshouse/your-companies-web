@@ -40,7 +40,7 @@ const nunjucksLoaderOpts = {
 
 const njk = new nunjucks.Environment(
     new nunjucks.FileSystemLoader(app.get("views"),
-        nunjucksLoaderOpts)
+                                  nunjucksLoaderOpts)
 );
 
 njk.express(app);
@@ -115,7 +115,7 @@ app.use(errorHandler.httpErrorHandler);
 app.use(errorHandler.csrfErrorHandler);
 
 // Unhandled errors
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
     const translations = getTranslationsForView(req.lang ?? "en", constants.SERVICE_UNAVAILABLE);

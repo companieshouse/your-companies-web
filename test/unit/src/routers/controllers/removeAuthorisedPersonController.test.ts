@@ -62,12 +62,12 @@ describe("removeAuthorisedPersonControllerPost", () => {
     });
 
     it("should create an instance of RemoveAuthorisedPersonHandler and call its handlePostRequest method",
-        async () => {
-            // Given / When
-            await removeAuthorisedPersonControllerPost(req as Request, res as Response);
+       async () => {
+           // Given / When
+           await removeAuthorisedPersonControllerPost(req as Request, res as Response);
 
-            // Then
-            expect(RemoveAuthorisedPersonHandler).toHaveBeenCalledTimes(1);
-            expect(mockHandlePostRequest).toHaveBeenCalledTimes(1);
-        });
+           // Then
+           expect(RemoveAuthorisedPersonHandler).toHaveBeenCalledTimes(1);
+           expect(mockHandlePostRequest).toHaveBeenCalledTimes(1);
+       });
 });

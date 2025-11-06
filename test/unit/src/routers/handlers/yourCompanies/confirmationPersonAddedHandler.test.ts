@@ -26,42 +26,42 @@ describe("ConfirmationPersonAddedHandler", () => {
     test.each([
         { lang: "en" }, { lang: "cy" }
     ])("should return expected view data when language set to '$lang'",
-        async ({ lang }) => {
-            // Given
-            const req: Request = mockParametrisedRequest({ session: new Session(), lang });
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = "TEST LTD.";
-            const companyNumber = "12345678";
-            const userEmail = "test@example.com";
-            const authorisedPerson: AuthorisedPerson = {
-                authorisedPersonEmailAddress: userEmail,
-                authorisedPersonCompanyName: companyName
-            };
-            getExtraDataSpy
-                .mockReturnValueOnce(companyNumber)
-                .mockReturnValueOnce(authorisedPerson);
-            const managePeopleHref = `/your-companies/manage-authorised-people/${companyNumber}`;
-            getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(managePeopleHref);
-            const viewData = {
-                templateName: constants.CONFIRMATION_PERSON_ADDED_PAGE,
-                backLinkHref: constants.LANDING_URL,
-                lang: translations,
-                companyName,
-                companyNumber,
-                userEmail,
-                managePeopleHref
-            };
-            // When
-            const response = await confirmationPersonAddedHandler.execute(req);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(2);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSON_ADDED_PAGE);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            expect(response).toEqual(viewData);
-        });
+       async ({ lang }) => {
+           // Given
+           const req: Request = mockParametrisedRequest({ session: new Session(), lang });
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const companyName = "TEST LTD.";
+           const companyNumber = "12345678";
+           const userEmail = "test@example.com";
+           const authorisedPerson: AuthorisedPerson = {
+               authorisedPersonEmailAddress: userEmail,
+               authorisedPersonCompanyName: companyName
+           };
+           getExtraDataSpy
+               .mockReturnValueOnce(companyNumber)
+               .mockReturnValueOnce(authorisedPerson);
+           const managePeopleHref = `/your-companies/manage-authorised-people/${companyNumber}`;
+           getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(managePeopleHref);
+           const viewData = {
+               templateName: constants.CONFIRMATION_PERSON_ADDED_PAGE,
+               backLinkHref: constants.LANDING_URL,
+               lang: translations,
+               companyName,
+               companyNumber,
+               userEmail,
+               managePeopleHref
+           };
+           // When
+           const response = await confirmationPersonAddedHandler.execute(req);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(2);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.AUTHORISED_PERSON);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NUMBER);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSON_ADDED_PAGE);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
+           expect(response).toEqual(viewData);
+       });
 });

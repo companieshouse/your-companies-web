@@ -67,28 +67,28 @@ describe("GET /your-companies/manage-authorised-people/:companyNumber", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language version set to '$langVersion'",
-        async ({ langVersion, lang, langCommon }) => {
-            // Given
-            getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
-            expect(response.text).toContain(lang.people_digitally_authorised_to_file_online);
-            expect(response.text).toContain(lang.anyone_with_access_to_the_current_authentication);
-            expect(response.text).toContain(lang.add_new_authorised_person);
-            expect(response.text).toContain(lang.details_of_authorised_people);
-            expect(response.text).toContain(lang.digital_authorisation);
-            expect(response.text).toContain(lang.remove);
-            expect(response.text).toContain(langCommon.go_back_to_your_companies);
-            expect(response.text).not.toContain(langCommon.success);
-            expect(response.text).not.toContain(lang.digital_authorisation_cancelled);
-            expect(response.text).toContain(companyAssociations.items[0].userEmail);
-            expect(response.text).toContain(companyAssociations.items[1].userEmail);
-            expect(response.text).toContain(companyAssociations.items[2].userEmail);
-            expect(response.text).toContain(companyAssociations.items[3].userEmail);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // Given
+           getCompanyAssociationsSpy.mockReturnValue(Promise.resolve(companyAssociations));
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(`${companyAssociations.items[0].companyName} (${companyAssociations.items[0].companyNumber})`);
+           expect(response.text).toContain(lang.people_digitally_authorised_to_file_online);
+           expect(response.text).toContain(lang.anyone_with_access_to_the_current_authentication);
+           expect(response.text).toContain(lang.add_new_authorised_person);
+           expect(response.text).toContain(lang.details_of_authorised_people);
+           expect(response.text).toContain(lang.digital_authorisation);
+           expect(response.text).toContain(lang.remove);
+           expect(response.text).toContain(langCommon.go_back_to_your_companies);
+           expect(response.text).not.toContain(langCommon.success);
+           expect(response.text).not.toContain(lang.digital_authorisation_cancelled);
+           expect(response.text).toContain(companyAssociations.items[0].userEmail);
+           expect(response.text).toContain(companyAssociations.items[1].userEmail);
+           expect(response.text).toContain(companyAssociations.items[2].userEmail);
+           expect(response.text).toContain(companyAssociations.items[3].userEmail);
+       });
 
     it("should display all 15 associations for page 1 with a next button", async () => {
         // Given

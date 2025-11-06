@@ -28,43 +28,43 @@ describe("ConfirmationPersonsDigitalAuthorisationRemovedNotRestoredHandler", () 
     test.each([
         { lang: "en" }, { lang: "cy" }
     ])("should return expected view data when language set to '$lang'",
-        async ({ lang }) => {
-            // Given
-            const req: Request = mockParametrisedRequest({ session: new Session(), lang });
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = "TEST LTD.";
-            const companyNumber = "12345678";
-            const userNameOrEmail = "test@example.com";
-            const personRemovedConfirmationData: PersonRemovedConfirmation = {
-                userNameOrEmail,
-                companyName,
-                companyNumber
-            };
-            getExtraDataSpy
-                .mockReturnValueOnce(personRemovedConfirmationData)
-                .mockReturnValueOnce(companyNumber);
-            const managePeopleHref = `/your-companies/manage-authorised-people/${companyNumber}`;
-            getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(managePeopleHref);
-            const viewData = {
-                templateName: constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_PAGE,
-                backLinkHref: constants.LANDING_URL,
-                lang: translations,
-                companyName,
-                companyNumber,
-                userNameOrEmail,
-                managePeopleHref
-            };
-            // When
-            const response = await confirmationPersonsDigitalAuthorisationRemovedNotRestoredHandler.execute(req);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.PERSON_REMOVED_CONFIRMATION_DATA);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_PAGE);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
-            expect(response).toEqual(viewData);
+       async ({ lang }) => {
+           // Given
+           const req: Request = mockParametrisedRequest({ session: new Session(), lang });
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const companyName = "TEST LTD.";
+           const companyNumber = "12345678";
+           const userNameOrEmail = "test@example.com";
+           const personRemovedConfirmationData: PersonRemovedConfirmation = {
+               userNameOrEmail,
+               companyName,
+               companyNumber
+           };
+           getExtraDataSpy
+               .mockReturnValueOnce(personRemovedConfirmationData)
+               .mockReturnValueOnce(companyNumber);
+           const managePeopleHref = `/your-companies/manage-authorised-people/${companyNumber}`;
+           getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(managePeopleHref);
+           const viewData = {
+               templateName: constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_PAGE,
+               backLinkHref: constants.LANDING_URL,
+               lang: translations,
+               companyName,
+               companyNumber,
+               userNameOrEmail,
+               managePeopleHref
+           };
+           // When
+           const response = await confirmationPersonsDigitalAuthorisationRemovedNotRestoredHandler.execute(req);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.PERSON_REMOVED_CONFIRMATION_DATA);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.CONFIRMATION_PERSONS_DIGITAL_AUTHORISATION_REMOVED_NOT_RESTORED_PAGE);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getManageAuthorisedPeopleFullUrlSpy).toHaveBeenCalledWith(companyNumber);
+           expect(response).toEqual(viewData);
 
-        });
+       });
 });

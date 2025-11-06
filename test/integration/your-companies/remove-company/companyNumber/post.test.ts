@@ -56,14 +56,14 @@ describe("POST /your-companies/remove-company/:companyNumber", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should re-render page with errors in $langInfo when no option is selected and lang set to '$langVersion'",
-        async ({ langVersion, lang, langCommon }) => {
-            // When
-            const response = await router.post(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toBe(200);
-            expect(response.text).toContain(lang.you_must_select_an_option);
-            expect(response.text).toContain(langCommon.title_error);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // When
+           const response = await router.post(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toBe(200);
+           expect(response.text).toContain(lang.you_must_select_an_option);
+           expect(response.text).toContain(langCommon.title_error);
+       });
 
     it("should redirect to landing page when 'No' is selected", async () => {
         // Given

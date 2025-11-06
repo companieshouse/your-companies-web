@@ -95,7 +95,7 @@ export const getRefreshToken = (session: Session): string => {
 export const setAccessToken = (session: Session, accessToken: string): void => {
     const signInInfo = getSignInInfo(session);
     if (signInInfo) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
         signInInfo[SignInInfoKeys.AccessToken]![AccessTokenKeys.AccessToken] = accessToken;
     } else {
         const errorMessage = "SignInInfo not present in the session";
@@ -115,7 +115,7 @@ export const setAccessToken = (session: Session, accessToken: string): void => {
  * @param companyName - The name of the company to store.
  * @param companyNumber - The unique identifier for the company.
  */
-export const setCompanyNameInCollection = (session: Session, companyName: string, companyNumber:string): void => {
+export const setCompanyNameInCollection = (session: Session, companyName: string, companyNumber: string): void => {
     const companyNameCollection = getExtraData(session, constants.COMPANY_NAME_COLLECTION) || {};
     companyNameCollection[companyNumber] = companyName;
     setExtraData(session, constants.COMPANY_NAME_COLLECTION, companyNameCollection);
@@ -143,7 +143,7 @@ export const getCompanyNameFromCollection = (session: Session, companyNumber: st
  * @param email - The email address to associate with the company number.
  * @param companyNumber - The unique identifier for the company.
  */
-export const setSearchStringEmail = (session: Session, email: string, companyNumber:string): void => {
+export const setSearchStringEmail = (session: Session, email: string, companyNumber: string): void => {
     const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL) || {};
 
     emailSearchCollection[companyNumber] = email;
@@ -177,17 +177,17 @@ export const deleteSearchStringEmail = (
     companyNumber?: string,
     deleteEntireCollection = false
 ): void => {
-    if (!session) return;
+    if (!session) {return;}
 
     if (deleteEntireCollection) {
         deleteExtraData(session, constants.SEARCH_STRING_EMAIL);
         return;
     }
 
-    if (!companyNumber) return;
+    if (!companyNumber) {return;}
 
     const emailSearchCollection = getExtraData(session, constants.SEARCH_STRING_EMAIL);
-    if (!emailSearchCollection || typeof emailSearchCollection !== "object") return;
+    if (!emailSearchCollection || typeof emailSearchCollection !== "object") {return;}
 
     if (companyNumber in emailSearchCollection) {
         delete emailSearchCollection[companyNumber];
