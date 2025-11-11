@@ -1,6 +1,5 @@
 import { Session } from "@companieshouse/node-session-handler";
 import { Request } from "express";
-import { getAccessToken } from "../lib/utils/sessionUtils";
 import { refreshToken } from "./refreshTokenService";
 import logger, { createLogMessage } from "../lib/Logger";
 import { createOAuthApiClient } from "./apiClientService";
@@ -24,7 +23,7 @@ export const makeApiCallWithRetry = async (
     ...otherParams: any[]
 ): Promise<unknown> => {
 
-    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token ${getAccessToken(session)}`));
+    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token access token`));
 
     let client = createOAuthApiClient(req.session, constants.ACCOUNTS_API_URL);
 
@@ -32,18 +31,18 @@ export const makeApiCallWithRetry = async (
 
     if (response?.httpStatusCode === 401) {
 
-        const responseMsg = `Retrying ${fnName} call on ${serviceName} service after unauthorised response`;
+        const responseMsg = `Status 401: retrying ${fnName} call on ${serviceName} service after unauthorised response`;
         logger.info(createLogMessage(req, makeApiCallWithRetry.name, `${responseMsg} - ${JSON.stringify(response)}`));
 
-        const accessToken = await refreshToken(req, session);
-        logger.info(createLogMessage(req, makeApiCallWithRetry.name, `New access token: ${accessToken}`));
+        await refreshToken(req, session);
+        logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Token refreshed sucessfully`));
 
         client = createOAuthApiClient(req.session, constants.ACCOUNTS_API_URL);
         response = await client[serviceName][fnName](...otherParams);
 
     }
 
-    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Call successful.`));
+    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Response received, call to ${serviceName} ${fnName} successful.`));
 
     return response;
 

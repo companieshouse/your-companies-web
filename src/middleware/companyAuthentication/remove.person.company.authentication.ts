@@ -21,10 +21,10 @@ export const removeAuthorisedPersonCompanyAuth = (req: Request, res: Response, n
     const idParam = req.params[constants.ASSOCIATIONS_ID];
 
     if (isRemovingThemselvesById(req.session as Session, idParam)) {
-        logger.debug(createLogMessage(req, removeAuthorisedPersonCompanyAuth.name, `User is removing themselves from company, company authentication not required.`));
+        logger.info(createLogMessage(req, removeAuthorisedPersonCompanyAuth.name, `User is removing themselves from company, company authentication not required.`));
         return next();
     }
 
-    logger.debug(createLogMessage(req, removeAuthorisedPersonCompanyAuth.name, `Redirecting to company authentication, removing a user with id ${idParam}.`));
+    logger.info(createLogMessage(req, removeAuthorisedPersonCompanyAuth.name, `Redirecting to company authentication, removing a user with id ${idParam}.`));
     return companyAuthenticationMiddlewareCheckboxDisabled(req, res, next);
 };

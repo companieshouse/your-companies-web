@@ -1,6 +1,6 @@
 import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import { createOAuthApiClient } from "./apiClientService";
-import { getAccessToken, getRefreshToken, setAccessToken } from "../lib/utils/sessionUtils";
+import { getRefreshToken, setAccessToken } from "../lib/utils/sessionUtils";
 import { Session } from "@companieshouse/node-session-handler";
 import { Request } from "express";
 import * as constants from "../constants";
@@ -16,7 +16,7 @@ import logger, { createLogMessage } from "../lib/Logger";
 export const refreshToken = async (req: Request, session: Session): Promise<string> => {
     const apiClient: ApiClient = createOAuthApiClient(session);
 
-    logger.info(createLogMessage(req, refreshToken.name, `Making a POST request for refreshing access token ${getAccessToken(session)}`));
+    logger.info(createLogMessage(req, refreshToken.name, `Making a POST request for refreshing access token`));
 
     const refreshTokenData = await apiClient.refreshToken.refresh(
         getRefreshToken(session),
@@ -27,7 +27,7 @@ export const refreshToken = async (req: Request, session: Session): Promise<stri
     const accessToken = refreshTokenData?.resource?.access_token;
 
     if (!accessToken) {
-        const errorMessage = `Error on refresh token ${JSON.stringify(refreshTokenData)}`;
+        const errorMessage = `Error getting refresh token, no token received`;
         logger.error(createLogMessage(req, refreshToken.name, errorMessage));
         throw new Error(errorMessage);
     }
