@@ -23,7 +23,7 @@ export const makeApiCallWithRetry = async (
     ...otherParams: any[]
 ): Promise<unknown> => {
 
-    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service with token access token`));
+    logger.info(createLogMessage(req, makeApiCallWithRetry.name, `Making a ${fnName} call on ${serviceName} service`));
 
     let client = createOAuthApiClient(req.session, constants.ACCOUNTS_API_URL);
 
