@@ -28,8 +28,8 @@ export const safeDebugCsrf = (req: Request):void => {
         const cookieValue = req.cookies ? req.cookies[DEFAULT_CHS_SESSION_COOKIE_NAME] : undefined;
         const hasSessionCookie = typeof cookieValue !== "undefined";
         logger.info(`CSRF debug: requestId=${req.requestId} method=${req.method} path=${req.originalUrl} ` +
-            `sessionId==${fingerprint(req?.session?.data[SessionKey.Id])}` +
-            `userId==${getLoggedInUserId(req?.session)}` +
+            `sessionId=${fingerprint(req?.session?.data[SessionKey.Id])} ` +
+            `userId=${getLoggedInUserId(req?.session)} ` +
             `hasSessionCookie=${hasSessionCookie} sessionCsrfTokenPresent=${sessionTokenPresent} ` +
             `sessionCsrfTokenFp=${fingerprint(sessionCsrfToken)} requestTokenPresent=${requestTokenPresent} ` +
             `requestCsrfTokenFp=${fingerprint(csrfTokenInRequest)}`);

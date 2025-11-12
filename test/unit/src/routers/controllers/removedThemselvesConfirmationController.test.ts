@@ -7,6 +7,7 @@ import { mockResponse } from "../../../../mocks/response.mock";
 import { Session } from "@companieshouse/node-session-handler";
 
 const mockExecute = jest.fn();
+jest.mock("../../../../../src/lib/Logger");
 jest.mock("../../../../../src/routers/handlers/yourCompanies/removeThemselvesConfirmationHandler", () => {
     return {
         RemoveThemselvesConfirmationHandler: jest.fn().mockImplementation(() => {
