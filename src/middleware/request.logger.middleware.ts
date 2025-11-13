@@ -34,7 +34,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
 
     res.once("close", () => {
         if (!res.writableEnded) {
-            logger.error(`${requestLogger.name} - ABORTED [${requestId}] before completion`);
+            logger.info(`${requestLogger.name} - ABORTED [${requestId}] before completion`);
         }
     });
 
