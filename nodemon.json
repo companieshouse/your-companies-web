@@ -1,6 +1,6 @@
 {
     "exec": "ts-node --files ./src/bin/nodemon-entry.ts",
-    "ext": "ts,html,njk,json,js",
+    "ext": "ts,html,njk,json,js,mjs",
     "watch": ["./src", "./locales", "package.json"],
     "events": {
       "restart": "echo '🔄 '  Nodemon Restarting...",

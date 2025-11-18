@@ -4,7 +4,7 @@
     "description": "A web application for Your Companies journey",
     "main": "dist/server.js",
     "engines": {
-        "node": ">=20.0.0",
+        "node": ">=24.0.0",
         "npm": "^10"
     },
     "scripts": {
@@ -12,8 +12,8 @@
         "build:assets": "gulp build",
         "build:server": "tsc && cp -r src/views dist/ && cp -r locales dist/",
         "build": "npm run build:assets && npm run build:server",
-        "lint": "eslint 'src/**/*' 'test/**/*.ts' *.mjs",
-        "lint:fix": "eslint 'src/**/*' 'test/**/*.ts' *.mjs --fix",
+        "lint": "eslint '{src,test}/**/*'",
+        "lint:fix": "eslint '{src,test}/**/*' --fix",
         "test:coverage": "npm run test -- --coverage",
         "test": "jest",
         "sonarqube-base-branch": "sonar-scanner",
@@ -82,6 +82,7 @@
         "eslint": "^9.39.1",
         "globals": "^15.11.0",
         "cheerio": "^1.0.0-rc.3",
+        "gulp": "^5.0.0",
         "gulp-clean": "^0.4.0",
         "gulp-concat": "^2.6.1",
         "gulp-sass": "^5.1.0",
@@ -95,7 +96,7 @@
         "sonarqube-scanner": "^3.3.0",
         "supertest": "^6.3.3",
         "ts-jest": "^29.1.1",
-        "ts-node": "10.9.2",
+        "ts-node": "^8.10.1",
         "typescript": "4.9.5"
     },
     "@comments devDependencies": {
