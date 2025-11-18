@@ -53,19 +53,19 @@ describe("removeCompanyControllerPost", () => {
     });
 
     it("should render remove company page if an error present in view data",
-        async () => {
-            // Given
-            const expectedViewData = {
-                errors: [
-                    { key: "value" }
-                ]
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            // When
-            await removeCompanyControllerPost(req as Request, res as Response);
-            // Then
-            expect(RemoveCompanyHandler).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledTimes(1);
-            expect(renderMock).toHaveBeenCalledWith(constants.REMOVE_COMPANY_PAGE, expectedViewData);
-        });
+       async () => {
+           // Given
+           const expectedViewData = {
+               errors: [
+                   { key: "value" }
+               ]
+           };
+           mockExecute.mockReturnValue(expectedViewData);
+           // When
+           await removeCompanyControllerPost(req as Request, res as Response);
+           // Then
+           expect(RemoveCompanyHandler).toHaveBeenCalledTimes(1);
+           expect(renderMock).toHaveBeenCalledTimes(1);
+           expect(renderMock).toHaveBeenCalledWith(constants.REMOVE_COMPANY_PAGE, expectedViewData);
+       });
 });

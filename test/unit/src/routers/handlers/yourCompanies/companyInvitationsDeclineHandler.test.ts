@@ -50,47 +50,47 @@ describe("CompanyInvitationsDeclineHandler", () => {
             translations: { key: "value" }
         }
     ])("should return view data $return if $condition",
-        async ({ associationStateChanged, viewData, referer, translations }) => {
-            // Given
-            const lang = "en";
-            const associationId = "1234567890";
-            const companyName = "TEST LTD";
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: { associationId },
-                query: { companyName },
-                get: mockGet
-            });
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const url = `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associationId}`;
-            getCompanyInvitationsDeclineFullUrlSpy.mockReturnValue(url);
-            getExtraDataSpy.mockReturnValue(associationStateChanged);
-            mockGet.mockReturnValue(referer);
-            const expectedViewData = {
-                templateName: constants.COMPANY_INVITATIONS_DECLINE_PAGE,
-                buttonLinkHref: constants.LANDING_URL,
-                lang: translations,
-                companyName,
-                ...viewData
-            };
-            // When
-            const response = await companyInvitationsDeclineHandler.execute(req);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.ASSOCIATION_STATE_CHANGED_FOR + associationId);
-            if (Object.keys(translations).length > 0) {
-                expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-                expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.COMPANY_INVITATIONS_DECLINE_PAGE);
-            }
-            expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledWith(associationId);
-            if (!associationStateChanged) {
-                expect(updateAssociationStatusSpy).toHaveBeenCalledTimes(1);
-                expect(updateAssociationStatusSpy).toHaveBeenCalledWith(expect.anything(), associationId, AssociationStatus.REMOVED);
-                expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, constants.TRUE);
-            }
-            expect(response).toEqual(expectedViewData);
-        });
+       async ({ associationStateChanged, viewData, referer, translations }) => {
+           // Given
+           const lang = "en";
+           const associationId = "1234567890";
+           const companyName = "TEST LTD";
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               lang,
+               params: { associationId },
+               query: { companyName },
+               get: mockGet
+           });
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const url = `${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associationId}`;
+           getCompanyInvitationsDeclineFullUrlSpy.mockReturnValue(url);
+           getExtraDataSpy.mockReturnValue(associationStateChanged);
+           mockGet.mockReturnValue(referer);
+           const expectedViewData = {
+               templateName: constants.COMPANY_INVITATIONS_DECLINE_PAGE,
+               buttonLinkHref: constants.LANDING_URL,
+               lang: translations,
+               companyName,
+               ...viewData
+           };
+           // When
+           const response = await companyInvitationsDeclineHandler.execute(req);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.ASSOCIATION_STATE_CHANGED_FOR + associationId);
+           if (Object.keys(translations).length > 0) {
+               expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+               expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.COMPANY_INVITATIONS_DECLINE_PAGE);
+           }
+           expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getCompanyInvitationsDeclineFullUrlSpy).toHaveBeenCalledWith(associationId);
+           if (!associationStateChanged) {
+               expect(updateAssociationStatusSpy).toHaveBeenCalledTimes(1);
+               expect(updateAssociationStatusSpy).toHaveBeenCalledWith(expect.anything(), associationId, AssociationStatus.REMOVED);
+               expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
+               expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.ASSOCIATION_STATE_CHANGED_FOR + associationId, constants.TRUE);
+           }
+           expect(response).toEqual(expectedViewData);
+       });
 });

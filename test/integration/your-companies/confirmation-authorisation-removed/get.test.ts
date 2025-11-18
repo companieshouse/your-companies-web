@@ -68,20 +68,20 @@ describe("GET /your-companies/confirmation-authorisation-removed", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language version set to '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // When
-            const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(lang.company_removed);
-            expect(response.text).toContain(lang.you_have_confirmed);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-            expect(response.text).toContain(lang.what_happens_now);
-            expect(response.text).toContain(lang.you_are_no_longer_able_to_file);
-            expect(response.text).toContain(lang.weve_sent_an_email);
-            expect(response.text).toContain(lang.go_to_your_companies);
-        });
+       async ({ langVersion, lang }) => {
+           // When
+           const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(lang.company_removed);
+           expect(response.text).toContain(lang.you_have_confirmed);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+           expect(response.text).toContain(lang.what_happens_now);
+           expect(response.text).toContain(lang.you_are_no_longer_able_to_file);
+           expect(response.text).toContain(lang.weve_sent_an_email);
+           expect(response.text).toContain(lang.go_to_your_companies);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

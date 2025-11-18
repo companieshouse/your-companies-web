@@ -84,15 +84,15 @@ describe("POST /your-companies/add-company", () => {
             langVersion: undefined
         }
     ])("should return status 302 if $condition",
-        async ({ associationState, langVersion }) => {
-            // Given
-            companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
-            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
-            // When
-            const response = await router.post(`/your-companies/add-company${langVersion ? `?lang=${langVersion}` : ""}`).send({ companyNumber: "12345678" });
-            // Then
-            expect(response.statusCode).toEqual(StatusCodes.MOVED_TEMPORARILY);
-        });
+       async ({ associationState, langVersion }) => {
+           // Given
+           companyProfileSpy.mockReturnValue(validActiveCompanyProfile);
+           isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
+           // When
+           const response = await router.post(`/your-companies/add-company${langVersion ? `?lang=${langVersion}` : ""}`).send({ companyNumber: "12345678" });
+           // Then
+           expect(response.statusCode).toEqual(StatusCodes.MOVED_TEMPORARILY);
+       });
 
     test.each([
         {
@@ -194,30 +194,30 @@ describe("POST /your-companies/add-company", () => {
             companyNumber: ""
         }
     ])("should return expected $langInfo error message if $condition and language version set to '$langVersion'",
-        async ({ langVersion, lang, langCommon, companyProfile, condition, message, companyNumber, httpError }) => {
-            // Given
-            if (companyProfile) {
-                companyProfileSpy.mockReturnValue(companyProfile);
-            }
-            if (httpError) {
-                companyProfileSpy.mockRejectedValue(httpError);
-            }
-            if (condition === "company number is correct but company has already been added to user account") {
-                const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "12345678" };
-                isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationStateResponse);
-            }
-            // When
-            const response = await router.post(`/your-companies/add-company?lang=${langVersion}`).send({ companyNumber });
-            // Then
-            expect(response.text).toContain(langCommon.back_link);
-            expect(response.text).toContain(langCommon.there_is_a_problem);
-            expect(response.text).toContain(lang.what_is_the_company_number);
-            expect(response.text).toContain(lang.a_company_number_is_8_characters_long);
-            expect(response.text).toContain(lang.you_can_find_this_by_searching);
-            expect(response.text).toContain(lang.how_do_i_find_the_company_number);
-            expect(response.text).toContain(langCommon.continue);
-            expect(response.text).toContain(message);
-        });
+       async ({ langVersion, lang, langCommon, companyProfile, condition, message, companyNumber, httpError }) => {
+           // Given
+           if (companyProfile) {
+               companyProfileSpy.mockReturnValue(companyProfile);
+           }
+           if (httpError) {
+               companyProfileSpy.mockRejectedValue(httpError);
+           }
+           if (condition === "company number is correct but company has already been added to user account") {
+               const associationStateResponse: AssociationStateResponse = { state: AssociationState.COMPANY_ASSOCIATED_WITH_USER, associationId: "12345678" };
+               isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationStateResponse);
+           }
+           // When
+           const response = await router.post(`/your-companies/add-company?lang=${langVersion}`).send({ companyNumber });
+           // Then
+           expect(response.text).toContain(langCommon.back_link);
+           expect(response.text).toContain(langCommon.there_is_a_problem);
+           expect(response.text).toContain(lang.what_is_the_company_number);
+           expect(response.text).toContain(lang.a_company_number_is_8_characters_long);
+           expect(response.text).toContain(lang.you_can_find_this_by_searching);
+           expect(response.text).toContain(lang.how_do_i_find_the_company_number);
+           expect(response.text).toContain(langCommon.continue);
+           expect(response.text).toContain(message);
+       });
 
     it("should return expected generic error message if any other error happens", async () => {
         // Given

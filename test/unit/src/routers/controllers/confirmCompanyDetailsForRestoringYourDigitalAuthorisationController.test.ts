@@ -69,30 +69,30 @@ describe("confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPos
     });
 
     it("should redirect to create company association page",
-        async () => {
-            // Given
-            const expectedViewData = {
-                backLinkHref: "/test"
-            };
-            mockExecute.mockReturnValue(expectedViewData);
-            getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
-            const confirmedCompanyForAssociation: CompanyNameAndNumber = {
-                companyNumber: validActiveCompanyProfile.companyNumber,
-                companyName: validActiveCompanyProfile.companyName
-            };
-            const expectedUrl = "/test/test-url";
-            getRestoreYourDigitalAuthorisationSuccessFullUrlSpy.mockReturnValue(expectedUrl);
-            // When
-            await confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost(req as Request, res as Response);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.COMPANY_PROFILE}_${companyNumber}`);
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS, true);
-            expect(getRestoreYourDigitalAuthorisationSuccessFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getRestoreYourDigitalAuthorisationSuccessFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
-            expect(redirectMock).toHaveBeenCalledTimes(1);
-            expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
-        });
+       async () => {
+           // Given
+           const expectedViewData = {
+               backLinkHref: "/test"
+           };
+           mockExecute.mockReturnValue(expectedViewData);
+           getExtraDataSpy.mockReturnValue(validActiveCompanyProfile);
+           const confirmedCompanyForAssociation: CompanyNameAndNumber = {
+               companyNumber: validActiveCompanyProfile.companyNumber,
+               companyName: validActiveCompanyProfile.companyName
+           };
+           const expectedUrl = "/test/test-url";
+           getRestoreYourDigitalAuthorisationSuccessFullUrlSpy.mockReturnValue(expectedUrl);
+           // When
+           await confirmCompanyDetailsForRestoringYourDigitalAuthorisationControllerPost(req as Request, res as Response);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), `${constants.COMPANY_PROFILE}_${companyNumber}`);
+           expect(setExtraDataSpy).toHaveBeenCalledTimes(2);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION, confirmedCompanyForAssociation);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS, true);
+           expect(getRestoreYourDigitalAuthorisationSuccessFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getRestoreYourDigitalAuthorisationSuccessFullUrlSpy).toHaveBeenCalledWith(validActiveCompanyProfile.companyNumber);
+           expect(redirectMock).toHaveBeenCalledTimes(1);
+           expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
+       });
 });

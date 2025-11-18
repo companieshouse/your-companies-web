@@ -41,17 +41,17 @@ describe("GET /your-companies/company-invitations", () => {
         { langInfo: "English", langVersion: undefined, lang: en },
         { langInfo: "Welsh", langVersion: "cy", lang: cy }
     ])("should return expected $langInfo content if language set to $langVersion",
-        async ({ langVersion, lang }) => {
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.text).toContain(lang.h1);
-            expect(response.text).toContain(lang.company_name);
-            expect(response.text).toContain(lang.company_number);
-            expect(response.text).toContain(lang.invited_by);
-            expect(response.text).toContain(lang.accept);
-            expect(response.text).toContain(lang.decline);
-        });
+       async ({ langVersion, lang }) => {
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.text).toContain(lang.h1);
+           expect(response.text).toContain(lang.company_name);
+           expect(response.text).toContain(lang.company_number);
+           expect(response.text).toContain(lang.invited_by);
+           expect(response.text).toContain(lang.accept);
+           expect(response.text).toContain(lang.decline);
+       });
 
     it("should return only expected company number, name and email address of a person who sent the invitation", async () => {
         // Given
@@ -83,48 +83,48 @@ describe("GET /your-companies/company-invitations", () => {
         { langInfo: "English", langVersion: "en", lang: en, conditon: "invitation empty", associations: userAssociationsWithEmptyInvitations },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, conditon: "invitation empty", associations: userAssociationsWithEmptyInvitations }
     ])("should return an expected text if $condition and language set to English",
-        async ({ langVersion, lang, associations }) => {
-            // Given
-            userAssociationsSpy.mockResolvedValue(associations);
-            invitationsSpy.mockResolvedValue(getMockInvitationList([]));
-            const expectedNotContainEmail = "another.email@acme.com";
-            const expectedNotContainCompanyNumber1 = "NI038379";
-            const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
-            const expectedNotContainCompanyNumber2 = "01777777";
-            const expectedNotContainCompanyName2 = "BRITISH AIRWAYS PLC";
+       async ({ langVersion, lang, associations }) => {
+           // Given
+           userAssociationsSpy.mockResolvedValue(associations);
+           invitationsSpy.mockResolvedValue(getMockInvitationList([]));
+           const expectedNotContainEmail = "another.email@acme.com";
+           const expectedNotContainCompanyNumber1 = "NI038379";
+           const expectedNotContainCompanyName1 = "THE POLISH BREWERY";
+           const expectedNotContainCompanyNumber2 = "01777777";
+           const expectedNotContainCompanyName2 = "BRITISH AIRWAYS PLC";
 
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
 
-            // Then
-            expect(response.text).toContain(lang.h1);
-            expect(response.text).toContain(lang.no_pending_invitations);
-            expect(response.text).not.toContain(lang.company_name);
-            expect(response.text).not.toContain(lang.company_number);
-            expect(response.text).not.toContain(lang.invited_by);
-            expect(response.text).not.toContain(expectedNotContainEmail);
-            expect(response.text).not.toContain(expectedNotContainCompanyNumber1);
-            expect(response.text).not.toContain(expectedNotContainCompanyName1);
-            expect(response.text).not.toContain(expectedNotContainCompanyNumber2);
-            expect(response.text).not.toContain(expectedNotContainCompanyName2);
-        });
+           // Then
+           expect(response.text).toContain(lang.h1);
+           expect(response.text).toContain(lang.no_pending_invitations);
+           expect(response.text).not.toContain(lang.company_name);
+           expect(response.text).not.toContain(lang.company_number);
+           expect(response.text).not.toContain(lang.invited_by);
+           expect(response.text).not.toContain(expectedNotContainEmail);
+           expect(response.text).not.toContain(expectedNotContainCompanyNumber1);
+           expect(response.text).not.toContain(expectedNotContainCompanyName1);
+           expect(response.text).not.toContain(expectedNotContainCompanyNumber2);
+           expect(response.text).not.toContain(expectedNotContainCompanyName2);
+       });
 
     test.each([
         { langInfo: "English", langVersion: "en", lang: commonEn },
         { langInfo: "English", langVersion: undefined, lang: commonEn },
         { langInfo: "Welsh", langVersion: "cy", lang: commonCy }
     ])("should return invitation page with pagination in $langInfo if number of invitations is greater than 15 and language set to '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // Given
-            userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
-            invitationsSpy.mockReturnValue(getPaginatedMockInvitationList(fifteenMockInvitations));
+       async ({ langVersion, lang }) => {
+           // Given
+           userAssociationsSpy.mockResolvedValue(fifteenAssociationsAwaitingApproval);
+           invitationsSpy.mockReturnValue(getPaginatedMockInvitationList(fifteenMockInvitations));
 
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
 
-            // Then
-            expect(response.text).toContain(lang.next);
-        });
+           // Then
+           expect(response.text).toContain(lang.next);
+       });
 
     it("should return first invitation page with pagination if number of invitations is greater than 15 and the page number set wrongly", async () => {
         // Given

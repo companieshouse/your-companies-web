@@ -227,116 +227,116 @@ describe("YourCompaniesHandler", () => {
             condition: "invalidPageNumber is false and there are no error messages"
         }
     ])("should return $return when $condition",
-        async ({
-            query, pageNumber, itemsPerPage, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
-        }) => {
+       async ({
+           query, pageNumber, itemsPerPage, confirmedUserAssociations, isValidPageNumber, viewData, errors, searchQuery
+       }) => {
 
-            // Given
-            const lang = {
-                0: "en",
-                1: {}
-            };
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                query
-            });
-            const i18nChInstance = {
-                getResourceBundle: getResourceBundleMock
-            };
+           // Given
+           const lang = {
+               0: "en",
+               1: {}
+           };
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               lang,
+               query
+           });
+           const i18nChInstance = {
+               getResourceBundle: getResourceBundleMock
+           };
 
-            const expectedViewData = {
-                templateName: constants.YOUR_COMPANIES_PAGE,
-                buttonHref: addCompanyUrl + constants.CLEAR_FORM_TRUE,
-                lang,
-                viewInvitationsPageUrl,
-                cancelSearchHref: constants.LANDING_URL,
-                search: query.search,
-                errors: errors,
-                pageNumber,
-                numberOfPages: 0,
-                authorisationBannerRequestAuthenticationCodeUrl: `${constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL}.cy`,
-                ...viewData
-            };
-            getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
-            validatePageNumberSpy.mockReturnValue(isValidPageNumber);
-            getTranslationsForViewSpy.mockReturnValue(lang);
-            getInstanceSpy.mockReturnValue(i18nChInstance);
-            getInvitationsSpy.mockReturnValue(mockInvitationList);
-            stringToPositiveIntegerSpy.mockReturnValueOnce(pageNumber);
-            getResourceBundleMock.mockReturnValue({});
-            if (query.search === "invalidSearchString") {
-                validateCompanyNumberSearchStringSpy.mockReturnValue(false);
-            } else {
-                validateCompanyNumberSearchStringSpy.mockReturnValue(true);
-            }
-            getSearchQuerySpy.mockReturnValue(`&search=${query.search}`);
-            buildPaginationElementSpy.mockReturnValue(viewData.pagination);
+           const expectedViewData = {
+               templateName: constants.YOUR_COMPANIES_PAGE,
+               buttonHref: addCompanyUrl + constants.CLEAR_FORM_TRUE,
+               lang,
+               viewInvitationsPageUrl,
+               cancelSearchHref: constants.LANDING_URL,
+               search: query.search,
+               errors: errors,
+               pageNumber,
+               numberOfPages: 0,
+               authorisationBannerRequestAuthenticationCodeUrl: `${constants.AUTHORISATION_BANNER_REQUEST_AUTHENTICATION_CODE_URL}.cy`,
+               ...viewData
+           };
+           getUserAssociationsSpy.mockReturnValue(confirmedUserAssociations);
+           validatePageNumberSpy.mockReturnValue(isValidPageNumber);
+           getTranslationsForViewSpy.mockReturnValue(lang);
+           getInstanceSpy.mockReturnValue(i18nChInstance);
+           getInvitationsSpy.mockReturnValue(mockInvitationList);
+           stringToPositiveIntegerSpy.mockReturnValueOnce(pageNumber);
+           getResourceBundleMock.mockReturnValue({});
+           if (query.search === "invalidSearchString") {
+               validateCompanyNumberSearchStringSpy.mockReturnValue(false);
+           } else {
+               validateCompanyNumberSearchStringSpy.mockReturnValue(true);
+           }
+           getSearchQuerySpy.mockReturnValue(`&search=${query.search}`);
+           buildPaginationElementSpy.mockReturnValue(viewData.pagination);
 
-            // When
-            const response = await yourCompaniesHandler.execute(req);
+           // When
+           const response = await yourCompaniesHandler.execute(req);
 
-            // Then
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
-            expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(query.page);
-            if (query.search) {
-                expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledTimes(1);
-                expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledWith(query.search);
-            }
+           // Then
+           expect(stringToPositiveIntegerSpy).toHaveBeenCalledTimes(1);
+           expect(stringToPositiveIntegerSpy).toHaveBeenCalledWith(query.page);
+           if (query.search) {
+               expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledTimes(1);
+               expect(validateCompanyNumberSearchStringSpy).toHaveBeenCalledWith(query.search);
+           }
 
-            let getUserAssociationsCounter = 1;
-            expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
-            expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
-            expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
+           let getUserAssociationsCounter = 1;
+           expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
+           expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
+           expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages);
 
-            if (!isValidPageNumber) {
-                getUserAssociationsCounter = 2;
-                expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
-            }
+           if (!isValidPageNumber) {
+               getUserAssociationsCounter = 2;
+               expect(getUserAssociationsSpy).toHaveBeenCalledWith(req, [AssociationStatus.CONFIRMED, AssociationStatus.MIGRATED, AssociationStatus.UNAUTHORISED], errors ? undefined : query.search, pageNumber - 1, itemsPerPage);
+           }
 
-            expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
-            expect(getInvitationsSpy).toHaveBeenCalledWith(req);
-            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(13);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_URL_EXTRA);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CURRENT_COMPANY_NUM);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_COMPANY_URL_EXTRA);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NAME);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NUMBER);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NAME);
-            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
-            expect(getResourceBundleMock).toHaveBeenCalled;
-            expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.YOUR_COMPANIES_PAGE);
+           expect(getInvitationsSpy).toHaveBeenCalledTimes(1);
+           expect(getInvitationsSpy).toHaveBeenCalledWith(req);
+           expect(deleteExtraDataSpy).toHaveBeenCalledTimes(13);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.MANAGE_AUTHORISED_PEOPLE_INDICATOR);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRM_COMPANY_DETAILS_INDICATOR);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_URL_EXTRA);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.USER_EMAILS_ARRAY);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CURRENT_COMPANY_NUM);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_COMPANY_URL_EXTRA);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NAME);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.LAST_REMOVED_COMPANY_NUMBER);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NAME);
+           expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
+           expect(getResourceBundleMock).toHaveBeenCalled;
+           expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.YOUR_COMPANIES_PAGE);
 
-            if (confirmedUserAssociations.totalResults > 0) {
-                expect(getSearchQuerySpy).toHaveBeenCalledTimes(1);
-                expect(getSearchQuerySpy).toHaveBeenCalledWith(query.search);
-                expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
-                expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery, lang);
-                expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
-                expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, lang);
-            }
+           if (confirmedUserAssociations.totalResults > 0) {
+               expect(getSearchQuerySpy).toHaveBeenCalledTimes(1);
+               expect(getSearchQuerySpy).toHaveBeenCalledWith(query.search);
+               expect(buildPaginationElementSpy).toHaveBeenCalledTimes(1);
+               expect(buildPaginationElementSpy).toHaveBeenCalledWith(pageNumber, confirmedUserAssociations.totalPages, constants.LANDING_URL, searchQuery, lang);
+               expect(setLangForPaginationSpy).toHaveBeenCalledTimes(1);
+               expect(setLangForPaginationSpy).toHaveBeenCalledWith(viewData.pagination, lang);
+           }
 
-            let getFullUrlCounter = 2;
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.ADD_COMPANY_URL);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
+           let getFullUrlCounter = 2;
+           expect(getFullUrlSpy).toHaveBeenCalledWith(constants.ADD_COMPANY_URL);
+           expect(getFullUrlSpy).toHaveBeenCalledWith(constants.COMPANY_INVITATIONS_URL);
 
-            if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
-                getFullUrlCounter = 6;
-                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
-                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
-                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
-            }
+           if (confirmedUserAssociations.totalResults > 0 && Array.isArray(confirmedUserAssociations.items)) {
+               getFullUrlCounter = 6;
+               expect(getFullUrlSpy).toHaveBeenCalledWith(constants.MANAGE_AUTHORISED_PEOPLE_URL);
+               expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_COMPANY_URL);
+               expect(getFullUrlSpy).toHaveBeenCalledWith(constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_URL);
+           }
 
-            expect(getUserAssociationsSpy).toHaveBeenCalledTimes(getUserAssociationsCounter);
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(getFullUrlCounter);
-            expect(response).toEqual(expectedViewData);
-        });
+           expect(getUserAssociationsSpy).toHaveBeenCalledTimes(getUserAssociationsCounter);
+           expect(getFullUrlSpy).toHaveBeenCalledTimes(getFullUrlCounter);
+           expect(response).toEqual(expectedViewData);
+       });
 
 });

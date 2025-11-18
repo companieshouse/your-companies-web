@@ -7,6 +7,7 @@ import { deleteExtraData, getExtraData, setExtraData } from "../../../lib/utils/
 import { getAddPresenterFullUrl } from "../../../lib/utils/urlUtils";
 import { postInvitation } from "../../../services/associationsService";
 import { AuthorisedPerson } from "../../../types/associations";
+import { createAndLogError } from "../../../lib/Logger";
 
 /**
  * Interface representing the view data for the Check Presenter page.
@@ -100,6 +101,7 @@ export class CheckPresenterHandler extends GenericHandler {
             setExtraData(req.session, constants.AUTHORISED_PERSON, authorisedPerson);
             deleteExtraData(req.session, constants.AUTHORISED_PERSON_EMAIL);
         } catch (error) {
+            createAndLogError(`Error posting presenter invitation for company number ${companyNumber} and email ${emailAddress}: ${error}`);
             this.viewData.associationAlreadyExist = true;
         }
     }

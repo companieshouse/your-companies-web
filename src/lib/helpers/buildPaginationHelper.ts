@@ -22,7 +22,7 @@ export const buildPaginationElement = (
     };
 
     // Return empty pagination if there's only one page or the current page is invalid
-    if (numOfPages <= 1 || currentPageNumber < 1) return pagination;
+    if (numOfPages <= 1 || currentPageNumber < 1) {return pagination;}
 
     // Add "Previous" link if not on the first page
     if (currentPageNumber > 1) {

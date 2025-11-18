@@ -53,15 +53,15 @@ describe("GET /your-companies/add-presenter/companyNumber", () => {
         { langInfo: "English", langVersion: undefined, lang: en },
         { langInfo: "Welsh", langVersion: "cy", lang: cy }
     ])("should return status 200 and expected $langInfo content if lang set to '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(lang.tell_us_the_email);
-            expect(response.text).toContain(lang.you_can_change_who);
-            expect(response.text).toContain(lang.email_address);
-        });
+       async ({ langVersion, lang }) => {
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(lang.tell_us_the_email);
+           expect(response.text).toContain(lang.you_can_change_who);
+           expect(response.text).toContain(lang.email_address);
+       });
 
     it("should validate and display invalid input and error if input stored in session", async () => {
         // Given
@@ -90,20 +90,20 @@ describe("GET /your-companies/add-presenter/companyNumber", () => {
         { condition: "contains confirmation-person-removed", referrer: "testUrl.com/confirmation-person-removed" },
         { condition: "referrer contains confirmation-person-added", referrer: "testUrl.com/confirmation-person-added" }
     ])("should not redirect, and return status 200 if referrer $condition",
-        async ({ referrer }) => {
-            // Given
-            mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
-                req.headers = { referrer };
-                req.session = session;
-                next();
-            });
-            const hrefAValue = "testUrl.com";
-            setExtraData(session, constants.REFERER_URL, hrefAValue);
-            // When
-            const response = await router.get(url);
-            // Then
-            expect(response.status).toEqual(200);
-        });
+       async ({ referrer }) => {
+           // Given
+           mocks.mockSessionMiddleware.mockImplementationOnce((req: Request, res: Response, next: NextFunction) => {
+               req.headers = { referrer };
+               req.session = session;
+               next();
+           });
+           const hrefAValue = "testUrl.com";
+           setExtraData(session, constants.REFERER_URL, hrefAValue);
+           // When
+           const response = await router.get(url);
+           // Then
+           expect(response.status).toEqual(200);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

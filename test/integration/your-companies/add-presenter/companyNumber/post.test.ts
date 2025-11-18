@@ -77,12 +77,12 @@ describe("POST /your-companies/add-presenter/:companyNumber", () => {
             errorMessage: cy.errors_email_invalid
         }
     ])("should display $langInfo version of the page with error message if $condition and language set to '$langVersion'",
-        async ({ email, errorMessage, langVersion }) => {
-            // When
-            const response = await router.post(`${url}?lang=${langVersion}`).send({ email });
-            // Then
-            expect(response.text).toContain(errorMessage);
-        });
+       async ({ email, errorMessage, langVersion }) => {
+           // When
+           const response = await router.post(`${url}?lang=${langVersion}`).send({ email });
+           // Then
+           expect(response.text).toContain(errorMessage);
+       });
 
     it("should redirect to the check presenter page if provided email is correct", async () => {
         // Given

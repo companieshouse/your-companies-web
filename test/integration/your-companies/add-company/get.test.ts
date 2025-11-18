@@ -62,18 +62,18 @@ describe("GET /your-companies/add-company", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language version set to English",
-        async ({ langVersion, lang, langCommon }) => {
-            // When
-            const response = await router.get(`/your-companies/add-company${langVersion ? `?lang=${langVersion}` : ""}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(langCommon.back_link);
-            expect(response.text).toContain(lang.what_is_the_company_number);
-            expect(response.text).toContain(lang.a_company_number_is_8_characters_long);
-            expect(response.text).toContain(lang.you_can_find_this_by_searching);
-            expect(response.text).toContain(lang.how_do_i_find_the_company_number);
-            expect(response.text).toContain(langCommon.continue);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // When
+           const response = await router.get(`/your-companies/add-company${langVersion ? `?lang=${langVersion}` : ""}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(langCommon.back_link);
+           expect(response.text).toContain(lang.what_is_the_company_number);
+           expect(response.text).toContain(lang.a_company_number_is_8_characters_long);
+           expect(response.text).toContain(lang.you_can_find_this_by_searching);
+           expect(response.text).toContain(lang.how_do_i_find_the_company_number);
+           expect(response.text).toContain(langCommon.continue);
+       });
 
     it("should validate and display invalid input and error if input stored in session", async () => {
         // Given

@@ -41,41 +41,41 @@ describe("GET /your-companies/companies-invitations-decline/:associationId", () 
         { langInfo: "English", langVersion: undefined, lang: en },
         { langInfo: "Welsh", langVersion: "cy", lang: cy }
     ])("should return expected $langInfo content if language version set to $langVersion",
-        async ({ langVersion, lang }) => {
-            // Given
-            getExtraDataSpy.mockReturnValue("");
-            // When
-            const response = await router.get(`${url}&lang=${langVersion}`);
-            // Then
-            expect(updateAssociationStatus).toHaveBeenCalled();
-            expect(response.text).toContain(lang.invitation_declined);
-            expect(response.text).toContain(`${lang.you_have_declined_to_be_digitally_authorised}${companyName}`);
-            expect(response.text).toContain(lang.what_happens_now_youve_declined);
-            expect(response.text).toContain(lang.weve_sent_an_email);
-            expect(response.text).toContain(lang.go_to_your_companies);
-        });
+       async ({ langVersion, lang }) => {
+           // Given
+           getExtraDataSpy.mockReturnValue("");
+           // When
+           const response = await router.get(`${url}&lang=${langVersion}`);
+           // Then
+           expect(updateAssociationStatus).toHaveBeenCalled();
+           expect(response.text).toContain(lang.invitation_declined);
+           expect(response.text).toContain(`${lang.you_have_declined_to_be_digitally_authorised}${companyName}`);
+           expect(response.text).toContain(lang.what_happens_now_youve_declined);
+           expect(response.text).toContain(lang.weve_sent_an_email);
+           expect(response.text).toContain(lang.go_to_your_companies);
+       });
 
     test.each([
         { langInfo: "English", langVersion: "en", lang: en },
         { langInfo: "English", langVersion: undefined, lang: en },
         { langInfo: "Welsh", langVersion: "cy", lang: cy }
     ])("should return $langInfo viewData when association state has changed and referrer includes the correct URL for decline and language version set to $langVersion",
-        async ({ langVersion, lang }) => {
-            // Given
-            const fullUrl = `${url}&lang=${langVersion}`;
-            const referrerUrl = `http://localhost${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associationId}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
-            getExtraDataSpy.mockReturnValue(constants.TRUE);
-            // When
-            const result = await router
-                .get(fullUrl)
-                .set("Referer", referrerUrl);
-            // Then
-            expect(result.statusCode).toBe(200);
-            expect(result.text).toContain(companyName);
-            expect(result.text).toContain(lang.invitation_declined);
-            expect(result.text).toContain(lang.go_to_your_companies);
-            expect(result.text).toContain(constants.LANDING_URL);
-        });
+       async ({ langVersion, lang }) => {
+           // Given
+           const fullUrl = `${url}&lang=${langVersion}`;
+           const referrerUrl = `http://localhost${constants.LANDING_URL}/${constants.COMPANY_INVITATIONS_DECLINE_PAGE}/${associationId}?${constants.COMPANY_NAME}=${encodeURIComponent(companyName)}`;
+           getExtraDataSpy.mockReturnValue(constants.TRUE);
+           // When
+           const result = await router
+               .get(fullUrl)
+               .set("Referer", referrerUrl);
+           // Then
+           expect(result.statusCode).toBe(200);
+           expect(result.text).toContain(companyName);
+           expect(result.text).toContain(lang.invitation_declined);
+           expect(result.text).toContain(lang.go_to_your_companies);
+           expect(result.text).toContain(constants.LANDING_URL);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

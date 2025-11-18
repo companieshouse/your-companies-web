@@ -41,17 +41,17 @@ describe("GET /your-companies/confirmation-company-added", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language set to $langVersion",
-        async ({ langVersion, lang, langCommon }) => {
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(langCommon.success);
-            expect(response.text).toContain(lang.bullet_1);
-            expect(response.text).toContain(lang.bullet_2);
-            expect(response.text).toContain(lang.bullet_3);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(langCommon.success);
+           expect(response.text).toContain(lang.bullet_1);
+           expect(response.text).toContain(lang.bullet_2);
+           expect(response.text).toContain(lang.bullet_3);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

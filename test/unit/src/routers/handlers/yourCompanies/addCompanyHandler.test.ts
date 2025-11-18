@@ -347,44 +347,44 @@ describe("AddCompanyHandler", () => {
             }
         }
     ])("should return expected viewData object if method is $method and $condition",
-        async ({
-            referer,
-            body,
-            query,
-            companyProfile,
-            httpError,
-            method,
-            isAssociated,
-            viewData,
-            proposedCompanyNumber,
-            currentCompanyNumber
-        }) => {
-            // Given
-            const mockGet = jest.fn().mockReturnValue(referer);
-            const req: Request = mockParametrisedRequest(
-                { body, query, get: mockGet, session: new Session() }
-            );
-            getTranslationsForViewSpy.mockReturnValue({ test: "Test" });
-            validateClearFormSpy.mockReturnValue(true);
+       async ({
+           referer,
+           body,
+           query,
+           companyProfile,
+           httpError,
+           method,
+           isAssociated,
+           viewData,
+           proposedCompanyNumber,
+           currentCompanyNumber
+       }) => {
+           // Given
+           const mockGet = jest.fn().mockReturnValue(referer);
+           const req: Request = mockParametrisedRequest(
+               { body, query, get: mockGet, session: new Session() }
+           );
+           getTranslationsForViewSpy.mockReturnValue({ test: "Test" });
+           validateClearFormSpy.mockReturnValue(true);
 
-            if (httpError) {
-                getExtraDataSpy.mockReturnValueOnce(body.companyNumber);
-            } else {
-                getExtraDataSpy
-                    .mockReturnValueOnce(proposedCompanyNumber)
-                    .mockReturnValueOnce(companyProfile)
-                    .mockReturnValueOnce(currentCompanyNumber);
-            }
-            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
-            if (!httpError) {
-                getCompanyProfileSpy.mockReturnValue(companyProfile);
-            } else {
-                getCompanyProfileSpy.mockRejectedValue(httpError);
-            }
+           if (httpError) {
+               getExtraDataSpy.mockReturnValueOnce(body.companyNumber);
+           } else {
+               getExtraDataSpy
+                   .mockReturnValueOnce(proposedCompanyNumber)
+                   .mockReturnValueOnce(companyProfile)
+                   .mockReturnValueOnce(currentCompanyNumber);
+           }
+           isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(isAssociated);
+           if (!httpError) {
+               getCompanyProfileSpy.mockReturnValue(companyProfile);
+           } else {
+               getCompanyProfileSpy.mockRejectedValue(httpError);
+           }
 
-            // When
-            const response = await addCompanyHandler.execute(req, res, method);
-            // Then
-            expect(response).toEqual(viewData);
-        });
+           // When
+           const response = await addCompanyHandler.execute(req, res, method);
+           // Then
+           expect(response).toEqual(viewData);
+       });
 });

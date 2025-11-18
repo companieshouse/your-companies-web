@@ -4,7 +4,7 @@
     "description": "A web application for Your Companies journey",
     "main": "dist/server.js",
     "engines": {
-        "node": ">=20.0.0",
+        "node": ">=24.0.0",
         "npm": "^10"
     },
     "scripts": {
@@ -12,8 +12,8 @@
         "build:assets": "gulp build",
         "build:server": "tsc && cp -r src/views dist/ && cp -r locales dist/",
         "build": "npm run build:assets && npm run build:server",
-        "lint": "eslint 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts'",
-        "lint:fix": "eslint 'src/*.ts' 'src/**/*.ts' 'test/**/*.ts' --fix",
+        "lint": "eslint '{src,test}/**/*'",
+        "lint:fix": "eslint '{src,test}/**/*' --fix",
         "test:coverage": "npm run test -- --coverage",
         "test": "jest",
         "sonarqube-base-branch": "sonar-scanner",
@@ -23,10 +23,6 @@
         "start:watch": "nodemon",
         "chs-dev": "nodemon --legacy-watch"
     },
-    "resolutions": {
-        "**/@typescript-eslint/eslint-plugin": "^4.1.1",
-        "**/@typescript-eslint/parser": "^4.1.1"
-    },
     "husky": {
         "hooks": {
             "pre-commit": "npm run lint && npm test"
@@ -35,11 +31,11 @@
     "license": "MIT",
     "dependencies": {
         "@braintree/sanitize-url": "^7.0.1",
-        "@companieshouse/api-sdk-node": "^2.0.308",
-        "@companieshouse/ch-node-utils": "^2.1.3",
-        "@companieshouse/node-session-handler": "^5.2.4",
-        "@companieshouse/structured-logging-node": "^2.0.1",
-        "@companieshouse/web-security-node": "^4.4.11",
+        "@companieshouse/api-sdk-node": "^2.0.312",
+        "@companieshouse/ch-node-utils": "^2.1.10",
+        "@companieshouse/node-session-handler": "^5.2.7",
+        "@companieshouse/structured-logging-node": "^2.0.3",
+        "@companieshouse/web-security-node": "^4.4.13",
         "axios": "^1.6.8",
         "cookie-parser": "^1.4.7",
         "dotenv": "^16.4.5",
@@ -65,6 +61,9 @@
         "zod": "^3.23.8"
     },
     "devDependencies": {
+        "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "^9.13.0",
+        "@stylistic/eslint-plugin-ts": "^2.9.0",
         "@types/cheerio": "^0.22.18",
         "@types/cookie-parser": "^1.4.7",
         "@types/express": "^4.17.21",
@@ -79,15 +78,10 @@
         "@types/require-directory": "^2.1.6",
         "@types/supertest": "^6.0.2",
         "@types/uuid": "9.0.8",
-        "@typescript-eslint/eslint-plugin": "4.1.1",
-        "@typescript-eslint/parser": "4.1.1",
+        "@typescript-eslint/eslint-plugin": "^8.38.0",
+        "eslint": "^9.39.1",
+        "globals": "^15.11.0",
         "cheerio": "^1.0.0-rc.3",
-        "eslint": "6.8.0",
-        "eslint-config-standard": "14.1.1",
-        "eslint-plugin-import": "2.20.2",
-        "eslint-plugin-node": "11.1.0",
-        "eslint-plugin-promise": "4.2.1",
-        "eslint-plugin-standard": "4.0.1",
         "gulp": "^5.0.0",
         "gulp-clean": "^0.4.0",
         "gulp-concat": "^2.6.1",
@@ -102,7 +96,7 @@
         "sonarqube-scanner": "^3.3.0",
         "supertest": "^6.3.3",
         "ts-jest": "^29.1.1",
-        "ts-node": "8.10.1",
+        "ts-node": "^8.10.1",
         "typescript": "4.9.5"
     },
     "@comments devDependencies": {

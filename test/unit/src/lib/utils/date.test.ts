@@ -1,4 +1,4 @@
-/* eslint-disable import/first */
+
 jest.mock("../../../../../src/lib/Logger");
 
 import {
@@ -37,14 +37,14 @@ describe("Date tests", () => {
             {
                 returnInfo: "empty string",
                 condition: "date is undefined",
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
                 input: undefined!,
                 expectedString: ""
             },
             {
                 returnInfo: "empty string",
                 condition: "date is null",
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
                 input: null!,
                 expectedString: ""
             },
@@ -55,12 +55,12 @@ describe("Date tests", () => {
                 expectedString: ""
             }
         ])("should return $returnInfo if $condition",
-            ({ input, expectedString }) => {
-                // When
-                const date = toReadableFormat(input);
-                // Then
-                expect(date).toEqual(expectedString);
-            });
+           ({ input, expectedString }) => {
+               // When
+               const date = toReadableFormat(input);
+               // Then
+               expect(date).toEqual(expectedString);
+           });
 
         it("Should log and throw an error", () => {
             // Given

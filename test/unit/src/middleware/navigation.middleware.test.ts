@@ -312,21 +312,21 @@ describe("navigationMiddleware", () => {
             params: { associationId: "1234567890", companyNumber: "AB123456" }
         }
     ])("should call next() function if referer for route $routePattern is $referer",
-        async ({ referer, path, params }) => {
-            // Given
-            const headers = { referer };
-            const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, params, headers, path });
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(true);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(true);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(true);
-            // When
-            await navigationMiddleware(req, res, next);
-            // Then
-            expect(next).toHaveBeenCalled();
-        });
+       async ({ referer, path, params }) => {
+           // Given
+           const headers = { referer };
+           const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, params, headers, path });
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(true);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(true);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(true);
+           // When
+           await navigationMiddleware(req, res, next);
+           // Then
+           expect(next).toHaveBeenCalled();
+       });
 
     test.each([
         {
@@ -445,21 +445,21 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         }
     ])("should redirect to the default page if referer for route $routePattern is a wrong page",
-        async ({ path, defaultRedirect }) => {
-            // Given
-            const headers = { referer: "https://chc.local/your-companies/some-other-page" };
-            const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(false);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(false);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(false);
-            // When
-            await navigationMiddleware(req, res, next);
-            // Then
-            expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
-        });
+       async ({ path, defaultRedirect }) => {
+           // Given
+           const headers = { referer: "https://chc.local/your-companies/some-other-page" };
+           const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("AB123456");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue("test@example.com");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("1234567890");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(false);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(false);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(false);
+           // When
+           await navigationMiddleware(req, res, next);
+           // Then
+           expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
+       });
 
     test.each([
         {
@@ -637,21 +637,21 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         }
     ])("should redirect to the default page if referer for route $routePattern has wrong parameter",
-        async ({ path, referer, defaultRedirect }) => {
-            // Given
-            const headers = { referer };
-            const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("XX111111");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue(["other@example.com"]);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("9999999999");
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(false);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(false);
-            when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(false);
-            // When
-            await navigationMiddleware(req, res, next);
-            // Then
-            expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
-        });
+       async ({ path, referer, defaultRedirect }) => {
+           // Given
+           const headers = { referer };
+           const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_COMPANY_NUMBER).mockReturnValue("XX111111");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_USER_EMAIL).mockReturnValue(["other@example.com"]);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_CHECK_ASSOCIATIONS_ID).mockReturnValue("9999999999");
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_ADDED_SUCCESS).mockReturnValue(false);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_RESTORE_YOUR_DIGITAL_AUTHORISATION_SUCCESS).mockReturnValue(false);
+           when(getExtraDataSpy).calledWith(session, constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE).mockReturnValue(false);
+           // When
+           await navigationMiddleware(req, res, next);
+           // Then
+           expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
+       });
 
     test.each([
         {
@@ -670,16 +670,16 @@ describe("navigationMiddleware", () => {
             sessionFlag: constants.NAVIGATION_MIDDLEWARE_FLAG_FOR_COMPANY_AUTHENTICATION_SERVICE_COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE
         }
     ])("should call next() function if referer for route $routePattern is undefined and $sessionFlag is present",
-        async ({ path, sessionFlag }) => {
-            // Given
-            const headers = { referer: undefined };
-            const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
-            when(getExtraDataSpy).calledWith(session, sessionFlag).mockReturnValue(true);
-            // When
-            await navigationMiddleware(req, res, next);
-            // Then
-            expect(next).toHaveBeenCalled();
-        });
+       async ({ path, sessionFlag }) => {
+           // Given
+           const headers = { referer: undefined };
+           const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
+           when(getExtraDataSpy).calledWith(session, sessionFlag).mockReturnValue(true);
+           // When
+           await navigationMiddleware(req, res, next);
+           // Then
+           expect(next).toHaveBeenCalled();
+       });
 
     test.each([
         {
@@ -701,14 +701,14 @@ describe("navigationMiddleware", () => {
             defaultRedirect: constants.LANDING_URL
         }
     ])("should redirect to the default page if referer for route $routePattern is undefined and $sessionFlag is not present",
-        async ({ path, sessionFlag, defaultRedirect }) => {
-            // Given
-            const headers = { referer: undefined };
-            const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
-            when(getExtraDataSpy).calledWith(session, sessionFlag).mockReturnValue(false);
-            // When
-            await navigationMiddleware(req, res, next);
-            // Then
-            expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
-        });
+       async ({ path, sessionFlag, defaultRedirect }) => {
+           // Given
+           const headers = { referer: undefined };
+           const req: Request = mockParametrisedRequest({ baseUrl: constants.LANDING_URL, session, headers, path });
+           when(getExtraDataSpy).calledWith(session, sessionFlag).mockReturnValue(false);
+           // When
+           await navigationMiddleware(req, res, next);
+           // Then
+           expect(res.redirect).toHaveBeenCalledWith(defaultRedirect);
+       });
 });

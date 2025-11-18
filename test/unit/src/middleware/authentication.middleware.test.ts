@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 
 jest.mock("@companieshouse/web-security-node");
 

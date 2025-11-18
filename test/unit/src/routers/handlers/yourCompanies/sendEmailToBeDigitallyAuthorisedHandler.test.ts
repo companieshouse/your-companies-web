@@ -31,51 +31,51 @@ describe("SendEmailToBeDigitallyAuthorisedHandler", () => {
             return: "view data"
         }
     ])("should return $return when method is $method",
-        async ({ association, method, viewData }) => {
-            // Given
-            const lang = "en";
-            const associationId = association.id;
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                params: { associationId },
-                lang
-            });
-            const translations = { key: "value", not_provided: "Not provided" };
-            getTranslationsForViewSpy.mockReturnValue(translations);
-            const companyName = association.companyName;
-            const companyNumber = association.companyNumber;
-            const userEmail = association.userEmail;
-            getExtraDataSpy
-                .mockReturnValueOnce(association);
-            const associationIdKey = `${constants.ASSOCIATIONS_ID}_${associationId}`;
-            const manageAuthorisedPeopleFullUrl = `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
-            getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(manageAuthorisedPeopleFullUrl);
-            const getExtraDataKeys = [
-                constants.SEARCH_STRING_EMAIL,
-                associationIdKey
-            ];
-            const expectedViewData = {
-                templateName: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE,
-                cancelLinkHref: manageAuthorisedPeopleFullUrl,
-                backLinkHref: manageAuthorisedPeopleFullUrl,
-                lang: translations,
-                companyName,
-                companyNumber,
-                userEmail,
-                userDisplayName: translations.not_provided,
-                ...viewData
-            };
-            // When
-            const response = await sendEmailToBeDigitallyAuthorisedHandler.execute(req, method);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataKeys.length);
-            for (const key of getExtraDataKeys) {
-                expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), key);
-            }
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE);
-            expect(response).toEqual(expectedViewData);
-        });
+       async ({ association, method, viewData }) => {
+           // Given
+           const lang = "en";
+           const associationId = association.id;
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               params: { associationId },
+               lang
+           });
+           const translations = { key: "value", not_provided: "Not provided" };
+           getTranslationsForViewSpy.mockReturnValue(translations);
+           const companyName = association.companyName;
+           const companyNumber = association.companyNumber;
+           const userEmail = association.userEmail;
+           getExtraDataSpy
+               .mockReturnValueOnce(association);
+           const associationIdKey = `${constants.ASSOCIATIONS_ID}_${associationId}`;
+           const manageAuthorisedPeopleFullUrl = `/${constants.MANAGE_AUTHORISED_PEOPLE_PAGE}/${companyNumber}`;
+           getManageAuthorisedPeopleFullUrlSpy.mockReturnValue(manageAuthorisedPeopleFullUrl);
+           const getExtraDataKeys = [
+               constants.SEARCH_STRING_EMAIL,
+               associationIdKey
+           ];
+           const expectedViewData = {
+               templateName: constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE,
+               cancelLinkHref: manageAuthorisedPeopleFullUrl,
+               backLinkHref: manageAuthorisedPeopleFullUrl,
+               lang: translations,
+               companyName,
+               companyNumber,
+               userEmail,
+               userDisplayName: translations.not_provided,
+               ...viewData
+           };
+           // When
+           const response = await sendEmailToBeDigitallyAuthorisedHandler.execute(req, method);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataKeys.length);
+           for (const key of getExtraDataKeys) {
+               expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), key);
+           }
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.SEND_EMAIL_INVITATION_TO_BE_DIGITALLY_AUTHORISED_PAGE);
+           expect(response).toEqual(expectedViewData);
+       });
 
     it("should fetch the association when its not found in session", async () => {
         // Given

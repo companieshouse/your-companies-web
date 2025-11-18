@@ -16,7 +16,7 @@ import { performance } from "node:perf_hooks";
  * @param next - The next middleware function in the chain.
  */
 export const requestLogger = (req: Request, res: Response, next: NextFunction): void => {
-    if (req.url.endsWith("/healthcheck")) return next();
+    if (req.url.endsWith("/healthcheck")) {return next();}
 
     const requestId = req.requestId ?? "UNKNOWN";
     if (requestId === "UNKNOWN") {

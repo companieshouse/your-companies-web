@@ -68,36 +68,36 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
             url
         }
     ])("should check session and auth and return status 200 and expected $langInfo content if language version set to '$langVersion' for $pathInfo page",
-        async ({ langVersion, lang, langCommon, includedText, excludedText, url }) => {
-            // Given
-            getExtraDataSpy
-                .mockReturnValueOnce(singleConfirmedAssociation);
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
-            expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(`${lang.remove}${includedText}`);
-            expect(response.text).toContain(lang.authorisation_to_file_online);
-            expect(response.text).toContain(`${lang.if_you_remove}${includedText}`);
-            expect(response.text).toContain(`${lang.digital_authorisation_this_means_they}${companyName}`);
-            expect(response.text).toContain(`${includedText}${lang.will_still_be_able_to_file}`);
-            expect(response.text).toContain(`${lang.if}${includedText}`);
-            expect(response.text).toContain(lang.is_appointed_as_an_officer);
-            expect(response.text).toContain(lang.i_confirm_that_i_have_read);
-            expect(response.text).toContain(lang.remove_authorisation);
-            expect(response.text).toContain(langCommon.cancel);
-            expect(response.text).toContain(lang.without_a_current_auth_code);
-            expect(response.text).toContain(`${includedText}${lang.to_let_them_know_you_have_removed}`);
-            expect(response.text).toContain(lang.you_may_wish_to_change_the_auth_code);
-            expect(response.text).toContain(`${includedText}${lang.digital_authorisation}`);
-            expect(response.text).not.toContain(excludedText);
-            expect(response.text).toContain(`${lang.without_a_current_auth_code}${includedText}`);
-            expect(response.text).toContain(lang.to_let_them_know_you_have_removed);
-            expect(response.text).toContain(`${lang.you_may_wish_to_change_the_auth_code}${includedText}`);
-            expect(response.text).toContain(lang.digital_authorisation);
-        });
+       async ({ langVersion, lang, langCommon, includedText, excludedText, url }) => {
+           // Given
+           getExtraDataSpy
+               .mockReturnValueOnce(singleConfirmedAssociation);
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(`${lang.remove}${includedText}`);
+           expect(response.text).toContain(lang.authorisation_to_file_online);
+           expect(response.text).toContain(`${lang.if_you_remove}${includedText}`);
+           expect(response.text).toContain(`${lang.digital_authorisation_this_means_they}${companyName}`);
+           expect(response.text).toContain(`${includedText}${lang.will_still_be_able_to_file}`);
+           expect(response.text).toContain(`${lang.if}${includedText}`);
+           expect(response.text).toContain(lang.is_appointed_as_an_officer);
+           expect(response.text).toContain(lang.i_confirm_that_i_have_read);
+           expect(response.text).toContain(lang.remove_authorisation);
+           expect(response.text).toContain(langCommon.cancel);
+           expect(response.text).toContain(lang.without_a_current_auth_code);
+           expect(response.text).toContain(`${includedText}${lang.to_let_them_know_you_have_removed}`);
+           expect(response.text).toContain(lang.you_may_wish_to_change_the_auth_code);
+           expect(response.text).toContain(`${includedText}${lang.digital_authorisation}`);
+           expect(response.text).not.toContain(excludedText);
+           expect(response.text).toContain(`${lang.without_a_current_auth_code}${includedText}`);
+           expect(response.text).toContain(lang.to_let_them_know_you_have_removed);
+           expect(response.text).toContain(`${lang.you_may_wish_to_change_the_auth_code}${includedText}`);
+           expect(response.text).toContain(lang.digital_authorisation);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

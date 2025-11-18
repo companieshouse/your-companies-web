@@ -38,25 +38,25 @@ describe("GET /your-companies/company-invitations-accept/:associationId", () => 
         { langInfo: "English", langVersion: "en", lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language set to '$langVersion'",
-        async ({ langVersion, lang, langCommon }) => {
-            // Given
-            const expectedBannerText = `${lang.you_have_accepted}${companyName}.`;
-            getExtraDataSpy.mockReturnValue("");
-            // When
-            const result = await router.get(`${url}&lang=${langVersion}`);
-            // Then
-            expect(result.status).toEqual(200);
-            expect(updateAssociationStatus).toHaveBeenCalled();
-            expect(result.text).toContain(langCommon.success);
-            expect(result.text).toContain(expectedBannerText);
-            expect(result.text).toContain(lang.what_happens_now);
-            expect(result.text).toContain(lang.you_can_now);
-            expect(result.text).toContain(lang.bullet_list[0]);
-            expect(result.text).toContain(lang.bullet_list[1]);
-            expect(result.text).toContain(lang.bullet_list[2]);
-            expect(result.text).toContain(lang.weve_sent_an_email);
-            expect(result.text).toContain(lang.go_to_your_companies);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // Given
+           const expectedBannerText = `${lang.you_have_accepted}${companyName}.`;
+           getExtraDataSpy.mockReturnValue("");
+           // When
+           const result = await router.get(`${url}&lang=${langVersion}`);
+           // Then
+           expect(result.status).toEqual(200);
+           expect(updateAssociationStatus).toHaveBeenCalled();
+           expect(result.text).toContain(langCommon.success);
+           expect(result.text).toContain(expectedBannerText);
+           expect(result.text).toContain(lang.what_happens_now);
+           expect(result.text).toContain(lang.you_can_now);
+           expect(result.text).toContain(lang.bullet_list[0]);
+           expect(result.text).toContain(lang.bullet_list[1]);
+           expect(result.text).toContain(lang.bullet_list[2]);
+           expect(result.text).toContain(lang.weve_sent_an_email);
+           expect(result.text).toContain(lang.go_to_your_companies);
+       });
 
     it("should redirect back to people digitally authorised page if association already accepted", async () => {
         // Given

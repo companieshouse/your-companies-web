@@ -44,12 +44,12 @@ describe("Session Utils", () => {
                 expectedResult: undefined
             }
         ])("should return $returnInfo if $condition",
-            ({ session, expectedResult }) => {
-                // When
-                const result = getLoggedInUserEmail(session);
-                // Then
-                expect(result).toEqual(expectedResult);
-            });
+           ({ session, expectedResult }) => {
+               // When
+               const result = getLoggedInUserEmail(session);
+               // Then
+               expect(result).toEqual(expectedResult);
+           });
     });
 
     describe("setExtraData", () => {

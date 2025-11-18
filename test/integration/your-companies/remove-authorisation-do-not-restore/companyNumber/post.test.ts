@@ -50,20 +50,20 @@ describe("POST /your-companies/remove-authorisation-do-not-restore/:companyNumbe
         { condition: "user company association is not migrated", associationState: "COMPANY_NOT_ASSOCIATED_WITH_USER", removalResult: "user removed from company associations" },
         { condition: "user has migrated state, but removal result is unexpected", associationState: "COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER", removalResult: "UNEXPECTED_RESULT" }
     ])("should return status 200 and render error page if $condition'",
-        async ({ associationState, removalResult }) => {
-            (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
-                state: associationState
-            });
+       async ({ associationState, removalResult }) => {
+           (associationsService.isOrWasCompanyAssociatedWithUser as jest.Mock).mockResolvedValue({
+               state: associationState
+           });
 
-            (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue(
-                removalResult
-            );
+           (associationsService.removeUserFromCompanyAssociations as jest.Mock).mockResolvedValue(
+               removalResult
+           );
 
-            const request = router.post(url);
-            // When
-            const response = await request;
-            // Then
-            expect(response.status).toBe(200);
-            expect(response.text).toContain("Sorry, there is a problem with the service");
-        });
+           const request = router.post(url);
+           // When
+           const response = await request;
+           // Then
+           expect(response.status).toBe(200);
+           expect(response.text).toContain("Sorry, there is a problem with the service");
+       });
 });
