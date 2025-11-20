@@ -25,11 +25,11 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
 
     const start = performance.now();
 
-    logger.debugRequest(req, `${requestLogger.name} - OPEN [${requestId}]: ${req.method} ${req.originalUrl}`);
+    logger.info(`${requestLogger.name} - OPEN [${requestId}]: ${req.method} ${req.originalUrl}`);
 
     res.once("finish", () => {
         const duration = (performance.now() - start).toFixed(2);
-        logger.debug(`${requestLogger.name} - CLOSED [${requestId}] after ${duration}ms with status ${res.statusCode}`);
+        logger.info(`${requestLogger.name} - CLOSED [${requestId}] after ${duration}ms with status ${res.statusCode}`);
     });
 
     res.once("close", () => {

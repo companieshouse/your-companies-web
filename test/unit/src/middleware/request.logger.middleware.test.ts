@@ -41,22 +41,20 @@ describe("requestLogger middleware", () => {
 
         const next = jest.fn();
 
-        const debugRequestSpy = jest.spyOn(logger, "debugRequest").mockImplementation(jest.fn());
-        const debugSpy = jest.spyOn(logger, "debug").mockImplementation(jest.fn());
+        const infoSpy = jest.spyOn(logger, "info").mockImplementation(jest.fn());
         const errorSpy = jest.spyOn(logger, "error").mockImplementation(jest.fn());
 
         requestLogger(req, res, next);
 
         expect(next).toHaveBeenCalledTimes(1);
 
-        expect(debugRequestSpy).toHaveBeenCalledWith(
-            req,
+        expect(infoSpy).toHaveBeenCalledWith(
             expect.stringContaining(`OPEN [abc-123]: GET /api/test?foo=bar`)
         );
 
         resEmitter.emit("finish");
 
-        expect(debugSpy).toHaveBeenCalledWith(
+        expect(infoSpy).toHaveBeenCalledWith(
             expect.stringMatching(/CLOSED \[abc-123\] after .*ms with status 200/)
         );
         expect(errorSpy).not.toHaveBeenCalled();
@@ -75,8 +73,7 @@ describe("requestLogger middleware", () => {
 
         const next = jest.fn();
 
-        const debugRequestSpy = jest.spyOn(logger, "debugRequest").mockImplementation(jest.fn());
-        const debugSpy = jest.spyOn(logger, "debug").mockImplementation(jest.fn());
+        const loggerInfoSpy = jest.spyOn(logger, "info").mockImplementation(jest.fn());
         const errorSpy = jest.spyOn(logger, "error").mockImplementation(jest.fn());
 
         requestLogger(req, res, next);
@@ -87,14 +84,13 @@ describe("requestLogger middleware", () => {
             expect.stringContaining("Missing requestId.")
         );
 
-        expect(debugRequestSpy).toHaveBeenCalledWith(
-            req,
+        expect(loggerInfoSpy).toHaveBeenCalledWith(
             expect.stringContaining(`OPEN [UNKNOWN]: POST /api/test`)
         );
 
         resEmitter.emit("finish");
 
-        expect(debugSpy).toHaveBeenCalledWith(
+        expect(loggerInfoSpy).toHaveBeenCalledWith(
             expect.stringMatching(/CLOSED \[UNKNOWN\] after .*ms with status 500/)
         );
     });

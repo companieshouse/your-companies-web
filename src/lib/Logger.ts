@@ -3,7 +3,7 @@ import ApplicationLogger from "@companieshouse/structured-logging-node/lib/Appli
 import { getLoggedInUserId } from "./utils/sessionUtils";
 import { Request } from "express";
 
-const logger: ApplicationLogger = createLogger(process.env.APP_NAME ?? "");
+const logger: ApplicationLogger = createLogger(process.env.APP_NAME ?? "your-companies-web");
 
 /**
  * Creates an error object with the given description and logs the error stack trace.
