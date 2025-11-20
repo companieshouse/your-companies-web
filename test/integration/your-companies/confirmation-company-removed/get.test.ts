@@ -68,8 +68,8 @@ describe("GET /your-companies/confirmation-company-removed", () => {
             const response = await router.get(url);
             // Then
             expect(response.status).toBe(200);
-            if (name) expect(response.text).toContain(name);
-            if (number) expect(response.text).toContain(number);
+            if (name) {expect(response.text).toContain(name);}
+            if (number) {expect(response.text).toContain(number);}
             expect(response.text).not.toContain("you_have_removed");
         });
     });

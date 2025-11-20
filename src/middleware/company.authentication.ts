@@ -16,7 +16,7 @@ const createCompanyAuthenticationMiddleware = (disableSaveCompanyCheckbox: boole
         const companyNumber: string | undefined = req.params[constants.COMPANY_NUMBER];
 
         logger.info(createLogMessage(req, "companyAuthenticationMiddleware",
-            `starting web security node check: 
+                                     `starting web security node check: 
         returnUrl: ${req.originalUrl},
         chsWebUrl: ${constants.CHS_URL},
         companyNumber: ${companyNumber},

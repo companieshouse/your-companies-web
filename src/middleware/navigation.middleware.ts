@@ -15,11 +15,11 @@ const matchPathToPattern = (path: string, pattern: string): boolean => {
     const pathSegments = path.split("/").filter(Boolean);
     const patternSegments = pattern.split("/").filter(Boolean);
 
-    if (pathSegments.length !== patternSegments.length) return false;
+    if (pathSegments.length !== patternSegments.length) {return false;}
 
     for (let i = 0; i < patternSegments.length; i++) {
-        if (patternSegments[i].startsWith(":")) continue; // treat as wildcard
-        if (patternSegments[i] !== pathSegments[i]) return false;
+        if (patternSegments[i].startsWith(":")) {continue;} // treat as wildcard
+        if (patternSegments[i] !== pathSegments[i]) {return false;}
     }
     return true;
 };
@@ -56,7 +56,7 @@ const areParamsValid = (
     paramGuards: Array<{ paramName: string; sessionKey: string }> | undefined,
     session: Session | undefined
 ): boolean => {
-    if (!paramGuards) return true;
+    if (!paramGuards) {return true;}
     return paramGuards.every(guard => {
         const paramValue = params[guard.paramName];
         const sessionValue = getExtraData(session, guard.sessionKey);

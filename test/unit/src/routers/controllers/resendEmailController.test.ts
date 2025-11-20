@@ -38,50 +38,50 @@ describe("resendEmailController", () => {
     });
 
     it("should redirect to something went wrong page if provided email is invalid",
-        async () => {
-            // Given
-            const companyNumber = "12345";
-            const email = "test@test@com";
-            getExtraDataSpy.mockReturnValue(companyNumber);
-            req.params = { [constants.USER_EMAIL]: email };
-            validateEmailStringSpy.mockReturnValue(false);
-            const expectedUrl = "your-companies/something-went-wrong";
-            getFullUrlSpy.mockReturnValue(expectedUrl);
-            getLoggedInUserIdSpy.mockReturnValue("user-id");
-            const expectedMessage = `Function: resendEmailController, User ID: user-id, Message: Invalid email ${email} for company ${companyNumber}`;
-            // When
-            await resendEmailController(req as Request, res as Response);
-            // Then
-            expect(validateEmailStringSpy).toHaveBeenCalledWith(email);
-            expect(logger.info).toHaveBeenCalledWith(expect.stringContaining(expectedMessage));
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.redirect).toHaveBeenCalledWith(expectedUrl);
-        });
+       async () => {
+           // Given
+           const companyNumber = "12345";
+           const email = "test@test@com";
+           getExtraDataSpy.mockReturnValue(companyNumber);
+           req.params = { [constants.USER_EMAIL]: email };
+           validateEmailStringSpy.mockReturnValue(false);
+           const expectedUrl = "your-companies/something-went-wrong";
+           getFullUrlSpy.mockReturnValue(expectedUrl);
+           getLoggedInUserIdSpy.mockReturnValue("user-id");
+           const expectedMessage = `Function: resendEmailController, User ID: user-id, Message: Invalid email ${email} for company ${companyNumber}`;
+           // When
+           await resendEmailController(req as Request, res as Response);
+           // Then
+           expect(validateEmailStringSpy).toHaveBeenCalledWith(email);
+           expect(logger.info).toHaveBeenCalledWith(expect.stringContaining(expectedMessage));
+           expect(res.status).toHaveBeenCalledWith(400);
+           expect(res.redirect).toHaveBeenCalledWith(expectedUrl);
+       });
 
     it("should redirect to manage authorised people confirmation email resent page",
-        async () => {
-            // Given
-            const companyNumber = "12345";
-            const email = "test@test.com";
-            getExtraDataSpy.mockReturnValue(companyNumber);
-            req.params = { [constants.USER_EMAIL]: email };
-            validateEmailStringSpy.mockReturnValue(true);
-            const response = "54321";
-            inviteUserSpy.mockReturnValue(response);
-            const expectedUrl = `${constants.LANDING_URL}/confirmation-authorisation-email-resent`;
-            getFullUrlSpy.mockReturnValue(`${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL}`);
-            // When
-            await resendEmailController(req as Request, res as Response);
-            // Then
-            expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.COMPANY_NUMBER);
-            expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-            expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.RESENT_SUCCESS_EMAIL, email);
-            expect(inviteUserSpy).toHaveBeenCalledTimes(1);
-            expect(inviteUserSpy).toHaveBeenCalledWith(req, companyNumber, email);
-            expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
-            expect(getFullUrlSpy).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL);
-            expect(redirectMock).toHaveBeenCalledTimes(1);
-            expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
-        });
+       async () => {
+           // Given
+           const companyNumber = "12345";
+           const email = "test@test.com";
+           getExtraDataSpy.mockReturnValue(companyNumber);
+           req.params = { [constants.USER_EMAIL]: email };
+           validateEmailStringSpy.mockReturnValue(true);
+           const response = "54321";
+           inviteUserSpy.mockReturnValue(response);
+           const expectedUrl = `${constants.LANDING_URL}/confirmation-authorisation-email-resent`;
+           getFullUrlSpy.mockReturnValue(`${constants.LANDING_URL}${constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL}`);
+           // When
+           await resendEmailController(req as Request, res as Response);
+           // Then
+           expect(getExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(getExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.COMPANY_NUMBER);
+           expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
+           expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), constants.RESENT_SUCCESS_EMAIL, email);
+           expect(inviteUserSpy).toHaveBeenCalledTimes(1);
+           expect(inviteUserSpy).toHaveBeenCalledWith(req, companyNumber, email);
+           expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
+           expect(getFullUrlSpy).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_EMAIL_RESENT_URL);
+           expect(redirectMock).toHaveBeenCalledTimes(1);
+           expect(redirectMock).toHaveBeenCalledWith(expectedUrl);
+       });
 });

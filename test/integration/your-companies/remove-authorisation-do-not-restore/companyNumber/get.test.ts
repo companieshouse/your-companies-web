@@ -68,17 +68,17 @@ describe("GET /your-companies/remove-authorisation-do-not-restore/:companyNumber
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language version set to '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // When
-            const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(lang.are_you_sure_you_want_to);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-            expect(response.text).toContain(lang.if_you_remove_the_company);
-            expect(response.text).toContain(lang.remove_company);
-        });
+       async ({ langVersion, lang }) => {
+           // When
+           const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(lang.are_you_sure_you_want_to);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+           expect(response.text).toContain(lang.if_you_remove_the_company);
+           expect(response.text).toContain(lang.remove_company);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

@@ -57,12 +57,12 @@ describe("refreshToken", () => {
             refreshTokenData: undefined
         }
     ])("should throw an error if $condition returned from api call",
-        async ({ refreshTokenData }) => {
-            // Given
-            const req: Request = mockRequest();
-            const session: Session = new Session();
-            mockRefresh.mockReturnValue(refreshTokenData);
-            // Then
-            await expect(refreshToken(req, session)).rejects.toThrow();
-        });
+       async ({ refreshTokenData }) => {
+           // Given
+           const req: Request = mockRequest();
+           const session: Session = new Session();
+           mockRefresh.mockReturnValue(refreshTokenData);
+           // Then
+           await expect(refreshToken(req, session)).rejects.toThrow();
+       });
 });

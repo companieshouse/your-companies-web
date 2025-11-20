@@ -24,13 +24,13 @@ describe("GET /wrong-url", () => {
         { langVersion: undefined, lang: en },
         { langVersion: "cy", lang: cy }
     ])("should return status 404 and service unavailable page if wrong url provided and lang set to '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // When
-            const result = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(result.status).toEqual(404);
-            expect(result.text).toContain(lang.try_again_later);
-            expect(result.text).toContain(lang.contact_companies_house);
-            expect(result.text).toContain(lang.if_you_have_questions);
-        });
+       async ({ langVersion, lang }) => {
+           // When
+           const result = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(result.status).toEqual(404);
+           expect(result.text).toContain(lang.try_again_later);
+           expect(result.text).toContain(lang.contact_companies_house);
+           expect(result.text).toContain(lang.if_you_have_questions);
+       });
 });

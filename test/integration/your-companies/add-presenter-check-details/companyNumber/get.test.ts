@@ -39,16 +39,16 @@ describe("GET /your-companies/add-presenter-check-details/:companyNumber", () =>
         { langInfo: "English", langVersion: "en", lang: en },
         { langInfo: "Welsh", langVersion: "cy", lang: cy }
     ])("should return status 200 and expected $langInfo content if lang set to '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(lang.email_address);
-            expect(response.text).toContain(lang.change);
-            expect(response.text).toContain(lang.confirm_and_send_email);
-            expect(response.text).toContain(lang.change);
-        });
+       async ({ langVersion, lang }) => {
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(lang.email_address);
+           expect(response.text).toContain(lang.change);
+           expect(response.text).toContain(lang.confirm_and_send_email);
+           expect(response.text).toContain(lang.change);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

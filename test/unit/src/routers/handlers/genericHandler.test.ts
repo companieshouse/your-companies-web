@@ -17,18 +17,18 @@ describe("GenericHandler", () => {
             expectedReturnValue: { serverError: errorManifest.generic.serverError }
         }
     ])("should return $returnInfo when error name is $errorName",
-        ({ errorName, errorStack, expectedReturnValue }) => {
-            // Given
-            const genericHandler = new GenericHandler();
-            const error: ErrorSignature = {
-                status: 400,
-                name: errorName,
-                message: "This is a test error",
-                stack: errorStack
-            };
-            // When
-            const result = genericHandler.processHandlerException(error);
-            // Then
-            expect(result).toEqual(expectedReturnValue);
-        });
+       ({ errorName, errorStack, expectedReturnValue }) => {
+           // Given
+           const genericHandler = new GenericHandler();
+           const error: ErrorSignature = {
+               status: 400,
+               name: errorName,
+               message: "This is a test error",
+               stack: errorStack
+           };
+           // When
+           const result = genericHandler.processHandlerException(error);
+           // Then
+           expect(result).toEqual(expectedReturnValue);
+       });
 });

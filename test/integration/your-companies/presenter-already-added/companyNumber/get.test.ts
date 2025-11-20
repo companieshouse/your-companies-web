@@ -45,23 +45,23 @@ describe("GET /your-companies/presenter-already-added/:companyNumber", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language version set to '$langVersion'",
-        async ({ langVersion, lang, langCommon }) => {
-            // Given
-            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.COMPANY_NUMBER).mockReturnValue(companyNumber);
-            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.COMPANY_NAME).mockReturnValue(companyName);
-            when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.AUTHORISED_PERSON_EMAIL).mockReturnValue(userEmail);
-            const expectedCaption = `${companyName} (${companyNumber})`;
-            // When
-            const response = await router.get(`${url}?lang=${langVersion}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(expectedCaption);
-            expect(response.text).toContain(lang.this_person_is_already_authorised);
-            expect(response.text).toContain(lang.the_person_with_the_email_address);
-            expect(response.text).toContain(userEmail);
-            expect(response.text).toContain(lang.has_already_been_digitally_authorised);
-            expect(response.text).toContain(langCommon.go_back_to_your_companies);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // Given
+           when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.COMPANY_NUMBER).mockReturnValue(companyNumber);
+           when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.COMPANY_NAME).mockReturnValue(companyName);
+           when(sessionUtils.getExtraData).calledWith(expect.anything(), constants.AUTHORISED_PERSON_EMAIL).mockReturnValue(userEmail);
+           const expectedCaption = `${companyName} (${companyNumber})`;
+           // When
+           const response = await router.get(`${url}?lang=${langVersion}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(expectedCaption);
+           expect(response.text).toContain(lang.this_person_is_already_authorised);
+           expect(response.text).toContain(lang.the_person_with_the_email_address);
+           expect(response.text).toContain(userEmail);
+           expect(response.text).toContain(lang.has_already_been_digitally_authorised);
+           expect(response.text).toContain(langCommon.go_back_to_your_companies);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given

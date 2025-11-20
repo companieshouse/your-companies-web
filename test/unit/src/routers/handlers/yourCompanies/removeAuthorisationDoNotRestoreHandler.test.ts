@@ -52,67 +52,67 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             removalResult: constants.USER_REMOVED_FROM_COMPANY_ASSOCIATIONS
         }
     ])("should $returnInfo if method is $method and $condition",
-        async ({
-            viewData, method, associationState, removalResult, redirectUrl
-        }) => {
-            // Given
-            const lang = "en";
-            const companyNumber = validActiveCompanyProfile.companyNumber;
-            const companyName = validActiveCompanyProfile.companyName;
+       async ({
+           viewData, method, associationState, removalResult, redirectUrl
+       }) => {
+           // Given
+           const lang = "en";
+           const companyNumber = validActiveCompanyProfile.companyNumber;
+           const companyName = validActiveCompanyProfile.companyName;
 
-            getCompanyProfileSpy.mockReturnValueOnce(validActiveCompanyProfile);
+           getCompanyProfileSpy.mockReturnValueOnce(validActiveCompanyProfile);
 
-            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
-            removeUserFromCompanyAssociationsSpy.mockReturnValue(removalResult);
-            getFullUrlSpy.mockReturnValue(redirectUrl);
+           isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
+           removeUserFromCompanyAssociationsSpy.mockReturnValue(removalResult);
+           getFullUrlSpy.mockReturnValue(redirectUrl);
 
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                lang,
-                params: {
-                    companyNumber
-                }
-            });
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               lang,
+               params: {
+                   companyNumber
+               }
+           });
 
-            const res: Response = mockResponse();
+           const res: Response = mockResponse();
 
-            const translations = { key: "value" };
-            getTranslationsForViewSpy.mockReturnValueOnce(translations);
+           const translations = { key: "value" };
+           getTranslationsForViewSpy.mockReturnValueOnce(translations);
 
-            const expectedViewData = {
-                lang: translations,
-                companyName,
-                companyNumber,
-                ...viewData
-            };
-            // When
-            const response = await removeAuthorisationDoNotRestoreHandler.execute(req, res, method);
-            // Then
-            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
-            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
+           const expectedViewData = {
+               lang: translations,
+               companyName,
+               companyNumber,
+               ...viewData
+           };
+           // When
+           const response = await removeAuthorisationDoNotRestoreHandler.execute(req, res, method);
+           // Then
+           expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
+           expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.REMOVE_AUTHORISATION_DO_NOT_RESTORE_PAGE);
 
-            if (method === constants.GET) {
-                expect(getCompanyProfileSpy).toHaveBeenCalledTimes(1);
-                expect(response).toEqual(expectedViewData);
-            }
+           if (method === constants.GET) {
+               expect(getCompanyProfileSpy).toHaveBeenCalledTimes(1);
+               expect(response).toEqual(expectedViewData);
+           }
 
-            if (method === constants.POST && associationState?.state === AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER) {
-                expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
-                expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
+           if (method === constants.POST && associationState?.state === AssociationState.COMPANY_MIGRATED_NOT_YET_ASSOCIATED_WITH_USER) {
+               expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
+               expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
 
-                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
-                expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationState?.associationId);
+               expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledTimes(1);
+               expect(removeUserFromCompanyAssociationsSpy).toHaveBeenCalledWith(req, associationState?.associationId);
 
-                expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
-                expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER, companyNumber);
+               expect(setExtraDataSpy).toHaveBeenCalledTimes(1);
+               expect(setExtraDataSpy).toHaveBeenCalledWith(req.session, constants.REMOVE_AUTHORISATION_COMPANY_NUMBER, companyNumber);
 
-                expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
-                expect(getFullUrlSpy).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL);
+               expect(getFullUrlSpy).toHaveBeenCalledTimes(1);
+               expect(getFullUrlSpy).toHaveBeenCalledWith(constants.CONFIRMATION_AUTHORISATION_REMOVED_URL);
 
-                expect(res.redirect).toHaveBeenCalledTimes(1);
-                expect(res.redirect).toHaveBeenCalledWith(redirectUrl);
-            }
-        });
+               expect(res.redirect).toHaveBeenCalledTimes(1);
+               expect(res.redirect).toHaveBeenCalledWith(redirectUrl);
+           }
+       });
 
     test.each([
         {
@@ -135,31 +135,31 @@ describe("RemoveAuthorisationDoNotRestoreHandler", () => {
             method: constants.GET
         }
     ])("should $returnInfo if method is $method and $condition",
-        async ({
-            method, associationState, removalResult
-        }) => {
-            // Given
-            const companyNumber = validActiveCompanyProfile.companyNumber;
+       async ({
+           method, associationState, removalResult
+       }) => {
+           // Given
+           const companyNumber = validActiveCompanyProfile.companyNumber;
 
-            isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
-            removeUserFromCompanyAssociationsSpy.mockReturnValue(removalResult);
+           isOrWasCompanyAssociatedWithUserSpy.mockReturnValue(associationState);
+           removeUserFromCompanyAssociationsSpy.mockReturnValue(removalResult);
 
-            const req: Request = mockParametrisedRequest({
-                session: new Session(),
-                params: {
-                    companyNumber
-                }
-            });
+           const req: Request = mockParametrisedRequest({
+               session: new Session(),
+               params: {
+                   companyNumber
+               }
+           });
 
-            const res: Response = mockResponse();
+           const res: Response = mockResponse();
 
-            // Then
-            if (associationState?.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
-                await expect(removeAuthorisationDoNotRestoreHandler.execute(req, res, method)).rejects.toThrow(`Cannot remove company ${companyNumber} as it is not associated with the user`);
-            }
+           // Then
+           if (associationState?.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
+               await expect(removeAuthorisationDoNotRestoreHandler.execute(req, res, method)).rejects.toThrow(`Cannot remove company ${companyNumber} as it is not associated with the user`);
+           }
 
-            if (removalResult === constants.USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
-                await expect(removeAuthorisationDoNotRestoreHandler.execute(req, res, method)).rejects.toThrow(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
-            }
-        });
+           if (removalResult === constants.USER_NOT_REMOVED_FROM_COMPANY_ASSOCIATIONS) {
+               await expect(removeAuthorisationDoNotRestoreHandler.execute(req, res, method)).rejects.toThrow(`Unexpected result when removing company ${companyNumber}: ${removalResult}`);
+           }
+       });
 });

@@ -68,20 +68,20 @@ describe("GET /your-companies/remove-company/:companyNumber", () => {
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language version set to '$langVersion'",
-        async ({ langVersion, lang, langCommon }) => {
-            // When
-            const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(lang.title_remove_company);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-            expect(response.text).toContain(lang.are_you_sure_you_want_to_remove_company);
-            expect(response.text).toContain(langCommon.yes);
-            expect(response.text).toContain(langCommon.no);
-            expect(response.text).toContain(langCommon.continue);
-            expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber, expect.any(String));
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // When
+           const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(lang.title_remove_company);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+           expect(response.text).toContain(lang.are_you_sure_you_want_to_remove_company);
+           expect(response.text).toContain(langCommon.yes);
+           expect(response.text).toContain(langCommon.no);
+           expect(response.text).toContain(langCommon.continue);
+           expect(getCompanyProfile).toHaveBeenCalledWith(companyNumber, expect.any(String));
+       });
 
     it("should return error in page content if error exists in session data", async () => {
         // Given

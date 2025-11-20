@@ -50,29 +50,29 @@ describe("GET /your-companies/confirmation-persons-digital-authorisation-cancell
             lang: cy
         }
     ])("should return expected $langInfo content when lang is '$langVersion'",
-        async ({ langVersion, lang }) => {
-            // Given
-            const companyName = "TEST LTD.";
-            const companyNumber = "12345678";
-            const userNameOrEmail = "test@example.com";
-            const personRemovedConfirmationData: PersonRemovedConfirmation = {
-                userNameOrEmail,
-                companyNumber,
-                companyName
-            };
-            setExtraData(session, constants.PERSON_REMOVED_CONFIRMATION_DATA, personRemovedConfirmationData);
-            // When
-            const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
-            // Then
-            expect(response.status).toBe(200);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-            expect(response.text).toContain(userNameOrEmail);
-            expect(response.text).toContain(lang.digital_authorisation_cancelled);
-            expect(response.text).toContain(lang.go_to_digitally_authorised_people);
-            expect(response.text).toContain(lang.page_header);
-            expect(response.text).toContain(lang.to_file_online_for);
-            expect(response.text).toContain(lang.weve_sent_an_email_to_any_people);
-            expect(response.text).toContain(lang.youve_successfully_cancelled_digital_authorisation_for);
-        });
+       async ({ langVersion, lang }) => {
+           // Given
+           const companyName = "TEST LTD.";
+           const companyNumber = "12345678";
+           const userNameOrEmail = "test@example.com";
+           const personRemovedConfirmationData: PersonRemovedConfirmation = {
+               userNameOrEmail,
+               companyNumber,
+               companyName
+           };
+           setExtraData(session, constants.PERSON_REMOVED_CONFIRMATION_DATA, personRemovedConfirmationData);
+           // When
+           const response = await router.get(`${url}${langVersion ? `?lang=${langVersion}` : ""}`);
+           // Then
+           expect(response.status).toBe(200);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+           expect(response.text).toContain(userNameOrEmail);
+           expect(response.text).toContain(lang.digital_authorisation_cancelled);
+           expect(response.text).toContain(lang.go_to_digitally_authorised_people);
+           expect(response.text).toContain(lang.page_header);
+           expect(response.text).toContain(lang.to_file_online_for);
+           expect(response.text).toContain(lang.weve_sent_an_email_to_any_people);
+           expect(response.text).toContain(lang.youve_successfully_cancelled_digital_authorisation_for);
+       });
 });

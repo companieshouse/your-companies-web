@@ -29,17 +29,17 @@ describe("POST /your-companies/send-email-invitation-to-be-digitally-authorised/
     });
 
     it("should check session and auth before proceeding with the restoration of the digital authorisation",
-        async () => {
-            // Given
-            getExtraDataSpy
-                .mockReturnValueOnce(migratedAssociation.items[0]);
-            // When
-            await router.post(url);
-            // Then
-            expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
-            expect(mocks.mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
-            expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        });
+       async () => {
+           // Given
+           getExtraDataSpy
+               .mockReturnValueOnce(migratedAssociation.items[0]);
+           // When
+           await router.post(url);
+           // Then
+           expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
+           expect(mocks.mockEnsureSessionCookiePresentMiddleware).toHaveBeenCalled();
+           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+       });
 
     it("redirects to create company association controller with company number param in url", async () => {
         // Given

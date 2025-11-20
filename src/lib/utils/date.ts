@@ -16,7 +16,7 @@ import { createAndLogError } from "../Logger";
  * - The function ensures that the locale is set to either English ("en") or Welsh ("cy").
  */
 export const toReadableFormat = (dateToConvert: string, lang = "en"): string => {
-    if (!dateToConvert) return "";
+    if (!dateToConvert) {return "";}
 
     const jsDate = new Date(dateToConvert);
     const dateTime = DateTime.fromJSDate(jsDate);

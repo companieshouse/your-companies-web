@@ -1,6 +1,4 @@
 
-/* eslint-disable import/first */
-
 const READABLE_COMPANY_STATUS = "Receiver Action";
 const READABLE_COMPANY_TYPE = "Private limited company";
 const KEY_RECEIVERSHIP = "receivership";
@@ -60,10 +58,10 @@ describe("api enumeration tests", () => {
             expectedResult: KEY
         }
     ])("should return $returnInfo when $condition",
-        ({ lookupFuntion, argument, expectedResult }) => {
-            // When
-            const result: string = lookupFuntion(argument);
-            // Then
-            expect(result).toEqual(expectedResult);
-        });
+       ({ lookupFuntion, argument, expectedResult }) => {
+           // When
+           const result: string = lookupFuntion(argument);
+           // Then
+           expect(result).toEqual(expectedResult);
+       });
 });

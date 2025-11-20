@@ -42,24 +42,24 @@ describe("GET /your-companies/company/1122334455/confirmation-your-digital-autho
         { langInfo: "English", langVersion: undefined, lang: en, langCommon: enCommon },
         { langInfo: "Welsh", langVersion: "cy", lang: cy, langCommon: cyCommon }
     ])("should return status 200 and expected $langInfo content if language set to $langVersion",
-        async ({ langVersion, lang, langCommon }) => {
-            // When
-            const response = await router.get(langVersion ? `${url}?lang=${langVersion}` : url);
-            // Then
-            expect(response.status).toEqual(200);
-            expect(response.text).toContain(companyName);
-            expect(response.text).toContain(companyNumber);
-            expect(response.text).toContain(langCommon.success);
-            expect(response.text).toContain(lang.digital_authorisation_restored_for);
-            expect(response.text).toContain(lang.go_to_your_companies);
-            expect(response.text).toContain(lang.keep_the_authentication_code);
-            expect(response.text).toContain(lang.page_header);
-            expect(response.text).toContain(lang.you_can_now);
-            expect(response.text).toContain(lang.you_can_now_options[0]);
-            expect(response.text).toContain(lang.you_can_now_options[1]);
-            expect(response.text).toContain(lang.you_can_now_options[2]);
-            expect(response.text).toContain(lang.weve_sent_an_email);
-        });
+       async ({ langVersion, lang, langCommon }) => {
+           // When
+           const response = await router.get(langVersion ? `${url}?lang=${langVersion}` : url);
+           // Then
+           expect(response.status).toEqual(200);
+           expect(response.text).toContain(companyName);
+           expect(response.text).toContain(companyNumber);
+           expect(response.text).toContain(langCommon.success);
+           expect(response.text).toContain(lang.digital_authorisation_restored_for);
+           expect(response.text).toContain(lang.go_to_your_companies);
+           expect(response.text).toContain(lang.keep_the_authentication_code);
+           expect(response.text).toContain(lang.page_header);
+           expect(response.text).toContain(lang.you_can_now);
+           expect(response.text).toContain(lang.you_can_now_options[0]);
+           expect(response.text).toContain(lang.you_can_now_options[1]);
+           expect(response.text).toContain(lang.you_can_now_options[2]);
+           expect(response.text).toContain(lang.weve_sent_an_email);
+       });
 
     it("should return status 302 and correct response message including desired url path on page redirect", async () => {
         // Given
