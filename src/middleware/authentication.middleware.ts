@@ -17,7 +17,7 @@ import { isWhitelistedUrl } from "../lib/utils/urlUtils";
  */
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction): unknown => {
     if (isWhitelistedUrl(req.originalUrl)) {
-        logger.info(createLogMessage(req, authenticationMiddleware.name, "whitelist endpoint called, skipping authentication."));
+        logger.debug(createLogMessage(req, authenticationMiddleware.name, "whitelist endpoint called, skipping authentication."));
         return next();
     }
 
