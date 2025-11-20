@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import logger from "../lib/Logger";
 import { performance } from "node:perf_hooks";
-import { safeDebugCsrf } from "../lib/helpers/csrfLoggerHelper";
 /**
  * Middleware to log incoming HTTP requests and their corresponding responses.
  *
@@ -26,7 +25,6 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
     const start = performance.now();
 
     logger.info(`${requestLogger.name} - OPEN [${requestId}]: ${req.method} ${req.originalUrl}`);
-    safeDebugCsrf(req);
     res.once("finish", () => {
         const duration = (performance.now() - start).toFixed(2);
         logger.info(`${requestLogger.name} - CLOSED [${requestId}] after ${duration}ms with status ${res.statusCode}`);

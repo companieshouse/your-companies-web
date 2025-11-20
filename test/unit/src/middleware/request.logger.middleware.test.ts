@@ -2,9 +2,6 @@ import { requestLogger } from "../../../../src/middleware/request.logger.middlew
 import { Request, Response } from "express";
 import logger from "../../../../src/lib/Logger";
 import { EventEmitter } from "node:events";
-import { safeDebugCsrf } from "../../../../src/lib/helpers/csrfLoggerHelper";
-
-jest.mock("../../../../src/lib/helpers/csrfLoggerHelper");
 
 describe("requestLogger middleware", () => {
     afterEach(() => {
@@ -54,7 +51,6 @@ describe("requestLogger middleware", () => {
         expect(infoSpy).toHaveBeenCalledWith(
             expect.stringContaining(`OPEN [abc-123]: GET /api/test?foo=bar`)
         );
-        expect(safeDebugCsrf).toHaveBeenCalledWith(req);
 
         resEmitter.emit("finish");
 
@@ -87,7 +83,6 @@ describe("requestLogger middleware", () => {
         expect(errorSpy).toHaveBeenCalledWith(
             expect.stringContaining("Missing requestId.")
         );
-        expect(safeDebugCsrf).toHaveBeenCalledWith(req);
 
         expect(loggerInfoSpy).toHaveBeenCalledWith(
             expect.stringContaining(`OPEN [UNKNOWN]: POST /api/test`)
