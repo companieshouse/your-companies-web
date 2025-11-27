@@ -38,6 +38,7 @@ import { confirmationPersonsDigitalAuthorisationCancelledControllerGet } from ".
 import { confirmationPersonsDigitalAuthorisationRestoredControllerGet } from "./controllers/confirmationPersonsDigitalAuthorisationRestoredController";
 import { confirmationPersonsDigitalAuthorisationRemovedNotRestoredControllerGet } from "./controllers/confirmationPersonsDigitalAuthorisationRemovedNotRestoredController";
 import { confirmationPersonAddedControllerGet } from "./controllers/confirmationPersonAddedController";
+import { createCmsBannerMiddleare } from "../middleware/cms.banner.middleware";
 
 const router: Router = Router();
 
@@ -45,8 +46,8 @@ const router: Router = Router();
 router.get(constants.HEALTHCHECK_URL, healthCheckController);
 
 // Your Companies
-router.get(constants.YOUR_COMPANIES_URL, yourCompaniesControllerGet as RequestHandler);
-router.post(constants.YOUR_COMPANIES_URL, yourCompaniesControllerPost as RequestHandler);
+router.get(constants.YOUR_COMPANIES_URL, createCmsBannerMiddleare("your-companies-banner"), yourCompaniesControllerGet as RequestHandler);
+router.post(constants.YOUR_COMPANIES_URL, createCmsBannerMiddleare("your-companies-banner"), yourCompaniesControllerPost as RequestHandler);
 
 // Manage Authorised People
 router.get(constants.MANAGE_AUTHORISED_PEOPLE_URL, navigationMiddleware, manageAuthorisedPeopleControllerGet as RequestHandler);

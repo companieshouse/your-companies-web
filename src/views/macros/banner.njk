@@ -1,0 +1,16 @@
+
+{%- macro bannerInput(params) -%}
+<div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+      {{params.title}}
+    </h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+    <p class="govuk-notification-banner__heading">
+      {{params.message}}
+      <a class="govuk-notification-banner__link" href="{{params.link}}">{{params.linkText}}</a>.
+    </p>
+  </div>
+</div>
+{%- endmacro -%}
