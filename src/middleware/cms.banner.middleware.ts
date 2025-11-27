@@ -28,8 +28,9 @@ export const createCmsBannerMiddleare = (bannerId: string) => {
         } catch (e){
             res.locals.cmsBanner = null;
             res.locals.bannerActive = false;
-            next();
             console.log('error with CMS api request', e);
+            next();
+
         }
     };
 };

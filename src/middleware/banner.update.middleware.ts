@@ -24,14 +24,14 @@ interface BannerData {
 }
 
 // If you want typed res.locals across your app, extend Express' Locals:
-declare global {
-  namespace Express {
-    interface Locals {
-      cmsBanner?: BannerData | null;
-      bannerActive?: boolean;
-    }
-  }
-}
+// declare global {
+//   namespace Express {
+//     interface Locals {
+//       cmsBanner?: BannerData | null;
+//       bannerActive?: boolean;
+//     }
+//   }
+// }
 
 // Replace with actual import
 // import { getBannerContentApiResponse } from "./path/to/api";
