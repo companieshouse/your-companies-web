@@ -168,7 +168,7 @@ describe("AddPresenterHandler", () => {
                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.anything(), setExtraDataKey, proposedEmail);
                const deleteExtraDataKey = viewData.errors ? constants.AUTHORISED_PERSON_EMAIL : constants.PROPOSED_EMAIL;
                expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.anything(), deleteExtraDataKey);
-               deleteExtraDataCallCounter = ++deleteExtraDataCallCounter;
+               deleteExtraDataCallCounter++;
            }
            expect(deleteExtraDataSpy).toHaveBeenCalledTimes(deleteExtraDataCallCounter);
            expect(response).toEqual(expectedViewData);

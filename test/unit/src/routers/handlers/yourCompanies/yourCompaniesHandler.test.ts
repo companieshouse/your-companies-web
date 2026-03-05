@@ -309,7 +309,7 @@ describe("YourCompaniesHandler", () => {
            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.CONFIRMED_COMPANY_FOR_ASSOCIATION);
            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NAME);
            expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.REMOVE_AUTHORISATION_COMPANY_NUMBER);
-           expect(getResourceBundleMock).toHaveBeenCalled;
+           expect(getResourceBundleMock).toHaveBeenCalled();
            expect(getResourceBundleMock).toHaveBeenCalledWith(lang, constants.COMPANY_STATUS);
            expect(getTranslationsForViewSpy).toHaveBeenCalledTimes(1);
            expect(getTranslationsForViewSpy).toHaveBeenCalledWith(lang, constants.YOUR_COMPANIES_PAGE);

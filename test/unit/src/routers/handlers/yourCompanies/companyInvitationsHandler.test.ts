@@ -229,7 +229,7 @@ describe("CompanyInvitationsHandler", () => {
            let getInvitationsCallCount = 1;
            expect(getInvitationsSpy).toHaveBeenCalledWith(req, pageNumber - 1);
            if (!isPageNumberValid) {
-               getInvitationsCallCount = ++getInvitationsCallCount;
+               getInvitationsCallCount++;
                expect(getInvitationsSpy).toHaveBeenCalledWith(req, 0);
            }
            expect(getInvitationsSpy).toHaveBeenCalledTimes(getInvitationsCallCount);

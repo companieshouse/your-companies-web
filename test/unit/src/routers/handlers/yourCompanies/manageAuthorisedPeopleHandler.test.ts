@@ -181,7 +181,7 @@ describe("ManageAuthorisedPeopleHandler", () => {
            expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, pageNumber - 1, constants.ITEMS_PER_PAGE);
            if (!isValidPageNumber) {
                expect(getCompanyAssociationsSpy).toHaveBeenCalledWith(req, companyNumber, undefined, undefined, 0, constants.ITEMS_PER_PAGE);
-               getCompanyAssociationsCounter = ++getCompanyAssociationsCounter;
+               getCompanyAssociationsCounter++;
            }
            expect(validatePageNumberSpy).toHaveBeenCalledTimes(1);
            expect(validatePageNumberSpy).toHaveBeenCalledWith(pageNumber, companyAssociations.totalPages);

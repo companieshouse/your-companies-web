@@ -43,7 +43,7 @@ describe("GET /your-companies/company/:companyNumber/authentication-code-remove/
     const url = `/your-companies/company/${companyNumber}/authentication-code-remove/${associationId}`;
 
     beforeEach(() => {
-        jest.clearAllMocks;
+        jest.clearAllMocks();
     });
 
     test.each([

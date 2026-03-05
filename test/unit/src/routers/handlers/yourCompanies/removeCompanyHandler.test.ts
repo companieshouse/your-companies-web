@@ -159,20 +159,20 @@ describe("RemoveCompanyHandler", () => {
            let setExtraDataCounter = 0;
            if (method === constants.GET) {
                expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
-               getExtraDataCounter = ++getExtraDataCounter;
+               getExtraDataCounter++;
                expect(getCompanyProfileSpy).toHaveBeenCalledTimes(1);
                expect(getCompanyProfileSpy).toHaveBeenCalledWith(companyNumber, "requestId");
                expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME, companyName);
-               setExtraDataCounter = ++setExtraDataCounter;
+               setExtraDataCounter++;
            } else {
                expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME);
-               getExtraDataCounter = ++getExtraDataCounter;
+               getExtraDataCounter++;
                if (body?.confirmRemoval) {
                    expect(deleteExtraDataSpy).toHaveBeenCalledTimes(1);
                    expect(deleteExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION);
                    if (body?.confirmRemoval === "yes") {
                        expect(getExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.COMPANY_NAME);
-                       getExtraDataCounter = ++getExtraDataCounter;
+                       getExtraDataCounter++;
                        expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledTimes(1);
                        expect(isOrWasCompanyAssociatedWithUserSpy).toHaveBeenCalledWith(req, companyNumber);
                        if (associationState?.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
@@ -188,7 +188,7 @@ describe("RemoveCompanyHandler", () => {
                    }
                } else {
                    expect(setExtraDataSpy).toHaveBeenCalledWith(expect.any(Session), constants.YOU_MUST_SELECT_AN_OPTION, viewData?.errors);
-                   setExtraDataCounter = ++setExtraDataCounter;
+                   setExtraDataCounter++;
                }
            }
            expect(getExtraDataSpy).toHaveBeenCalledTimes(getExtraDataCounter);
