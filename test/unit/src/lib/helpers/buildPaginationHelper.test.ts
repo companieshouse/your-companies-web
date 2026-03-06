@@ -25,14 +25,14 @@ function validatePaginationElement (expectedData: { previous: boolean; items: st
     if (expectedData.previous) {
         expect(paginationElement.previous).toEqual({ href: prefix + "?page=" + (currentPageNumber - 1) });
     } else {
-        expect(paginationElement.previous).toBeNull;
+        expect(paginationElement.previous).toBeUndefined();
     }
 
     // Validate next link
     if (expectedData.next) {
         expect(paginationElement.next).toEqual({ href: prefix + "?page=" + (currentPageNumber + 1) });
     } else {
-        expect(paginationElement.next).toBeNull;
+        expect(paginationElement.next).toBeUndefined();
     }
 
     // Validate items
@@ -186,7 +186,7 @@ describe("Pagination element test suite", () => {
         [7, { previous: true, items: ["1", "...", "6", "7", "8", "...", "22"], next: true }],
         [13, { previous: true, items: ["1", "...", "12", "13", "14", "...", "22"], next: true }],
         [17, { previous: true, items: ["1", "...", "16", "17", "18", "...", "22"], next: true }],
-        [20, { previous: true, items: ["1", "...", "19", "20", "21", "22"], next: false }]
+        [20, { previous: true, items: ["1", "...", "19", "20", "21", "22"], next: true }]
     ])("22 pages, current page number = %p", (currentPageNumber: number, expectedData: { previous: boolean; items: string[]; next: boolean; }) => {
         const numOfPages = 22;
         validatePaginationElement(expectedData, numOfPages, prefix, currentPageNumber, lang);
