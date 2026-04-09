@@ -5,7 +5,7 @@
     "main": "dist/server.js",
     "engines": {
         "node": ">=24.0.0",
-        "npm": "^11"
+        "npm": ">10"
     },
     "scripts": {
         "prebuild": "rm -rf ./dist",
@@ -108,6 +108,7 @@
     },
     "overrides": {
         "chokidar": "3.5.3",
+        "glob": "11.1.0",
         "glob-parent": "6.0.2",
         "qs": "6.15.0",
         "minimatch": "10.2.4"
