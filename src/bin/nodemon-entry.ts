@@ -1,4 +1,6 @@
 import app from "../app";
+import "../otel";
+
 
 const PORT = 3000;
 
