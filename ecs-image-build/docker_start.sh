@@ -5,4 +5,4 @@
 PORT=3000
 
 export NODE_PORT=${PORT}
-exec node /opt/server.js -- ${PORT}
+exec node -r /opt/dist/otel.js /opt/server.js -- ${PORT}
