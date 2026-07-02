@@ -1,3 +1,6 @@
+@use "node_modules/govuk-frontend/dist/govuk/index" as *;
+@use "./govuk-language-select";
+
 $govuk-global-styles: true;
 
 @function custom-font-url-handler($filename) {
@@ -11,9 +14,6 @@ $govuk-font-url-function: 'custom-font-url-handler';
 }
 
 $govuk-image-url-function: 'custom-image-url-handler';
-
-@import "node_modules/govuk-frontend/dist/govuk/all";
-@import "./govuk-language-select";
 
 * {
   font-family: "GDS Transport", Arial, sans-serif;
