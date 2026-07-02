@@ -121,7 +121,7 @@
         "minimatch": "10.2.4",
         "@opentelemetry/exporter-prometheus" : "^0.218.0",
         "@opentelemetry/sdk-node" : "^0.218.0",
-        "@opentelemetry/core":"2.8.0"
+        "@opentelemetry/core":"^2.8.0"
     },
     "nodemonConfig": {
         "watch": [
