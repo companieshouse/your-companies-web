@@ -35,13 +35,11 @@ export const addCompanyControllerPost = async (req: Request, res: Response): Pro
     const handler = new AddCompanyHandler();
     const viewData = await handler.execute(req, res, constants.POST);
 
-    if (viewData.errors && Object.keys(viewData.errors).length > 0) {
-        logger.info(createLogMessage(req, addCompanyControllerPost.name, "Renderring add company page"));
-        res.render(constants.ADD_COMPANY_PAGE, {
-            ...viewData
-        });
+    if (viewData.companyAlreadyAssociated) {
+        res.redirect(getFullUrl(constants.COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_URL));
+    } else if (viewData.errors && Object.keys(viewData.errors).length > 0) {
+        res.render(constants.ADD_COMPANY_PAGE, { ...viewData });
     } else {
-        logger.info(createLogMessage(req, addCompanyControllerPost.name, "Redirecting to confirm company details page"));
         res.redirect(getFullUrl(constants.CONFIRM_COMPANY_DETAILS_URL));
     }
 };

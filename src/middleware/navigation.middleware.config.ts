@@ -145,6 +145,18 @@ const routeConfigs: RouteConfig[] = [
         defaultRedirect: constants.LANDING_URL
     },
 
+    // 3) Company already associated (stop screen)
+    {
+        routePattern: constants.COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_URL,
+        allowedPages: [
+            ...allowedPagesNoGuards([
+                constants.COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_URL,
+                constants.ADD_COMPANY_URL
+            ])
+        ],
+        defaultRedirect: constants.LANDING_URL
+    },
+
     // Remove company journey
     // 1) Remove company
     {

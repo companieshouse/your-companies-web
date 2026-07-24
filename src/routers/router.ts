@@ -3,6 +3,7 @@ import { confirmCompanyControllerGet, confirmCompanyControllerPost } from "./con
 import { companyAddedControllerGet } from "./controllers/companyAddedController";
 import * as constants from "../constants";
 import { addCompanyControllerGet, addCompanyControllerPost } from "./controllers/addCompanyController";
+import { companyAlreadyAssociatedControllerGet } from "./controllers/companyAlreadyAssociatedController";
 import { manageAuthorisedPeopleControllerGet, manageAuthorisedPeopleControllerPost } from "./controllers/manageAuthorisedPeopleController";
 import { yourCompaniesControllerGet, yourCompaniesControllerPost } from "./controllers/yourCompaniesController";
 import { addPresenterControllerGet, addPresenterControllerPost } from "./controllers/addPresenterController";
@@ -55,6 +56,9 @@ router.post(constants.MANAGE_AUTHORISED_PEOPLE_URL, navigationMiddleware, manage
 // Add Company
 router.get(constants.ADD_COMPANY_URL, navigationMiddleware, addCompanyControllerGet as RequestHandler);
 router.post(constants.ADD_COMPANY_URL, addCompanyControllerPost as RequestHandler);
+
+// Company Already Associated
+router.get(constants.COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_URL, navigationMiddleware, companyAlreadyAssociatedControllerGet);
 
 // Remove Authorised Person
 router.get(constants.COMPANY_AUTH_PROTECTED_AUTHENTICATION_CODE_REMOVE_URL, removeAuthorisedPersonCompanyAuth, navigationMiddleware, removeAuthorisedPersonControllerGet as RequestHandler);

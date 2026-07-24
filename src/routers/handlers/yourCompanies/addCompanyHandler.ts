@@ -16,6 +16,7 @@ import { HttpError } from "http-errors";
 
 interface AddCompanyViewData extends ViewDataWithBackLink {
     proposedCompanyNumber: string | undefined;
+    companyAlreadyAssociated: boolean;
 }
 
 /**
@@ -30,7 +31,8 @@ export class AddCompanyHandler extends GenericHandler {
             templateName: constants.ADD_COMPANY_PAGE,
             backLinkHref: constants.LANDING_URL,
             lang: {},
-            proposedCompanyNumber: undefined
+            proposedCompanyNumber: undefined,
+            companyAlreadyAssociated: false
         };
     }
 
@@ -184,18 +186,16 @@ export class AddCompanyHandler extends GenericHandler {
      * @param companyProfile - The company profile object.
      */
     private async handleActiveCompany (req: Request, companyProfile: CompanyProfile) {
-        setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
-        deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
+    setExtraData(req.session, constants.COMPANY_NUMBER, companyProfile.companyNumber);
+    deleteExtraData(req.session, constants.PROPOSED_COMPANY_NUM);
 
-        const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyProfile.companyNumber);
-        if (isAssociated.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
-            this.viewData.errors = {
-                companyNumber: {
-                    text: constants.THIS_COMPANY_HAS_ALREADY_BEEN_ADDED_TO_YOUR_ACCOUNT
-                }
-            };
-        } else {
-            setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
-        }
+    const isAssociated: AssociationStateResponse = await isOrWasCompanyAssociatedWithUser(req, companyProfile.companyNumber);
+    if (isAssociated.state === AssociationState.COMPANY_ASSOCIATED_WITH_USER) {
+        setExtraData(req.session, constants.COMPANY_NAME, companyProfile.companyName);
+        setExtraData(req.session, constants.COMPANY_ALREADY_ASSOCIATED_REASON, "already_associated");
+        this.viewData.companyAlreadyAssociated = true;
+    } else {
+        setExtraData(req.session, constants.COMPANY_PROFILE, companyProfile);
     }
+}
 }

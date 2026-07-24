@@ -219,3 +219,8 @@ export const COMPANY_NUMBER_FULL_SEARCH_VALIDATION_REGEX = /^[0-9A-Z]{6,10}$/;
 
 export const NUMBER_OF_DAYS_INVITATION_IS_VALID = 7;
 export const INVITATIONS_PER_PAGE = 1000;
+
+// Company already associated error screen
+export const COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_PAGE = "associated-company-stop-screen";
+export const COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_URL = `/${COMPANY_ALREADY_ASSOCIATED_STOP_SCREEN_PAGE}`;
+export const COMPANY_ALREADY_ASSOCIATED_REASON = "companyAlreadyAssociatedReason";
